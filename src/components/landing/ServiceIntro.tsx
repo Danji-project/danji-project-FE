@@ -14,6 +14,20 @@ const ServiceIntro = () => {
         <h3>단지 생활을 더 쉽게!</h3>
         <span>관리자와 입주민을 위한 스마트한 소통 플랫폼</span>
       </div>
+      <ul className="service-list">
+        <li>
+          <button>채팅</button>
+        </li>
+        <li>
+          <button>공지사항</button>
+        </li>
+        <li>
+          <button>시설정보</button>
+        </li>
+        <li>
+          <button>문의하기</button>
+        </li>
+      </ul>
     </div>
   );
 };

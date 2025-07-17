@@ -40,6 +40,18 @@ body {
   }
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  border: none;
+  padding: 0;
+  background-color: transparent;
+}
+
 .landing__container {
   width: 100%;
   height: 100vh;
@@ -141,6 +153,7 @@ body {
       0 1px 1px rgb(151, 187, 255);
     .logo-wrapper {
       margin-bottom: 1.1rem;
+      margin-top: 2.1rem;
       img {
         width: 66px;
       }
@@ -181,6 +194,111 @@ body {
         font-size: 0.95rem;
         font-weight: 300;
         color: rgba(0, 0, 0, 0.86);
+      }
+    }
+    ul.service-list {
+      display: flex;
+      justify-content: space-evenly;
+      gap: 1rem;
+      padding: 1.375rem;
+      border: 1px solid rgba(151, 187, 255, 0.1);
+      border-radius: 20px;
+      margin-bottom: 1.575rem;
+      li {
+        min-width: 85px;
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem 0;
+        border: 1px solid rgba(151, 187, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 2px 4px rgba(151, 187, 255, 0.05),
+          0 4px 8px rgba(151, 187, 255, 0.05);
+        button {
+          padding: 0.9rem 1rem;
+          transition: ease-in-out 0.7s;
+          &:hover {
+            background-color: #e9f0ff;
+            border-radius: 16px;
+            height: 100%;
+          }
+        }
+        &:nth-child(1) {
+          button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.555rem;
+            cursor: pointer;
+
+            &::before {
+              content: "";
+              display: block;
+              width: 20px;
+              height: 20px;
+              background: url("/icons/chatting.svg") no-repeat center/80%;
+              filter: invert(60%) sepia(29%) saturate(1113%) hue-rotate(198deg)
+                brightness(99%) contrast(96%);
+            }
+          }
+        }
+        &:nth-child(2) {
+          button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.555rem;
+            cursor: pointer;
+            &::before {
+              content: "";
+              display: block;
+              width: 20px;
+              height: 20px;
+              background: url("/icons/alram.svg") no-repeat center/90%;
+              filter: invert(60%) sepia(29%) saturate(1113%) hue-rotate(198deg)
+                brightness(99%) contrast(96%);
+            }
+          }
+        }
+        &:nth-child(3) {
+          button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.555rem;
+            cursor: pointer;
+            &::before {
+              content: "";
+              display: block;
+              width: 20px;
+              height: 20px;
+              background: url("/icons/info.svg") no-repeat center/90%;
+              filter: invert(60%) sepia(29%) saturate(1113%) hue-rotate(198deg)
+                brightness(99%) contrast(96%);
+            }
+          }
+        }
+        &:nth-child(4) {
+          button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.555rem;
+            cursor: pointer;
+            &::before {
+              content: "";
+              display: block;
+              width: 20px;
+              height: 20px;
+              background: url("/icons/question.svg") no-repeat center/90%;
+              filter: invert(60%) sepia(29%) saturate(1113%) hue-rotate(198deg)
+                brightness(99%) contrast(96%);
+            }
+          }
+        }
       }
     }
   }
