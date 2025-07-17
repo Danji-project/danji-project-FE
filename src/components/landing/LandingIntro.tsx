@@ -1,6 +1,7 @@
 import React from "react";
 import AppRoutes from "../../routes/AppRoutes";
 import PreviewDevice from "./PreviewDevice";
+import ServiceIntro from "./ServiceIntro";
 
 const LandingIntro = () => {
   return (
@@ -8,6 +9,7 @@ const LandingIntro = () => {
       <PreviewDevice>
         <AppRoutes />
       </PreviewDevice>
+      <ServiceIntro />
     </div>
   );
 };

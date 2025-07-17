@@ -1,0 +1,21 @@
+import React from "react";
+
+const ServiceIntro = () => {
+  return (
+    <div className="service-intro">
+      <div className="logo-wrapper">
+        <img src="/logo-danji.png" alt="logo" />
+      </div>
+      <div className="logo-name">
+        <span>단지톡</span>
+        <span>아파트 생활의 시작</span>
+      </div>
+      <div className="service-body">
+        <h3>단지 생활을 더 쉽게!</h3>
+        <span>관리자와 입주민을 위한 스마트한 소통 플랫폼</span>
+      </div>
+    </div>
+  );
+};
+
+export default ServiceIntro;

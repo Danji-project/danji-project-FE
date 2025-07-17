@@ -11,7 +11,7 @@
 :root {
   --font-family: "Pretendard", sans-serif;
   --color-text: black;
-  --device-width: 468px;
+  --device-width: 390px;
   --device-height: 698px;
   --device-radius: 50px;
 }
@@ -47,6 +47,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 2.35rem;
   &::before {
     content: "";
     position: absolute;
@@ -123,6 +124,63 @@ body {
             }
           }
         }
+      }
+    }
+  }
+  .service-intro {
+    position: relative;
+    width: 480px;
+    height: var(--device-height);
+    border-radius: var(--device-radius);
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 20px 20px rgba(151, 187, 255, 0.15),
+      0 1px 1px rgb(151, 187, 255);
+    .logo-wrapper {
+      margin-bottom: 1.1rem;
+      img {
+        width: 66px;
+      }
+    }
+    .logo-name {
+      span {
+        display: block;
+        text-align: center;
+        &:nth-child(1) {
+          font-size: 1.25rem;
+          font-weight: 800;
+          background-image: linear-gradient(
+            135deg,
+            #5d7fff,
+            #97bbff 60%,
+            #b8d1ff
+          );
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        &:nth-child(2) {
+          padding-top: 0.85rem;
+          font-size: 0.95rem;
+          color: rgba(0, 0, 0, 0.86);
+        }
+      }
+    }
+    .service-body {
+      margin-top: 2.35rem;
+      padding-bottom: 2.33rem;
+      text-align: center;
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        padding-bottom: 1.25rem;
+      }
+      span {
+        font-size: 0.95rem;
+        font-weight: 300;
+        color: rgba(0, 0, 0, 0.86);
       }
     }
   }

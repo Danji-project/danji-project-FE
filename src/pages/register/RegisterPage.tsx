@@ -1,14 +1,17 @@
 import React, { useState, type Dispatch, type SetStateAction } from "react";
 import styles from "./RegisterPage.module.scss";
+import Spinners from "../../components/common/spinners/Spinners";
 
 // 가입 방법 선택
 const SelectOAuth = ({
   setOAuthSelect,
+  setIsLoading,
 }: {
   setOAuthSelect: Dispatch<SetStateAction<string>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
-    <div className={styles.oAuthWrapper}>
+    <div className={[styles.oAuthWrapper, styles.dimmed].join(" ")}>
       <button
         onClick={() => {
           setOAuthSelect("Kakao");
@@ -36,6 +39,10 @@ const SelectOAuth = ({
       <button
         onClick={() => {
           setOAuthSelect("Email");
+          setIsLoading(true);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
         }}
       >
         이메일로 가입하기
@@ -48,10 +55,18 @@ const SelectOAuth = ({
 const RegisterPage = () => {
   const [oAuthSelect, setOAuthSelect] = useState("");
 
-  return oAuthSelect !== "" ? (
-    <div></div>
+  const [isLoading, setIsLoading] = useState(false);
+
+  return oAuthSelect !== "" && oAuthSelect === "Email" ? (
+    isLoading ? (
+      <div className={[styles.register, styles.dimmed].join(" ")}>
+        <Spinners />
+      </div>
+    ) : (
+      <div></div>
+    )
   ) : (
-    <SelectOAuth setOAuthSelect={setOAuthSelect} />
+    <SelectOAuth setOAuthSelect={setOAuthSelect} setIsLoading={setIsLoading} />
   );
 };
 
