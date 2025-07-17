@@ -10,11 +10,41 @@ const SelectOAuth = ({
   setOAuthSelect: Dispatch<SetStateAction<string>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const authClick = (provider: string) => {
+    const apiBaseUrl = import.meta.env.VITE_API_URL;
+    if (provider === "Kakao") {
+      try {
+        const kakaoAuthUrl = `${apiBaseUrl}/oauth2/authorization/kakao`;
+        window.location.href = kakaoAuthUrl;
+      } catch (e: unknown) {
+        console.error("카카오 로그인 처리 중 오류");
+        alert("카카오 로그인 처리 중 오류가 발생했습니다.");
+      }
+    } else if (provider === "Google") {
+      try {
+        const googleAuthUrl = `${apiBaseUrl}/oauth2/authorization/google`;
+        window.location.href = googleAuthUrl;
+      } catch (e: unknown) {
+        console.error("구글 로그인 처리 중 오류");
+        alert("구글 로그인 처리 중 오류가 발생했습니다.");
+      }
+    } else if (provider === "Naver") {
+      try {
+        const naverAuthUrl = `${apiBaseUrl}/oauth2/authorization/naver`;
+        window.location.href = naverAuthUrl;
+      } catch (e: unknown) {
+        console.error("네이버 로그인 처리 중 오류");
+        alert("네이버 로그인 처리 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   return (
     <div className={[styles.oAuthWrapper, styles.dimmed].join(" ")}>
       <button
         onClick={() => {
           setOAuthSelect("Kakao");
+          authClick("Kakao");
         }}
       >
         카카오로 회원가입
@@ -22,6 +52,7 @@ const SelectOAuth = ({
       <button
         onClick={() => {
           setOAuthSelect("Google");
+          authClick("Google");
         }}
       >
         구글로 회원가입
@@ -29,6 +60,7 @@ const SelectOAuth = ({
       <button
         onClick={() => {
           setOAuthSelect("Naver");
+          authClick("Naver");
         }}
       >
         네이버로 회원가입
