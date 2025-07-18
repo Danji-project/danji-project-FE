@@ -11,7 +11,7 @@ const Header = ({ title }: { title: string }) => {
         <button type="button">
           <IoIosArrowBack size={20} />
         </button>
-        <h1>회원가입</h1>
+        <h1>{title}</h1>
       </div>
     </header>
   );
