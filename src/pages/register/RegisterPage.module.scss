@@ -94,6 +94,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  overflow-y: scroll;
   &.dimmed {
     &::after {
       content: "";
@@ -103,6 +104,51 @@
       left: 0;
       right: 0;
       background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+  .is__id__comp {
+    position: relative;
+    top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.555rem;
+    padding-bottom: 2rem;
+    span {
+      color: rgb(192, 192, 192);
+      font-size: 0.9rem;
+      line-height: 0.9rem;
+      display: inline-block;
+    }
+    button {
+      font-size: 0.9rem;
+      line-height: 0.9rem;
+      color: rgb(151, 187, 255);
+      font-weight: 800;
+    }
+  }
+}
+
+.registerFormContainer {
+  position: relative;
+  top: 100px;
+  max-width: calc(100% - 3.144rem);
+  margin: 0 auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  form {
+    .register__submit {
+      width: 100%;
+      padding: 17px 0;
+      background-color: rgb(151, 187, 255);
+      margin-bottom: 12px;
+      font-size: 1rem;
+      line-height: 1rem;
+      color: #fff;
+      border-radius: 6px;
+      &:disabled {
+        background-color: rgb(234, 241, 255);
+        color: rgb(192, 192, 192);
+      }
     }
   }
 }

@@ -2,6 +2,7 @@ import React, { useState, type Dispatch, type SetStateAction } from "react";
 import styles from "./RegisterPage.module.scss";
 import Spinners from "../../components/common/spinners/Spinners";
 import Header from "../../layouts/Header";
+import InputField from "../../components/common/input-field/InputField";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -84,6 +85,88 @@ const SelectOAuth = ({
   );
 };
 
+// 제출 버튼
+const RegisterButton = ({
+  isLoading,
+  disabled,
+}: {
+  isLoading: boolean;
+  disabled: boolean;
+}) => {
+  return (
+    <button
+      disabled={disabled || isLoading}
+      className={styles["register__submit"]}
+    >
+      {isLoading ? "회원가입 중" : "회원가입"}
+    </button>
+  );
+};
+
+// 이미 있는 아이디인지 체크하기
+const isIdComponent = () => (
+  <div className={styles["is__id__comp"]}>
+    <span>이미 회원이신가요?</span>
+    <button type="button">로그인</button>
+  </div>
+);
+
+// 회원가입 폼
+const RegisterForm = () => {
+  return (
+    <div className={styles.registerFormContainer}>
+      <form>
+        <InputField
+          label="아이디"
+          placeholder="4~15자 이내로 입력해주세요."
+          className="register-form-id"
+          type="text"
+          name="register-form-id"
+          actionButton
+        />
+        <InputField
+          label="비밀번호"
+          placeholder="영문,숫자,특수문자 포함 8~16자"
+          className="register-form-password"
+          type="password"
+          name="register-form-password"
+          showPasswordToggle
+        />
+        <InputField
+          label="비밀번호 확인"
+          placeholder="영문,숫자,특수문자 포함 8~16자"
+          className="register-form-password-confirms"
+          type="password"
+          name="register-form-password-confirm"
+          showPasswordToggle
+        />
+        <InputField
+          label="이름"
+          placeholder="이름을 입력해주세요."
+          className="register-form-name"
+          type="text"
+          name="register-form-name"
+        />
+        <InputField
+          label="닉네임"
+          placeholder="닉네임을 입력해주세요."
+          className="register-form-nickname"
+          type="text"
+          name="register-form-nickname"
+        />
+        <InputField
+          label="전화번호"
+          placeholder="-제외 11자리를 입력해주세요."
+          className="register-form-phone"
+          type="text"
+          name="register-form-phone"
+        />
+        <RegisterButton isLoading={false} disabled={true} />
+      </form>
+    </div>
+  );
+};
+
 // 회원가입 페이지
 const RegisterPage = () => {
   const [oAuthSelect, setOAuthSelect] = useState("");
@@ -98,6 +181,8 @@ const RegisterPage = () => {
     ) : (
       <div className={styles.register}>
         <Header title="회원가입" />
+        <RegisterForm />
+        {isIdComponent()}
       </div>
     )
   ) : (
