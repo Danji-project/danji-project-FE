@@ -145,7 +145,11 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className={styles.registerFormContainer}>
+    <div
+      className={`${styles.registerFormContainer} ${
+        email.checkStatus === "CHECKED" ? styles.dimmed : ""
+      }`}
+    >
       <form>
         <InputField
           label="아이디"
