@@ -1,0 +1,23 @@
+.backHeader {
+  padding-bottom: 1rem;
+  .backInner {
+    max-width: 90%;
+    margin: 0 auto;
+    position: relative;
+    top: 75px;
+    display: flex;
+    align-items: center;
+    > button {
+      position: absolute;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    h1 {
+      font-size: 1.1rem;
+      text-align: center;
+      width: 100%;
+    }
+  }
+}
