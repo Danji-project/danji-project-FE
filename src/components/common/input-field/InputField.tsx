@@ -2,6 +2,12 @@ import React, { useId, useState } from "react";
 
 import styles from "./InputField.module.scss";
 
+interface ActionButton {
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
+}
+
 const eyeIcon = () => (
   <svg
     width="20"
@@ -53,14 +59,24 @@ const InputField = ({
   name,
   actionButton,
   showPasswordToggle,
+  value,
+  onChange,
+  valid,
+  error,
+  success,
 }: {
   label: string;
   placeholder: string;
   className: string;
   type: "text" | "password";
   name: string;
-  actionButton?: boolean;
+  actionButton?: ActionButton;
   showPasswordToggle?: boolean;
+  value: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  valid?: boolean;
+  error?: string;
+  success?: string;
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
@@ -75,7 +91,11 @@ const InputField = ({
       placeholder={placeholder}
       id={id}
       name={name}
-      className={`${styles["input__field__input"]}`}
+      className={`${styles["input__field__input"]} ${
+        !valid && error !== "" ? styles["input__field__error"] : ""
+      }`}
+      value={value}
+      onChange={onChange}
     />
   );
 
@@ -112,10 +132,15 @@ const InputField = ({
         {actionButton && (
           <button
             className={`${styles["input__field__action__button"]}`}
-            disabled
+            disabled={!valid && error !== ""}
+            onClick={actionButton.onClick}
+            type="button"
           >
             중복확인
           </button>
+        )}
+        {!valid && error !== "" && (
+          <p className={styles["input__error"]}>{error}</p>
         )}
       </div>
     </div>

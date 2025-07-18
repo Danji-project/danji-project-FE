@@ -1,8 +1,13 @@
 import React, { useState, type Dispatch, type SetStateAction } from "react";
 import styles from "./RegisterPage.module.scss";
+
 import Spinners from "../../components/common/spinners/Spinners";
 import Header from "../../layouts/Header";
 import InputField from "../../components/common/input-field/InputField";
+
+import useRegisterStore from "../../stores/registerStore";
+import { validateCheck } from "../../utils/validators";
+import { useCheckEmail } from "../../hooks/useCheckEmail";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -113,6 +118,32 @@ const isIdComponent = () => (
 
 // 회원가입 폼
 const RegisterForm = () => {
+  const {
+    email,
+    password,
+    passwordConfirm,
+    username,
+    nickname,
+    phoneNumber,
+    setEmail,
+    setPassword,
+    setPasswordConfirm,
+    setUsername,
+    setNickname,
+    setPhoneNumber,
+  } = useRegisterStore();
+
+  const { checkEmailActionButton, successMessage, errorMessage } =
+    useCheckEmail();
+
+  const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(
+      e.target.value,
+      validateCheck("ID_CHECK", e.target.value)!.valid,
+      validateCheck("ID_CHECK", e.target.value)!.error
+    );
+  };
+
   return (
     <div className={styles.registerFormContainer}>
       <form>
@@ -122,7 +153,12 @@ const RegisterForm = () => {
           className="register-form-id"
           type="text"
           name="register-form-id"
-          actionButton
+          actionButton={checkEmailActionButton}
+          value={email.value}
+          onChange={idChange}
+          valid={validateCheck("ID_CHECK", email.value)!.valid}
+          error={validateCheck("ID_CHECK", email.value)!.error}
+          success={successMessage}
         />
         <InputField
           label="비밀번호"
@@ -131,6 +167,7 @@ const RegisterForm = () => {
           type="password"
           name="register-form-password"
           showPasswordToggle
+          value={password.value}
         />
         <InputField
           label="비밀번호 확인"
@@ -139,6 +176,7 @@ const RegisterForm = () => {
           type="password"
           name="register-form-password-confirm"
           showPasswordToggle
+          value={passwordConfirm.value}
         />
         <InputField
           label="이름"
@@ -146,6 +184,7 @@ const RegisterForm = () => {
           className="register-form-name"
           type="text"
           name="register-form-name"
+          value={username.value}
         />
         <InputField
           label="닉네임"
@@ -153,6 +192,7 @@ const RegisterForm = () => {
           className="register-form-nickname"
           type="text"
           name="register-form-nickname"
+          value={nickname.value}
         />
         <InputField
           label="전화번호"
@@ -160,6 +200,7 @@ const RegisterForm = () => {
           className="register-form-phone"
           type="text"
           name="register-form-phone"
+          value={phoneNumber.value}
         />
         <RegisterButton isLoading={false} disabled={true} />
       </form>
