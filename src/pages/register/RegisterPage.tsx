@@ -152,6 +152,38 @@ const RegisterForm = () => {
     );
   };
 
+  const pwConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordConfirm(
+      e.target.value,
+      validateCheck("PASSWORD_CONFIRM_CHECK", e.target.value)!.valid,
+      validateCheck("PASSWORD_CONFIRM_CHECK", e.target.value)!.error
+    );
+  };
+
+  const nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(
+      e.target.value,
+      validateCheck("NAME_CHECK", e.target.value, password.value)!.valid,
+      validateCheck("NAME_CHECK", e.target.value, password.value)!.error
+    );
+  };
+
+  const nicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(
+      e.target.value,
+      validateCheck("NICKNAME_CHECK", e.target.value)!.valid,
+      validateCheck("NICKNAME_CHECK", e.target.value)!.error
+    );
+  };
+
+  const phoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(
+      e.target.value,
+      validateCheck("PHONE_CHECK", e.target.value)!.valid,
+      validateCheck("PHONE_CHECK", e.target.value)!.error
+    );
+  };
+
   return (
     <div className={`${styles.registerFormContainer}`}>
       <form>
@@ -176,6 +208,9 @@ const RegisterForm = () => {
           name="register-form-password"
           showPasswordToggle
           value={password.value}
+          onChange={pwChange}
+          valid={validateCheck("PASSWORD_CHECK", password.value)!.valid}
+          error={validateCheck("PASSWORD_CHECK", password.value)!.error}
         />
         <InputField
           label="비밀번호 확인"
@@ -185,6 +220,21 @@ const RegisterForm = () => {
           name="register-form-password-confirm"
           showPasswordToggle
           value={passwordConfirm.value}
+          onChange={pwConfirmChange}
+          valid={
+            validateCheck(
+              "PASSWORD_CONFIRM_CHECK",
+              passwordConfirm.value,
+              password.value
+            )!.valid
+          }
+          error={
+            validateCheck(
+              "PASSWORD_CONFIRM_CHECK",
+              passwordConfirm.value,
+              password.value
+            )!.error
+          }
         />
         <InputField
           label="이름"
@@ -193,6 +243,9 @@ const RegisterForm = () => {
           type="text"
           name="register-form-name"
           value={username.value}
+          onChange={nameChange}
+          valid={validateCheck("NAME_CHECK", username.value)!.valid}
+          error={validateCheck("NAME_CHECK", username.value)!.error}
         />
         <InputField
           label="닉네임"
@@ -201,6 +254,9 @@ const RegisterForm = () => {
           type="text"
           name="register-form-nickname"
           value={nickname.value}
+          onChange={nicknameChange}
+          valid={validateCheck("NICKNAME_CHECK", nickname.value)!.valid}
+          error={validateCheck("NICKNAME_CHECK", nickname.value)!.error}
         />
         <InputField
           label="전화번호"
@@ -209,6 +265,9 @@ const RegisterForm = () => {
           type="text"
           name="register-form-phone"
           value={phoneNumber.value}
+          onChange={phoneChange}
+          valid={validateCheck("PHONE_CHECK", phoneNumber.value)!.valid}
+          error={validateCheck("PHONE_CHECK", phoneNumber.value)!.error}
         />
         <RegisterButton isLoading={false} disabled={true} />
       </form>

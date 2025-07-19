@@ -81,6 +81,10 @@ const InputField = ({
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
 
+  React.useEffect(() => {
+    console.log(value);
+  }, [value]);
+
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
   };
@@ -105,7 +109,10 @@ const InputField = ({
       placeholder={placeholder}
       id={id}
       name={name}
-      className={`${styles["input__field__input"]}`}
+      onChange={onChange}
+      className={`${styles["input__field__input"]} ${
+        !valid && error !== "" ? styles["input__field__error"] : ""
+      }`}
     />
   );
 
