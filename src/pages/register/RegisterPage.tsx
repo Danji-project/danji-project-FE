@@ -9,6 +9,8 @@ import InputField from "../../components/common/input-field/InputField";
 import useRegisterStore from "../../stores/registerStore";
 import { validateCheck } from "../../utils/validators";
 import { useCheckEmail } from "../../hooks/useCheckEmail";
+import Dialog from "../../components/common/dialog/Dialog";
+import { useDialogStore } from "../../stores/dialogStore";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -143,6 +145,8 @@ const RegisterForm = () => {
   const { checkEmailActionButton, successMessage, errorMessage } =
     useCheckEmail();
 
+  const { isOpen, closeDialog } = useDialogStore();
+
   const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(
       e.target.value,
@@ -194,6 +198,13 @@ const RegisterForm = () => {
   return (
     <div className={`${styles.registerFormContainer}`}>
       <form>
+        <Dialog
+          dialogTitle="중복확인"
+          content="사용 가능한 이메일입니다."
+          confirmLabel={"인증번호 전송"}
+          cancelLabel="취소"
+          onCancel={closeDialog}
+        />
         <InputField
           label="아이디"
           placeholder="4~15자 이내로 입력해주세요."

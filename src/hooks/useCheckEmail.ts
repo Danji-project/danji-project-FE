@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import useRegisterStore from "../stores/registerStore";
 
 import axios from "axios";
+import { useDialogStore } from "../stores/dialogStore";
 
 export const useCheckEmail = () => {
   const { email, setEmail, setEmailCheckStatus, setAuthCode } =
@@ -16,6 +17,8 @@ export const useCheckEmail = () => {
     label: "중복확인",
     disabled: true,
   });
+
+  const { openDialog } = useDialogStore();
 
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined
@@ -56,7 +59,7 @@ export const useCheckEmail = () => {
     },
     onSuccess: () => {
       setEmailCheckStatus("CHECKED");
-      setActionButton(null);
+      openDialog();
       setSuccessMessage("사용 가능한 이메일입니다.");
       setErrorMessage(undefined);
     },
@@ -70,6 +73,25 @@ export const useCheckEmail = () => {
       }));
       setSuccessMessage(undefined);
     },
+  });
+
+  const sendAuthCode = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/mail/certification-code/send`,
+        {
+          mail: email.value,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    },
+    onSuccess: () => {},
   });
 
   return {
