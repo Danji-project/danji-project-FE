@@ -69,7 +69,6 @@ const InputField = ({
   valid,
   error,
   success,
-  setDimmed,
 }: {
   label: string;
   placeholder: string;
@@ -83,7 +82,6 @@ const InputField = ({
   valid?: boolean;
   error?: string;
   success?: string;
-  setDimmed?: Dispatch<SetStateAction<boolean>>;
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
@@ -140,10 +138,7 @@ const InputField = ({
           <button
             className={`${styles["input__field__action__button"]}`}
             disabled={!valid && error !== ""}
-            onClick={() => {
-              actionButton.onClick();
-              setDimmed && setDimmed(true);
-            }}
+            onClick={actionButton.onClick}
             type="button"
           >
             중복확인

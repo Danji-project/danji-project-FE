@@ -15,11 +15,8 @@
       gap: 10px;
       .input__field__input {
         flex: 1;
-        &.input__field__error {
-          border-bottom: 1px solid rgb(217, 28, 28);
-          color: rgb(217, 28, 28);
-        }
       }
+
       .input__field__action__button {
         width: 70px;
         height: 52px;
@@ -48,6 +45,10 @@
       border: none;
       border-bottom: 1px solid rgba(0, 0, 0, 0.15);
       outline: none;
+      &.input__field__error {
+        border-bottom: 1px solid rgb(217, 28, 28);
+        color: rgb(217, 28, 28);
+      }
     }
     .input__field__eye {
       position: absolute;
@@ -58,6 +59,12 @@
       bottom: 0;
       margin: auto 0;
       cursor: pointer;
+    }
+    .input__error {
+      position: absolute;
+      top: calc(100% + 10px);
+      font-size: 0.85rem;
+      color: rgb(217, 28, 28);
     }
   }
 }

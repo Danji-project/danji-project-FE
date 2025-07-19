@@ -8,7 +8,6 @@ import InputField from "../../components/common/input-field/InputField";
 import useRegisterStore from "../../stores/registerStore";
 import { validateCheck } from "../../utils/validators";
 import { useCheckEmail } from "../../hooks/useCheckEmail";
-import { useAlertStore } from "../../stores/alertStore";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -142,6 +141,14 @@ const RegisterForm = () => {
       e.target.value,
       validateCheck("ID_CHECK", e.target.value)!.valid,
       validateCheck("ID_CHECK", e.target.value)!.error
+    );
+  };
+
+  const pwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(
+      e.target.value,
+      validateCheck("PASSWORD_CHECK", e.target.value)!.valid,
+      validateCheck("PASSWORD_CHECK", e.target.value)!.error
     );
   };
 
