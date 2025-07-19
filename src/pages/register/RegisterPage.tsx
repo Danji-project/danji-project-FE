@@ -119,11 +119,7 @@ const isIdComponent = () => (
 );
 
 // 회원가입 폼
-const RegisterForm = ({
-  setDimmed,
-}: {
-  setDimmed: Dispatch<SetStateAction<boolean>>;
-}) => {
+const RegisterForm = () => {
   const {
     email,
     password,
@@ -161,7 +157,6 @@ const RegisterForm = ({
             alertContent={content}
             isUsable
             closeAlert={closeAlert}
-            setDimmed={setDimmed}
           />
         )}
         <InputField
@@ -176,7 +171,6 @@ const RegisterForm = ({
           valid={validateCheck("ID_CHECK", email.value)!.valid}
           error={validateCheck("ID_CHECK", email.value)!.error}
           success={successMessage}
-          setDimmed={setDimmed}
         />
         <InputField
           label="비밀번호"
@@ -229,7 +223,6 @@ const RegisterForm = ({
 // 회원가입 페이지
 const RegisterPage = () => {
   const [oAuthSelect, setOAuthSelect] = useState("");
-  const [dimmed, setDimmed] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -241,7 +234,7 @@ const RegisterPage = () => {
     ) : (
       <div className={`${styles.register} ${dimmed ? styles.dimmed : ""} `}>
         <Header title="회원가입" />
-        <RegisterForm setDimmed={setDimmed} />
+        <RegisterForm />
         {isIdComponent()}
       </div>
     )
