@@ -137,8 +137,6 @@ const RegisterForm = () => {
   const { checkEmailActionButton, successMessage, errorMessage } =
     useCheckEmail();
 
-  const { isOpen, title, content, closeAlert } = useAlertStore();
-
   const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(
       e.target.value,
