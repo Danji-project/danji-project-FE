@@ -132,6 +132,12 @@ const RegisterForm = () => {
     setUsername,
     setNickname,
     setPhoneNumber,
+    setEmailTouched,
+    setPasswordTouched,
+    setPasswordConfirmTouched,
+    setUsernameTouched,
+    setNicknameTouched,
+    setPhoneNumberTouched,
   } = useRegisterStore();
 
   const { checkEmailActionButton, successMessage, errorMessage } =
@@ -200,6 +206,8 @@ const RegisterForm = () => {
           valid={validateCheck("ID_CHECK", email.value)!.valid}
           error={validateCheck("ID_CHECK", email.value)!.error}
           success={successMessage}
+          touched={email.touched}
+          touches={setEmailTouched}
         />
         <InputField
           label="비밀번호"
@@ -212,6 +220,8 @@ const RegisterForm = () => {
           onChange={pwChange}
           valid={validateCheck("PASSWORD_CHECK", password.value)!.valid}
           error={validateCheck("PASSWORD_CHECK", password.value)!.error}
+          touched={password.touched}
+          touches={setPasswordTouched}
         />
         <InputField
           label="비밀번호 확인"
@@ -236,6 +246,8 @@ const RegisterForm = () => {
               password.value
             )!.error
           }
+          touched={passwordConfirm.touched}
+          touches={setPasswordConfirmTouched}
         />
         <InputField
           label="이름"
@@ -247,6 +259,8 @@ const RegisterForm = () => {
           onChange={nameChange}
           valid={validateCheck("NAME_CHECK", username.value)!.valid}
           error={validateCheck("NAME_CHECK", username.value)!.error}
+          touched={username.touched}
+          touches={setUsernameTouched}
         />
         <InputField
           label="닉네임"
@@ -258,6 +272,8 @@ const RegisterForm = () => {
           onChange={nicknameChange}
           valid={validateCheck("NICKNAME_CHECK", nickname.value)!.valid}
           error={validateCheck("NICKNAME_CHECK", nickname.value)!.error}
+          touched={nickname.touched}
+          touches={setNicknameTouched}
         />
         <InputField
           label="전화번호"
@@ -269,6 +285,8 @@ const RegisterForm = () => {
           onChange={phoneChange}
           valid={validateCheck("PHONE_CHECK", phoneNumber.value)!.valid}
           error={validateCheck("PHONE_CHECK", phoneNumber.value)!.error}
+          touched={phoneNumber.touched}
+          touches={setPhoneNumberTouched}
         />
         <RegisterButton isLoading={false} disabled={true} />
       </form>
