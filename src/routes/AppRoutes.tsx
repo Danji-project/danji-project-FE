@@ -4,9 +4,9 @@ import { Route, Routes } from "react-router";
 import AuthRoutes from "./AuthRoutes";
 import RegisterPage from "../pages/register/RegisterPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
-import { LoginPage } from "../pages/loginPage/loginPage";
-import { FindInfoPage } from "../pages/findInfoPage/findInfoPage";
-import { FindResultPage } from "../pages/findInfoPage/findResultPage";
+import { LoginPage } from "../pages/login/loginPage";
+import { FindInfoPage } from "../pages/find-info/findInfoPage";
+import { FindResultPage } from "../pages/find-info/findResultPage";
 
 const AppRoutes = () => {
   return (

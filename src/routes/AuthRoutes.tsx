@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import RegisterPage from "../pages/register/RegisterPage";
-import { LoginPage } from "../pages/loginPage/loginPage";
-import { FindInfoPage } from "../pages/findInfoPage/findInfoPage";
-import { FindResultPage } from "../pages/findInfoPage/findResultPage";
+import { LoginPage } from "../pages/login/loginPage";
+import { FindInfoPage } from "../pages/find-info/findInfoPage";
+import { FindResultPage } from "../pages/find-info/findResultPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
 
 const AuthRoutes = () => {

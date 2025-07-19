@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 
-import InputFiled from "../../components/InputFiled/InputField";
-import Header from "../../components/Header/Header";
+import InputFiled from "../../components/input-filed/InputField";
+import Header from "../../components/header/Header";
 
 import styles from "./findInfoPage.module.scss";
 import LogoIcon from "../../assets/logo.svg";

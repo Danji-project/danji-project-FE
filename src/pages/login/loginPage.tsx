@@ -7,8 +7,8 @@ import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 
 import { Checkbox } from "../../components/Checkbox/Checkbox";
-import InputFiled from "../../components/InputFiled/InputField";
-import Header from "../../components/Header/Header";
+import InputFiled from "../../components/input-filed/InputField";
+import Header from "../../components/header/Header";
 
 import styles from "./loginPage.module.scss";
 import KakaoIcon from "../../assets/social/kakao.svg";
@@ -179,7 +179,10 @@ const LoginForm = () => {
             </button>
             <p className={`${styles["login-gray-small-text"]}`}>
               아직 회원이 아니신가요?{" "}
-              <a className={`${styles["login-blue-small-text"]}`} href="/register">
+              <a
+                className={`${styles["login-blue-small-text"]}`}
+                href="/register"
+              >
                 회원가입
               </a>
             </p>
