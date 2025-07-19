@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import { useContext } from 'react';
-import { UserContext } from '../../context/UserInfoContext';
-import { useMutation} from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import { API_ENDPOINTS } from '../../api/endpoints';
-import axios from 'axios';
+import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserInfoContext";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../../api/endpoints";
+import axios from "axios";
 
-import InputFiled from '../../component/InputFiled/InputField';
-import Header from '../../component/Header/Header';
+import InputFiled from "../../components/InputFiled/InputField";
+import Header from "../../components/Header/Header";
 
-import styles from './findInfoPage.module.scss';
-import LogoIcon from '../../assets/logo.svg';
+import styles from "./findInfoPage.module.scss";
+import LogoIcon from "../../assets/logo.svg";
 
 interface FindInfoResponse {
   token: string;
@@ -24,26 +24,28 @@ const FindInfoHeader = () => {
       <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
     </div>
   );
-}
+};
 
 const FindInfoEmailForm = () => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState<string>('');
-  const [userPhonNumber, setPhonNumber] = useState<string>('');
-  const [isFindId, setIsFindId] = useState<boolean|null>(null);
-  const [userEmail, setUserEmail] = useState<string>('');
+  const [userName, setUserName] = useState<string>("");
+  const [userPhonNumber, setPhonNumber] = useState<string>("");
+  const [isFindId, setIsFindId] = useState<boolean | null>(null);
+  const [userEmail, setUserEmail] = useState<string>("");
 
   const mutation = useMutation<FindInfoResponse, Error>({
     mutationFn: async () => {
-      try{
-        localStorage.setItem('message', '');
-        localStorage.setItem('isSuccess', 'true');
+      try {
+        localStorage.setItem("message", "");
+        localStorage.setItem("isSuccess", "true");
 
-        if(userName=='test')
-        {
-          localStorage.setItem('message', '회원님의 이메일은\n'+'example@email.com'+' 입니다.');
-          localStorage.setItem('strongtext', 'example@email.com');
-          console.log(localStorage.getItem('message'));
+        if (userName == "test") {
+          localStorage.setItem(
+            "message",
+            "회원님의 이메일은\n" + "example@email.com" + " 입니다."
+          );
+          localStorage.setItem("strongtext", "example@email.com");
+          console.log(localStorage.getItem("message"));
         }
 
         const response = await axios.post(
@@ -54,45 +56,46 @@ const FindInfoEmailForm = () => {
 
         if (response.data && response.data.data) {
           setUserEmail(response.data.data);
-          localStorage.setItem('message', '회원님의 이메일은\n'+response.data.data+' 입니다.');
-          localStorage.setItem('strongtext', response.data.data);
+          localStorage.setItem(
+            "message",
+            "회원님의 이메일은\n" + response.data.data + " 입니다."
+          );
+          localStorage.setItem("strongtext", response.data.data);
         }
 
         return response.data;
-      }catch(error) {
+      } catch (error) {
         if (axios.isAxiosError(error)) {
           const status = error.response?.status;
           if (status == 404) {
-            throw new Error('해당 데이터가 삭제되었거나 존재하지 않습니다.');
+            throw new Error("해당 데이터가 삭제되었거나 존재하지 않습니다.");
           }
         }
-        throw new Error('이메일을 찾는 중 오류가 발생했습니다.');
+        throw new Error("이메일을 찾는 중 오류가 발생했습니다.");
       }
     },
     onSuccess: (data) => {
       if (data?.token) {
         console.log(data);
         setIsFindId(true);
-        navigate('/findresult', { replace: true });
+        navigate("/findresult", { replace: true });
       }
     },
     onError: (err: Error) => {
-      console.log(localStorage.getItem('message'));
-      if(userName != 'test')
-      {
+      console.log(localStorage.getItem("message"));
+      if (userName != "test") {
         setIsFindId(false);
-        localStorage.setItem('isSuccess', 'false');
-        localStorage.setItem('message', err.message);
+        localStorage.setItem("isSuccess", "false");
+        localStorage.setItem("message", err.message);
       }
-      console.log(localStorage.getItem('message'));
-      navigate('/findresult', { replace: true });
-    }
+      console.log(localStorage.getItem("message"));
+      navigate("/findresult", { replace: true });
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if(vailed)
-    {
+    if (vailed) {
       mutation.mutate();
     }
   };
@@ -101,38 +104,58 @@ const FindInfoEmailForm = () => {
 
   return (
     <>
-      <div style={{height:'250px'}}>
-        <div className={`${styles['login-div-horizon']}`}>
-          <InputFiled label='이름' type='text' name='userName' 
-                      placeholder='이름을 입력해주세요.'
-                      value={userName} onChange={(e) => {setUserName(e.target.value);}}/>
+      <div style={{ height: "250px" }}>
+        <div className={`${styles["login-div-horizon"]}`}>
+          <InputFiled
+            label="이름"
+            type="text"
+            name="userName"
+            placeholder="이름을 입력해주세요."
+            value={userName}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          />
         </div>
 
-        <div className={`${styles['login-div-horizon']}`}>
-          <InputFiled label='전화번호' type='text' name='phonNumber' 
-                      placeholder='-제외 11자리를 입력해주세요.'
-                      value={userPhonNumber} onChange={(e) => {setPhonNumber(e.target.value);}}/>
+        <div className={`${styles["login-div-horizon"]}`}>
+          <InputFiled
+            label="전화번호"
+            type="text"
+            name="phonNumber"
+            placeholder="-제외 11자리를 입력해주세요."
+            value={userPhonNumber}
+            onChange={(e) => {
+              setPhonNumber(e.target.value);
+            }}
+          />
         </div>
       </div>
 
-      <button className={`${styles['submit-button']} ${vailed ? styles['submit-button--valid'] : ''}`} 
-              style={{margin:'0px'}}
-              onMouseOver={() => {}}
-              disabled={vailed ? false : true}
-              onClick={handleSubmit}
-              type="submit">다음</button>
+      <button
+        className={`${styles["submit-button"]} ${
+          vailed ? styles["submit-button--valid"] : ""
+        }`}
+        style={{ margin: "0px" }}
+        onMouseOver={() => {}}
+        disabled={vailed ? false : true}
+        onClick={handleSubmit}
+        type="submit"
+      >
+        다음
+      </button>
     </>
-  )
-}
+  );
+};
 
 const FindInfoPassword = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
   const [emailError, setEmailError] = useState<string | null>(null);
   const [sendOTPEmail, setSendOTPEmail] = useState<boolean>(false);
 
-  const [otp, setOTP] = useState<string>('');
+  const [otp, setOTP] = useState<string>("");
   const [optError, setOTPError] = useState<string | null>(null);
   const [successOTP, setSuccessOTP] = useState<boolean>(false);
 
@@ -142,32 +165,34 @@ const FindInfoPassword = () => {
   };
 
   const checkEmail = () => {
-    if(isValidEmail(email)){setEmailError(null)}
-    else{setEmailError('이메일 형식이 올바르지 않습니다.');}
-  }
+    if (isValidEmail(email)) {
+      setEmailError(null);
+    } else {
+      setEmailError("이메일 형식이 올바르지 않습니다.");
+    }
+  };
 
   const sendEmailMutation = useMutation<FindInfoResponse, Error>({
     mutationFn: async () => {
-      try{
-        if(email =='example@email.com')
-        {
+      try {
+        if (email == "example@email.com") {
           setSendOTPEmail(true);
           return;
         }
 
         const response = await axios.post(
           `/api${API_ENDPOINTS.AUTH.CERTIFICATION}`,
-          { mail: email, type: 'FIND_PASSWORD' },
+          { mail: email, type: "FIND_PASSWORD" },
           { withCredentials: true }
         );
         setSendOTPEmail(true);
 
         return response.data;
-      }catch(error) {
+      } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.response?.status);
         }
-        throw new Error('이메일을 찾는 중 오류가 발생했습니다.');
+        throw new Error("이메일을 찾는 중 오류가 발생했습니다.");
       }
     },
     onSuccess: () => {
@@ -177,22 +202,20 @@ const FindInfoPassword = () => {
       setSendOTPEmail(false);
       setEmailError(err.message);
       console.log(err.message);
-    }
+    },
   });
 
   const sendEmail = () => {
     checkEmail();
-    if(!emailError)
-    {
+    if (!emailError) {
       sendEmailMutation.mutate();
     }
-  }
+  };
 
   const checkAPIMutation = useMutation<FindInfoResponse, Error>({
     mutationFn: async () => {
-      try{
-        if(email =='example@email.com' && otp == '000000')
-        {
+      try {
+        if (email == "example@email.com" && otp == "000000") {
           setSuccessOTP(true);
           return;
         }
@@ -201,17 +224,19 @@ const FindInfoPassword = () => {
           `/api/mail/certification-code/verify?email=${encodeEamil}&code=${otp}`,
           { withCredentials: true }
         );
-        
+
         setSuccessOTP(true);
 
         return response.data;
-      }catch(error) {
+      } catch (error) {
         if (axios.isAxiosError(error)) {
-          if(error.response?.status == 400)
-            throw new Error('인증에 실패하였습니다. 올바른 인증 코드를 입력하세요.');
+          if (error.response?.status == 400)
+            throw new Error(
+              "인증에 실패하였습니다. 올바른 인증 코드를 입력하세요."
+            );
           console.log(error.response?.status);
         }
-        throw new Error('인증을 확인하는 중 오류가 발생했습니다.');
+        throw new Error("인증을 확인하는 중 오류가 발생했습니다.");
       }
     },
     onSuccess: () => {
@@ -220,80 +245,145 @@ const FindInfoPassword = () => {
     onError: (err: Error) => {
       setSuccessOTP(false);
       console.log(err.message);
-    }
+    },
   });
 
-  const checkOTP = () =>{
-      setSuccessOTP(otp.length == 6);
-      checkAPIMutation.mutate();
-  }
+  const checkOTP = () => {
+    setSuccessOTP(otp.length == 6);
+    checkAPIMutation.mutate();
+  };
 
-  return(
+  return (
     <>
-      <div style={{height:'250px'}}>
-        <div className={`${styles['login-div-horizon']}`}>
-          <InputFiled label='이메일' type='email' name='email'
-                      placeholder='이메일을 입력해주세요.'
-                      value={email} onChange={(e) => {setEmail(e.target.value);}}
-                      onBlur={() => {checkEmail();}}
-                      aria-invalid={emailError ? 'true' : 'false'}
-                      aria-describedby={emailError ? 'email-error' : undefined}
-                      error={emailError ?? undefined}/>
+      <div style={{ height: "250px" }}>
+        <div className={`${styles["login-div-horizon"]}`}>
+          <InputFiled
+            label="이메일"
+            type="email"
+            name="email"
+            placeholder="이메일을 입력해주세요."
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            onBlur={() => {
+              checkEmail();
+            }}
+            aria-invalid={emailError ? "true" : "false"}
+            aria-describedby={emailError ? "email-error" : undefined}
+            error={emailError ?? undefined}
+          />
 
-          <button className={`${styles['submit-button']} ${email && emailError ? '' : styles['submit-button--valid']}`} 
-                  style={{width:'70px', margin:'23px 0px 0px 10px'}} disabled={ (!email || (email && emailError))? true : false}
-                  onMouseOver={()=>{checkEmail}} onClick={() => {sendEmail()}}>{sendOTPEmail ? '전송완료' : '인증번호'}</button>
+          <button
+            className={`${styles["submit-button"]} ${
+              email && emailError ? "" : styles["submit-button--valid"]
+            }`}
+            style={{ width: "70px", margin: "23px 0px 0px 10px" }}
+            disabled={!email || (email && emailError) ? true : false}
+            onMouseOver={() => {
+              checkEmail;
+            }}
+            onClick={() => {
+              sendEmail();
+            }}
+          >
+            {sendOTPEmail ? "전송완료" : "인증번호"}
+          </button>
         </div>
 
-        {sendOTPEmail ? 
-          <div className={`${styles['login-div-horizon']}`}>
-            <InputFiled label='' type='text' name='otp'
-                        placeholder='인증번호를 입력해주세요.(6자리)'
-                        onBlur={()=>{setOTPError(otp.length != 6? '인증번호는 6자리입니다.' : null);}}
-                        value={otp} onChange={(e) => {setOTP(e.target.value);}}
-                        success={successOTP ? '인증에 성공했습니다.':''}
-                        aria-invalid={optError ? 'true' : 'false'}
-                        aria-describedby={optError ? 'email-error' : undefined}
-                        error={optError ?? undefined}/>
-            <button className={`${styles['submit-button']} ${otp ? styles['submit-button--valid'] : ''}`} 
-                    disabled={optError ? true : false} onMouseOver={()=>{ setOTPError(otp.length != 6? '인증번호는 6자리입니다.' : null); }}
-                    style={{width:'70px'}} onClick={() => {checkOTP();}}>확인</button>
-          </div>  
-          : <div></div>
-        }
+        {sendOTPEmail ? (
+          <div className={`${styles["login-div-horizon"]}`}>
+            <InputFiled
+              label=""
+              type="text"
+              name="otp"
+              placeholder="인증번호를 입력해주세요.(6자리)"
+              onBlur={() => {
+                setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+              }}
+              value={otp}
+              onChange={(e) => {
+                setOTP(e.target.value);
+              }}
+              success={successOTP ? "인증에 성공했습니다." : ""}
+              aria-invalid={optError ? "true" : "false"}
+              aria-describedby={optError ? "email-error" : undefined}
+              error={optError ?? undefined}
+            />
+            <button
+              className={`${styles["submit-button"]} ${
+                otp ? styles["submit-button--valid"] : ""
+              }`}
+              disabled={optError ? true : false}
+              onMouseOver={() => {
+                setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+              }}
+              style={{ width: "70px" }}
+              onClick={() => {
+                checkOTP();
+              }}
+            >
+              확인
+            </button>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
-              
-      <button className={`${styles['submit-button']} ${successOTP ? styles['submit-button--valid'] : ''}`} 
-              disabled={successOTP? false:true}
-              style={{margin:'0'}} onClick={() => {navigate('/main', { replace: true });}}>다음</button>
+
+      <button
+        className={`${styles["submit-button"]} ${
+          successOTP ? styles["submit-button--valid"] : ""
+        }`}
+        disabled={successOTP ? false : true}
+        style={{ margin: "0" }}
+        onClick={() => {
+          navigate("/main", { replace: true });
+        }}
+      >
+        다음
+      </button>
     </>
-  )
-}
+  );
+};
 
 const SelectBtn = () => {
   const [isSelctEmail, setIsSelctEmail] = useState<boolean>(true);
 
-  return(
+  return (
     <>
-      <FindInfoHeader/>
-      <button className={`${styles['top-button']}`} 
-              style={{margin:'20px 0px', width:'50%'}} onClick={() => {setIsSelctEmail(true)}}
-              disabled={isSelctEmail}>이메일 찾기</button>
-      <button className={`${styles['top-button']}`} 
-              style={{margin:'20px 0px', width:'50%'}} onClick={() => {setIsSelctEmail(false)}}
-              disabled={isSelctEmail?false:true}>비밀번호 찾기</button>
-      {isSelctEmail ? <FindInfoEmailForm/> : <FindInfoPassword/>}
+      <FindInfoHeader />
+      <button
+        className={`${styles["top-button"]}`}
+        style={{ margin: "20px 0px", width: "50%" }}
+        onClick={() => {
+          setIsSelctEmail(true);
+        }}
+        disabled={isSelctEmail}
+      >
+        이메일 찾기
+      </button>
+      <button
+        className={`${styles["top-button"]}`}
+        style={{ margin: "20px 0px", width: "50%" }}
+        onClick={() => {
+          setIsSelctEmail(false);
+        }}
+        disabled={isSelctEmail ? false : true}
+      >
+        비밀번호 찾기
+      </button>
+      {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
     </>
-  )
-}
-
+  );
+};
 
 export const FindInfoPage = () => {
   return (
     <>
-    <div style={{minWidth:"400px", margin:"0"}}>
-      <SelectBtn/>
-    </div>
+      <div style={{ minWidth: "400px", margin: "0" }}>
+        <SelectBtn />
+      </div>
     </>
   );
 };

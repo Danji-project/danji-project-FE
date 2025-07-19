@@ -1,8 +1,12 @@
-import React, { Suspense } from "react";
+import * as React from "react";
+import { Suspense } from "react";
 import { Route, Routes } from "react-router";
 import AuthRoutes from "./AuthRoutes";
 import RegisterPage from "../pages/register/RegisterPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
+import { LoginPage } from "../pages/loginPage/loginPage";
+import { FindInfoPage } from "../pages/findInfoPage/findInfoPage";
+import { FindResultPage } from "../pages/findInfoPage/findResultPage";
 
 const AppRoutes = () => {
   return (
@@ -12,6 +16,9 @@ const AppRoutes = () => {
         <Route element={<AuthRoutes />}>
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-success" element={<RegisterSuccessPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/find" element={<FindInfoPage />} />
+          <Route path="/find-result" element={<FindResultPage />} />
         </Route>
       </Routes>
     </Suspense>

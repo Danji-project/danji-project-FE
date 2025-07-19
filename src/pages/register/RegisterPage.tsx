@@ -1,4 +1,5 @@
-import React, { useState, type Dispatch, type SetStateAction } from "react";
+import * as React from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import styles from "./RegisterPage.module.scss";
 
 import Spinners from "../../components/common/spinners/Spinners";

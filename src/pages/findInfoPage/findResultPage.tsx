@@ -1,21 +1,21 @@
-import { useState } from 'react'
-import { useContext } from 'react';
-import { UserContext } from '../../context/UserInfoContext';
-import { useMutation} from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import { API_ENDPOINTS } from '../../api/endpoints';
-import axios from 'axios';
+import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserInfoContext";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../../api/endpoints";
+import axios from "axios";
 
-import InputFiled from '../../component/InputFiled/InputField';
-import Header from '../../component/Header/Header';
+import InputFiled from "../../components/InputFiled/InputField";
+import Header from "../../components/Header/Header";
 
-import styles from './findInfoPage.module.scss';
-import LogoIcon from '../../assets/logo.svg';
+import styles from "./findInfoPage.module.scss";
+import LogoIcon from "../../assets/logo.svg";
 
-function BoldWord({ text, boldWord } : {text:string, boldWord:string}) {
+function BoldWord({ text, boldWord }: { text: string; boldWord: string }) {
   const parts = text.split(boldWord);
   return (
-    <p style={{whiteSpace:'pre-line'}}>
+    <p style={{ whiteSpace: "pre-line" }}>
       {parts[0]}
       <strong>{boldWord}</strong>
       {parts[1]}
@@ -29,53 +29,107 @@ const FindInfoHeader = () => {
       <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
     </div>
   );
-}
+};
 
 const SuccessFindEmailResult = () => {
   const navigate = useNavigate();
-  const successMsg = localStorage.getItem('message');
-  const strongtext = localStorage.getItem('strongtext');
-  return(
-    <div style={{textAlign:"center", padding:"20px 0px"}}>
-        <img src={LogoIcon}/>
-        <BoldWord text={successMsg ? successMsg : ''} boldWord={strongtext ? strongtext:''}/>
-        <button className={`${styles['submit-button']}`} 
-                style={{margin:'0'}} onClick={() => {navigate('/login', { replace: true });}}>로그인 페이지로 이동</button>
+  const successMsg = localStorage.getItem("message");
+  const strongtext = localStorage.getItem("strongtext");
+  return (
+    <div style={{ textAlign: "center", padding: "20px 0px" }}>
+      <img src={LogoIcon} />
+      <BoldWord
+        text={successMsg ? successMsg : ""}
+        boldWord={strongtext ? strongtext : ""}
+      />
+      <button
+        className={`${styles["submit-button"]}`}
+        style={{ margin: "0" }}
+        onClick={() => {
+          navigate("/login", { replace: true });
+        }}
+      >
+        로그인 페이지로 이동
+      </button>
     </div>
   );
-}
+};
 
 const FailFindEmailResult = () => {
   const navigate = useNavigate();
-  const errMsg = localStorage.getItem('message');
-  return(
-    <div style={{background:'black', opacity:'0.7', position:'fixed', top:'0', left:'0', width:'100%', height:'100%', justifyContent: 'center', alignItems:'center', placeContent:'center', textAlign:'center'}}>
-        <div style={{background:'white', borderRadius:'8px', display:'inline-block', textAlign:"center", padding:"20px"}}>
-            <p style={{color:'#111111', fontWeight:'600', fontSize:'15', margin:'0'}}>알림</p>
-            <p style={{color:'#111111', fontWeight:'400', fontSize:'14', margin:'30px 0'}}>{errMsg}</p>
-            <button className={`${styles['submit-button']} ${styles['submit-button--valid']}`} 
-                    style={{margin:'0'}} onClick={() => {navigate('/login', { replace: true });}}>확인</button>
-        </div>
+  const errMsg = localStorage.getItem("message");
+  return (
+    <div
+      style={{
+        background: "black",
+        opacity: "0.7",
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        placeContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <div
+        style={{
+          background: "white",
+          borderRadius: "8px",
+          display: "inline-block",
+          textAlign: "center",
+          padding: "20px",
+        }}
+      >
+        <p
+          style={{
+            color: "#111111",
+            fontWeight: "600",
+            fontSize: "15",
+            margin: "0",
+          }}
+        >
+          알림
+        </p>
+        <p
+          style={{
+            color: "#111111",
+            fontWeight: "400",
+            fontSize: "14",
+            margin: "30px 0",
+          }}
+        >
+          {errMsg}
+        </p>
+        <button
+          className={`${styles["submit-button"]} ${styles["submit-button--valid"]}`}
+          style={{ margin: "0" }}
+          onClick={() => {
+            navigate("/login", { replace: true });
+          }}
+        >
+          확인
+        </button>
+      </div>
     </div>
   );
-}
-
+};
 
 export const FindResultPage = () => {
-  const re = localStorage.getItem('isSuccess');
+  const re = localStorage.getItem("isSuccess");
 
   return (
     <>
-    {
-        re == 'true'?
-        <div style={{minWidth:"400px", margin:"0"}}>
-            <FindInfoHeader/>
-            <SuccessFindEmailResult/>
+      {re == "true" ? (
+        <div style={{ minWidth: "400px", margin: "0" }}>
+          <FindInfoHeader />
+          <SuccessFindEmailResult />
         </div>
-        :
-        <FailFindEmailResult/>
-    }
+      ) : (
+        <FailFindEmailResult />
+      )}
     </>
-
   );
 };

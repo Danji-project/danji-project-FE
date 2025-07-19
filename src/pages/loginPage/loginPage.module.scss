@@ -1,10 +1,10 @@
-$backgroundcolor-disabled: #EAF1FF;
-$backgroundcolor-default: #97BBFF;
+$backgroundcolor-disabled: #eaf1ff;
+$backgroundcolor-default: #97bbff;
 
-$font-color-disabled:#C0C0C0;
+$font-color-disabled: #c0c0c0;
 
-$font-size-large : 20px;
-$font-size-midium : 16px;
+$font-size-large: 20px;
+$font-size-midium: 16px;
 
 .login-form__submit-button {
   font-size: $font-size-midium;
@@ -36,17 +36,16 @@ $font-size-midium : 16px;
   }
 }
 
-.login-form__input
-{
-  height:52px;
+.login-form__input {
+  height: 52px;
   width: 100%;
-  font-Weight:400;
-  font-Size:15px;
+  font-weight: 400;
+  font-size: 15px;
 
   border: none;
   border-bottom: 1px solid black;
 
-  &:focus{
+  &:focus {
     outline: none;
     border-color: $backgroundcolor-default;
   }
@@ -56,49 +55,43 @@ $font-size-midium : 16px;
   }
 }
 
-.login-div-horizon
-{
+.login-div-horizon {
   display: flex;
   flex-direction: row;
+  align-items: center;
   width: 100%;
 }
 
-.login-div-centerline
-{
+.login-div-centerline {
   width: 45%;
-  margin:30px 20px 0 0;
+  margin: 30px 20px 0 0;
   border: 1px solid;
-  border-block-color: #C0C0C0;
+  border-block-color: #c0c0c0;
   border-width: 1px 0px 0px 0px;
 }
 
-.login-div-centerline-text
-{
+.login-div-centerline-text {
   width: 10%;
   text-align: center;
-  color: #C0C0C0;
+  color: #c0c0c0;
 }
 
-.login-gray-small-text
-{ 
-  color:#C0C0C0; 
-  font-size:13px;
-  font-weight:400;
-  margin:4px 0 0 0;
+.login-gray-small-text {
+  color: #c0c0c0;
+  font-size: 13px;
+  font-weight: 400;
+  margin: 4px 0 0 0;
 }
 
-.login-blue-small-text
-{ 
-  color:#97BBFF; 
-  font-size:13px;
-  font-weight:600;
+.login-blue-small-text {
+  color: #97bbff;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.login-gray-midium-text
-{ 
-  color:#C0C0C0; 
-  font-size:15px;
-  font-weight:400;
+.login-gray-midium-text {
+  color: #c0c0c0;
+  font-size: 15px;
+  font-weight: 400;
   margin-top: 12px;
 }
-
