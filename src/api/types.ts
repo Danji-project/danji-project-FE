@@ -1,8 +1,7 @@
-/**
- * API 관련 공통 타입 정의
- */
-
 // API 응답의 기본 포맷
+// API 관련 공통 타입
+
+// API 응답 기본 포맷
 export interface ApiResponse<T> {
   data: T;
   message?: string;
@@ -24,7 +23,7 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-// API 에러 응답 타입
+// API Error 응답 타입
 export interface ApiErrorResponse {
   message: string;
   status: number;
