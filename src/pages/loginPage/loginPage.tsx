@@ -179,7 +179,7 @@ const LoginForm = () => {
             </button>
             <p className={`${styles["login-gray-small-text"]}`}>
               아직 회원이 아니신가요?{" "}
-              <a className={`${styles["login-blue-small-text"]}`} href="">
+              <a className={`${styles["login-blue-small-text"]}`} href="/register">
                 회원가입
               </a>
             </p>

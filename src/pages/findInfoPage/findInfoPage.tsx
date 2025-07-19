@@ -78,7 +78,7 @@ const FindInfoEmailForm = () => {
       if (data?.token) {
         console.log(data);
         setIsFindId(true);
-        navigate("/findresult", { replace: true });
+        navigate("/find-result", { replace: true });
       }
     },
     onError: (err: Error) => {
@@ -89,7 +89,7 @@ const FindInfoEmailForm = () => {
         localStorage.setItem("message", err.message);
       }
       console.log(localStorage.getItem("message"));
-      navigate("/findresult", { replace: true });
+      navigate("/find-result", { replace: true });
     },
   });
 
