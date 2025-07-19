@@ -232,7 +232,7 @@ const RegisterPage = () => {
         <Spinners />
       </div>
     ) : (
-      <div className={`${styles.register} ${dimmed ? styles.dimmed : ""} `}>
+      <div className={`${styles.register}`}>
         <Header title="회원가입" />
         <RegisterForm />
         {isIdComponent()}
