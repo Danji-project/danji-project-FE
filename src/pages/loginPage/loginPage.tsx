@@ -140,7 +140,7 @@ const LoginForm = () => {
               <Checkbox label='이메일 저장'
                         checked={isSaveEmail}
                         onChange={() => { setIsSaveEmail(!isSaveEmail)} }/>
-              <p style={{marginLeft:"auto"}}><a className={`${styles['login-gray-midium-text']}`} href=''>아이디/비밀번호 찾기 &gt;</a></p>
+              <p style={{marginLeft:"auto"}}><a className={`${styles['login-gray-midium-text']}`} href='/find'>아이디/비밀번호 찾기 &gt;</a></p>
             </div>
 
             <div style={{textAlign:"center", marginTop:"40px"}}>

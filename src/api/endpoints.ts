@@ -7,6 +7,12 @@ export const API_ENDPOINTS = {
     REGISTER: '/users',
     VERIFY_EMAIL: '/users/verify-email',
     KAKAO_LOGIN: '/users',
+    CERTIFICATION: '/mail/certification-code/send',
+  },
+
+  FIND:{
+    EMAIL: '/member/find-id',
+    RESET_PW: '/memeber/rest-password',
   },
   
   // 사용자 관련 엔드포인트
