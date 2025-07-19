@@ -1,9 +1,4 @@
-import React, {
-  useId,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import React, { useId, useState } from "react";
 
 import styles from "./InputField.module.scss";
 
