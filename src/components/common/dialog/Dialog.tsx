@@ -9,12 +9,14 @@ const Dialog = ({
   confirmLabel,
   cancelLabel = "취소",
   onCancel,
+  onConfirm,
 }: {
   dialogTitle: string;
   content: string;
   confirmLabel: string;
   cancelLabel: string;
   onCancel: () => void;
+  onConfirm: () => void;
 }) => {
   const { isOpen } = useDialogStore();
 
@@ -42,6 +44,7 @@ const Dialog = ({
             className={styles["dialog__confirm-button"]}
             aria-labelledBy={confirmLabel}
             type="button"
+            onClick={onConfirm}
           >
             {confirmLabel}
           </button>

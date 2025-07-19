@@ -142,7 +142,7 @@ const RegisterForm = () => {
     setPhoneNumberTouched,
   } = useRegisterStore();
 
-  const { checkEmailActionButton, successMessage, errorMessage } =
+  const { checkEmailActionButton, successMessage, sendAuthCode, errorMessage } =
     useCheckEmail();
 
   const { isOpen, closeDialog } = useDialogStore();
@@ -204,6 +204,7 @@ const RegisterForm = () => {
           confirmLabel={"인증번호 전송"}
           cancelLabel="취소"
           onCancel={closeDialog}
+          onConfirm={sendAuthCode}
         />
         <InputField
           label="아이디"

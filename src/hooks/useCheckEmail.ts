@@ -6,6 +6,7 @@ import useRegisterStore from "../stores/registerStore";
 
 import axios from "axios";
 import { useDialogStore } from "../stores/dialogStore";
+import { useAlertStore } from "../stores/alertStore";
 
 export const useCheckEmail = () => {
   const { email, setEmail, setEmailCheckStatus, setAuthCode } =
@@ -18,7 +19,9 @@ export const useCheckEmail = () => {
     disabled: true,
   });
 
-  const { openDialog } = useDialogStore();
+  const { openDialog, closeDialog } = useDialogStore();
+
+  const { openAlert, setTitle, setContent } = useAlertStore();
 
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined
@@ -91,11 +94,27 @@ export const useCheckEmail = () => {
       );
       return response.data;
     },
-    onSuccess: () => {},
+    onSuccess: () => {
+      openAlert();
+      setTitle("성공");
+      setContent("인증번호가 전송되었습니다.");
+      setActionButton(null);
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          openAlert();
+          setTitle("실패");
+          setContent(error.response?.data?.message || "인증 코드 전송 실패");
+        }
+      }
+      setActionButton(null);
+    },
   });
 
   return {
     checkEmail,
+    sendAuthCode,
     checkEmailActionButton: actionButton
       ? { ...actionButton, onClick: checkEmail }
       : undefined,
