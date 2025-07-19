@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
 import useRegisterStore from "../stores/registerStore";
-import { useAlertStore } from "../stores/alertStore";
 
 import axios from "axios";
 
@@ -17,7 +16,6 @@ export const useCheckEmail = () => {
     label: "중복확인",
     disabled: true,
   });
-  const { openAlert, setContent } = useAlertStore();
 
   const [successMessage, setSuccessMessage] = useState<string | undefined>(
     undefined
@@ -58,8 +56,6 @@ export const useCheckEmail = () => {
     },
     onSuccess: () => {
       setEmailCheckStatus("CHECKED");
-      openAlert();
-      setContent("사용 가능한 이메일입니다.");
       setActionButton(null);
       setSuccessMessage("사용 가능한 이메일입니다.");
       setErrorMessage(undefined);
