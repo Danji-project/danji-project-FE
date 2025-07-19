@@ -81,10 +81,6 @@ const InputField = ({
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
 
-  React.useEffect(() => {
-    console.log(value);
-  }, [value]);
-
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
   };
