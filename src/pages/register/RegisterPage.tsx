@@ -119,7 +119,11 @@ const isIdComponent = () => (
 );
 
 // 회원가입 폼
-const RegisterForm = () => {
+const RegisterForm = ({
+  setDimmed,
+}: {
+  setDimmed: Dispatch<SetStateAction<boolean>>;
+}) => {
   const {
     email,
     password,
@@ -138,7 +142,7 @@ const RegisterForm = () => {
   const { checkEmailActionButton, successMessage, errorMessage } =
     useCheckEmail();
 
-  const { isOpen, title } = useAlertStore();
+  const { isOpen, title, content, closeAlert } = useAlertStore();
 
   const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(
@@ -151,7 +155,15 @@ const RegisterForm = () => {
   return (
     <div className={`${styles.registerFormContainer}`}>
       <form>
-        {isOpen && <Alert alertTitle={title} />}
+        {isOpen && (
+          <Alert
+            alertTitle={title}
+            alertContent={content}
+            isUsable
+            closeAlert={closeAlert}
+            setDimmed={setDimmed}
+          />
+        )}
         <InputField
           label="아이디"
           placeholder="4~15자 이내로 입력해주세요."
@@ -164,6 +176,7 @@ const RegisterForm = () => {
           valid={validateCheck("ID_CHECK", email.value)!.valid}
           error={validateCheck("ID_CHECK", email.value)!.error}
           success={successMessage}
+          setDimmed={setDimmed}
         />
         <InputField
           label="비밀번호"
@@ -216,6 +229,7 @@ const RegisterForm = () => {
 // 회원가입 페이지
 const RegisterPage = () => {
   const [oAuthSelect, setOAuthSelect] = useState("");
+  const [dimmed, setDimmed] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -225,9 +239,9 @@ const RegisterPage = () => {
         <Spinners />
       </div>
     ) : (
-      <div className={styles.register}>
+      <div className={`${styles.register} ${dimmed ? styles.dimmed : ""} `}>
         <Header title="회원가입" />
-        <RegisterForm />
+        <RegisterForm setDimmed={setDimmed} />
         {isIdComponent()}
       </div>
     )

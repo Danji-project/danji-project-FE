@@ -1,4 +1,9 @@
-import React, { useId, useState } from "react";
+import React, {
+  useId,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 
 import styles from "./InputField.module.scss";
 
@@ -64,6 +69,7 @@ const InputField = ({
   valid,
   error,
   success,
+  setDimmed,
 }: {
   label: string;
   placeholder: string;
@@ -77,6 +83,7 @@ const InputField = ({
   valid?: boolean;
   error?: string;
   success?: string;
+  setDimmed?: Dispatch<SetStateAction<boolean>>;
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
@@ -133,7 +140,10 @@ const InputField = ({
           <button
             className={`${styles["input__field__action__button"]}`}
             disabled={!valid && error !== ""}
-            onClick={actionButton.onClick}
+            onClick={() => {
+              actionButton.onClick();
+              setDimmed && setDimmed(true);
+            }}
             type="button"
           >
             중복확인

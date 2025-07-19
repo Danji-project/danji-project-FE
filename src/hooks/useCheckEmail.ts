@@ -60,7 +60,10 @@ export const useCheckEmail = () => {
       setEmailCheckStatus("CHECKED");
       openAlert();
       setContent("사용 가능한 이메일입니다.");
-      setActionButton(null);
+      setActionButton({
+        label: "중복확인",
+        disabled: true,
+      });
       setSuccessMessage("사용 가능한 이메일입니다.");
       setErrorMessage(undefined);
     },
