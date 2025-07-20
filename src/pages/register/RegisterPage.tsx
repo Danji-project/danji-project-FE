@@ -15,6 +15,7 @@ import { useDialogStore } from "../../stores/dialogStore";
 import { validateCheck } from "../../utils/validators";
 import { useAlertStore } from "../../stores/alertStore";
 import useAuthCode from "../../hooks/useAuthCode";
+import { useRegister } from "../../hooks/useRegister";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -165,6 +166,8 @@ const RegisterForm = () => {
 
   const { setActionButton, authCodeActionButton } = useAuthCode();
 
+  const { register, isRegistering } = useRegister();
+
   const formValid =
     email.value &&
     email.checkStatus === "CHECKED" &&
@@ -241,7 +244,7 @@ const RegisterForm = () => {
 
   return (
     <div className={`${styles.registerFormContainer}`}>
-      <form>
+      <form onSubmit={register}>
         <Dialog
           dialogTitle="중복확인"
           content="사용 가능한 이메일입니다."
@@ -379,7 +382,7 @@ const RegisterForm = () => {
           touched={phoneNumber.touched}
           touches={setPhoneNumberTouched}
         />
-        <RegisterButton isLoading={false} disabled={!formValid} />
+        <RegisterButton isLoading={isRegistering} disabled={!formValid} />
       </form>
     </div>
   );
