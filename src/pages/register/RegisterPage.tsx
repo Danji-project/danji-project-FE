@@ -134,6 +134,7 @@ const RegisterForm = () => {
     phoneNumber,
     setEmail,
     setAuthCode,
+    setEmailCheckStatus,
     setCodeVerified,
     setVerifyCodeError,
     setPassword,
@@ -151,9 +152,11 @@ const RegisterForm = () => {
 
   const {
     checkEmailActionButton,
+    setActionButton: setCheckActionButton,
     successMessage,
     sendEmailCode,
     errorMessage,
+    isEmailLoading,
   } = useCheckEmail();
 
   const { closeDialog } = useDialogStore();
@@ -227,13 +230,22 @@ const RegisterForm = () => {
 
   return (
     <div className={`${styles.registerFormContainer}`}>
+      {isEmailLoading && <Spinners />}
       <form>
         <Dialog
           dialogTitle="중복확인"
           content="사용 가능한 이메일입니다."
           confirmLabel={"인증번호 전송"}
           cancelLabel="취소"
-          onClose={closeDialog}
+          onClose={() => {
+            closeDialog();
+            setEmailCheckStatus("INITIAL");
+            setCheckActionButton((prev) => ({
+              ...prev,
+              label: "중복확인",
+              disabled: false,
+            }));
+          }}
           onConfirm={sendEmailCode}
         />
         {isAlertOpen && (
@@ -259,6 +271,7 @@ const RegisterForm = () => {
           success={successMessage}
           touched={email.touched}
           touches={setEmailTouched}
+          checkStatus={email.checkStatus}
         />
         {email.checkStatus === "CHECKED" && (
           <InputField
@@ -271,6 +284,7 @@ const RegisterForm = () => {
             valid={
               email.verifyCode.trim() !== "" && email.verifyCode.length === 6
             }
+            verified={email.codeVerified}
             verifyCodeError={email.verifyCodeError}
             onChange={verifyCodeChange}
             actionButton={authCodeActionButton}
@@ -363,6 +377,7 @@ const RegisterForm = () => {
 
 // 회원가입 페이지
 const RegisterPage = () => {
+  const { isEmailLoading } = useCheckEmail();
   const [oAuthSelect, setOAuthSelect] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -373,7 +388,9 @@ const RegisterPage = () => {
         <Spinners />
       </div>
     ) : (
-      <div className={`${styles.register}`}>
+      <div
+        className={`${styles.register} ${isEmailLoading ? styles.dimmed : ""}`}
+      >
         <Header title="회원가입" />
         <RegisterForm />
         {isIdComponent()}

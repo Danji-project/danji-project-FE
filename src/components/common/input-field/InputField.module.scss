@@ -45,6 +45,9 @@
       border: none;
       border-bottom: 1px solid rgba(0, 0, 0, 0.15);
       outline: none;
+      &:read-only {
+        opacity: 0.5;
+      }
       &.input__field__error {
         border-bottom: 1px solid rgb(217, 28, 28);
         color: rgb(217, 28, 28);

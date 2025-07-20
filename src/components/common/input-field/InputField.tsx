@@ -2,6 +2,7 @@ import * as React from "react";
 import { useId, useState } from "react";
 
 import styles from "./InputField.module.scss";
+import { useCheckEmail } from "../../../hooks/useCheckEmail";
 
 interface ActionButton {
   label: string;
@@ -56,6 +57,7 @@ const InputField = ({
   label,
   placeholder,
   className,
+  disabled = false,
   type,
   name,
   actionButton,
@@ -67,11 +69,14 @@ const InputField = ({
   success,
   touched,
   touches,
+  verified,
   verifyCodeError,
+  checkStatus,
 }: {
   label: string;
   placeholder: string;
   className: string;
+  disabled?: boolean;
   type: "text" | "password";
   name: string;
   actionButton?: ActionButton;
@@ -83,7 +88,9 @@ const InputField = ({
   success?: string;
   touched?: boolean;
   touches?: () => void;
+  verified?: boolean;
   verifyCodeError?: string;
+  checkStatus?: "INITIAL" | "CHECKED" | "DUPLICATE";
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
@@ -104,6 +111,7 @@ const InputField = ({
       value={value}
       onChange={onChange}
       onBlur={touches}
+      readOnly={checkStatus === "CHECKED" || verified}
     />
   );
 
@@ -143,7 +151,7 @@ const InputField = ({
         {actionButton && (
           <button
             className={`${styles["input__field__action__button"]}`}
-            disabled={!valid || error !== ""}
+            disabled={actionButton.disabled || disabled}
             onClick={actionButton.onClick}
             type="button"
           >

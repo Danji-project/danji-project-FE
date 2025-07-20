@@ -19,7 +19,7 @@ export const useCheckEmail = () => {
     disabled: true,
   });
 
-  const { openDialog } = useDialogStore();
+  const { openDialog, closeDialog } = useDialogStore();
 
   const { openAlert, setTitle, setContent } = useAlertStore();
 
@@ -45,6 +45,7 @@ export const useCheckEmail = () => {
   };
 
   const sendEmailCode = () => {
+    closeDialog();
     sendAuthCode.mutate();
   };
 
@@ -100,6 +101,7 @@ export const useCheckEmail = () => {
     },
     onSuccess: () => {
       openAlert();
+      setEmailCheckStatus("CHECKED");
       setTitle("인증 성공");
       setContent("인증번호가 전송되었습니다.");
       setActionButton(null);
@@ -119,10 +121,12 @@ export const useCheckEmail = () => {
   return {
     checkEmail,
     sendEmailCode,
+    setActionButton,
     checkEmailActionButton: actionButton
       ? { ...actionButton, onClick: checkEmail }
       : undefined,
     successMessage,
     errorMessage,
+    isEmailLoading: sendAuthCode.isPending,
   };
 };

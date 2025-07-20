@@ -64,6 +64,7 @@ const useAuthCode = () => {
     checkAuthCode,
     setActionButton,
     authCodeActionButton: { ...actionButton, onClick: checkAuthCode },
+    isAuthLoading: authCodeMutation.isPending,
   };
 };
 
