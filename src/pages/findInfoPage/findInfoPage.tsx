@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../api/endpoints";
@@ -10,13 +8,10 @@ import InputFiled from "../../components/InputFiled/InputField";
 import Header from "../../components/Header/Header";
 
 import styles from "./findInfoPage.module.scss";
-import LogoIcon from "../../assets/logo.svg";
 
 interface FindInfoResponse {
   token: string;
 }
-
-const isEndPage = null;
 
 const FindInfoHeader = () => {
   return (
@@ -104,7 +99,8 @@ const FindInfoEmailForm = () => {
 
   return (
     <>
-      <div style={{ height: "250px" }}>
+    <div style={{height:'100%'}}>
+      <div>
         <div className={`${styles["login-div-horizon"]}`}>
           <InputFiled
             label="이름"
@@ -133,10 +129,10 @@ const FindInfoEmailForm = () => {
       </div>
 
       <button
-        className={`${styles["submit-button"]} ${
-          vailed ? styles["submit-button--valid"] : ""
+        className={`${styles["nomal-button"]} ${styles["submit-button"]} ${
+          vailed ? styles["nomal-button--valid"] : ""
         }`}
-        style={{ margin: "0px" }}
+        style={{ margin: "0px"}}
         onMouseOver={() => {}}
         disabled={vailed ? false : true}
         onClick={handleSubmit}
@@ -144,6 +140,7 @@ const FindInfoEmailForm = () => {
       >
         다음
       </button>
+    </div>
     </>
   );
 };
@@ -255,7 +252,7 @@ const FindInfoPassword = () => {
 
   return (
     <>
-      <div style={{ height: "250px" }}>
+      <div>
         <div className={`${styles["login-div-horizon"]}`}>
           <InputFiled
             label="이메일"
@@ -275,8 +272,8 @@ const FindInfoPassword = () => {
           />
 
           <button
-            className={`${styles["submit-button"]} ${
-              email && emailError ? "" : styles["submit-button--valid"]
+            className={`${styles["nomal-button"]} ${
+              email && emailError ? "" : styles["nomal-button--valid"]
             }`}
             style={{ width: "70px", margin: "23px 0px 0px 10px" }}
             disabled={!email || (email && emailError) ? true : false}
@@ -311,8 +308,8 @@ const FindInfoPassword = () => {
               error={optError ?? undefined}
             />
             <button
-              className={`${styles["submit-button"]} ${
-                otp ? styles["submit-button--valid"] : ""
+              className={`${styles["nomal-button"]} ${
+                otp ? styles["nomal-button--valid"] : ""
               }`}
               disabled={optError ? true : false}
               onMouseOver={() => {
@@ -332,9 +329,7 @@ const FindInfoPassword = () => {
       </div>
 
       <button
-        className={`${styles["submit-button"]} ${
-          successOTP ? styles["submit-button--valid"] : ""
-        }`}
+        className={`${styles["nomal-button"]} ${styles["submit-button"]} ${successOTP ? styles["nomal-button--valid"] : ""}`}
         disabled={successOTP ? false : true}
         style={{ margin: "0" }}
         onClick={() => {
@@ -381,7 +376,7 @@ const SelectBtn = () => {
 export const FindInfoPage = () => {
   return (
     <>
-      <div style={{ minWidth: "400px", margin: "0" }}>
+      <div style={{height:'100%'}}>
         <SelectBtn />
       </div>
     </>

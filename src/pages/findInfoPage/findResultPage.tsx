@@ -1,12 +1,5 @@
-import { useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
-import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { API_ENDPOINTS } from "../../api/endpoints";
-import axios from "axios";
 
-import InputFiled from "../../components/InputFiled/InputField";
 import Header from "../../components/Header/Header";
 
 import styles from "./findInfoPage.module.scss";
@@ -43,8 +36,8 @@ const SuccessFindEmailResult = () => {
         boldWord={strongtext ? strongtext : ""}
       />
       <button
-        className={`${styles["submit-button"]}`}
-        style={{ margin: "0" }}
+        className={`${styles["nomal-button"]} ${styles["nomal-button--valid"]}`}
+        style={{ margin: "0", position:'absolute', left:'20px', bottom:'20px' }}
         onClick={() => {
           navigate("/login", { replace: true });
         }}
@@ -63,11 +56,9 @@ const FailFindEmailResult = () => {
       style={{
         background: "black",
         opacity: "0.7",
-        position: "fixed",
-        top: "0",
-        left: "0",
         width: "100%",
         height: "100%",
+        flex:'1',
         justifyContent: "center",
         alignItems: "center",
         placeContent: "center",
@@ -81,6 +72,7 @@ const FailFindEmailResult = () => {
           display: "inline-block",
           textAlign: "center",
           padding: "20px",
+          margin: "5px",
         }}
       >
         <p
@@ -104,7 +96,7 @@ const FailFindEmailResult = () => {
           {errMsg}
         </p>
         <button
-          className={`${styles["submit-button"]} ${styles["submit-button--valid"]}`}
+          className={`${styles["nomal-button"]} ${styles["nomal-button--valid"]}`}
           style={{ margin: "0" }}
           onClick={() => {
             navigate("/login", { replace: true });
@@ -123,7 +115,7 @@ export const FindResultPage = () => {
   return (
     <>
       {re == "true" ? (
-        <div style={{ minWidth: "400px", margin: "0" }}>
+        <div>
           <FindInfoHeader />
           <SuccessFindEmailResult />
         </div>
