@@ -1,12 +1,16 @@
 import * as React from "react";
 import StatusBar from "./StatusBar";
 import { useDialogStore } from "../../stores/dialogStore";
+import { useAlertStore } from "../../stores/alertStore";
 
 const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { isOpen } = useDialogStore();
+  const { isAlertOpen } = useAlertStore();
 
   return (
-    <div className={`preview-device ${isOpen ? "of-hidden" : ""}`}>
+    <div
+      className={`preview-device ${isOpen || isAlertOpen ? "of-hidden" : ""}`}
+    >
       <div className="app-container">
         <StatusBar />
         {children}

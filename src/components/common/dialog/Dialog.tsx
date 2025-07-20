@@ -8,14 +8,14 @@ const Dialog = ({
   content,
   confirmLabel,
   cancelLabel = "취소",
-  onCancel,
+  onClose,
   onConfirm,
 }: {
   dialogTitle: string;
   content: string;
   confirmLabel: string;
   cancelLabel: string;
-  onCancel: () => void;
+  onClose: () => void;
   onConfirm: () => void;
 }) => {
   const { isOpen } = useDialogStore();
@@ -23,7 +23,12 @@ const Dialog = ({
   if (!isOpen) return null;
 
   return (
-    <div className={styles["dialog__overlay"]} role="dialog" aria-modal="true">
+    <div
+      className={styles["dialog__overlay"]}
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
       <div className={styles["dialog__container"]}>
         <div className={styles["dialog__header"]}>
           <span>{dialogTitle}</span>
@@ -34,15 +39,15 @@ const Dialog = ({
         <div className={styles["dialog__footer"]}>
           <button
             className={styles["dialog__cancel-button"]}
-            aria-labelledBy={cancelLabel}
+            aria-label={cancelLabel}
             type="button"
-            onClick={onCancel}
+            onClick={onClose}
           >
             {cancelLabel}
           </button>
           <button
             className={styles["dialog__confirm-button"]}
-            aria-labelledBy={confirmLabel}
+            aria-label={confirmLabel}
             type="button"
             onClick={onConfirm}
           >

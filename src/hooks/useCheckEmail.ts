@@ -19,7 +19,7 @@ export const useCheckEmail = () => {
     disabled: true,
   });
 
-  const { openDialog, closeDialog } = useDialogStore();
+  const { openDialog } = useDialogStore();
 
   const { openAlert, setTitle, setContent } = useAlertStore();
 
@@ -42,6 +42,10 @@ export const useCheckEmail = () => {
     setSuccessMessage(undefined);
     setErrorMessage(undefined);
     checkEmailMutation.mutate();
+  };
+
+  const sendEmailCode = () => {
+    sendAuthCode.mutate();
   };
 
   const checkEmailMutation = useMutation({
@@ -68,7 +72,7 @@ export const useCheckEmail = () => {
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        setErrorMessage("이미 등록된 이메일입니다. 다시 시도해주세요.");
+        setErrorMessage("이미 등록된 이메일입니다.");
       }
       setActionButton((prev) => ({
         label: prev?.label || "중복확인",
@@ -96,7 +100,7 @@ export const useCheckEmail = () => {
     },
     onSuccess: () => {
       openAlert();
-      setTitle("성공");
+      setTitle("인증 성공");
       setContent("인증번호가 전송되었습니다.");
       setActionButton(null);
     },
@@ -114,7 +118,7 @@ export const useCheckEmail = () => {
 
   return {
     checkEmail,
-    sendAuthCode,
+    sendEmailCode,
     checkEmailActionButton: actionButton
       ? { ...actionButton, onClick: checkEmail }
       : undefined,

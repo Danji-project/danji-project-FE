@@ -5,12 +5,15 @@ import styles from "./RegisterPage.module.scss";
 import Spinners from "../../components/common/spinners/Spinners";
 import Header from "../../layouts/Header";
 import InputField from "../../components/common/input-field/InputField";
+import Dialog from "../../components/common/dialog/Dialog";
+import Alert from "../../components/common/alert/Alert";
 
 import useRegisterStore from "../../stores/registerStore";
-import { validateCheck } from "../../utils/validators";
 import { useCheckEmail } from "../../hooks/useCheckEmail";
-import Dialog from "../../components/common/dialog/Dialog";
 import { useDialogStore } from "../../stores/dialogStore";
+
+import { validateCheck } from "../../utils/validators";
+import { useAlertStore } from "../../stores/alertStore";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -142,10 +145,16 @@ const RegisterForm = () => {
     setPhoneNumberTouched,
   } = useRegisterStore();
 
-  const { checkEmailActionButton, successMessage, sendAuthCode, errorMessage } =
-    useCheckEmail();
+  const {
+    checkEmailActionButton,
+    successMessage,
+    sendEmailCode,
+    errorMessage,
+  } = useCheckEmail();
 
-  const { isOpen, closeDialog } = useDialogStore();
+  const { closeDialog } = useDialogStore();
+
+  const { isAlertOpen, title, content, closeAlert } = useAlertStore();
 
   const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(
@@ -203,9 +212,18 @@ const RegisterForm = () => {
           content="사용 가능한 이메일입니다."
           confirmLabel={"인증번호 전송"}
           cancelLabel="취소"
-          onCancel={closeDialog}
-          onConfirm={sendAuthCode}
+          onClose={closeDialog}
+          onConfirm={sendEmailCode}
         />
+        {isAlertOpen && (
+          <Alert
+            alertTitle={title}
+            alertContent={content}
+            onClose={closeAlert}
+            confirmLabel={"확인"}
+            onConfirm={closeAlert}
+          />
+        )}
         <InputField
           label="아이디"
           placeholder="4~15자 이내로 입력해주세요."
