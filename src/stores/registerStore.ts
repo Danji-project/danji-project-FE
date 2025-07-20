@@ -14,6 +14,7 @@ interface RegisterStore {
   ) => void;
   setAuthCode: (authCode: string) => void;
   setCodeVerified: (verified: boolean) => void;
+  setVerifyCodeError: (error: string) => void;
   setPassword: (value: string, valid: boolean, error: string) => void;
   setPasswordTouched: () => void;
   setPasswordConfirm: (value: string, valid: boolean, error: string) => void;
@@ -33,6 +34,7 @@ interface Email {
   touched: boolean;
   checkStatus: "INITIAL" | "CHECKED" | "DUPLICATE";
   verifyCode: string;
+  verifyCodeError: string;
   codeVerified: boolean;
 }
 
@@ -79,6 +81,7 @@ const useRegisterStore = create<RegisterStore>((set) => ({
     touched: false,
     checkStatus: "INITIAL",
     verifyCode: "",
+    verifyCodeError: "",
     codeVerified: false,
   },
   password: {
@@ -143,6 +146,8 @@ const useRegisterStore = create<RegisterStore>((set) => ({
         codeVerified: verified,
       },
     })),
+  setVerifyCodeError: (error: string) =>
+    set((state) => ({ email: { ...state.email, verifyCodeError: error } })),
   setPassword: (value: string, valid: boolean, error: string) =>
     set((state) => ({
       password: {

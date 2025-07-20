@@ -14,6 +14,7 @@ import { useDialogStore } from "../../stores/dialogStore";
 
 import { validateCheck } from "../../utils/validators";
 import { useAlertStore } from "../../stores/alertStore";
+import useAuthCode from "../../hooks/useAuthCode";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -132,6 +133,9 @@ const RegisterForm = () => {
     nickname,
     phoneNumber,
     setEmail,
+    setAuthCode,
+    setCodeVerified,
+    setVerifyCodeError,
     setPassword,
     setPasswordConfirm,
     setUsername,
@@ -156,12 +160,29 @@ const RegisterForm = () => {
 
   const { isAlertOpen, title, content, closeAlert } = useAlertStore();
 
+  const { setActionButton, authCodeActionButton } = useAuthCode();
+
   const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(
       e.target.value,
       validateCheck("ID_CHECK", e.target.value)!.valid,
       validateCheck("ID_CHECK", e.target.value)!.error
     );
+  };
+
+  const verifyCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAuthCode(e.target.value);
+    setCodeVerified(false);
+    setVerifyCodeError(
+      email.verifyCode.trim() !== "" && email.verifyCode.length === 6
+        ? ""
+        : "6자리 숫자로 입력해주세요"
+    );
+    setActionButton((prev) => ({
+      ...prev,
+      label: "인증확인",
+      disabled: !e.target.value,
+    }));
   };
 
   const pwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,6 +260,22 @@ const RegisterForm = () => {
           touched={email.touched}
           touches={setEmailTouched}
         />
+        {email.checkStatus === "CHECKED" && (
+          <InputField
+            label="인증번호"
+            placeholder="인증번호 입력해주세요."
+            className="register-verify-form-id"
+            type="text"
+            name="register-verify-form-id"
+            value={email.verifyCode}
+            valid={
+              email.verifyCode.trim() !== "" && email.verifyCode.length === 6
+            }
+            verifyCodeError={email.verifyCodeError}
+            onChange={verifyCodeChange}
+            actionButton={authCodeActionButton}
+          />
+        )}
         <InputField
           label="비밀번호"
           placeholder="영문,숫자,특수문자 포함 8~16자"

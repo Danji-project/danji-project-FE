@@ -67,6 +67,7 @@ const InputField = ({
   success,
   touched,
   touches,
+  verifyCodeError,
 }: {
   label: string;
   placeholder: string;
@@ -76,12 +77,13 @@ const InputField = ({
   actionButton?: ActionButton;
   showPasswordToggle?: boolean;
   value: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   valid?: boolean;
   error?: string;
   success?: string;
-  touched: boolean;
-  touches: () => void;
+  touched?: boolean;
+  touches?: () => void;
+  verifyCodeError?: string;
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
@@ -141,15 +143,18 @@ const InputField = ({
         {actionButton && (
           <button
             className={`${styles["input__field__action__button"]}`}
-            disabled={!valid || error !== "" || !touched}
+            disabled={!valid || error !== ""}
             onClick={actionButton.onClick}
             type="button"
           >
-            중복확인
+            {actionButton.label}
           </button>
         )}
         {!valid && error !== "" && touched && (
           <p className={styles["input__error"]}>{error}</p>
+        )}
+        {!valid && verifyCodeError && (
+          <p className={styles["input__error"]}>{verifyCodeError}</p>
         )}
       </div>
     </div>
