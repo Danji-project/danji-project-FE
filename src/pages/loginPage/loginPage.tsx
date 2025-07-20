@@ -46,6 +46,20 @@ const LoginHeader = () => {
 const LoginForm = () => {
   const navigate = useNavigate();
   const user = useContext(UserContext);
+  
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const tempData = localStorage.getItem("rememberEmail") ? localStorage.getItem("rememberEmail") : localStorage.getItem("strongtext");
+  console.log(tempData);
+  if(isValidEmail(tempData? tempData : ''))
+  {
+    user.setEmail(tempData? tempData : '');
+    localStorage.removeItem("strongtext")
+  }
+
   const [password, setPassword] = useState(user.password);
   const [email, setEmail] = useState(user.email);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -91,12 +105,12 @@ const LoginForm = () => {
       user.setPassword(password);
       user.setEmail(email);
       mutation.mutate();
-    }
-  };
 
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+      if(isSaveEmail)
+      {
+        localStorage.setItem('rememberEmail', user.email);
+      }
+    }
   };
 
   const checkEmail = () => {

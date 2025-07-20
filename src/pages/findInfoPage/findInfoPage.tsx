@@ -40,6 +40,7 @@ const FindInfoEmailForm = () => {
             "회원님의 이메일은\n" + "example@email.com" + " 입니다."
           );
           localStorage.setItem("strongtext", "example@email.com");
+          localStorage.removeItem("rememberEmail")
           console.log(localStorage.getItem("message"));
         }
 
@@ -237,6 +238,7 @@ const FindInfoPassword = () => {
       }
     },
     onSuccess: () => {
+      localStorage.setItem("message", email);
       setSuccessOTP(true);
     },
     onError: (err: Error) => {
