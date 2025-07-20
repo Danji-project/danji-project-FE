@@ -165,6 +165,17 @@ const RegisterForm = () => {
 
   const { setActionButton, authCodeActionButton } = useAuthCode();
 
+  const formValid =
+    email.value &&
+    email.checkStatus === "CHECKED" &&
+    email.verifyCode &&
+    email.codeVerified &&
+    password.value &&
+    passwordConfirm.value &&
+    username.value &&
+    nickname.value &&
+    phoneNumber.value;
+
   const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(
       e.target.value,
@@ -230,7 +241,6 @@ const RegisterForm = () => {
 
   return (
     <div className={`${styles.registerFormContainer}`}>
-      {isEmailLoading && <Spinners />}
       <form>
         <Dialog
           dialogTitle="중복확인"
@@ -369,7 +379,7 @@ const RegisterForm = () => {
           touched={phoneNumber.touched}
           touches={setPhoneNumberTouched}
         />
-        <RegisterButton isLoading={false} disabled={true} />
+        <RegisterButton isLoading={false} disabled={!formValid} />
       </form>
     </div>
   );

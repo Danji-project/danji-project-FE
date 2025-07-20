@@ -57,7 +57,6 @@ const InputField = ({
   label,
   placeholder,
   className,
-  disabled = false,
   type,
   name,
   actionButton,
@@ -76,7 +75,6 @@ const InputField = ({
   label: string;
   placeholder: string;
   className: string;
-  disabled?: boolean;
   type: "text" | "password";
   name: string;
   actionButton?: ActionButton;
@@ -151,7 +149,10 @@ const InputField = ({
         {actionButton && (
           <button
             className={`${styles["input__field__action__button"]}`}
-            disabled={actionButton.disabled || disabled}
+            disabled={
+              (actionButton.label !== "중복확인" && actionButton.disabled) ||
+              (actionButton.label === "중복확인" && !valid && error !== "")
+            }
             onClick={actionButton.onClick}
             type="button"
           >

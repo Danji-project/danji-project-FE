@@ -37,7 +37,7 @@ export const useCheckEmail = () => {
     }
     setActionButton((prev) => ({
       label: prev?.label || "중복확인",
-      disabled: true,
+      disabled: false,
     }));
     setSuccessMessage(undefined);
     setErrorMessage(undefined);
