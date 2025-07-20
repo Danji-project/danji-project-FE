@@ -29,7 +29,8 @@ const SuccessFindEmailResult = () => {
   const successMsg = localStorage.getItem("message");
   const strongtext = localStorage.getItem("strongtext");
   return (
-    <div style={{ textAlign: "center", padding: "20px 0px" }}>
+    <div style={{ textAlign: "center", padding: "20px 0px" }}
+         className={`${styles['content-div']}`}>
       <img src={LogoIcon} />
       <BoldWord
         text={successMsg ? successMsg : ""}

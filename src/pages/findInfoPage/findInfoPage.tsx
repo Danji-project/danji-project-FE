@@ -100,7 +100,7 @@ const FindInfoEmailForm = () => {
 
   return (
     <>
-    <div style={{height:'100%'}}>
+    <div className={`${styles['content-div']}`} style={{minHeight:'calc(var(--device-height) - 250px)'}}>
       <div>
         <div className={`${styles["login-div-horizon"]}`}>
           <InputFiled
@@ -238,7 +238,6 @@ const FindInfoPassword = () => {
       }
     },
     onSuccess: () => {
-      localStorage.setItem("message", email);
       setSuccessOTP(true);
     },
     onError: (err: Error) => {
@@ -254,98 +253,103 @@ const FindInfoPassword = () => {
 
   return (
     <>
-      <div>
-        <div className={`${styles["login-div-horizon"]}`}>
-          <InputFiled
-            label="이메일"
-            type="email"
-            name="email"
-            placeholder="이메일을 입력해주세요."
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            onBlur={() => {
-              checkEmail();
-            }}
-            aria-invalid={emailError ? "true" : "false"}
-            aria-describedby={emailError ? "email-error" : undefined}
-            error={emailError ?? undefined}
-          />
-
-          <button
-            className={`${styles["nomal-button"]} ${
-              email && emailError ? "" : styles["nomal-button--valid"]
-            }`}
-            style={{ width: "70px", margin: "23px 0px 0px 10px" }}
-            disabled={!email || (email && emailError) ? true : false}
-            onMouseOver={() => {
-              checkEmail;
-            }}
-            onClick={() => {
-              sendEmail();
-            }}
-          >
-            {sendOTPEmail ? "전송완료" : "인증번호"}
-          </button>
-        </div>
-
-        {sendOTPEmail ? (
+      <div className={`${styles['content-div']}`}  style={{minHeight:'calc(var(--device-height) - 250px)'}}>
+        <div>
           <div className={`${styles["login-div-horizon"]}`}>
             <InputFiled
-              label=""
-              type="text"
-              name="otp"
-              placeholder="인증번호를 입력해주세요.(6자리)"
-              onBlur={() => {
-                setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
-              }}
-              value={otp}
+              label="이메일"
+              type="email"
+              name="email"
+              placeholder="이메일을 입력해주세요."
+              value={email}
               onChange={(e) => {
-                setOTP(e.target.value);
+                setEmail(e.target.value);
               }}
-              success={successOTP ? "인증에 성공했습니다." : ""}
-              aria-invalid={optError ? "true" : "false"}
-              aria-describedby={optError ? "email-error" : undefined}
-              error={optError ?? undefined}
+              onBlur={() => {
+                checkEmail();
+              }}
+              aria-invalid={emailError ? "true" : "false"}
+              aria-describedby={emailError ? "email-error" : undefined}
+              error={emailError ?? undefined}
             />
+
             <button
               className={`${styles["nomal-button"]} ${
-                otp ? styles["nomal-button--valid"] : ""
+                email && emailError ? "" : styles["nomal-button--valid"]
               }`}
-              disabled={optError ? true : false}
+              style={{ width: "70px", margin: "23px 0px 0px 10px" }}
+              disabled={!email || (email && emailError) ? true : false}
               onMouseOver={() => {
-                setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                checkEmail;
               }}
-              style={{ width: "70px" }}
               onClick={() => {
-                checkOTP();
+                sendEmail();
               }}
             >
-              확인
+              {sendOTPEmail ? "전송완료" : "인증번호"}
             </button>
           </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
 
-      <button
-        className={`${styles["nomal-button"]} ${styles["submit-button"]} ${successOTP ? styles["nomal-button--valid"] : ""}`}
-        disabled={successOTP ? false : true}
-        style={{ margin: "0" }}
-        onClick={() => {
-          navigate("/main", { replace: true });
-        }}
-      >
-        다음
-      </button>
+          {sendOTPEmail ? (
+            <div className={`${styles["login-div-horizon"]}`}>
+              <InputFiled
+                label=""
+                type="text"
+                name="otp"
+                placeholder="인증번호를 입력해주세요.(6자리)"
+                onBlur={() => {
+                  setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                }}
+                value={otp}
+                onChange={(e) => {
+                  setOTP(e.target.value);
+                }}
+                success={successOTP ? "인증에 성공했습니다." : ""}
+                aria-invalid={optError ? "true" : "false"}
+                aria-describedby={optError ? "email-error" : undefined}
+                error={optError ?? undefined}
+              />
+              <button
+                className={`${styles["nomal-button"]} ${
+                  otp ? styles["nomal-button--valid"] : ""
+                }`}
+                disabled={optError ? true : false}
+                onMouseOver={() => {
+                  setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                }}
+                style={{ width: "70px" }}
+                onClick={() => {
+                  checkOTP();
+                }}
+              >
+                확인
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+
+        <button
+          className={`${styles["nomal-button"]} ${styles["submit-button"]} ${successOTP ? styles["nomal-button--valid"] : ""}`}
+          disabled={successOTP ? false : true}
+          style={{ margin: "0" }}
+          onClick={() => {
+            navigate("/reset-password", { replace: true, state: email });
+          }}
+        >
+          다음
+        </button>
+      </div>
     </>
   );
 };
 
 const SelectBtn = () => {
-  const [isSelctEmail, setIsSelctEmail] = useState<boolean>(true);
+  let check = localStorage.getItem('clickpw');
+  localStorage.removeItem('clickpw');
+
+  const [isSelctEmail, setIsSelctEmail] = useState<boolean>(check != null ? false : true);
 
   return (
     <>
