@@ -3,6 +3,7 @@ import RegisterPage from "../pages/register/RegisterPage";
 import { LoginPage } from "../pages/login/loginPage";
 import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
+import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
 
 const AuthRoutes = () => {
@@ -20,6 +21,8 @@ const AuthRoutes = () => {
         return <FindInfoPage />;
       case "/find-result":
         return <FindResultPage />;
+      case "/reset-password":
+        return <ResetPasswordPage/>
       default:
         return <Outlet />;
     }

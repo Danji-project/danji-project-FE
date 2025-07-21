@@ -24,6 +24,7 @@ interface InputFieldProps
     label: string;
     onClick: () => void;
     disabled?: boolean;
+    onMouseOver: () => void;
   };
 }
 
@@ -182,6 +183,7 @@ export const InputField = ({
             onClick={actionButton.onClick}
             disabled={actionButton.disabled || disabled}
             className={styles['input-field__action-button']}
+            onMouseOver={actionButton.onMouseOver}
           >
             {actionButton.label}
           </button>

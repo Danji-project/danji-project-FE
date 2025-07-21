@@ -12,11 +12,10 @@ import styles from "./findInfoPage.module.scss";
 interface FindInfoResponse {
   token: string;
 }
-
 const FindInfoHeader = () => {
   return (
     <div>
-      <Header title="아이디/비밀번호 찾기" />
+      <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
     </div>
   );
 };
@@ -42,6 +41,7 @@ const FindInfoEmailForm = () => {
             "회원님의 이메일은\n" + "example@email.com" + " 입니다."
           );
           localStorage.setItem("strongtext", "example@email.com");
+          localStorage.removeItem("rememberEmail")
           console.log(localStorage.getItem("message"));
         }
 
@@ -101,7 +101,8 @@ const FindInfoEmailForm = () => {
 
   return (
     <>
-      <div style={{ height: "250px" }}>
+    <div className={`${styles['content-div']}`} style={{minHeight:'calc(var(--device-height) - 250px)'}}>
+      <div>
         <div className={`${styles["login-div-horizon"]}`}>
           <InputFiled
             label="이름"
@@ -130,10 +131,10 @@ const FindInfoEmailForm = () => {
       </div>
 
       <button
-        className={`${styles["submit-button"]} ${
-          vailed ? styles["submit-button--valid"] : ""
+        className={`${styles["nomal-button"]} ${styles["submit-button"]} ${
+          vailed ? styles["nomal-button--valid"] : ""
         }`}
-        style={{ margin: "0px" }}
+        style={{ margin: "0px"}}
         onMouseOver={() => {}}
         disabled={vailed ? false : true}
         onClick={handleSubmit}
@@ -141,6 +142,7 @@ const FindInfoEmailForm = () => {
       >
         다음
       </button>
+    </div>
     </>
   );
 };
@@ -252,153 +254,136 @@ const FindInfoPassword = () => {
 
   return (
     <>
-      <div style={{ height: "250px" }}>
-        <div className={`${styles["login-div-horizon"]}`}>
-          <InputFiled
-            label="이메일"
-            type="email"
-            name="email"
-            placeholder="이메일을 입력해주세요."
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            onBlur={() => {
-              checkEmail();
-            }}
-            aria-invalid={emailError ? "true" : "false"}
-            aria-describedby={emailError ? "email-error" : undefined}
-            error={emailError ?? undefined}
-          />
-
-          <button
-            className={`${styles["submit-button"]} ${
-              email && emailError ? "" : styles["submit-button--valid"]
-            }`}
-            style={{ width: "70px", margin: "23px 0px 0px 10px" }}
-            disabled={!email || (email && emailError) ? true : false}
-            onMouseOver={() => {
-              checkEmail;
-            }}
-            onClick={() => {
-              sendEmail();
-            }}
-          >
-            {sendOTPEmail ? "전송완료" : "인증번호"}
-          </button>
-        </div>
-
-        {sendOTPEmail ? (
+      <div className={`${styles['content-div']}`}  style={{minHeight:'calc(var(--device-height) - 250px)'}}>
+        <div>
           <div className={`${styles["login-div-horizon"]}`}>
             <InputFiled
-              label=""
-              type="text"
-              name="otp"
-              placeholder="인증번호를 입력해주세요.(6자리)"
-              onBlur={() => {
-                setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
-              }}
-              value={otp}
+              label="이메일"
+              type="email"
+              name="email"
+              placeholder="이메일을 입력해주세요."
+              value={email}
               onChange={(e) => {
-                setOTP(e.target.value);
+                setEmail(e.target.value);
               }}
-              success={successOTP ? "인증에 성공했습니다." : ""}
-              aria-invalid={optError ? "true" : "false"}
-              aria-describedby={optError ? "email-error" : undefined}
-              error={optError ?? undefined}
+              onBlur={() => {
+                checkEmail();
+              }}
+              aria-invalid={emailError ? "true" : "false"}
+              aria-describedby={emailError ? "email-error" : undefined}
+              error={emailError ?? undefined}
             />
+
             <button
-              className={`${styles["submit-button"]} ${
-                otp ? styles["submit-button--valid"] : ""
+              className={`${styles["nomal-button"]} ${
+                email && emailError ? "" : styles["nomal-button--valid"]
               }`}
-              disabled={optError ? true : false}
+              style={{ width: "70px", margin: "23px 0px 0px 10px" }}
+              disabled={!email || (email && emailError) ? true : false}
               onMouseOver={() => {
-                setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                checkEmail;
               }}
-              style={{ width: "70px" }}
               onClick={() => {
-                checkOTP();
+                sendEmail();
               }}
             >
-              확인
+              {sendOTPEmail ? "전송완료" : "인증번호"}
             </button>
           </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
 
-      <button
-        className={`${styles["submit-button"]} ${
-          successOTP ? styles["submit-button--valid"] : ""
-        }`}
-        disabled={successOTP ? false : true}
-        style={{ margin: "0" }}
-        onClick={() => {
-          navigate("/main", { replace: true });
-        }}
-      >
-        다음
-      </button>
+          {sendOTPEmail ? (
+            <div className={`${styles["login-div-horizon"]}`}>
+              <InputFiled
+                label=""
+                type="text"
+                name="otp"
+                placeholder="인증번호를 입력해주세요.(6자리)"
+                onBlur={() => {
+                  setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                }}
+                value={otp}
+                onChange={(e) => {
+                  setOTP(e.target.value);
+                }}
+                success={successOTP ? "인증에 성공했습니다." : ""}
+                aria-invalid={optError ? "true" : "false"}
+                aria-describedby={optError ? "email-error" : undefined}
+                error={optError ?? undefined}
+              />
+              <button
+                className={`${styles["nomal-button"]} ${
+                  otp ? styles["nomal-button--valid"] : ""
+                }`}
+                disabled={optError ? true : false}
+                onMouseOver={() => {
+                  setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                }}
+                style={{ width: "70px" }}
+                onClick={() => {
+                  checkOTP();
+                }}
+              >
+                확인
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+
+        <button
+          className={`${styles["nomal-button"]} ${styles["submit-button"]} ${successOTP ? styles["nomal-button--valid"] : ""}`}
+          disabled={successOTP ? false : true}
+          style={{ margin: "0" }}
+          onClick={() => {
+            navigate("/reset-password", { replace: true, state: email });
+          }}
+        >
+          다음
+        </button>
+      </div>
     </>
   );
 };
 
 const SelectBtn = () => {
-  const [isSelctEmail, setIsSelctEmail] = useState<boolean>(true);
+  let check = localStorage.getItem('clickpw');
+  localStorage.removeItem('clickpw');
+
+  const [isSelctEmail, setIsSelctEmail] = useState<boolean>(check != null ? false : true);
 
   return (
-    <div>
+    <>
       <FindInfoHeader />
-      <div style={{ maxWidth: "80%", margin: "0 auto" }}>
-        <button
-          className={`${styles["top-button"]}`}
-          style={{
-            margin: "20px 0px",
-            marginTop: "95px",
-            width: "50%",
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            setIsSelctEmail(true);
-          }}
-          disabled={isSelctEmail}
-        >
-          이메일 찾기
-        </button>
-        <button
-          className={`${styles["top-button"]}`}
-          style={{
-            margin: "20px 0px",
-            marginTop: "95px",
-            width: "50%",
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            setIsSelctEmail(false);
-          }}
-          disabled={isSelctEmail ? false : true}
-        >
-          비밀번호 찾기
-        </button>
-        {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
-      </div>
-    </div>
+      <button
+        className={`${styles["top-button"]}`}
+        style={{ margin: "20px 0px", width: "50%" }}
+        onClick={() => {
+          setIsSelctEmail(true);
+        }}
+        disabled={isSelctEmail}
+      >
+        이메일 찾기
+      </button>
+      <button
+        className={`${styles["top-button"]}`}
+        style={{ margin: "20px 0px", width: "50%" }}
+        onClick={() => {
+          setIsSelctEmail(false);
+        }}
+        disabled={isSelctEmail ? false : true}
+      >
+        비밀번호 찾기
+      </button>
+      {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
+    </>
   );
 };
 
 export const FindInfoPage = () => {
   return (
     <>
-      <div
-        style={{
-          position: "absolute",
-          top: "0",
-          bottom: "0",
-          right: "0",
-          left: "0",
-        }}
-      >
+      <div style={{height:'100%'}}>
         <SelectBtn />
       </div>
     </>

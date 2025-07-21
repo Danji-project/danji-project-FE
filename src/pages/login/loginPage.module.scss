@@ -13,6 +13,7 @@ $font-size-midium: 16px;
   height: 52px;
   transition: all 0.2s ease-in-out;
   width: 100%;
+  border-radius: 8px;
 
   &:hover {
     color: #fff;
@@ -60,21 +61,36 @@ $font-size-midium: 16px;
   flex-direction: row;
   align-items: center;
   width: 100%;
-  margin-top: 30px;
+  margin: 8px 0;
+}
+
+.login-div-centerline {
+  width: 45%;
+  margin: 0;
+  border: 1px solid;
+  border-block-color: #c0c0c0;
+  border-width: 1px 0px 0px 0px;
+}
+
+.login-div-centerline-text {
+  width: 10%;
+  margin: 0 20px auto;
+  text-align: center;
+  color: #c0c0c0;
 }
 
 .login-gray-small-text {
   color: #c0c0c0;
   font-size: 13px;
   font-weight: 400;
-  margin: 4px 0 0 0;
-  margin-top: 20px;
+  margin: 6px 0 32px 0;
 }
 
 .login-blue-small-text {
   color: #97bbff;
   font-size: 13px;
   font-weight: 600;
+  text-decoration-line: none;
 }
 
 .login-gray-midium-text {
@@ -82,22 +98,9 @@ $font-size-midium: 16px;
   font-size: 15px;
   font-weight: 400;
   margin-top: 12px;
-}
+  text-decoration-line: none;
 
-.login-div-horizon-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 80%;
-  margin: 0 auto;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  .login-div-centerline {
-    flex: 1;
-    height: 1px;
-    background-color: rgba(0, 0, 0, 0.45);
-  }
-  .login-div-centerline-text {
-    font-size: 0.95rem;
+  &:hover{
+    color: #97bbff;
   }
 }

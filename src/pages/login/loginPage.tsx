@@ -35,10 +35,8 @@ const errorMessages: { [key: number]: string } & {
 const LoginHeader = () => {
   return (
     <div>
-      <Header title="로그인" />
-      <div
-        style={{ textAlign: "center", padding: "20px 0px", paddingTop: "95px" }}
-      >
+      <Header title="로그인" type="sub" hasBackButton={true} />
+      <div style={{ textAlign: "center"}}>
         <img src={LogoIcon} />
       </div>
     </div>
@@ -48,11 +46,25 @@ const LoginHeader = () => {
 const LoginForm = () => {
   const navigate = useNavigate();
   const user = useContext(UserContext);
+  
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  let tempData = localStorage.getItem("rememberEmail") ? localStorage.getItem("rememberEmail") : localStorage.getItem("strongtext");
+  console.log(tempData);
+  if(isValidEmail(tempData? tempData : ''))
+  {
+    user.setEmail(tempData? tempData : '');
+    localStorage.removeItem("strongtext")
+  }
+
   const [password, setPassword] = useState(user.password);
   const [email, setEmail] = useState(user.email);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null);
-  const [isSaveEmail, setIsSaveEmail] = useState(false);
+  const [isSaveEmail, setIsSaveEmail] = useState(localStorage.getItem("rememberEmail"));
 
   const mutation = useMutation<LoginResponse, Error>({
     mutationFn: async () => {
@@ -93,12 +105,16 @@ const LoginForm = () => {
       user.setPassword(password);
       user.setEmail(email);
       mutation.mutate();
-    }
-  };
 
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+      if(isSaveEmail)
+      {
+        localStorage.setItem('rememberEmail', user.email);
+      }
+      else
+      {
+        localStorage.removeItem('rememberEmail');
+      }
+    }
   };
 
   const checkEmail = () => {
@@ -113,7 +129,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div style={{ maxWidth: "80%", margin: "0 auto" }}>
+      <div>
         <form onSubmit={handleSubmit}>
           <div>
             <InputFiled
@@ -181,10 +197,8 @@ const LoginForm = () => {
             </button>
             <p className={`${styles["login-gray-small-text"]}`}>
               아직 회원이 아니신가요?{" "}
-              <a
-                className={`${styles["login-blue-small-text"]}`}
-                href="/register"
-              >
+              <a className={`${styles["login-blue-small-text"]}`}
+                 href="/register">
                 회원가입
               </a>
             </p>
@@ -197,7 +211,7 @@ const LoginForm = () => {
 
 const SpiltBar = () => {
   return (
-    <div className={`${styles["login-div-horizon-line"]}`}>
+    <div className={`${styles["login-div-horizon"]}`}>
       <div className={`${styles["login-div-centerline"]}`} />
       <p className={`${styles["login-div-centerline-text"]}`}>Or</p>
       <div className={`${styles["login-div-centerline"]}`} />
@@ -226,15 +240,7 @@ const SocialLogin = () => {
 export const LoginPage = () => {
   return (
     <>
-      <div
-        style={{
-          position: "absolute",
-          top: "0",
-          bottom: "0",
-          left: "0",
-          right: "0",
-        }}
-      >
+      <div>
         <LoginHeader />
         <LoginForm />
         <SpiltBar />
