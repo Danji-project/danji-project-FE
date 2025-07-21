@@ -36,7 +36,9 @@ const LoginHeader = () => {
   return (
     <div>
       <Header title="로그인" />
-      <div style={{ textAlign: "center", padding: "20px 0px" }}>
+      <div
+        style={{ textAlign: "center", padding: "20px 0px", paddingTop: "95px" }}
+      >
         <img src={LogoIcon} />
       </div>
     </div>
@@ -111,7 +113,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div>
+      <div style={{ maxWidth: "80%", margin: "0 auto" }}>
         <form onSubmit={handleSubmit}>
           <div>
             <InputFiled
@@ -195,7 +197,7 @@ const LoginForm = () => {
 
 const SpiltBar = () => {
   return (
-    <div className={`${styles["login-div-horizon"]}`}>
+    <div className={`${styles["login-div-horizon-line"]}`}>
       <div className={`${styles["login-div-centerline"]}`} />
       <p className={`${styles["login-div-centerline-text"]}`}>Or</p>
       <div className={`${styles["login-div-centerline"]}`} />
@@ -224,7 +226,15 @@ const SocialLogin = () => {
 export const LoginPage = () => {
   return (
     <>
-      <div>
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          bottom: "0",
+          left: "0",
+          right: "0",
+        }}
+      >
         <LoginHeader />
         <LoginForm />
         <SpiltBar />

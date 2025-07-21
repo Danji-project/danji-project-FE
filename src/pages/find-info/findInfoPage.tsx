@@ -348,37 +348,57 @@ const SelectBtn = () => {
   const [isSelctEmail, setIsSelctEmail] = useState<boolean>(true);
 
   return (
-    <>
+    <div>
       <FindInfoHeader />
-      <button
-        className={`${styles["top-button"]}`}
-        style={{ margin: "20px 0px", width: "50%" }}
-        onClick={() => {
-          setIsSelctEmail(true);
-        }}
-        disabled={isSelctEmail}
-      >
-        이메일 찾기
-      </button>
-      <button
-        className={`${styles["top-button"]}`}
-        style={{ margin: "20px 0px", width: "50%" }}
-        onClick={() => {
-          setIsSelctEmail(false);
-        }}
-        disabled={isSelctEmail ? false : true}
-      >
-        비밀번호 찾기
-      </button>
-      {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
-    </>
+      <div style={{ maxWidth: "80%", margin: "0 auto" }}>
+        <button
+          className={`${styles["top-button"]}`}
+          style={{
+            margin: "20px 0px",
+            marginTop: "95px",
+            width: "50%",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setIsSelctEmail(true);
+          }}
+          disabled={isSelctEmail}
+        >
+          이메일 찾기
+        </button>
+        <button
+          className={`${styles["top-button"]}`}
+          style={{
+            margin: "20px 0px",
+            marginTop: "95px",
+            width: "50%",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setIsSelctEmail(false);
+          }}
+          disabled={isSelctEmail ? false : true}
+        >
+          비밀번호 찾기
+        </button>
+        {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
+      </div>
+    </div>
   );
 };
 
 export const FindInfoPage = () => {
   return (
     <>
-      <div style={{ minWidth: "400px", margin: "0" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          bottom: "0",
+          right: "0",
+          left: "0",
+        }}
+      >
         <SelectBtn />
       </div>
     </>

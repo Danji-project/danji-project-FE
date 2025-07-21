@@ -60,20 +60,7 @@ $font-size-midium: 16px;
   flex-direction: row;
   align-items: center;
   width: 100%;
-}
-
-.login-div-centerline {
-  width: 45%;
-  margin: 30px 20px 0 0;
-  border: 1px solid;
-  border-block-color: #c0c0c0;
-  border-width: 1px 0px 0px 0px;
-}
-
-.login-div-centerline-text {
-  width: 10%;
-  text-align: center;
-  color: #c0c0c0;
+  margin-top: 30px;
 }
 
 .login-gray-small-text {
@@ -81,6 +68,7 @@ $font-size-midium: 16px;
   font-size: 13px;
   font-weight: 400;
   margin: 4px 0 0 0;
+  margin-top: 20px;
 }
 
 .login-blue-small-text {
@@ -94,4 +82,22 @@ $font-size-midium: 16px;
   font-size: 15px;
   font-weight: 400;
   margin-top: 12px;
+}
+
+.login-div-horizon-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 80%;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  .login-div-centerline {
+    flex: 1;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.45);
+  }
+  .login-div-centerline-text {
+    font-size: 0.95rem;
+  }
 }
