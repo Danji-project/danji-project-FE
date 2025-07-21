@@ -5,12 +5,15 @@ import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
 import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
+import { MainPage } from "../pages/main/MainPage";
 
 const AuthRoutes = () => {
   const location = useLocation();
 
   const renderContent = () => {
     switch (location.pathname) {
+      case "/":
+        return <MainPage/>;
       case "/register":
         return <RegisterPage />;
       case "/register-success":

@@ -7,11 +7,13 @@ import { LoginPage } from "../pages/login/loginPage";
 import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
 import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
+import { MainPage } from "../pages/main/MainPage";
 
 const AppRoutes = () => {
   return (
     <Suspense fallback={<div>loading...</div>}>
       <Routes>
+        <Route path="/" element={<MainPage />} />
         {/* 인증 관련 라우팅 */}
         <Route element={<AuthRoutes />}>
           <Route path="/register" element={<RegisterPage />} />
