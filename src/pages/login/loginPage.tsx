@@ -52,7 +52,7 @@ const LoginForm = () => {
     return emailRegex.test(email);
   };
 
-  const tempData = localStorage.getItem("rememberEmail") ? localStorage.getItem("rememberEmail") : localStorage.getItem("strongtext");
+  let tempData = localStorage.getItem("rememberEmail") ? localStorage.getItem("rememberEmail") : localStorage.getItem("strongtext");
   console.log(tempData);
   if(isValidEmail(tempData? tempData : ''))
   {
@@ -64,7 +64,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState(user.email);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null);
-  const [isSaveEmail, setIsSaveEmail] = useState(false);
+  const [isSaveEmail, setIsSaveEmail] = useState(localStorage.getItem("rememberEmail"));
 
   const mutation = useMutation<LoginResponse, Error>({
     mutationFn: async () => {
@@ -109,6 +109,10 @@ const LoginForm = () => {
       if(isSaveEmail)
       {
         localStorage.setItem('rememberEmail', user.email);
+      }
+      else
+      {
+        localStorage.removeItem('rememberEmail');
       }
     }
   };
