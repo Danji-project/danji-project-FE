@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import Header from "../../components/header/Header2.tsx";
+import Header from "../../layouts/Header";
 
 import styles from "./findInfoPage.module.scss";
 import LogoIcon from "../../assets/logo.svg";
@@ -19,7 +19,7 @@ function BoldWord({ text, boldWord }: { text: string; boldWord: string }) {
 const FindInfoHeader = () => {
   return (
     <div>
-      <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
+      <Header title="아이디/비밀번호 찾기" />
     </div>
   );
 };
