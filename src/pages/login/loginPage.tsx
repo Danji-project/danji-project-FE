@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { Checkbox } from "../../components/Checkbox/Checkbox";
 import InputFiled from "../../components/input-filed/InputField";
-import Header from "../../components/header/Header";
+import Header from "../../components/header/Header2.tsx";
 
 import styles from "./loginPage.module.scss";
 import KakaoIcon from "../../assets/social/kakao.svg";

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import Header from "../../components/header/Header";
+import Header from "../../components/header/Header2.tsx";
 
 import styles from "./findInfoPage.module.scss";
 import LogoIcon from "../../assets/logo.svg";

@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 
 import InputFiled from "../../components/input-filed/InputField";
-import Header from "../../components/header/Header";
+import Header2 from "../../components/header/Header2";
 
 import styles from "./findInfoPage.module.scss";
 
@@ -16,7 +16,7 @@ interface FindInfoResponse {
 const FindInfoHeader = () => {
   return (
     <div>
-      <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
+      <Header2 title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
     </div>
   );
 };

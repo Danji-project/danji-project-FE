@@ -92,7 +92,7 @@ const MainHeader: React.FC<HeaderProps> = ({ title }) => {
   );
 };
 
-const Header: React.FC<HeaderProps> = (props) => {
+const Header2: React.FC<HeaderProps> = (props) => {
   return props.type === "main" ? (
     <MainHeader {...props} />
   ) : (
@@ -100,4 +100,4 @@ const Header: React.FC<HeaderProps> = (props) => {
   );
 };
 
-export default Header;
+export default Header2;

@@ -5,7 +5,7 @@ import { useAlertStore } from "../stores/alertStore";
 import { useNavigate } from "react-router-dom";
 
 export const useRegister = () => {
-  const { email, password, passwordConfirm, username, nickname, phoneNumber } =
+  const { email, password, username, nickname, phoneNumber } =
     useRegisterStore();
 
   const { setTitle, setContent, openAlert } = useAlertStore();

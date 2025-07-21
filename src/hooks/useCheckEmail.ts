@@ -9,8 +9,7 @@ import { useDialogStore } from "../stores/dialogStore";
 import { useAlertStore } from "../stores/alertStore";
 
 export const useCheckEmail = () => {
-  const { email, setEmail, setEmailCheckStatus, setAuthCode } =
-    useRegisterStore();
+  const { email, setEmailCheckStatus } = useRegisterStore();
   const [actionButton, setActionButton] = useState<{
     label: string;
     disabled: boolean;
