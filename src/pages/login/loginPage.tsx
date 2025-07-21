@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { Checkbox } from "../../components/Checkbox/Checkbox";
 import InputFiled from "../../components/input-filed/InputField";
-import Header from "../../components/header/Header2.tsx";
+import Header from "../../layouts/Header";
 
 import styles from "./loginPage.module.scss";
 import KakaoIcon from "../../assets/social/kakao.svg";
@@ -35,7 +35,7 @@ const errorMessages: { [key: number]: string } & {
 const LoginHeader = () => {
   return (
     <div>
-      <Header title="로그인" type="sub" hasBackButton={true} />
+      <Header title="로그인" />
       <div style={{ textAlign: "center", padding: "20px 0px" }}>
         <img src={LogoIcon} />
       </div>
