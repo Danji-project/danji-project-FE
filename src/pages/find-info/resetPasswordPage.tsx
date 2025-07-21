@@ -47,7 +47,7 @@ const PasswordForm = () => {
   // Todo : 사용자 새로고침시, 데이터 날리기
   const navigate = useNavigate();
   const location = useLocation();
-  const email = new String(location.state);
+  const email: string = location.state;
 
   const [password, setPassword] = useState<PasswordInfo>(
     new PasswordInfo("", false)
