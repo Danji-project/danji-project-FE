@@ -6,8 +6,7 @@ import useRegisterStore from "../stores/registerStore";
 import { useAlertStore } from "../stores/alertStore";
 
 const useAuthCode = () => {
-  const { email, setAuthCode, setCodeVerified, setVerifyCodeError } =
-    useRegisterStore();
+  const { email, setCodeVerified, setVerifyCodeError } = useRegisterStore();
 
   const { openAlert, setTitle, setContent } = useAlertStore();
 

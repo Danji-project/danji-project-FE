@@ -28,6 +28,8 @@ const FindInfoEmailForm = () => {
   const [isFindId, setIsFindId] = useState<boolean | null>(null);
   const [userEmail, setUserEmail] = useState<string>("");
 
+  console.log(isFindId, userEmail);
+
   const mutation = useMutation<FindInfoResponse, Error>({
     mutationFn: async () => {
       try {

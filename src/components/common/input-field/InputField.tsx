@@ -91,6 +91,7 @@ const InputField = ({
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
+  console.log(success);
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);

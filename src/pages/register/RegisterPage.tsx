@@ -156,8 +156,6 @@ const RegisterForm = () => {
     setActionButton: setCheckActionButton,
     successMessage,
     sendEmailCode,
-    errorMessage,
-    isEmailLoading,
   } = useCheckEmail();
 
   const { closeDialog } = useDialogStore();
