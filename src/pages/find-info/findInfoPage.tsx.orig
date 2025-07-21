@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 
-import InputFiled from "../../components/InputFiled/InputField";
-import Header from "../../components/Header/Header";
+import InputFiled from "../../components/input-filed/InputField";
+import Header from "../../layouts/Header";
 
 import styles from "./findInfoPage.module.scss";
 
@@ -16,7 +16,7 @@ interface FindInfoResponse {
 const FindInfoHeader = () => {
   return (
     <div>
-      <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
+      <Header title="아이디/비밀번호 찾기" />
     </div>
   );
 };
@@ -27,6 +27,8 @@ const FindInfoEmailForm = () => {
   const [userPhonNumber, setPhonNumber] = useState<string>("");
   const [isFindId, setIsFindId] = useState<boolean | null>(null);
   const [userEmail, setUserEmail] = useState<string>("");
+
+  console.log(isFindId, userEmail);
 
   const mutation = useMutation<FindInfoResponse, Error>({
     mutationFn: async () => {
@@ -352,37 +354,61 @@ const SelectBtn = () => {
   const [isSelctEmail, setIsSelctEmail] = useState<boolean>(check != null ? false : true);
 
   return (
-    <>
+    <div>
       <FindInfoHeader />
-      <button
-        className={`${styles["top-button"]}`}
-        style={{ margin: "20px 0px", width: "50%" }}
-        onClick={() => {
-          setIsSelctEmail(true);
-        }}
-        disabled={isSelctEmail}
-      >
-        이메일 찾기
-      </button>
-      <button
-        className={`${styles["top-button"]}`}
-        style={{ margin: "20px 0px", width: "50%" }}
-        onClick={() => {
-          setIsSelctEmail(false);
-        }}
-        disabled={isSelctEmail ? false : true}
-      >
-        비밀번호 찾기
-      </button>
-      {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
-    </>
+      <div style={{ maxWidth: "80%", margin: "0 auto" }}>
+        <button
+          className={`${styles["top-button"]}`}
+          style={{
+            margin: "20px 0px",
+            marginTop: "95px",
+            width: "50%",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setIsSelctEmail(true);
+          }}
+          disabled={isSelctEmail}
+        >
+          이메일 찾기
+        </button>
+        <button
+          className={`${styles["top-button"]}`}
+          style={{
+            margin: "20px 0px",
+            marginTop: "95px",
+            width: "50%",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setIsSelctEmail(false);
+          }}
+          disabled={isSelctEmail ? false : true}
+        >
+          비밀번호 찾기
+        </button>
+        {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
+      </div>
+    </div>
   );
 };
 
 export const FindInfoPage = () => {
   return (
     <>
+<<<<<<< HEAD:src/pages/findInfoPage/findInfoPage.tsx
       <div style={{height:'100%'}}>
+=======
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          bottom: "0",
+          right: "0",
+          left: "0",
+        }}
+      >
+>>>>>>> main:src/pages/find-info/findInfoPage.tsx
         <SelectBtn />
       </div>
     </>

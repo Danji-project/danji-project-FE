@@ -1,4 +1,5 @@
-import React, { useId, useState } from "react";
+import * as React from "react";
+import { useId, useState } from "react";
 
 import styles from "./InputField.module.scss";
 
@@ -64,6 +65,11 @@ const InputField = ({
   valid,
   error,
   success,
+  touched,
+  touches,
+  verified,
+  verifyCodeError,
+  checkStatus,
 }: {
   label: string;
   placeholder: string;
@@ -73,13 +79,19 @@ const InputField = ({
   actionButton?: ActionButton;
   showPasswordToggle?: boolean;
   value: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   valid?: boolean;
   error?: string;
   success?: string;
+  touched?: boolean;
+  touches?: () => void;
+  verified?: boolean;
+  verifyCodeError?: string;
+  checkStatus?: "INITIAL" | "CHECKED" | "DUPLICATE";
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
+  console.log(success);
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
@@ -92,10 +104,12 @@ const InputField = ({
       id={id}
       name={name}
       className={`${styles["input__field__input"]} ${
-        !valid && error !== "" ? styles["input__field__error"] : ""
+        !valid && error !== "" && touched ? styles["input__field__error"] : ""
       }`}
       value={value}
       onChange={onChange}
+      onBlur={touches}
+      readOnly={checkStatus === "CHECKED" || verified}
     />
   );
 
@@ -107,7 +121,7 @@ const InputField = ({
       name={name}
       onChange={onChange}
       className={`${styles["input__field__input"]} ${
-        !valid && error !== "" ? styles["input__field__error"] : ""
+        !valid && error !== "" && touched ? styles["input__field__error"] : ""
       }`}
     />
   );
@@ -135,15 +149,21 @@ const InputField = ({
         {actionButton && (
           <button
             className={`${styles["input__field__action__button"]}`}
-            disabled={!valid && error !== ""}
+            disabled={
+              (actionButton.label !== "중복확인" && actionButton.disabled) ||
+              (actionButton.label === "중복확인" && !valid && error !== "")
+            }
             onClick={actionButton.onClick}
             type="button"
           >
-            중복확인
+            {actionButton.label}
           </button>
         )}
-        {!valid && error !== "" && (
+        {!valid && error !== "" && touched && (
           <p className={styles["input__error"]}>{error}</p>
+        )}
+        {!valid && verifyCodeError && (
+          <p className={styles["input__error"]}>{verifyCodeError}</p>
         )}
       </div>
     </div>

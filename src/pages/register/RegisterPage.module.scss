@@ -129,10 +129,19 @@
 }
 
 .registerFormContainer {
-  padding-top: 100px;
   max-width: calc(100% - 3.144rem);
   margin: 0 auto;
+  margin-top: 100px;
   border-top: 1px solid rgba(0, 0, 0, 0.15);
+  &.registerDim {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+  }
   form {
     .register__submit {
       margin-top: 40px;

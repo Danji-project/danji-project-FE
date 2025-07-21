@@ -9,6 +9,8 @@
     "moduleResolution": "Node",
     "outDir": "build",
     "allowSyntheticDefaultImports": true,
+    "erasableSyntaxOnly": false,
     "esModuleInterop": true,
+    "noUnusedLocals": false
   }
 }

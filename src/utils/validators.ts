@@ -8,15 +8,15 @@ export const validateCheck = (
       valid:
         value.trim() !== "" &&
         value.length >= 4 &&
-        value.length <= 15 &&
+        value.length <= 25 &&
         value.includes("@"),
       error:
         value.trim() !== "" &&
         value.length >= 4 &&
-        value.length <= 15 &&
+        value.length <= 25 &&
         value.includes("@")
           ? ""
-          : "이메일을 4~15자 이내로 입력해주세요.",
+          : "이메일을 4~25자 이내로 입력해주세요.",
     };
   }
   if (validator === "PASSWORD_CHECK") {

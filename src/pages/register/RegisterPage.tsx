@@ -5,11 +5,17 @@ import styles from "./RegisterPage.module.scss";
 import Spinners from "../../components/common/spinners/Spinners";
 import Header from "../../layouts/Header";
 import InputField from "../../components/common/input-field/InputField";
+import Dialog from "../../components/common/dialog/Dialog";
+import Alert from "../../components/common/alert/Alert";
 
 import useRegisterStore from "../../stores/registerStore";
-import { validateCheck } from "../../utils/validators";
 import { useCheckEmail } from "../../hooks/useCheckEmail";
-import Dialog from "../../components/common/dialog/Dialog";
+import { useDialogStore } from "../../stores/dialogStore";
+
+import { validateCheck } from "../../utils/validators";
+import { useAlertStore } from "../../stores/alertStore";
+import useAuthCode from "../../hooks/useAuthCode";
+import { useRegister } from "../../hooks/useRegister";
 
 // 가입 방법 선택
 const SelectOAuth = ({
@@ -128,15 +134,48 @@ const RegisterForm = () => {
     nickname,
     phoneNumber,
     setEmail,
+    setAuthCode,
+    setEmailCheckStatus,
+    setCodeVerified,
+    setVerifyCodeError,
     setPassword,
     setPasswordConfirm,
     setUsername,
     setNickname,
     setPhoneNumber,
+    setEmailTouched,
+    setPasswordTouched,
+    setPasswordConfirmTouched,
+    setUsernameTouched,
+    setNicknameTouched,
+    setPhoneNumberTouched,
   } = useRegisterStore();
 
-  const { checkEmailActionButton, successMessage, errorMessage } =
-    useCheckEmail();
+  const {
+    checkEmailActionButton,
+    setActionButton: setCheckActionButton,
+    successMessage,
+    sendEmailCode,
+  } = useCheckEmail();
+
+  const { closeDialog } = useDialogStore();
+
+  const { isAlertOpen, title, content, closeAlert } = useAlertStore();
+
+  const { setActionButton, authCodeActionButton } = useAuthCode();
+
+  const { register, isRegistering } = useRegister();
+
+  const formValid =
+    email.value &&
+    email.checkStatus === "CHECKED" &&
+    email.verifyCode &&
+    email.codeVerified &&
+    password.value &&
+    passwordConfirm.value &&
+    username.value &&
+    nickname.value &&
+    phoneNumber.value;
 
   const idChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(
@@ -144,6 +183,21 @@ const RegisterForm = () => {
       validateCheck("ID_CHECK", e.target.value)!.valid,
       validateCheck("ID_CHECK", e.target.value)!.error
     );
+  };
+
+  const verifyCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAuthCode(e.target.value);
+    setCodeVerified(false);
+    setVerifyCodeError(
+      email.verifyCode.trim() !== "" && email.verifyCode.length === 6
+        ? ""
+        : "6자리 숫자로 입력해주세요"
+    );
+    setActionButton((prev) => ({
+      ...prev,
+      label: "인증확인",
+      disabled: !e.target.value,
+    }));
   };
 
   const pwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -188,8 +242,32 @@ const RegisterForm = () => {
 
   return (
     <div className={`${styles.registerFormContainer}`}>
-      <form>
-        {/* <Dialog /> */}
+      <form onSubmit={register}>
+        <Dialog
+          dialogTitle="중복확인"
+          content="사용 가능한 이메일입니다."
+          confirmLabel={"인증번호 전송"}
+          cancelLabel="취소"
+          onClose={() => {
+            closeDialog();
+            setEmailCheckStatus("INITIAL");
+            setCheckActionButton((prev) => ({
+              ...prev,
+              label: "중복확인",
+              disabled: false,
+            }));
+          }}
+          onConfirm={sendEmailCode}
+        />
+        {isAlertOpen && (
+          <Alert
+            alertTitle={title}
+            alertContent={content}
+            onClose={closeAlert}
+            confirmLabel={"확인"}
+            onConfirm={closeAlert}
+          />
+        )}
         <InputField
           label="아이디"
           placeholder="4~15자 이내로 입력해주세요."
@@ -202,7 +280,27 @@ const RegisterForm = () => {
           valid={validateCheck("ID_CHECK", email.value)!.valid}
           error={validateCheck("ID_CHECK", email.value)!.error}
           success={successMessage}
+          touched={email.touched}
+          touches={setEmailTouched}
+          checkStatus={email.checkStatus}
         />
+        {email.checkStatus === "CHECKED" && (
+          <InputField
+            label="인증번호"
+            placeholder="인증번호 입력해주세요."
+            className="register-verify-form-id"
+            type="text"
+            name="register-verify-form-id"
+            value={email.verifyCode}
+            valid={
+              email.verifyCode.trim() !== "" && email.verifyCode.length === 6
+            }
+            verified={email.codeVerified}
+            verifyCodeError={email.verifyCodeError}
+            onChange={verifyCodeChange}
+            actionButton={authCodeActionButton}
+          />
+        )}
         <InputField
           label="비밀번호"
           placeholder="영문,숫자,특수문자 포함 8~16자"
@@ -214,6 +312,8 @@ const RegisterForm = () => {
           onChange={pwChange}
           valid={validateCheck("PASSWORD_CHECK", password.value)!.valid}
           error={validateCheck("PASSWORD_CHECK", password.value)!.error}
+          touched={password.touched}
+          touches={setPasswordTouched}
         />
         <InputField
           label="비밀번호 확인"
@@ -238,6 +338,8 @@ const RegisterForm = () => {
               password.value
             )!.error
           }
+          touched={passwordConfirm.touched}
+          touches={setPasswordConfirmTouched}
         />
         <InputField
           label="이름"
@@ -249,6 +351,8 @@ const RegisterForm = () => {
           onChange={nameChange}
           valid={validateCheck("NAME_CHECK", username.value)!.valid}
           error={validateCheck("NAME_CHECK", username.value)!.error}
+          touched={username.touched}
+          touches={setUsernameTouched}
         />
         <InputField
           label="닉네임"
@@ -260,6 +364,8 @@ const RegisterForm = () => {
           onChange={nicknameChange}
           valid={validateCheck("NICKNAME_CHECK", nickname.value)!.valid}
           error={validateCheck("NICKNAME_CHECK", nickname.value)!.error}
+          touched={nickname.touched}
+          touches={setNicknameTouched}
         />
         <InputField
           label="전화번호"
@@ -271,8 +377,10 @@ const RegisterForm = () => {
           onChange={phoneChange}
           valid={validateCheck("PHONE_CHECK", phoneNumber.value)!.valid}
           error={validateCheck("PHONE_CHECK", phoneNumber.value)!.error}
+          touched={phoneNumber.touched}
+          touches={setPhoneNumberTouched}
         />
-        <RegisterButton isLoading={false} disabled={true} />
+        <RegisterButton isLoading={isRegistering} disabled={!formValid} />
       </form>
     </div>
   );
@@ -280,6 +388,7 @@ const RegisterForm = () => {
 
 // 회원가입 페이지
 const RegisterPage = () => {
+  const { isEmailLoading } = useCheckEmail();
   const [oAuthSelect, setOAuthSelect] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -290,7 +399,9 @@ const RegisterPage = () => {
         <Spinners />
       </div>
     ) : (
-      <div className={`${styles.register}`}>
+      <div
+        className={`${styles.register} ${isEmailLoading ? styles.dimmed : ""}`}
+      >
         <Header title="회원가입" />
         <RegisterForm />
         {isIdComponent()}

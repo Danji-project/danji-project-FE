@@ -3,10 +3,16 @@ import { Route, Routes } from "react-router";
 import AuthRoutes from "./AuthRoutes";
 import RegisterPage from "../pages/register/RegisterPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
+<<<<<<< HEAD
+import { LoginPage } from "../pages/loginPage/loginPage";
+import { FindInfoPage } from "../pages/findInfoPage/findInfoPage";
+import { FindResultPage } from "../pages/findInfoPage/findResultPage";
+import { ResetPasswordPage } from "../pages/findInfoPage/resetPasswordPage";
+=======
 import { LoginPage } from "../pages/login/loginPage";
 import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
-import { ResetPasswordPage } from "../pages/findInfoPage/resetPasswordPage";
+>>>>>>> main
 
 const AppRoutes = () => {
   return (

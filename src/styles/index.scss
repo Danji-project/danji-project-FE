@@ -84,6 +84,9 @@ button {
     overflow: auto;
     box-shadow: 0 20px 20px rgba(151, 187, 255, 0.15),
       0 1px 1px rgb(151, 187, 255);
+    &.of-hidden {
+      overflow: hidden;
+    }
     .app-container {
       min-height: 100%;
       display: flex;

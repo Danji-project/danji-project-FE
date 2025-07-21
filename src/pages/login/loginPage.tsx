@@ -7,8 +7,8 @@ import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 
 import { Checkbox } from "../../components/Checkbox/Checkbox";
-import InputFiled from "../../components/InputFiled/InputField";
-import Header from "../../components/Header/Header";
+import InputFiled from "../../components/input-filed/InputField";
+import Header from "../../layouts/Header";
 
 import styles from "./loginPage.module.scss";
 import KakaoIcon from "../../assets/social/kakao.svg";
@@ -35,8 +35,10 @@ const errorMessages: { [key: number]: string } & {
 const LoginHeader = () => {
   return (
     <div>
-      <Header title="로그인" type="sub" hasBackButton={true} />
-      <div style={{ textAlign: "center", padding: "20px 0px" }}>
+      <Header title="로그인" />
+      <div
+        style={{ textAlign: "center", padding: "20px 0px", paddingTop: "95px" }}
+      >
         <img src={LogoIcon} />
       </div>
     </div>
@@ -125,7 +127,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div>
+      <div style={{ maxWidth: "80%", margin: "0 auto" }}>
         <form onSubmit={handleSubmit}>
           <div>
             <InputFiled
@@ -193,7 +195,10 @@ const LoginForm = () => {
             </button>
             <p className={`${styles["login-gray-small-text"]}`}>
               아직 회원이 아니신가요?{" "}
-              <a className={`${styles["login-blue-small-text"]}`} href="/register">
+              <a
+                className={`${styles["login-blue-small-text"]}`}
+                href="/register"
+              >
                 회원가입
               </a>
             </p>
@@ -206,7 +211,7 @@ const LoginForm = () => {
 
 const SpiltBar = () => {
   return (
-    <div className={`${styles["login-div-horizon"]}`}>
+    <div className={`${styles["login-div-horizon-line"]}`}>
       <div className={`${styles["login-div-centerline"]}`} />
       <p className={`${styles["login-div-centerline-text"]}`}>Or</p>
       <div className={`${styles["login-div-centerline"]}`} />
@@ -235,7 +240,15 @@ const SocialLogin = () => {
 export const LoginPage = () => {
   return (
     <>
-      <div>
+      <div
+        style={{
+          position: "absolute",
+          top: "0",
+          bottom: "0",
+          left: "0",
+          right: "0",
+        }}
+      >
         <LoginHeader />
         <LoginForm />
         <SpiltBar />

@@ -1,5 +1,3 @@
-import React from "react";
-
 const ServiceIntro = () => {
   return (
     <div className="service-intro">

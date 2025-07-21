@@ -103,3 +103,21 @@ $font-size-midium: 16px;
     color: #97bbff;
   }
 }
+
+.login-div-horizon-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 80%;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  .login-div-centerline {
+    flex: 1;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.45);
+  }
+  .login-div-centerline-text {
+    font-size: 0.95rem;
+  }
+}

@@ -1,9 +1,15 @@
 import { Outlet, useLocation } from "react-router-dom";
 import RegisterPage from "../pages/register/RegisterPage";
+<<<<<<< HEAD
+import { LoginPage } from "../pages/loginPage/loginPage";
+import { FindInfoPage } from "../pages/findInfoPage/findInfoPage";
+import { FindResultPage } from "../pages/findInfoPage/findResultPage";
+import { ResetPasswordPage } from "../pages/findInfoPage/resetPasswordPage";
+=======
 import { LoginPage } from "../pages/login/loginPage";
 import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
-import { ResetPasswordPage } from "../pages/findInfoPage/resetPasswordPage";
+>>>>>>> main
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
 
 const AuthRoutes = () => {
