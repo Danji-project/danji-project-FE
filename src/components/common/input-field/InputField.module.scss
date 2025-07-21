@@ -69,5 +69,11 @@
       font-size: 0.85rem;
       color: rgb(217, 28, 28);
     }
+    .input__success {
+      position: absolute;
+      top: calc(100% + 10px);
+      font-size: 0.95rem;
+      color: rgb(60, 165, 62);
+    }
   }
 }

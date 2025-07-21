@@ -155,6 +155,7 @@ const RegisterForm = () => {
     checkEmailActionButton,
     setActionButton: setCheckActionButton,
     successMessage,
+    errorMessage,
     sendEmailCode,
   } = useCheckEmail();
 
@@ -279,6 +280,7 @@ const RegisterForm = () => {
           onChange={idChange}
           valid={validateCheck("ID_CHECK", email.value)!.valid}
           error={validateCheck("ID_CHECK", email.value)!.error}
+          errorMessage={errorMessage}
           success={successMessage}
           touched={email.touched}
           touches={setEmailTouched}
@@ -393,6 +395,8 @@ const RegisterPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(isEmailLoading);
+
   return oAuthSelect !== "" && oAuthSelect === "Email" ? (
     isLoading ? (
       <div className={[styles.register, styles.dimmed].join(" ")}>
@@ -402,6 +406,7 @@ const RegisterPage = () => {
       <div
         className={`${styles.register} ${isEmailLoading ? styles.dimmed : ""}`}
       >
+        {isEmailLoading && <Spinners />}
         <Header title="회원가입" />
         <RegisterForm />
         {isIdComponent()}

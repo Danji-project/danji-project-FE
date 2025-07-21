@@ -64,6 +64,7 @@ const InputField = ({
   onChange,
   valid,
   error,
+  errorMessage,
   success,
   touched,
   touches,
@@ -82,6 +83,7 @@ const InputField = ({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   valid?: boolean;
   error?: string;
+  errorMessage?: string;
   success?: string;
   touched?: boolean;
   touches?: () => void;
@@ -91,7 +93,6 @@ const InputField = ({
 }) => {
   const id = useId();
   const [showPassword, setShowPassword] = useState(false);
-  console.log(success);
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
@@ -162,8 +163,11 @@ const InputField = ({
         {!valid && error !== "" && touched && (
           <p className={styles["input__error"]}>{error}</p>
         )}
-        {!valid && verifyCodeError && (
-          <p className={styles["input__error"]}>{verifyCodeError}</p>
+        {errorMessage && !success && (
+          <p className={styles["input__error"]}>{errorMessage}</p>
+        )}
+        {success && !errorMessage && (
+          <p className={styles["input__success"]}>{success}</p>
         )}
       </div>
     </div>
