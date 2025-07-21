@@ -36,7 +36,7 @@ const LoginHeader = () => {
   return (
     <div>
       <Header title="로그인" type="sub" hasBackButton={true} />
-      <div style={{ textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <img src={LogoIcon} />
       </div>
     </div>
@@ -46,31 +46,33 @@ const LoginHeader = () => {
 const LoginForm = () => {
   const navigate = useNavigate();
   const user = useContext(UserContext);
-  
+
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  let tempData = localStorage.getItem("rememberEmail") ? localStorage.getItem("rememberEmail") : localStorage.getItem("strongtext");
-  console.log(tempData);
-  if(isValidEmail(tempData? tempData : ''))
-  {
-    user.setEmail(tempData? tempData : '');
-    localStorage.removeItem("strongtext")
+  let tempData = localStorage.getItem("rememberEmail")
+    ? localStorage.getItem("rememberEmail")
+    : localStorage.getItem("strongtext");
+  if (isValidEmail(tempData ? tempData : "")) {
+    user.setEmail(tempData ? tempData : "");
+    localStorage.removeItem("strongtext");
   }
 
   const [password, setPassword] = useState(user.password);
   const [email, setEmail] = useState(user.email);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null);
-  const [isSaveEmail, setIsSaveEmail] = useState<boolean>(localStorage.getItem("rememberEmail") ? true : false);
+  const [isSaveEmail, setIsSaveEmail] = useState<boolean>(
+    localStorage.getItem("rememberEmail") ? true : false
+  );
 
   const mutation = useMutation<LoginResponse, Error>({
     mutationFn: async () => {
       try {
         const response = await axios.post(
-          `/api${API_ENDPOINTS.AUTH.LOGIN}`,
+          `${import.meta.env.VITE_API_URL}/api${API_ENDPOINTS.AUTH.LOGIN}`,
           { loginId: email, password: password },
           { withCredentials: true }
         );
@@ -106,13 +108,10 @@ const LoginForm = () => {
       user.setEmail(email);
       mutation.mutate();
 
-      if(isSaveEmail)
-      {
-        localStorage.setItem('rememberEmail', user.email);
-      }
-      else
-      {
-        localStorage.removeItem('rememberEmail');
+      if (isSaveEmail) {
+        localStorage.setItem("rememberEmail", user.email);
+      } else {
+        localStorage.removeItem("rememberEmail");
       }
     }
   };
@@ -197,8 +196,10 @@ const LoginForm = () => {
             </button>
             <p className={`${styles["login-gray-small-text"]}`}>
               아직 회원이 아니신가요?{" "}
-              <a className={`${styles["login-blue-small-text"]}`}
-                 href="/register">
+              <a
+                className={`${styles["login-blue-small-text"]}`}
+                href="/register"
+              >
                 회원가입
               </a>
             </p>
