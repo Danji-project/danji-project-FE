@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router";
 import AuthRoutes from "./AuthRoutes";

@@ -1,4 +1,3 @@
-import * as React from "react";
 import styles from "./Dialog.module.scss";
 
 import { useDialogStore } from "../../../stores/dialogStore";

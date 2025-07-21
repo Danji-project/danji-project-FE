@@ -14,7 +14,6 @@ const Alert: React.FC<AlertProps> = ({
   alertTitle,
   alertContent,
   confirmLabel,
-  onClose,
   onConfirm,
 }) => {
   return (

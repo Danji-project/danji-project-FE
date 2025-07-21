@@ -1,11 +1,10 @@
-import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
-import styles from './Header.module.scss';
-import back_icon from '../../assets/button/prevBtn.svg';
+import { useNavigate, Link } from "react-router-dom";
+import styles from "./Header.module.scss";
+import back_icon from "../../assets/button/prevBtn.svg";
 
 interface HeaderProps {
   title: string;
-  type: 'main' | 'sub';
+  type: "main" | "sub";
   hasBackButton?: boolean;
   hasText?: boolean;
   hasIcons?: boolean;
@@ -32,7 +31,7 @@ const SubHeader: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`${styles.header} ${styles['header--sub']}`}
+      className={`${styles.header} ${styles["header--sub"]}`}
       role="banner"
     >
       <div className={styles.header__container}>
@@ -44,7 +43,7 @@ const SubHeader: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className={styles['header__back-button']}
+              className={styles["header__back-button"]}
               aria-label="이전 페이지로 이동"
             >
               <img src={back_icon} alt="" aria-hidden="true" />
@@ -78,7 +77,7 @@ const MainHeader: React.FC<HeaderProps> = ({ title }) => {
   return (
     <>
       <header
-        className={`${styles.header} ${styles['header--main']}`}
+        className={`${styles.header} ${styles["header--main"]}`}
         role="banner"
       >
         <div className={styles.header__container}>
@@ -94,7 +93,7 @@ const MainHeader: React.FC<HeaderProps> = ({ title }) => {
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
-  return props.type === 'main' ? (
+  return props.type === "main" ? (
     <MainHeader {...props} />
   ) : (
     <SubHeader {...props} />

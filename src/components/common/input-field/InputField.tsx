@@ -2,7 +2,6 @@ import * as React from "react";
 import { useId, useState } from "react";
 
 import styles from "./InputField.module.scss";
-import { useCheckEmail } from "../../../hooks/useCheckEmail";
 
 interface ActionButton {
   label: string;

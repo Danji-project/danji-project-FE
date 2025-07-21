@@ -1,12 +1,5 @@
-import { useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
-import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { API_ENDPOINTS } from "../../api/endpoints";
-import axios from "axios";
 
-import InputFiled from "../../components/input-filed/InputField";
 import Header from "../../components/header/Header";
 
 import styles from "./findInfoPage.module.scss";

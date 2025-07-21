@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./Header.module.scss";
 
 import { IoIosArrowBack } from "react-icons/io";
