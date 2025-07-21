@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../api/endpoints";
@@ -11,7 +9,6 @@ import InputFiled from "../../components/input-filed/InputField";
 import Header from "../../layouts/Header";
 
 import styles from "./findInfoPage.module.scss";
-import LogoIcon from "../../assets/logo.svg";
 
 interface ResetPasswordResponse {
   token: string;
