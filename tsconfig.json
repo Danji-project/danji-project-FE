@@ -10,5 +10,6 @@
     "outDir": "build",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "noUnusedLocals": false
   }
 }
