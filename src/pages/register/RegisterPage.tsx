@@ -120,7 +120,9 @@ const RegisterButton = ({
 const isIdComponent = () => (
   <div className={styles["is__id__comp"]}>
     <span>이미 회원이신가요?</span>
-    <button type="button">로그인</button>
+    {/* <button type="button">로그인</button> */}
+    {/* 제안 입니다. */}
+    <a href="/login">로그인</a>
   </div>
 );
 
@@ -241,7 +243,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className={`${styles.registerFormContainer}`}>
+    <div>
       <form onSubmit={register}>
         <Dialog
           dialogTitle="중복확인"
@@ -269,7 +271,7 @@ const RegisterForm = () => {
           />
         )}
         <InputField
-          label="아이디"
+          label="이메일"
           placeholder="4~15자 이내로 입력해주세요."
           className="register-form-id"
           type="text"
@@ -400,9 +402,9 @@ const RegisterPage = () => {
       </div>
     ) : (
       <div
-        className={`${styles.register} ${isEmailLoading ? styles.dimmed : ""}`}
+        className={`${isEmailLoading ? styles.dimmed : ""}`}
       >
-        <Header title="회원가입" />
+        <Header title="회원가입" type="sub" hasBackButton={true}/>
         <RegisterForm />
         {isIdComponent()}
       </div>

@@ -19,7 +19,7 @@ function BoldWord({ text, boldWord }: { text: string; boldWord: string }) {
 const FindInfoHeader = () => {
   return (
     <div>
-      <Header title="아이디/비밀번호 찾기" />
+      <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
     </div>
   );
 };
@@ -29,15 +29,16 @@ const SuccessFindEmailResult = () => {
   const successMsg = localStorage.getItem("message");
   const strongtext = localStorage.getItem("strongtext");
   return (
-    <div style={{ textAlign: "center", padding: "20px 0px" }}>
+    <div style={{ textAlign: "center", padding: "20px 0px" }}
+         className={`${styles['content-div']}`}>
       <img src={LogoIcon} />
       <BoldWord
         text={successMsg ? successMsg : ""}
         boldWord={strongtext ? strongtext : ""}
       />
       <button
-        className={`${styles["submit-button"]}`}
-        style={{ margin: "0" }}
+        className={`${styles["nomal-button"]} ${styles["nomal-button--valid"]}`}
+        style={{ margin: "0", position:'absolute', left:'0px', bottom:'20px' }}
         onClick={() => {
           navigate("/login", { replace: true });
         }}
@@ -56,11 +57,9 @@ const FailFindEmailResult = () => {
       style={{
         background: "black",
         opacity: "0.7",
-        position: "fixed",
-        top: "0",
-        left: "0",
         width: "100%",
         height: "100%",
+        flex:'1',
         justifyContent: "center",
         alignItems: "center",
         placeContent: "center",
@@ -74,6 +73,7 @@ const FailFindEmailResult = () => {
           display: "inline-block",
           textAlign: "center",
           padding: "20px",
+          margin: "5px",
         }}
       >
         <p
@@ -97,7 +97,7 @@ const FailFindEmailResult = () => {
           {errMsg}
         </p>
         <button
-          className={`${styles["submit-button"]} ${styles["submit-button--valid"]}`}
+          className={`${styles["nomal-button"]} ${styles["nomal-button--valid"]}`}
           style={{ margin: "0" }}
           onClick={() => {
             navigate("/login", { replace: true });
@@ -116,7 +116,7 @@ export const FindResultPage = () => {
   return (
     <>
       {re == "true" ? (
-        <div style={{ minWidth: "400px", margin: "0" }}>
+        <div>
           <FindInfoHeader />
           <SuccessFindEmailResult />
         </div>

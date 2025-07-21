@@ -1,6 +1,9 @@
 import styles from "./RegisterSuccessPage.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const RegisterSuccessPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles["register-success"]}>
       <div className={styles["register-success-img"]}>
@@ -12,7 +15,7 @@ const RegisterSuccessPage = () => {
         </p>
       </div>
       <div className={styles["register-login"]}>
-        <button>로그인 하고 사용하기</button>
+        <button onClick={() => {navigate("/login", { replace: true });}}>로그인 하고 사용하기</button>
       </div>
     </div>
   );
