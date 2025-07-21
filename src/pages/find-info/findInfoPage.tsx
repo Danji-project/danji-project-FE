@@ -12,6 +12,7 @@ import styles from "./findInfoPage.module.scss";
 interface FindInfoResponse {
   token: string;
 }
+
 const FindInfoHeader = () => {
   return (
     <div>

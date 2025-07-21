@@ -64,14 +64,14 @@ const LoginForm = () => {
   const [email, setEmail] = useState(user.email);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null);
-  const [isSaveEmail, setIsSaveEmail] = useState(localStorage.getItem("rememberEmail"));
+  const [isSaveEmail, setIsSaveEmail] = useState<boolean>(localStorage.getItem("rememberEmail") ? true : false);
 
   const mutation = useMutation<LoginResponse, Error>({
     mutationFn: async () => {
       try {
         const response = await axios.post(
           `/api${API_ENDPOINTS.AUTH.LOGIN}`,
-          { id: email, pw: password },
+          { loginId: email, password: password },
           { withCredentials: true }
         );
         return response.data;
@@ -91,8 +91,8 @@ const LoginForm = () => {
       if (data?.token) {
         localStorage.setItem("user_token", data.token);
         user.setIsLogin(true);
-        navigate("/main", { replace: true });
       }
+      navigate("/", { replace: true });
     },
     onError: (err: Error) => {
       setLoginError(err.message);
