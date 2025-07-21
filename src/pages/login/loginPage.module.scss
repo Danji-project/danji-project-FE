@@ -13,6 +13,7 @@ $font-size-midium: 16px;
   height: 52px;
   transition: all 0.2s ease-in-out;
   width: 100%;
+  border-radius: 8px;
 
   &:hover {
     color: #fff;
@@ -82,7 +83,7 @@ $font-size-midium: 16px;
   color: #c0c0c0;
   font-size: 13px;
   font-weight: 400;
-  margin: 4px 0 32px 0;
+  margin: 6px 0 32px 0;
 }
 
 .login-blue-small-text {
@@ -101,23 +102,5 @@ $font-size-midium: 16px;
 
   &:hover{
     color: #97bbff;
-  }
-}
-
-.login-div-horizon-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: 80%;
-  margin: 0 auto;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  .login-div-centerline {
-    flex: 1;
-    height: 1px;
-    background-color: rgba(0, 0, 0, 0.45);
-  }
-  .login-div-centerline-text {
-    font-size: 0.95rem;
   }
 }

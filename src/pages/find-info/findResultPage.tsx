@@ -38,7 +38,7 @@ const SuccessFindEmailResult = () => {
       />
       <button
         className={`${styles["nomal-button"]} ${styles["nomal-button--valid"]}`}
-        style={{ margin: "0", position:'absolute', left:'20px', bottom:'20px' }}
+        style={{ margin: "0", position:'absolute', left:'0px', bottom:'20px' }}
         onClick={() => {
           navigate("/login", { replace: true });
         }}
