@@ -3,7 +3,7 @@ import RegisterPage from "../pages/register/RegisterPage";
 import { LoginPage } from "../pages/login/loginPage";
 import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
-import { ResetPasswordPage } from "../pages/findInfoPage/resetPasswordPage";
+import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
 
 const AuthRoutes = () => {

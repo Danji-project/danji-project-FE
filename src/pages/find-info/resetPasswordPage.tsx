@@ -7,8 +7,8 @@ import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 import { validateCheck } from "../../utils/validators";
 
-import InputFiled from "../../components/InputFiled/InputField";
-import Header from "../../components/Header/Header";
+import InputFiled from "../../components/input-filed/InputField";
+import Header from "../../layouts/Header";
 
 import styles from "./findInfoPage.module.scss";
 import LogoIcon from "../../assets/logo.svg";
