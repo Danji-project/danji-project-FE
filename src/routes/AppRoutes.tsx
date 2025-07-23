@@ -1,4 +1,4 @@
-import { Suspense, useContext, useEffect } from "react";
+import { Suspense, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import AuthRoutes from "./AuthRoutes";
@@ -14,7 +14,7 @@ import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import { MainPage } from "../pages/main/MainPage";
 
 const AppRoutes = () => {
-  const { isLogin } = useContext(UserContext);
+  const user = useContext(UserContext);
 
   return (
     <Suspense fallback={<div>loading...</div>}>
@@ -24,27 +24,37 @@ const AppRoutes = () => {
         <Route element={<AuthRoutes />}>
           <Route
             path="/register"
-            element={!isLogin ? <RegisterPage /> : <Navigate to="/" replace />}
+            element={
+              !user.isLogin ? <RegisterPage /> : <Navigate to="/" replace />
+            }
           />
           <Route path="/register-success" element={<RegisterSuccessPage />} />
           <Route
             path="/login"
-            element={!isLogin ? <LoginPage /> : <Navigate to="/" replace />}
+            element={
+              !user.isLogin ? <LoginPage /> : <Navigate to="/" replace />
+            }
           />
           <Route
             path="/find"
-            element={!isLogin ? <FindInfoPage /> : <Navigate to="/" replace />}
+            element={
+              !user.isLogin ? <FindInfoPage /> : <Navigate to="/" replace />
+            }
           />
           <Route
             path="/find-result"
             element={
-              !isLogin ? <FindResultPage /> : <Navigate to="/" replace />
+              !user.isLogin ? <FindResultPage /> : <Navigate to="/" replace />
             }
           />
           <Route
             path="/reset-password"
             element={
-              !isLogin ? <ResetPasswordPage /> : <Navigate to="/" replace />
+              !user.isLogin ? (
+                <ResetPasswordPage />
+              ) : (
+                <Navigate to="/" replace />
+              )
             }
           />
         </Route>
