@@ -2,6 +2,7 @@ import { Suspense, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import AuthRoutes from "./AuthRoutes";
+import { MyPageRoutes } from "./MyPageRoutes";
 
 import { UserContext } from "../context/UserInfoContext";
 
@@ -12,6 +13,8 @@ import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
 import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import { MainPage } from "../pages/main/MainPage";
+
+import MyPage from "../pages/my-pages/MyPage";
 
 const AppRoutes = () => {
   const user = useContext(UserContext);
@@ -55,6 +58,16 @@ const AppRoutes = () => {
               ) : (
                 <Navigate to="/" replace />
               )
+            }
+          />
+        </Route>
+
+        {/* 마이페이지 라우팅 */}
+        <Route element={<MyPageRoutes />}>
+          <Route
+            path="/my-page"
+            element={
+              user.isLogin ? <MyPage /> : <Navigate to="/login" replace />
             }
           />
         </Route>
