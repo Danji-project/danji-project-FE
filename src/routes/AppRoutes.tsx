@@ -1,10 +1,9 @@
-import { Suspense, useContext } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import AuthRoutes from "./AuthRoutes";
 import { MyPageRoutes } from "./MyPageRoutes";
-
-import { UserContext } from "../context/UserInfoContext";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 import RegisterPage from "../pages/register/RegisterPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
@@ -17,59 +16,67 @@ import { MainPage } from "../pages/main/MainPage";
 import MyPage from "../pages/my-pages/MyPage";
 
 const AppRoutes = () => {
-  const user = useContext(UserContext);
-
   return (
     <Suspense fallback={<div>loading...</div>}>
       <Routes>
+        {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
+
         {/* 인증 관련 라우팅 */}
         <Route element={<AuthRoutes />}>
           <Route
             path="/register"
             element={
-              !user.isLogin ? <RegisterPage /> : <Navigate to="/" replace />
+              <ProtectedRoutes redirectPath="/">
+                <RegisterPage />
+              </ProtectedRoutes>
             }
           />
-          <Route path="/register-success" element={<RegisterSuccessPage />} />
+          <Route
+            path="/register-success"
+            element={
+              <ProtectedRoutes redirectPath="/">
+                <RegisterSuccessPage />
+              </ProtectedRoutes>
+            }
+          />
           <Route
             path="/login"
             element={
-              !user.isLogin ? <LoginPage /> : <Navigate to="/" replace />
+              <ProtectedRoutes redirectPath="/">
+                <LoginPage />
+              </ProtectedRoutes>
             }
           />
           <Route
             path="/find"
             element={
-              !user.isLogin ? <FindInfoPage /> : <Navigate to="/" replace />
+              <ProtectedRoutes redirectPath="/">
+                <FindInfoPage />
+              </ProtectedRoutes>
             }
           />
           <Route
             path="/find-result"
             element={
-              !user.isLogin ? <FindResultPage /> : <Navigate to="/" replace />
+              <ProtectedRoutes redirectPath="/">
+                <FindResultPage />
+              </ProtectedRoutes>
             }
           />
           <Route
             path="/reset-password"
             element={
-              !user.isLogin ? (
+              <ProtectedRoutes redirectPath="/">
                 <ResetPasswordPage />
-              ) : (
-                <Navigate to="/" replace />
-              )
+              </ProtectedRoutes>
             }
           />
         </Route>
 
         {/* 마이페이지 라우팅 */}
         <Route element={<MyPageRoutes />}>
-          <Route
-            path="/my-page"
-            element={
-              user.isLogin ? <MyPage /> : <Navigate to="/login" replace />
-            }
-          />
+          <Route path="/my-page" element={<MyPage />} />
         </Route>
       </Routes>
     </Suspense>
