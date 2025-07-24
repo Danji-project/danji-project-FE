@@ -1,0 +1,49 @@
+.my__page {
+  margin-top: 1.125rem;
+  padding-bottom: 0.775rem;
+  border-bottom: 1px solid rgb(237, 237, 237);
+  &__profile__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__img__wrapper {
+    position: relative;
+  }
+  &__profile__img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__profile__img__button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(151, 187, 255, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  &__profile__info__text {
+    &__name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #000;
+      margin-top: 0.775rem;
+    }
+    &__email {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: #000;
+      margin-top: 0.25rem;
+      text-align: center;
+    }
+  }
+}

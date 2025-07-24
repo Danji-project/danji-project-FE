@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 
-import { Checkbox } from "../../components/Checkbox/Checkbox";
+import { Checkbox } from "../../components/checkbox/Checkbox";
 import InputFiled from "../../components/input-filed/InputField";
 import Header from "../../layouts/Header";
 
