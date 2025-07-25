@@ -1,58 +1,319 @@
-.my__page {
-  &__profile__info {
+.mypage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// 헤더
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: white;
+  border-bottom: 1px solid #e9ecef;
+  height: 56px;
+
+  &__back-btn {
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: -8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+
+  &__settings-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-right: -8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// 메인 컨텐츠
+.mypage__content {
+  flex: 0 1 auto;
+  padding: 20px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+// 프로필 섹션
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgb(237, 237, 237);
+  &__avatar-container {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  &__avatar {
+    position: relative;
+  }
+
+  &__image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f0f0f0;
+  }
+
+  &__edit-btn {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgb(151, 187, 255);
+    border: 2px solid white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #7c3aed;
+      transform: scale(1.1);
+    }
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &__info {
+    text-align: center;
+  }
+
+  &__name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 8px 0;
+  }
+
+  &__email {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+}
+
+// 아파트 섹션
+.apartment {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+
+  &__edit-btn {
+    background: none;
+    border: none;
+    color: rgb(151, 187, 255);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-weight: 500;
+
+    &:hover {
+      color: #7c3aed;
+    }
+  }
+
+  &__card {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+
+  &__image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 8px 0;
+  }
+
+  &__address {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 4px 0;
+  }
+
+  &__unit {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+
+    &--unregister {
+      background: white;
+      color: #666;
+      border: 2px solid rgb(232, 232, 232);
+
+      &:hover {
+        background: rgb(248, 248, 248);
+        border-color: rgb(200, 200, 200);
+        transform: translateY(-1px);
+      }
+    }
+
+    &--goto {
+      background: rgb(151, 187, 255);
+      color: white;
+      border: 2px solid rgb(151, 187, 255);
+
+      &:hover {
+        background: rgb(130, 170, 255);
+        border-color: rgb(130, 170, 255);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
+      }
+    }
+  }
+}
+
+// 하단 네비게이션
+.bottom-nav {
+  display: flex;
+  background: white;
+  border-top: 1px solid #e9ecef;
+  padding: 12px 0;
+
+  &__item {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-bottom: 1px solid rgb(237, 237, 237);
-    margin-top: 1.125rem;
-    padding-bottom: 0.775rem;
-  }
-  &__img__wrapper {
-    position: relative;
-  }
-  &__profile__img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-  &__profile__img__button {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    background-color: rgba(151, 187, 255, 0.7);
-    border-radius: 50%;
+    gap: 6px;
+    background: none;
+    border: none;
     cursor: pointer;
-  }
-  &__profile__info__text {
-    &__name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #000;
-      margin-top: 0.775rem;
-    }
-    &__email {
-      font-size: 0.875rem;
-      font-weight: 400;
-      color: #000;
-      margin-top: 0.25rem;
-      text-align: center;
+    padding: 8px 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f8f9fa;
     }
   }
-  &__agit {
-    padding: 1.125rem 0;
-    border-bottom: 1px solid rgb(237, 237, 237);
-    &__title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #000;
+
+  &__icon {
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__label {
+    font-size: 14px;
+    color: rgb(151, 187, 255);
+    text-align: center;
+    line-height: 1.2;
+    white-space: pre-line;
+    font-weight: 500;
+  }
+}
+
+// 반응형
+@media (max-width: 480px) {
+  .mypage__content {
+    padding: 16px;
+  }
+
+  .profile {
+    padding: 24px 16px;
+
+    &__image {
+      width: 70px;
+      height: 70px;
+    }
+
+    &__edit-btn {
+      width: 20px;
+      height: 20px;
+
+      svg {
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+
+  .apartment {
+    padding: 16px;
+
+    &__card {
+      padding: 12px;
+    }
+
+    &__image {
+      width: 70px;
+      height: 70px;
     }
   }
 }
