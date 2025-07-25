@@ -14,6 +14,8 @@ import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import { MainPage } from "../pages/main/MainPage";
 
 import MyPage from "../pages/my-pages/MyPage";
+import { SettingsRoutes } from "./SettingsRoutes";
+import Settings from "../pages/settings/Settings";
 
 const AppRoutes = () => {
   return (
@@ -77,6 +79,11 @@ const AppRoutes = () => {
         {/* 마이페이지 라우팅 */}
         <Route element={<MyPageRoutes />}>
           <Route path="/my-page" element={<MyPage />} />
+        </Route>
+
+        {/* 설정 라우팅 */}
+        <Route element={<SettingsRoutes />}>
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
     </Suspense>

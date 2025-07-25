@@ -31,6 +31,9 @@ const TitleHeader: React.FC<HeaderProps> = ({
   const navigateBack = () => {
     navigate(-1);
   };
+  const goSettings = () => {
+    navigate("/settings");
+  };
   return (
     <header
       className={`${styles.header} ${styles["header--sub"]}`}
@@ -49,7 +52,11 @@ const TitleHeader: React.FC<HeaderProps> = ({
         <h1 className={styles.header__title} id="subheader-title">
           {title}
         </h1>
-        <button type="button" className={styles["header__icons"]}>
+        <button
+          type="button"
+          className={styles["header__icons"]}
+          onClick={goSettings}
+        >
           {hasIcons}
         </button>
       </div>
