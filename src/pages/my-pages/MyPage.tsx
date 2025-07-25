@@ -26,10 +26,19 @@ const ProfileInfo = () => {
   );
 };
 
+const AgitMenu = () => {
+  return (
+    <div className={styles["my__page__agit"]}>
+      <h1 className={styles["my__page__agit__title"]}>단지님의 아지트</h1>
+    </div>
+  );
+};
+
 const MyPage = () => {
   return (
     <div className={styles["my__page"]}>
       <ProfileInfo />
+      <AgitMenu />
     </div>
   );
 };
