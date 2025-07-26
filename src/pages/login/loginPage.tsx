@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserInfoContext";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { API_ENDPOINTS } from "../../api/endpoints";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
 
 import { Checkbox } from "../../components/Checkbox/Checkbox";
 import InputFiled from "../../components/input-filed/InputField";
+import Spinners from "../../components/common/spinners/Spinners";
 import Header from "../../layouts/Header";
 
 import styles from "./loginPage.module.scss";
@@ -16,21 +15,6 @@ import GoogleIcon from "../../assets/social/google.svg";
 import NaverIcon from "../../assets/social/naver.svg";
 import LogoIcon from "../../assets/logo.svg";
 
-interface LoginResponse {
-  token: string;
-}
-
-const errorMessages: { [key: number]: string } & {
-  default: string;
-  networkError: string;
-} = {
-  401: "아이디 또는 비밀번호가 일치하지 않습니다",
-  404: "존재하지 않는 계정입니다",
-  429: "너무 많은 로그인 시도가 있었습니다. 잠시 후 다시 시도해주세요",
-  500: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요",
-  networkError: "인터넷 연결을 확인해주세요",
-  default: "로그인 중 오류가 발생했습니다",
-};
 
 const LoginHeader = () => {
   return (
@@ -43,8 +27,7 @@ const LoginHeader = () => {
   );
 };
 
-const LoginForm = () => {
-  const navigate = useNavigate();
+const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boolean>>;}) => {
   const user = useContext(UserContext);
   
   const isValidEmail = (email: string) => {
@@ -63,49 +46,19 @@ const LoginForm = () => {
   const [password, setPassword] = useState(user.password);
   const [email, setEmail] = useState(user.email);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [loginError, setLoginError] = useState<string | null>(null);
   const [isSaveEmail, setIsSaveEmail] = useState<boolean>(localStorage.getItem("rememberEmail") ? true : false);
 
-  const mutation = useMutation<LoginResponse, Error>({
-    mutationFn: async () => {
-      try {
-        const response = await axios.post(
-          `/api${API_ENDPOINTS.AUTH.LOGIN}`,
-          { loginId: email, password: password },
-          { withCredentials: true }
-        );
-        return response.data;
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          const status = error.response?.status;
-          if (status && errorMessages[status]) {
-            throw new Error(errorMessages[status]);
-          } else if (error.request) {
-            throw new Error(errorMessages.networkError);
-          }
-        }
-        throw new Error(errorMessages.default);
-      }
-    },
-    onSuccess: (data) => {
-      if (data?.token) {
-        localStorage.setItem("user_token", data.token);
-        user.setIsLogin(true);
-      }
-      navigate("/", { replace: true });
-    },
-    onError: (err: Error) => {
-      setLoginError(err.message);
-    },
-  });
+  const { Login, isLogining } = useLogin();
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailError) {
       user.setPassword(password);
       user.setEmail(email);
-      mutation.mutate();
-
+      setIsLoading(isLogining);
+      Login();
+      
       if(isSaveEmail)
       {
         localStorage.setItem('rememberEmail', user.email);
@@ -161,10 +114,10 @@ const LoginForm = () => {
               }}
               placeholder="비밀번호를 입력하세요"
               autoComplete="password"
-              aria-invalid={loginError ? "true" : "false"}
-              aria-describedby={loginError ? "password-error" : undefined}
+              aria-invalid={user.error ? "true" : "false"}
+              aria-describedby={user.error ? "password-error" : undefined}
               showPasswordToggle={true}
-              error={loginError ?? undefined}
+              error={user.error ?? undefined}
             />
           </div>
           <div className={`${styles["login-div-horizon"]}`}>
@@ -176,9 +129,7 @@ const LoginForm = () => {
               }}
             />
             <p style={{ marginLeft: "auto" }}>
-              <a className={`${styles["login-gray-midium-text"]}`} href="/find">
-                아이디/비밀번호 찾기 &gt;
-              </a>
+              <Link className={`${styles["login-gray-midium-text"]}`} to="/find">아이디/비밀번호 찾기 &gt;</Link>
             </p>
           </div>
 
@@ -191,16 +142,13 @@ const LoginForm = () => {
                 checkEmail();
               }}
               type="submit"
-              disabled={isValidInputs ? false : true}
+              disabled={isValidInputs || isLogining ? false : true}
             >
-              로그인
+              {isLogining ? "로그인 중...":"로그인" }
             </button>
             <p className={`${styles["login-gray-small-text"]}`}>
               아직 회원이 아니신가요?{" "}
-              <a className={`${styles["login-blue-small-text"]}`}
-                 href="/register">
-                회원가입
-              </a>
+              <Link className={`${styles["login-blue-small-text"]}`} to="/register">회원가입</Link>
             </p>
           </div>
         </form>
@@ -238,14 +186,23 @@ const SocialLogin = () => {
 };
 
 export const LoginPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
+    <div>
+      {isLoading ? 
+        <div className={[styles.register, styles.dimmed].join(" ")}>
+          <Spinners />
+        </div> 
+        :<></>
+      }
       <div>
         <LoginHeader />
-        <LoginForm />
+        <LoginForm setIsLoading={setIsLoading}/>
         <SpiltBar />
         <SocialLogin />
       </div>
+    </div>
     </>
   );
 };
