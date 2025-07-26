@@ -71,6 +71,7 @@ export const useCheckEmail = () => {
       setErrorMessage(undefined);
     },
     onError: (error) => {
+      openAlert();
       if (axios.isAxiosError(error)) {
         setErrorMessage("이미 등록된 이메일입니다.");
       }
@@ -79,6 +80,8 @@ export const useCheckEmail = () => {
         disabled: false,
       }));
       setSuccessMessage(undefined);
+      setTitle("오류발생");
+      setContent("이미 등록된 이메일입니다.");
     },
   });
 

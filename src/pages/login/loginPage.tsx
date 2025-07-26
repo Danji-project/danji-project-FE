@@ -20,7 +20,7 @@ const LoginHeader = () => {
   return (
     <div>
       <Header title="로그인" type="sub" hasBackButton={true} />
-      <div style={{ textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <img src={LogoIcon} />
       </div>
     </div>
@@ -29,18 +29,18 @@ const LoginHeader = () => {
 
 const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boolean>>;}) => {
   const user = useContext(UserContext);
-  
+
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  let tempData = localStorage.getItem("rememberEmail") ? localStorage.getItem("rememberEmail") : localStorage.getItem("strongtext");
-  console.log(tempData);
-  if(isValidEmail(tempData? tempData : ''))
-  {
-    user.setEmail(tempData? tempData : '');
-    localStorage.removeItem("strongtext")
+  let tempData = localStorage.getItem("rememberEmail")
+    ? localStorage.getItem("rememberEmail")
+    : localStorage.getItem("strongtext");
+  if (isValidEmail(tempData ? tempData : "")) {
+    user.setEmail(tempData ? tempData : "");
+    localStorage.removeItem("strongtext");
   }
 
   const [password, setPassword] = useState(user.password);

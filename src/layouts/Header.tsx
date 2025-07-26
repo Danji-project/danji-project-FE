@@ -7,7 +7,7 @@ interface HeaderProps {
   type: "main" | "sub";
   hasBackButton?: boolean;
   hasText?: boolean;
-  hasIcons?: boolean;
+  hasIcons?: React.ReactNode;
   hasUserIcon?: boolean;
   iconCount?: number;
   buttonText?: string;
@@ -31,25 +31,34 @@ const TitleHeader: React.FC<HeaderProps> = ({
   const navigateBack = () => {
     navigate(-1);
   };
+  const goSettings = () => {
+    navigate("/settings");
+  };
   return (
     <header
       className={`${styles.header} ${styles["header--sub"]}`}
       role="banner"
     >
       <div className={styles.header__container}>
-        <nav
-          className={styles.header__navigation}
-          aria-label="보조 헤더 내비게이션"
-        >
-          {hasBackButton && (
-            <button type="button" onClick={navigateBack}>
-              <IoIosArrowBack size={20} />
-            </button>
-          )}
-        </nav>
+        {hasBackButton && (
+          <button
+            type="button"
+            onClick={navigateBack}
+            className={styles["header__back-button"]}
+          >
+            <IoIosArrowBack size={20} />
+          </button>
+        )}
         <h1 className={styles.header__title} id="subheader-title">
           {title}
         </h1>
+        <button
+          type="button"
+          className={styles["header__icons"]}
+          onClick={goSettings}
+        >
+          {hasIcons}
+        </button>
       </div>
     </header>
   );
