@@ -39,5 +39,5 @@ export class UserInfoModel implements IUserInfoBase
     setError(err: string){this.error = err;}
     getError() {return this.error;}
 
-    setIsLogin(result: boolean) {  this.isLogin = result; }
+    setIsLogin(result: boolean) { this.isLogin = result; }
 }

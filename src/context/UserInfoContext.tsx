@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { UserInfoModel } from '../model/UserInfoModel';
 
 
-const tempUser = new UserInfoModel();
+const tempUser = new UserInfoModel(); 
 const UserUpdateContext = createContext<((user: UserInfoModel) => void) | null>(null);
 export const UserContext = createContext<UserInfoModel>(tempUser);
 

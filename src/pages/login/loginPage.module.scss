@@ -104,3 +104,26 @@ $font-size-midium: 16px;
     color: #97bbff;
   }
 }
+
+.register {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  transform: translate(0%, 0%);
+
+  &.dimmed {
+    &::after {
+      content: '';
+      position: absolute;
+      display: flex;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+}

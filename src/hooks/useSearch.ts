@@ -1,0 +1,46 @@
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../api/endpoints";
+
+interface SearchResponse {
+  token: string;
+}
+
+export const useSearch = ({searchText}:{searchText:string}) => {
+  const navigate = useNavigate();
+
+  const mutation = useMutation<SearchResponse, Error>({
+    mutationFn: async () => {
+      try {
+        const response = await axios.get(
+          `/api${API_ENDPOINTS.SEARCH.DANJI}?keyword=${searchText}`
+        );
+        
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          throw new Error(status?.toString());
+        }
+      }
+    },
+    onSuccess: (data) => {
+      if (data?.token) {
+        localStorage.setItem("user_token", data.token);
+      }
+    },
+    onError: (err: Error) => {
+      console.log(err.message);
+    },
+  });
+
+  const Search: Function = () => {
+    mutation.mutate();
+  };
+
+  return {
+    Search,
+    isSearching: mutation.isPending,
+  };
+};
