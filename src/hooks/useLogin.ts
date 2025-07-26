@@ -1,8 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
-import { useContext } from "react";
 import { useUserInfo } from "../stores/userStore";
 
 interface LoginResponse {
@@ -26,9 +25,6 @@ export const useLogin = () => {
   const mutation = useMutation<LoginResponse, Error>({
     mutationFn: async () => {
       try {
-        // console.log(user.email);
-        // console.log(user.password);
-
         const response = await axios.post(
           `/api${API_ENDPOINTS.AUTH.LOGIN}`,
           { loginId: user.email, password: user.password },
@@ -55,7 +51,7 @@ export const useLogin = () => {
       navigate("/", { replace: true });
     },
     onError: (err: Error) => {
-      //user.setError(err.message);
+      user.setError(err.message);
       user.setIsLogin(false);
     },
   });

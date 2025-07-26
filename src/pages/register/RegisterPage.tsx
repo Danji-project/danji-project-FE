@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./RegisterPage.module.scss";
 
 import Spinners from "../../components/common/spinners/Spinners";
@@ -10,6 +11,7 @@ import Alert from "../../components/common/alert/Alert";
 
 import useRegisterStore from "../../stores/registerStore";
 import { useCheckEmail } from "../../hooks/useCheckEmail";
+import { useUserInfo } from "../../stores/userStore";
 import { useDialogStore } from "../../stores/dialogStore";
 
 import { validateCheck } from "../../utils/validators";
@@ -394,8 +396,21 @@ const RegisterForm = () => {
 const RegisterPage = () => {
   const { isEmailLoading } = useCheckEmail();
   const [oAuthSelect, setOAuthSelect] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const user = useUserInfo();
+
+  // 이미 로그인된 사용자는 홈페이지로 리다이렉트
+  useEffect(() => {
+    if (user.isLogin) {
+      navigate("/", { replace: true });
+    }
+  }, [user.isLogin, navigate]);
+
+  // 로그인된 사용자인 경우 아무것도 렌더링하지 않음
+  if (user.isLogin) {
+    return null;
+  }
 
   console.log(isEmailLoading);
 

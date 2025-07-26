@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useUserInfo } from "../../stores/userStore";
 import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 
@@ -42,7 +43,7 @@ const FindInfoEmailForm = () => {
             "회원님의 이메일은\n" + "example@email.com" + " 입니다."
           );
           localStorage.setItem("strongtext", "example@email.com");
-          localStorage.removeItem("rememberEmail")
+          localStorage.removeItem("rememberEmail");
           console.log(localStorage.getItem("message"));
         }
 
@@ -102,48 +103,51 @@ const FindInfoEmailForm = () => {
 
   return (
     <>
-    <div className={`${styles['content-div']}`} style={{minHeight:'calc(var(--device-height) - 250px)'}}>
-      <div>
-        <div className={`${styles["login-div-horizon"]}`}>
-          <InputFiled
-            label="이름"
-            type="text"
-            name="userName"
-            placeholder="이름을 입력해주세요."
-            value={userName}
-            onChange={(e) => {
-              setUserName(e.target.value);
-            }}
-          />
-        </div>
-
-        <div className={`${styles["login-div-horizon"]}`}>
-          <InputFiled
-            label="전화번호"
-            type="text"
-            name="phonNumber"
-            placeholder="-제외 11자리를 입력해주세요."
-            value={userPhonNumber}
-            onChange={(e) => {
-              setPhonNumber(e.target.value);
-            }}
-          />
-        </div>
-      </div>
-
-      <button
-        className={`${styles["nomal-button"]} ${styles["submit-button"]} ${
-          vailed ? styles["nomal-button--valid"] : ""
-        }`}
-        style={{ margin: "0px"}}
-        onMouseOver={() => {}}
-        disabled={vailed ? false : true}
-        onClick={handleSubmit}
-        type="submit"
+      <div
+        className={`${styles["content-div"]}`}
+        style={{ minHeight: "calc(var(--device-height) - 250px)" }}
       >
-        다음
-      </button>
-    </div>
+        <div>
+          <div className={`${styles["login-div-horizon"]}`}>
+            <InputFiled
+              label="이름"
+              type="text"
+              name="userName"
+              placeholder="이름을 입력해주세요."
+              value={userName}
+              onChange={(e) => {
+                setUserName(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className={`${styles["login-div-horizon"]}`}>
+            <InputFiled
+              label="전화번호"
+              type="text"
+              name="phonNumber"
+              placeholder="-제외 11자리를 입력해주세요."
+              value={userPhonNumber}
+              onChange={(e) => {
+                setPhonNumber(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <button
+          className={`${styles["nomal-button"]} ${styles["submit-button"]} ${
+            vailed ? styles["nomal-button--valid"] : ""
+          }`}
+          style={{ margin: "0px" }}
+          onMouseOver={() => {}}
+          disabled={vailed ? false : true}
+          onClick={handleSubmit}
+          type="submit"
+        >
+          다음
+        </button>
+      </div>
     </>
   );
 };
@@ -255,7 +259,10 @@ const FindInfoPassword = () => {
 
   return (
     <>
-      <div className={`${styles['content-div']}`}  style={{minHeight:'calc(var(--device-height) - 250px)'}}>
+      <div
+        className={`${styles["content-div"]}`}
+        style={{ minHeight: "calc(var(--device-height) - 250px)" }}
+      >
         <div>
           <div className={`${styles["login-div-horizon"]}`}>
             <InputFiled
@@ -300,7 +307,9 @@ const FindInfoPassword = () => {
                 name="otp"
                 placeholder="인증번호를 입력해주세요.(6자리)"
                 onBlur={() => {
-                  setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                  setOTPError(
+                    otp.length != 6 ? "인증번호는 6자리입니다." : null
+                  );
                 }}
                 value={otp}
                 onChange={(e) => {
@@ -317,7 +326,9 @@ const FindInfoPassword = () => {
                 }`}
                 disabled={optError ? true : false}
                 onMouseOver={() => {
-                  setOTPError(otp.length != 6 ? "인증번호는 6자리입니다." : null);
+                  setOTPError(
+                    otp.length != 6 ? "인증번호는 6자리입니다." : null
+                  );
                 }}
                 style={{ width: "70px" }}
                 onClick={() => {
@@ -333,7 +344,9 @@ const FindInfoPassword = () => {
         </div>
 
         <button
-          className={`${styles["nomal-button"]} ${styles["submit-button"]} ${successOTP ? styles["nomal-button--valid"] : ""}`}
+          className={`${styles["nomal-button"]} ${styles["submit-button"]} ${
+            successOTP ? styles["nomal-button--valid"] : ""
+          }`}
           disabled={successOTP ? false : true}
           style={{ margin: "0" }}
           onClick={() => {
@@ -348,10 +361,26 @@ const FindInfoPassword = () => {
 };
 
 const SelectBtn = () => {
-  let check = localStorage.getItem('clickpw');
-  localStorage.removeItem('clickpw');
+  let check = localStorage.getItem("clickpw");
+  localStorage.removeItem("clickpw");
 
-  const [isSelctEmail, setIsSelctEmail] = useState<boolean>(check != null ? false : true);
+  const [isSelctEmail, setIsSelctEmail] = useState<boolean>(
+    check != null ? false : true
+  );
+  const navigate = useNavigate();
+  const user = useUserInfo();
+
+  // 이미 로그인된 사용자는 홈페이지로 리다이렉트
+  useEffect(() => {
+    if (user.isLogin) {
+      navigate("/", { replace: true });
+    }
+  }, [user.isLogin, navigate]);
+
+  // 로그인된 사용자인 경우 아무것도 렌더링하지 않음
+  if (user.isLogin) {
+    return null;
+  }
 
   return (
     <>
@@ -384,7 +413,7 @@ const SelectBtn = () => {
 export const FindInfoPage = () => {
   return (
     <>
-      <div style={{height:'100%'}}>
+      <div style={{ height: "100%" }}>
         <SelectBtn />
       </div>
     </>

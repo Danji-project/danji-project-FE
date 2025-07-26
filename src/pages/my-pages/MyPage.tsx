@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 
 import styles from "./MyPage.module.scss";
@@ -116,6 +117,21 @@ const BottomNavigation = () => {
 };
 
 const MyPage = () => {
+  const navigate = useNavigate();
+  const user = useUserInfo();
+
+  // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
+  useEffect(() => {
+    if (!user.isLogin) {
+      navigate("/login", { replace: true });
+    }
+  }, [user.isLogin, navigate]);
+
+  // 로그인하지 않은 사용자인 경우 아무것도 렌더링하지 않음
+  if (!user.isLogin) {
+    return null;
+  }
+
   return (
     <div className={styles["mypage"]}>
       <div className={styles["mypage__content"]}>

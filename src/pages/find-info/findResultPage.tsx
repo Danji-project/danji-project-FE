@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useUserInfo } from "../../stores/userStore";
 
 import Header from "../../layouts/Header";
 
@@ -29,8 +31,10 @@ const SuccessFindEmailResult = () => {
   const successMsg = localStorage.getItem("message");
   const strongtext = localStorage.getItem("strongtext");
   return (
-    <div style={{ textAlign: "center", padding: "20px 0px" }}
-         className={`${styles['content-div']}`}>
+    <div
+      style={{ textAlign: "center", padding: "20px 0px" }}
+      className={`${styles["content-div"]}`}
+    >
       <img src={LogoIcon} />
       <BoldWord
         text={successMsg ? successMsg : ""}
@@ -38,7 +42,12 @@ const SuccessFindEmailResult = () => {
       />
       <button
         className={`${styles["nomal-button"]} ${styles["nomal-button--valid"]}`}
-        style={{ margin: "0", position:'absolute', left:'0px', bottom:'20px' }}
+        style={{
+          margin: "0",
+          position: "absolute",
+          left: "0px",
+          bottom: "20px",
+        }}
         onClick={() => {
           navigate("/login", { replace: true });
         }}
@@ -59,7 +68,7 @@ const FailFindEmailResult = () => {
         opacity: "0.7",
         width: "100%",
         height: "100%",
-        flex:'1',
+        flex: "1",
         justifyContent: "center",
         alignItems: "center",
         placeContent: "center",
@@ -112,6 +121,20 @@ const FailFindEmailResult = () => {
 
 export const FindResultPage = () => {
   const re = localStorage.getItem("isSuccess");
+  const navigate = useNavigate();
+  const user = useUserInfo();
+
+  // 이미 로그인된 사용자는 홈페이지로 리다이렉트
+  useEffect(() => {
+    if (user.isLogin) {
+      navigate("/", { replace: true });
+    }
+  }, [user.isLogin, navigate]);
+
+  // 로그인된 사용자인 경우 아무것도 렌더링하지 않음
+  if (user.isLogin) {
+    return null;
+  }
 
   return (
     <>

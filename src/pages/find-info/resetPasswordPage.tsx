@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUserInfo } from "../../stores/userStore";
 import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 import { validateCheck } from "../../utils/validators";
@@ -199,6 +200,21 @@ const PasswordForm = () => {
 };
 
 export const ResetPasswordPage = () => {
+  const navigate = useNavigate();
+  const user = useUserInfo();
+
+  // 이미 로그인된 사용자는 홈페이지로 리다이렉트
+  useEffect(() => {
+    if (user.isLogin) {
+      navigate("/", { replace: true });
+    }
+  }, [user.isLogin, navigate]);
+
+  // 로그인된 사용자인 경우 아무것도 렌더링하지 않음
+  if (user.isLogin) {
+    return null;
+  }
+
   return (
     <>
       <div style={{ position: "relative", height: "100%" }}>

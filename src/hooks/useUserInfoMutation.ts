@@ -13,9 +13,7 @@ export const useUserInfoMutation = () => {
   const mutation = useMutation<UserInfoResponse, Error>({
     mutationFn: async () => {
       try {
-        const response = await axios.get(
-          `/api${API_ENDPOINTS.USER.MEMBER}`
-        );
+        const response = await axios.get(`/api${API_ENDPOINTS.USER.MEMBER}`);
         return response.data;
       } catch (error) {
         throw new Error("");
@@ -29,12 +27,12 @@ export const useUserInfoMutation = () => {
     },
   });
 
-  const useUserInfoMutations: Function = () => {
+  const executeUserInfoMutation = () => {
     mutation.mutate();
   };
 
   return {
-    useUserInfoMutations,
+    executeUserInfoMutation,
     isPending: mutation.isPending,
   };
 };

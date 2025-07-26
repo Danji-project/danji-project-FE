@@ -1,5 +1,5 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import { useUserInfo } from "../../stores/userStore";
 
@@ -197,6 +197,21 @@ const SocialLogin = () => {
 
 export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const user = useUserInfo();
+
+  // 이미 로그인된 사용자는 홈페이지로 리다이렉트
+  useEffect(() => {
+    if (user.isLogin) {
+      navigate("/", { replace: true });
+    }
+  }, [user.isLogin, navigate]);
+
+  // 로그인된 사용자인 경우 아무것도 렌더링하지 않음
+  if (user.isLogin) {
+    return null;
+  }
+
   return (
     <>
       <div>

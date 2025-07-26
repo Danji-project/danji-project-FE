@@ -13,11 +13,11 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { isEmailLoading } = useCheckEmail();
   const { isOpen } = useDialogStore();
   const { isAlertOpen } = useAlertStore();
-  const {useUserInfoMutations, isPending} = useUserInfoMutation();
+  const { executeUserInfoMutation, isPending } = useUserInfoMutation();
 
   useEffect(() => {
-      useUserInfoMutations();
-    }, []);
+    executeUserInfoMutation();
+  }, []);
 
   return (
     <div
@@ -27,12 +27,11 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
           : ""
       }`}
     >
-      {
-        isPending &&
-        <div className='div-background-black'>
+      {isPending && (
+        <div className="div-background-black">
           <Spinners />
         </div>
-      }
+      )}
       <div className="app-container">
         <StatusBar />
         {children}
