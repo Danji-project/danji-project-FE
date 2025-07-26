@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../api/endpoints";
 import { useContext } from "react";
-import { UserContext } from "../context/UserInfoContext";
+import { useUserInfo } from "../stores/userStore";
 
 interface LoginResponse {
   token: string;
@@ -21,13 +21,13 @@ const errorMessages: { [key: number]: string } & {
 
 export const useLogin = () => {
   const navigate = useNavigate();
-  const user = useContext(UserContext);
+  const user = useUserInfo();
 
   const mutation = useMutation<LoginResponse, Error>({
     mutationFn: async () => {
       try {
-console.log(user.email);
-console.log(user.password);
+        // console.log(user.email);
+        // console.log(user.password);
 
         const response = await axios.post(
           `/api${API_ENDPOINTS.AUTH.LOGIN}`,
@@ -55,7 +55,7 @@ console.log(user.password);
       navigate("/", { replace: true });
     },
     onError: (err: Error) => {
-      user.setError(err.message);
+      //user.setError(err.message);
       user.setIsLogin(false);
     },
   });
