@@ -5,8 +5,6 @@ import { useUserInfo } from "../../stores/userStore";
 import styles from "./MyPage.module.scss";
 // 프로필 섹션
 const ProfileSection = () => {
-  const user = useUserInfo();
-
   return (
     <div className={styles["profile"]}>
       <div className={styles["profile__avatar-container"]}>

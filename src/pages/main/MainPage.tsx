@@ -168,21 +168,90 @@ const ContentBody = () => {
   return (
     <>
       <div>
-        <SearchBox content={searchText} placeholder="궁금한 단지를 검색해보세요!"
-                   onSearch={serch} onChange={(e) => {setSearchText(e.target.value)}}/>
-        {
-          user.isLogin?
-            <div style={{marginTop:'20px', marginBottom:'8px', display:'flex', flexWrap:'wrap', justifyContent:'space-between'}}>
-              <IconButton text="단지정보" imageurl={IconChart} onClick={() => {console.log("단지정보");  navigate("/");}}/>
-              <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/");}}/>
-              <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/");}}/>
-              <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/");}}/>
-              <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/");}}/>
-              <IconButton text="즐겨찾기" imageurl={IconStar} onClick={() => {console.log("즐겨찾기");  navigate("/");}}/>
-              <IconButton text="채팅" imageurl={IconMsg} onClick={() => {console.log("채팅");  navigate("/");}}/>
-              <IconButton text="방문차량등록" imageurl={IconReceipt} onClick={() => {console.log("방문차량등록");  navigate("/");}}/>
-            </div>
-          :
+        <SearchBox
+          content={searchText}
+          placeholder="궁금한 단지를 검색해보세요!"
+          onSearch={serch}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+          }}
+        />
+        {user.isLogin ? (
+          <div
+            style={{
+              marginTop: "20px",
+              marginBottom: "8px",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            <IconButton
+              text="단지정보"
+              imageurl={IconChart}
+              onClick={() => {
+                console.log("단지정보");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="커뮤니티"
+              imageurl={IconGamepad}
+              onClick={() => {
+                console.log("커뮤니티");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="공지사항"
+              imageurl={IconDanger}
+              onClick={() => {
+                console.log("공지사항");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="시설정보"
+              imageurl={IconGraph}
+              onClick={() => {
+                console.log("시설정보");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="마이페이지"
+              imageurl={IconUser}
+              onClick={() => {
+                console.log("마이페이지");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="즐겨찾기"
+              imageurl={IconStar}
+              onClick={() => {
+                console.log("즐겨찾기");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="채팅"
+              imageurl={IconMsg}
+              onClick={() => {
+                console.log("채팅");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="방문차량등록"
+              imageurl={IconReceipt}
+              onClick={() => {
+                console.log("방문차량등록");
+                navigate("/");
+              }}
+            />
+          </div>
+        ) : (
           <></>
         )}
 
@@ -262,32 +331,63 @@ export const MainPage = () => {
 
   const logout = () => {
     Logout();
-  }
+  };
 
   return (
     <>
-      <div style={{position:'relative'}}>
-        <MainPageHeader sideMenuOpen={setIsSideMenuOpen}/>
-        <ContentBody/>
-        {
-          isSideMenuOpen?
-          <div className={`${styles['sidemenu-div-outline']}`} onClick={()=>{setIsSideMenuOpen(false);}}>
-            <div className={`${styles['sidemenu-div-maxline']}`}>
-              <div className={`${styles['sidemenu-div-content']}`}>
-                <div style={{ textAlign:'right'}}>
-                  <button className={`${styles['sidemenu-button']}`} onClick={()=>{setIsSideMenuOpen(false);}}/>
+      <div style={{ position: "relative" }}>
+        <MainPageHeader sideMenuOpen={setIsSideMenuOpen} />
+        <ContentBody />
+        {isSideMenuOpen ? (
+          <div
+            className={`${styles["sidemenu-div-outline"]}`}
+            onClick={() => {
+              setIsSideMenuOpen(false);
+            }}
+          >
+            <div className={`${styles["sidemenu-div-maxline"]}`}>
+              <div className={`${styles["sidemenu-div-content"]}`}>
+                <div style={{ textAlign: "right" }}>
+                  <button
+                    className={`${styles["sidemenu-button"]}`}
+                    onClick={() => {
+                      setIsSideMenuOpen(false);
+                    }}
+                  />
                 </div>
-                <p><Link to="/">단지정보</Link></p>
-                <p><Link to="/">커뮤니티</Link></p>
-                <p><Link to="/">공지사항</Link></p>
-                <p><Link to="/">Login</Link></p>
-                <p><Link to="/">단지 즐겨찾기</Link></p>
-                <p><Link to="/">마이페이지</Link></p>
-                <p><Link to="/">채팅</Link></p>
-                <p><Link to="/">방문차량등록</Link></p>
-                <p><Link to="/">내 예약 정보</Link></p>
-                <p><Link to="/">단지 등록</Link></p>
-                <p onClick={logout}><Link to="/">로그아웃</Link></p>
+                <p>
+                  <Link to="/">단지정보</Link>
+                </p>
+                <p>
+                  <Link to="/">커뮤니티</Link>
+                </p>
+                <p>
+                  <Link to="/">공지사항</Link>
+                </p>
+                <p>
+                  <Link to="/">Login</Link>
+                </p>
+                <p>
+                  <Link to="/">단지 즐겨찾기</Link>
+                </p>
+                <p>
+                  <Link to="/">마이페이지</Link>
+                </p>
+                <p>
+                  <Link to="/">채팅</Link>
+                </p>
+                <p>
+                  <Link to="/">방문차량등록</Link>
+                </p>
+                <p>
+                  <Link to="/">내 예약 정보</Link>
+                </p>
+                <p>
+                  <Link to="/">단지 등록</Link>
+                </p>
+                <p onClick={logout}>
+                  <Link to="/">로그아웃</Link>
+                </p>
               </div>
             </div>
           </div>
