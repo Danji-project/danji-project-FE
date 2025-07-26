@@ -65,3 +65,42 @@ export const useLogin = () => {
     isLogining: mutation.isPending,
   };
 };
+
+
+export const useLogout = () => {
+  const navigate = useNavigate();
+  const user = useUserInfo();
+
+  const mutation = useMutation<LoginResponse, Error>({
+    mutationFn: async () => {
+      try {
+        // console.log(user.email);
+        // console.log(user.password);
+
+        const response = await axios.post(
+          `/api${API_ENDPOINTS.AUTH.LOGOUT}`
+        );
+        return response.data;
+      } catch (error) {
+        throw new Error(errorMessages.default);
+      }
+    },
+    onSuccess: (data) => {
+      user.setIsLogin(false);
+      navigate("/", { replace: true });
+    },
+    onError: (err: Error) => {
+      //user.setError(err.message);
+      user.setIsLogin(true);
+    },
+  });
+
+  const Logout: Function = () => {
+    mutation.mutate();
+  };
+
+  return {
+    Logout,
+    isPending: mutation.isPending,
+  };
+};
