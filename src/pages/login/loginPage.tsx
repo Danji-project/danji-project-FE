@@ -4,7 +4,7 @@ import { UserContext } from "../../context/UserInfoContext";
 import { Link } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 
-import { Checkbox } from "../../components/Checkbox/Checkbox";
+import { Checkbox } from "../../components/checkbox/Checkbox";
 import InputFiled from "../../components/input-filed/InputField";
 import Spinners from "../../components/common/spinners/Spinners";
 import Header from "../../layouts/Header";
@@ -14,7 +14,6 @@ import KakaoIcon from "../../assets/social/kakao.svg";
 import GoogleIcon from "../../assets/social/google.svg";
 import NaverIcon from "../../assets/social/naver.svg";
 import LogoIcon from "../../assets/logo.svg";
-
 
 const LoginHeader = () => {
   return (
@@ -27,7 +26,11 @@ const LoginHeader = () => {
   );
 };
 
-const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boolean>>;}) => {
+const LoginForm = ({
+  setIsLoading,
+}: {
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+}) => {
   const user = useContext(UserContext);
 
   const isValidEmail = (email: string) => {
@@ -46,10 +49,11 @@ const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boole
   const [password, setPassword] = useState(user.password);
   const [email, setEmail] = useState(user.email);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [isSaveEmail, setIsSaveEmail] = useState<boolean>(localStorage.getItem("rememberEmail") ? true : false);
+  const [isSaveEmail, setIsSaveEmail] = useState<boolean>(
+    localStorage.getItem("rememberEmail") ? true : false
+  );
 
   const { Login, isLogining } = useLogin();
-  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,14 +62,11 @@ const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boole
       user.setEmail(email);
       setIsLoading(isLogining);
       Login();
-      
-      if(isSaveEmail)
-      {
-        localStorage.setItem('rememberEmail', user.email);
-      }
-      else
-      {
-        localStorage.removeItem('rememberEmail');
+
+      if (isSaveEmail) {
+        localStorage.setItem("rememberEmail", user.email);
+      } else {
+        localStorage.removeItem("rememberEmail");
       }
     }
   };
@@ -129,7 +130,12 @@ const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boole
               }}
             />
             <p style={{ marginLeft: "auto" }}>
-              <Link className={`${styles["login-gray-midium-text"]}`} to="/find">아이디/비밀번호 찾기 &gt;</Link>
+              <Link
+                className={`${styles["login-gray-midium-text"]}`}
+                to="/find"
+              >
+                아이디/비밀번호 찾기 &gt;
+              </Link>
             </p>
           </div>
 
@@ -144,11 +150,16 @@ const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boole
               type="submit"
               disabled={isValidInputs || isLogining ? false : true}
             >
-              {isLogining ? "로그인 중...":"로그인" }
+              {isLogining ? "로그인 중..." : "로그인"}
             </button>
             <p className={`${styles["login-gray-small-text"]}`}>
               아직 회원이 아니신가요?{" "}
-              <Link className={`${styles["login-blue-small-text"]}`} to="/register">회원가입</Link>
+              <Link
+                className={`${styles["login-blue-small-text"]}`}
+                to="/register"
+              >
+                회원가입
+              </Link>
             </p>
           </div>
         </form>
@@ -189,20 +200,21 @@ export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   return (
     <>
-    <div>
-      {isLoading ? 
-        <div className={[styles.register, styles.dimmed].join(" ")}>
-          <Spinners />
-        </div> 
-        :<></>
-      }
       <div>
-        <LoginHeader />
-        <LoginForm setIsLoading={setIsLoading}/>
-        <SpiltBar />
-        <SocialLogin />
+        {isLoading ? (
+          <div className={[styles.register, styles.dimmed].join(" ")}>
+            <Spinners />
+          </div>
+        ) : (
+          <></>
+        )}
+        <div>
+          <LoginHeader />
+          <LoginForm setIsLoading={setIsLoading} />
+          <SpiltBar />
+          <SocialLogin />
+        </div>
       </div>
-    </div>
     </>
   );
 };
