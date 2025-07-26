@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { type Dispatch, type SetStateAction } from "react";
 import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
+import { useUserInfo } from "../../stores/userStore";
 import { useSearch } from "../../hooks/useSearch";
 import { BaseApartInfo } from "../../model/BaseApartInfoModel";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ import IconGamepad from "../../assets/button/IconGamepad.png"
 import IconChart from "../../assets/button/IconChart.png"
 
 const MainPageHeader = ({sideMenuOpen}:{sideMenuOpen:Dispatch<SetStateAction<boolean>>;}) => {
-  const user = useContext(UserContext);
+  const user = useUserInfo();
 
   return (
     <div style={{height:'56px', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
@@ -47,7 +47,7 @@ const ContentBody = () => {
 
   const [searchText, setSearchText] = useState<string>('');
   const serchmutation = useSearch({searchText: searchText});
-  const user = useContext(UserContext);
+  const user = useUserInfo();
 
   const serch = () => {
     serchmutation.Search();

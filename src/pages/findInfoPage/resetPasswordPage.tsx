@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
+
 import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../../api/endpoints";
 import axios from "axios";
 import { validateCheck } from "../../utils/validators";
 
-import InputFiled from "../../components/InputFiled/InputField";
-import Header from "../../components/Header/Header";
+import InputFiled from "../../components/input-filed/InputField";
+import Header from "../../layouts/Header";
 
 import styles from "./findInfoPage.module.scss";
 import LogoIcon from "../../assets/logo.svg";
@@ -115,7 +115,7 @@ const PasswordForm = () =>
         <div className={`${styles['content-div']}`} onLoad={()=>{localStorage.removeItem('eamilcash');}}>
           <div style={{paddingBottom:"20px"}}>
             <InputFiled label="이메일" name="email" type="text"
-                        value={email ? email : ''} disabled={true} onChange={() => {}}/>
+                        value={email ? email.toString() : ''} disabled={true} onChange={() => {}}/>
           </div>
           
           <div style={{paddingBottom:"20px"}}>
