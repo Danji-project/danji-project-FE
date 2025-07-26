@@ -1,8 +1,7 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
 import { Link } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
+import { useUserInfo } from "../../stores/userStore";
 
 import { Checkbox } from "../../components/Checkbox/Checkbox";
 import InputFiled from "../../components/input-filed/InputField";
@@ -28,7 +27,7 @@ const LoginHeader = () => {
 };
 
 const LoginForm = ({setIsLoading}: { setIsLoading: Dispatch<SetStateAction<boolean>>;}) => {
-  const user = useContext(UserContext);
+  const user = useUserInfo();
 
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { UserContext } from "../../context/UserInfoContext";
+import { useUserInfo } from "../../stores/userStore";
 
 import styles from "./MyPage.module.scss";
 // 프로필 섹션
 const ProfileSection = () => {
-  const user = useContext(UserContext);
+  const user = useUserInfo();
 
   return (
     <div className={styles["profile"]}>

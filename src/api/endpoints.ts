@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
     PROFILE: '/users/profile',
     UPDATE_PROFILE: '/users/profile',
     DELETE_ACCOUNT: '/users',
+    MEMBER: '/member',
   },
   
   // 게시판 관련 엔드포인트

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { UserContext } from "../context/UserInfoContext";
+import { useUserInfo } from "../stores/userStore";
 
 interface ProtectedRoutesProps {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ const ProtectedRoutes = ({
   children,
   redirectPath = "/login",
 }: ProtectedRoutesProps) => {
-  const user = useContext(UserContext);
+  const user = useUserInfo();
 
   if (!user.isLogin) {
     return <Navigate to={redirectPath} replace />;
