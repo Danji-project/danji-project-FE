@@ -11,7 +11,7 @@ interface UserInfoResponse {
     building: null;
     carNumber: null | number;
     email: string;
-    fileId: null;
+    fileId: null | string | number;
     location: string | null;
     memberApartmentId: number | null;
     moveInDate: null | string;
@@ -21,6 +21,7 @@ interface UserInfoResponse {
     phoneNumber: string;
     region: string | null;
     unit: null;
+    profileImageUrl?: string; // 프로필 이미지 URL (선택적)
   };
 }
 

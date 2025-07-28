@@ -1,28 +1,27 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 import { useProfileImageUpload } from "../../hooks/useFileUpload";
 
 import styles from "./MyPage.module.scss";
-// 프로필 섹션
+
+// 프로필 섹션 (최적화됨)
 const ProfileSection = () => {
   const { email, nickname, name } = useUserInfo();
   const {
     profileImage,
     isUploading,
+    uploadProgress,
     uploadError,
-    uploadProfileImage,
+    uploadProfileImageOnly,
     validateImageFile,
     resetUploadState,
   } = useProfileImageUpload();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleEditClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = async (
+  // 빠른 프로필 이미지 변경
+  const handleQuickFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
@@ -36,20 +35,24 @@ const ProfileSection = () => {
     }
 
     try {
-      await uploadProfileImage(file);
-      // 성공 시 별도의 알림은 표시하지 않음 (선택사항)
+      await uploadProfileImageOnly(file);
+      // 성공 피드백은 진행률로 표시됨
     } catch (error) {
-      // 에러는 이미 store에서 처리되어 uploadError 상태에 저장됨
-      if (uploadError) {
-        alert(uploadError);
-      }
+      // 에러는 자동으로 uploadError 상태에 저장됨
     } finally {
-      // 파일 입력 초기화 (같은 파일을 다시 선택할 수 있도록)
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     }
   };
+
+  // 에러 메시지 표시
+  useEffect(() => {
+    if (uploadError) {
+      alert(uploadError);
+      resetUploadState();
+    }
+  }, [uploadError, resetUploadState]);
 
   // 컴포넌트 언마운트 시 업로드 상태 초기화
   useEffect(() => {
@@ -59,56 +62,88 @@ const ProfileSection = () => {
   }, [resetUploadState]);
 
   return (
-    <div className={styles["profile"]}>
-      <div className={styles["profile__avatar-container"]}>
-        <div className={styles["profile__avatar"]}>
-          <img
-            src={profileImage}
-            alt="프로필"
-            className={styles["profile__image"]}
+    <>
+      <div className={styles["profile"]}>
+        <div className={styles["profile__avatar-container"]}>
+          <div className={styles["profile__avatar"]}>
+            <img
+              src={profileImage}
+              alt="프로필"
+              className={styles["profile__image"]}
+            />
+
+            {/* 업로드 오버레이 (진행률 포함) */}
+            {isUploading && (
+              <div className={styles["profile__upload-overlay"]}>
+                <div className={styles["upload-progress"]}>
+                  <div className={styles["progress-circle"]}>
+                    <svg
+                      className={styles["progress-ring"]}
+                      width="60"
+                      height="60"
+                    >
+                      <circle
+                        className={styles["progress-ring-circle"]}
+                        stroke="white"
+                        strokeWidth="3"
+                        fill="transparent"
+                        r="26"
+                        cx="30"
+                        cy="30"
+                        strokeDasharray={`${2 * Math.PI * 26}`}
+                        strokeDashoffset={`${
+                          2 * Math.PI * 26 * (1 - uploadProgress / 100)
+                        }`}
+                      />
+                    </svg>
+                    <span className={styles["progress-text"]}>
+                      {uploadProgress}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <button
+            className={styles["profile__edit-btn"]}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            title="프로필 사진 빠른 변경"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="m18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                fill="white"
+              />
+            </svg>
+          </button>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleQuickFileChange}
+            style={{ display: "none" }}
+            aria-label="프로필 사진 빠른 업로드"
           />
-          {isUploading && (
-            <div className={styles["profile__upload-overlay"]}>
-              <div className={styles["profile__spinner"]}></div>
-            </div>
-          )}
         </div>
-        <button
-          className={styles["profile__edit-btn"]}
-          onClick={handleEditClick}
-          disabled={isUploading}
-          title="프로필 사진 변경"
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="m18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
-              fill="white"
-            />
-          </svg>
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-          aria-label="프로필 사진 업로드"
-        />
+
+        <div className={styles["profile__info"]}>
+          <h2 className={styles["profile__name"]}>
+            {name || nickname || "사용자"}
+          </h2>
+          <p className={styles["profile__email"]}>{email}</p>
+        </div>
       </div>
-      <div className={styles["profile__info"]}>
-        <h2 className={styles["profile__name"]}>
-          {name || nickname || "사용자"}
-        </h2>
-        <p className={styles["profile__email"]}>{email}</p>
-      </div>
-    </div>
+    </>
   );
 };
 
