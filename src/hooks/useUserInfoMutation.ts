@@ -38,8 +38,18 @@ export const useUserInfoMutation = () => {
       }
     },
     onSuccess: (data) => {
+      console.log("API 응답 데이터:", data);
+
       // 로그인 상태 설정
       setIsLogin(true);
+
+      // 프로필 이미지 URL 결정
+      let profileImageUrl = "/profile_imgSrc.jpg";
+      if (data.data.profileImageUrl) {
+        profileImageUrl = data.data.profileImageUrl;
+      } else if (data.data.fileId) {
+        profileImageUrl = `/api/files/${data.data.fileId}`;
+      }
 
       // 사용자 정보 일괄 업데이트
       updateUserInfo({
@@ -61,6 +71,16 @@ export const useUserInfoMutation = () => {
         numberOfResidents: data.data.numberOfResidents,
         region: data.data.region,
         unit: data.data.unit,
+
+        // 프로필 이미지
+        profileImage: profileImageUrl,
+      });
+
+      console.log("사용자 정보 업데이트 완료:", {
+        name: data.data.name,
+        nickname: data.data.nickname,
+        phoneNumber: data.data.phoneNumber,
+        profileImage: profileImageUrl,
       });
     },
     onError: (err: Error) => {
