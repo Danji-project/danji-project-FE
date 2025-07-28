@@ -66,7 +66,6 @@ export const useLogin = () => {
   };
 };
 
-
 export const useLogout = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
@@ -77,9 +76,7 @@ export const useLogout = () => {
         // console.log(user.email);
         // console.log(user.password);
 
-        const response = await axios.post(
-          `/api${API_ENDPOINTS.AUTH.LOGOUT}`
-        );
+        const response = await axios.post(`/api${API_ENDPOINTS.AUTH.LOGOUT}`);
         return response.data;
       } catch (error) {
         throw new Error(errorMessages.default);

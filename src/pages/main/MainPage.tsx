@@ -371,7 +371,7 @@ export const MainPage = () => {
                   <Link to="/">단지 즐겨찾기</Link>
                 </p>
                 <p>
-                  <Link to="/">마이페이지</Link>
+                  <Link to="/my-page">마이페이지</Link>
                 </p>
                 <p>
                   <Link to="/">채팅</Link>

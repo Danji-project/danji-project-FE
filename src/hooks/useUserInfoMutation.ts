@@ -4,7 +4,24 @@ import { API_ENDPOINTS } from "../api/endpoints";
 import { useUserInfo } from "../stores/userStore";
 
 interface UserInfoResponse {
-  token: string;
+  code: number;
+  data: {
+    apartmentId: null;
+    apartmentName: null | string;
+    building: null;
+    carNumber: null | number;
+    email: string;
+    fileId: null;
+    location: string | null;
+    memberApartmentId: number | null;
+    moveInDate: null | string;
+    name: string;
+    nickname: string;
+    numberOfResidents: number | null;
+    phoneNumber: string;
+    region: string | null;
+    unit: null;
+  };
 }
 
 export const useUserInfoMutation = () => {
@@ -21,6 +38,8 @@ export const useUserInfoMutation = () => {
     },
     onSuccess: (data) => {
       user.setIsLogin(true);
+      user.setEmail(data.data.email);
+      user.setNickname(data.data.nickname);
     },
     onError: (err: Error) => {
       user.setIsLogin(false);

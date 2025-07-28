@@ -1,21 +1,84 @@
-import { useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
+import { useProfileImageUpload } from "../../hooks/useFileUpload";
 
 import styles from "./MyPage.module.scss";
 // 프로필 섹션
 const ProfileSection = () => {
+  const { email, nickname } = useUserInfo();
+  const {
+    profileImage,
+    isUploading,
+    uploadError,
+    uploadProfileImage,
+    validateImageFile,
+    resetUploadState,
+  } = useProfileImageUpload();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleEditClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // 파일 검증
+    const validation = validateImageFile(file);
+    if (!validation.isValid) {
+      alert(validation.error);
+      return;
+    }
+
+    try {
+      await uploadProfileImage(file);
+      // 성공 시 별도의 알림은 표시하지 않음 (선택사항)
+    } catch (error) {
+      // 에러는 이미 store에서 처리되어 uploadError 상태에 저장됨
+      if (uploadError) {
+        alert(uploadError);
+      }
+    } finally {
+      // 파일 입력 초기화 (같은 파일을 다시 선택할 수 있도록)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  // 컴포넌트 언마운트 시 업로드 상태 초기화
+  useEffect(() => {
+    return () => {
+      resetUploadState();
+    };
+  }, [resetUploadState]);
+
   return (
     <div className={styles["profile"]}>
       <div className={styles["profile__avatar-container"]}>
         <div className={styles["profile__avatar"]}>
           <img
-            src="/profile_imgSrc.jpg"
+            src={profileImage}
             alt="프로필"
             className={styles["profile__image"]}
           />
+          {isUploading && (
+            <div className={styles["profile__upload-overlay"]}>
+              <div className={styles["profile__spinner"]}></div>
+            </div>
+          )}
         </div>
-        <button className={styles["profile__edit-btn"]}>
+        <button
+          className={styles["profile__edit-btn"]}
+          onClick={handleEditClick}
+          disabled={isUploading}
+          title="프로필 사진 변경"
+        >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
             <path
               d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
@@ -30,10 +93,18 @@ const ProfileSection = () => {
             />
           </svg>
         </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+          aria-label="프로필 사진 업로드"
+        />
       </div>
       <div className={styles["profile__info"]}>
-        <h2 className={styles["profile__name"]}>감단지(단지최고)</h2>
-        <p className={styles["profile__email"]}>danjitalk@danji.com</p>
+        <h2 className={styles["profile__name"]}>{nickname}</h2>
+        <p className={styles["profile__email"]}>{email}</p>
       </div>
     </div>
   );

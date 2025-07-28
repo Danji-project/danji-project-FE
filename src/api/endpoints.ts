@@ -2,44 +2,54 @@
 export const API_ENDPOINTS = {
   // 인증 관련 엔드포인트
   AUTH: {
-    LOGIN: '/login',
-    LOGOUT: '/logout',
-    REGISTER: '/users',
-    VERIFY_EMAIL: '/users/verify-email',
-    KAKAO_LOGIN: '/users',
-    CERTIFICATION: '/mail/certification-code/send',
+    LOGIN: "/login",
+    LOGOUT: "/logout",
+    REGISTER: "/users",
+    VERIFY_EMAIL: "/users/verify-email",
+    KAKAO_LOGIN: "/users",
+    CERTIFICATION: "/mail/certification-code/send",
   },
 
-  FIND:{
-    EMAIL: '/member/find-id',
-    RESET_PW: '/memeber/rest-password',
+  FIND: {
+    EMAIL: "/member/find-id",
+    RESET_PW: "/memeber/rest-password",
   },
-  
+
   // 사용자 관련 엔드포인트
   USER: {
-    PROFILE: '/users/profile',
-    UPDATE_PROFILE: '/users/profile',
-    DELETE_ACCOUNT: '/users',
-    MEMBER: '/member',
+    PROFILE: "/users/profile",
+    UPDATE_PROFILE: "/users/profile",
+    DELETE_ACCOUNT: "/users",
+    UPLOAD_PROFILE_IMAGE: "/users/profile/image",
+    MEMBER: "/member",
   },
-  
+
+  // 파일 업로드 관련 엔드포인트
+  UPLOAD: {
+    IMAGE: "/upload/image",
+    FILE: "/upload/file",
+    PROFILE_IMAGE: "/upload/profile-image",
+  },
+
   // 게시판 관련 엔드포인트
   BOARD: {
-    LIST: '/boards',
+    LIST: "/boards",
     DETAIL: (id: string) => `/boards/${id}`,
-    CREATE: '/boards',
+    CREATE: "/boards",
     UPDATE: (id: string) => `/boards/${id}`,
     DELETE: (id: string) => `/boards/${id}`,
   },
-  
+
   // 댓글 관련 엔드포인트
   COMMENT: {
     LIST: (boardId: string) => `/boards/${boardId}/comments`,
     CREATE: (boardId: string) => `/boards/${boardId}/comments`,
-    UPDATE: (boardId: string, commentId: string) => `/boards/${boardId}/comments/${commentId}`,
-    DELETE: (boardId: string, commentId: string) => `/boards/${boardId}/comments/${commentId}`,
+    UPDATE: (boardId: string, commentId: string) =>
+      `/boards/${boardId}/comments/${commentId}`,
+    DELETE: (boardId: string, commentId: string) =>
+      `/boards/${boardId}/comments/${commentId}`,
   },
-  
+
   // 반응(좋아요, 북마크 등) 관련 엔드포인트
   REACTION: {
     LIKE: (boardId: string) => `/boards/${boardId}/like`,
@@ -48,10 +58,10 @@ export const API_ENDPOINTS = {
 
   // 검색 관련 엔드포인트
   SEARCH: {
-    DANJI: '/search',
-    POPULAR_KEYWORDS: '/search/popular-keywords',
-    RECENT_KEYWORDS: '/search/recent-keywords',
-    ADD_RECENT_KEYWORD: '/search/recent-keywords',
-    RECENT_APARTMENT: '/search/recent-apartment',
+    DANJI: "/search",
+    POPULAR_KEYWORDS: "/search/popular-keywords",
+    RECENT_KEYWORDS: "/search/recent-keywords",
+    ADD_RECENT_KEYWORD: "/search/recent-keywords",
+    RECENT_APARTMENT: "/search/recent-apartment",
   },
 };
