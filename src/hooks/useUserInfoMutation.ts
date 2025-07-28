@@ -25,7 +25,7 @@ interface UserInfoResponse {
 }
 
 export const useUserInfoMutation = () => {
-  const user = useUserInfo();
+  const { updateUserInfo, setIsLogin, setError } = useUserInfo();
 
   const mutation = useMutation<UserInfoResponse, Error>({
     mutationFn: async () => {
@@ -33,16 +33,38 @@ export const useUserInfoMutation = () => {
         const response = await axios.get(`/api${API_ENDPOINTS.USER.MEMBER}`);
         return response.data;
       } catch (error) {
-        throw new Error("");
+        throw new Error("사용자 정보를 가져오는데 실패했습니다.");
       }
     },
     onSuccess: (data) => {
-      user.setIsLogin(true);
-      user.setEmail(data.data.email);
-      user.setNickname(data.data.nickname);
+      // 로그인 상태 설정
+      setIsLogin(true);
+
+      // 사용자 정보 일괄 업데이트
+      updateUserInfo({
+        // 기본 정보
+        email: data.data.email,
+        name: data.data.name,
+        nickname: data.data.nickname,
+        phoneNumber: data.data.phoneNumber,
+
+        // 아파트 정보
+        apartmentId: data.data.apartmentId,
+        apartmentName: data.data.apartmentName,
+        building: data.data.building,
+        carNumber: data.data.carNumber,
+        fileId: data.data.fileId,
+        location: data.data.location,
+        memberApartmentId: data.data.memberApartmentId,
+        moveInDate: data.data.moveInDate,
+        numberOfResidents: data.data.numberOfResidents,
+        region: data.data.region,
+        unit: data.data.unit,
+      });
     },
     onError: (err: Error) => {
-      user.setIsLogin(false);
+      setIsLogin(false);
+      setError(err.message);
     },
   });
 
@@ -53,5 +75,7 @@ export const useUserInfoMutation = () => {
   return {
     executeUserInfoMutation,
     isPending: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error,
   };
 };

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 import SearchBox from "../../components/common/search-box/search-box";
 import ApartCard from "../../components/apart-card/apart-card";
-import { IconButton } from "../../components/common/Icon-button/Icon-button";
+import { IconButton } from "../../components/common/icon-button/Icon-button";
 
 import styles from "./MainPage.module.scss";
 import MenuIcon from "../../assets/button/MenuBtn.svg";

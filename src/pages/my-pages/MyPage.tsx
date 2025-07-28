@@ -6,7 +6,7 @@ import { useProfileImageUpload } from "../../hooks/useFileUpload";
 import styles from "./MyPage.module.scss";
 // 프로필 섹션
 const ProfileSection = () => {
-  const { email, nickname } = useUserInfo();
+  const { email, nickname, name } = useUserInfo();
   const {
     profileImage,
     isUploading,
@@ -103,7 +103,9 @@ const ProfileSection = () => {
         />
       </div>
       <div className={styles["profile__info"]}>
-        <h2 className={styles["profile__name"]}>{nickname}</h2>
+        <h2 className={styles["profile__name"]}>
+          {name || nickname || "사용자"}
+        </h2>
         <p className={styles["profile__email"]}>{email}</p>
       </div>
     </div>
@@ -112,6 +114,14 @@ const ProfileSection = () => {
 
 // 아파트 정보 섹션
 const ApartmentSection = () => {
+  const {
+    apartmentName,
+    location,
+    region,
+    memberApartmentId,
+    numberOfResidents,
+  } = useUserInfo();
+
   return (
     <div className={styles["apartment"]}>
       <div className={styles["apartment__header"]}>
@@ -126,9 +136,22 @@ const ApartmentSection = () => {
           className={styles["apartment__image"]}
         />
         <div className={styles["apartment__info"]}>
-          <h4 className={styles["apartment__name"]}>올림픽 파크 크레온</h4>
-          <p className={styles["apartment__address"]}>서울시 강동구 둔촌동</p>
-          <p className={styles["apartment__unit"]}>103동 1103호</p>
+          <h4 className={styles["apartment__name"]}>
+            {apartmentName || "올림픽 파크 크레온"}
+          </h4>
+          <p className={styles["apartment__address"]}>
+            {region && location
+              ? `${region} ${location}`
+              : "서울시 강동구 둔촌동"}
+          </p>
+          <p className={styles["apartment__unit"]}>
+            {memberApartmentId ? `${memberApartmentId}호` : "103동 1103호"}
+          </p>
+          {numberOfResidents && (
+            <p className={styles["apartment__residents"]}>
+              거주자 {numberOfResidents}명
+            </p>
+          )}
         </div>
       </div>
 

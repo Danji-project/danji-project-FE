@@ -326,6 +326,7 @@ button {
       left: 0;
       right: 0;
       height: 45px;
+      z-index: 1000;
       background-color: #2773e6;
       .MuiButtonBase-root {
         position: relative;
@@ -338,7 +339,6 @@ button {
     }
   }
 }
-
 
 .div-background-black {
   position: absolute;
