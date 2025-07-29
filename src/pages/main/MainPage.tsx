@@ -176,7 +176,7 @@ const ContentBody = () => {
               <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/");}}/>
               <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/");}}/>
               <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/");}}/>
-              <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/settings");}}/>
+              <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/my-page");}}/>
               <IconButton text="즐겨찾기" imageurl={IconStar} onClick={() => {console.log("즐겨찾기");  navigate("/");}}/>
               <IconButton text="채팅" imageurl={IconMsg} onClick={() => {console.log("채팅");  navigate("/");}}/>
               <IconButton text="방문차량등록" imageurl={IconReceipt} onClick={() => {console.log("방문차량등록");  navigate("/");}}/>
@@ -281,7 +281,7 @@ export const MainPage = () => {
                 <p><Link to="/">공지사항</Link></p>
                 <p><Link to="/">Login</Link></p>
                 <p><Link to="/">단지 즐겨찾기</Link></p>
-                <p><Link to="/settings">마이페이지</Link></p>
+                <p><Link to="/my-page">마이페이지</Link></p>
                 <p><Link to="/">채팅</Link></p>
                 <p><Link to="/">방문차량등록</Link></p>
                 <p><Link to="/">내 예약 정보</Link></p>

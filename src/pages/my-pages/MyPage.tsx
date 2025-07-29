@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 
+import LogoIcon from "../../assets/logo.svg";
+
 import styles from "./MyPage.module.scss";
 // 프로필 섹션
 const ProfileSection = () => {
@@ -34,8 +36,8 @@ const ProfileSection = () => {
         </button>
       </div>
       <div className={styles["profile__info"]}>
-        <h2 className={styles["profile__name"]}>감단지(단지최고)</h2>
-        <p className={styles["profile__email"]}>danjitalk@danji.com</p>
+        <h2 className={styles["profile__name"]}>{user.name}({user.nickname})</h2>
+        <p className={styles["profile__email"]}>{user.email}</p>
       </div>
     </div>
   );
@@ -43,39 +45,53 @@ const ProfileSection = () => {
 
 // 아파트 정보 섹션
 const ApartmentSection = () => {
+  const user = useUserInfo();
   return (
-    <div className={styles["apartment"]}>
-      <div className={styles["apartment__header"]}>
-        <h3 className={styles["apartment__title"]}>단지날의 아파트</h3>
-        <button className={styles["apartment__edit-btn"]}>수정</button>
-      </div>
-
-      <div className={styles["apartment__card"]}>
-        <img
-          src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=120&h=120&fit=crop"
-          alt="아파트"
-          className={styles["apartment__image"]}
-        />
-        <div className={styles["apartment__info"]}>
-          <h4 className={styles["apartment__name"]}>올림픽 파크 크레온</h4>
-          <p className={styles["apartment__address"]}>서울시 강동구 둔촌동</p>
-          <p className={styles["apartment__unit"]}>103동 1103호</p>
+    <>
+      {
+        user.apartmentID == null?
+        <div className={styles["non-apartment"]}>
+          <div className={styles["non-apartment__card"]}>
+            <img src={LogoIcon} />
+            <p>등록된 단지가 없습니다.</p>
+          </div>
+          <div className={styles["non-apartment__div-btn"]}>
+            <button className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}>단지 등록</button>
+          </div>
         </div>
-      </div>
+        :
+        <div className={styles["apartment"]}>
+          <div className={styles["apartment__header"]}>
+            <h3 className={styles["apartment__title"]}>{user.nickname}의 아파트</h3>
+            <button className={styles["apartment__edit-btn"]}>수정</button>
+          </div>
 
-      <div className={styles["apartment__actions"]}>
-        <button
-          className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}
-        >
-          등록해제
-        </button>
-        <button
-          className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}
-        >
-          바로가기
-        </button>
-      </div>
-    </div>
+          <div className={styles["apartment__card"]}>
+            <img
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=120&h=120&fit=crop"
+              alt="아파트"
+              className={styles["apartment__image"]}
+            />
+            <div className={styles["apartment__info"]}>
+              <h4 className={styles["apartment__name"]}>{user.apartmentName}</h4>
+              <p className={styles["apartment__address"]}>{user.location}</p>
+              <p className={styles["apartment__unit"]}>{user.uint}</p>
+            </div>
+          </div>
+
+          <div className={styles["apartment__actions"]}>
+            <button
+              className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}>
+              등록해제
+            </button>
+            <button
+              className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}>
+              바로가기
+            </button>
+          </div>
+        </div>
+      }
+    </>
   );
 };
 

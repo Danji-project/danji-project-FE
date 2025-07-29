@@ -47,9 +47,12 @@
 // 메인 컨텐츠
 .mypage__content {
   flex: 0 1 auto;
-  padding: 20px;
   max-height: calc(100vh - 200px);
   overflow-y: auto;
+  border: 1px solid #EDEDED;
+  border-radius: 6px;
+  padding: 2px;
+  margin-top: 20px;
 }
 
 // 프로필 섹션
@@ -57,10 +60,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 20px;
+  padding: 20px 0px;
+  margin: 0px 20px;
   background: white;
-  border-radius: 12px;
-  margin-bottom: 20px;
   border-bottom: 1px solid rgb(237, 237, 237);
   &__avatar-container {
     position: relative;
@@ -110,15 +112,15 @@
   }
 
   &__name {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
-    color: #333;
+    color: #111111;
     margin: 0 0 8px 0;
   }
 
   &__email {
-    font-size: 14px;
-    color: #666;
+    font-size: 15px;
+    color: #111111;
     margin: 0;
   }
 }
@@ -126,7 +128,6 @@
 // 아파트 섹션
 .apartment {
   background: white;
-  border-radius: 12px;
   padding: 20px;
 
   &__header {
@@ -139,7 +140,7 @@
   &__title {
     font-size: 16px;
     font-weight: 600;
-    color: #333;
+    color: #111111;
     margin: 0;
   }
 
@@ -161,12 +162,12 @@
     display: flex;
     gap: 16px;
     margin-bottom: 20px;
-    border-radius: 8px;
+    height: 62px;
   }
 
   &__image {
-    width: 80px;
-    height: 80px;
+    width: 62px;
+    height: 62px;
     border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
@@ -174,25 +175,28 @@
 
   &__info {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   &__name {
     font-size: 16px;
     font-weight: 600;
-    color: #333;
-    margin: 0 0 8px 0;
+    color: #111111;
+    height: 22px;
   }
 
   &__address {
-    font-size: 14px;
-    color: #666;
-    margin: 0 0 4px 0;
+    font-size: 15px;
+    color: #111111;
+    height: 22px;
   }
 
   &__unit {
     font-size: 14px;
-    color: #666;
-    margin: 0;
+    color: #767676;
+    height: 18px;
   }
 
   &__actions {
@@ -202,9 +206,9 @@
 
   &__btn {
     flex: 1;
-    padding: 14px 20px;
-    border-radius: 12px;
-    font-size: 15px;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -212,13 +216,14 @@
 
     &--unregister {
       background: white;
-      color: #666;
-      border: 2px solid rgb(232, 232, 232);
+      color: #97BBFF;
+      border: 1px solid rgb(232, 232, 232);
 
       &:hover {
         background: rgb(248, 248, 248);
-        border-color: rgb(200, 200, 200);
+        border-color: #97BBFF;
         transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
       }
     }
 
@@ -237,12 +242,47 @@
   }
 }
 
+// 아파트가 없을때 섹션
+.non-apartment{
+  align-items: center;
+  text-align: center;
+
+  &__card{
+    opacity: 0.7;
+    border-radius: 6px; 
+    align-items: center;
+    margin: 20px; 
+    margin-bottom: 12px; 
+    padding: 20px; 
+    background-color: #EAF1FF;
+
+    img{
+      width: 46.5px;
+    }
+
+    p{
+      font-size: 12px;
+    }
+  }
+
+  &__div-btn {
+    padding: 20px;
+    padding-top: 0px;
+
+    button{
+      width: 100%;
+    }
+  }
+}
+
 // 하단 네비게이션
 .bottom-nav {
   display: flex;
   background: white;
-  border-top: 1px solid #e9ecef;
-  padding: 12px 0;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.08), 0 1px 1px rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: 8px 0;
+  margin-top: 20px;
 
   &__item {
     flex: 1;
@@ -281,7 +321,9 @@
 // 반응형
 @media (max-width: 480px) {
   .mypage__content {
-    padding: 16px;
+    border: 1px solid #EDEDED;
+    border-radius: 6px;
+    padding: 2px;
   }
 
   .profile {
@@ -305,10 +347,6 @@
 
   .apartment {
     padding: 16px;
-
-    &__card {
-      padding: 12px;
-    }
 
     &__image {
       width: 70px;
