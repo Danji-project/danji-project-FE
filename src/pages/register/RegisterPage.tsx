@@ -28,6 +28,7 @@ const SelectOAuth = ({
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
   const authClick = (provider: string) => {
+    document.cookie = 'origin=${encodeURIComponent(window.location.origin)}; path=/; SameSite=Lax'; 
     const apiBaseUrl = import.meta.env.VITE_API_URL;
     if (provider === "Kakao") {
       try {

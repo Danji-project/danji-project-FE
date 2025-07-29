@@ -4,7 +4,7 @@ import { useUserInfo } from "../../stores/userStore";
 import { useSearch } from "../../hooks/useSearch";
 import { BaseApartInfo } from "../../model/BaseApartInfoModel";
 import { useNavigate } from "react-router-dom";
-import { useLogout } from "../../hooks/useLogin";
+import { useLogout } from "../../hooks/useLogout";
 
 import { Link } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const MainPageHeader = ({
 }: {
   sideMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const user = useUserInfo();
+  const isLogin = useUserInfo((state) => state.isLogin);
 
   return (
     <div
@@ -40,7 +40,7 @@ const MainPageHeader = ({
       }}
     >
       <h1 style={{ fontWeight: "600", fontSize: "20px" }}>DANJITALK</h1>
-      {user.isLogin ? (
+      {isLogin ? (
         <button
           onClick={() => {
             sideMenuOpen(true);
@@ -65,14 +65,14 @@ const ContentBody = () => {
 
   const [searchText, setSearchText] = useState<string>("");
   const serchmutation = useSearch({ searchText: searchText });
-  const user = useUserInfo();
+  const isLogin = useUserInfo((state) => state.isLogin);
 
   const serch = () => {
     serchmutation.Search();
   };
 
   const bookmarked = () => {
-    console.log(user.isLogin);
+    console.log(isLogin);
   };
 
   const showDetailInfo = () => {
@@ -92,7 +92,7 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
       {
@@ -104,7 +104,7 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
       {
@@ -116,7 +116,7 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
       {
@@ -128,41 +128,40 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
     ];
     setApparts(fetchedAparts);
 
-    if (user.isLogin) {
-      const fetchedUsers: BaseApartInfo[] = [
-        {
-          apartID: 1,
-          locatin: "역삼",
-          apartName: "래미안",
-          apartDetailName: "래미안 루체라",
-          houseSize: 40,
-          totalHouseHolds: 800,
-          moveVailableMonth: 6,
-          picture: "https://placehold.co/150x180",
-          isuseBookmark: user.isLogin,
-          bookmark: false,
-        },
-        {
-          apartID: 2,
-          locatin: "역삼",
-          apartName: "래미안",
-          apartDetailName: "래미안 루체라",
-          houseSize: 40,
-          totalHouseHolds: 800,
-          moveVailableMonth: 6,
-          picture: "https://placehold.co/150x180",
-          isuseBookmark: user.isLogin,
-          bookmark: false,
-        },
-      ];
-      setNewApparts(fetchedUsers);
-    }
+    const fetchedUsers: BaseApartInfo[] = [
+      {
+        apartID: 1,
+        locatin: "역삼",
+        apartName: "래미안",
+        apartDetailName: "래미안 루체라",
+        houseSize: 40,
+        totalHouseHolds: 800,
+        moveVailableMonth: 6,
+        picture: "https://placehold.co/150x180",
+        isuseBookmark: isLogin,
+        bookmark: false,
+      },
+      {
+        apartID: 2,
+        locatin: "역삼",
+        apartName: "래미안",
+        apartDetailName: "래미안 루체라",
+        houseSize: 40,
+        totalHouseHolds: 800,
+        moveVailableMonth: 6,
+        picture: "https://placehold.co/150x180",
+        isuseBookmark: isLogin,
+        bookmark: false,
+      },
+    ];
+    setNewApparts(fetchedUsers);
+    
   }, []);
 
   return (
@@ -171,22 +170,22 @@ const ContentBody = () => {
         <SearchBox content={searchText} placeholder="궁금한 단지를 검색해보세요!"
                    onSearch={serch} onChange={(e) => {setSearchText(e.target.value)}}/>
         {
-          user.isLogin?
+          isLogin ?
             <div style={{marginTop:'20px', marginBottom:'8px', display:'flex', flexWrap:'wrap', justifyContent:'space-between'}}>
               <IconButton text="단지정보" imageurl={IconChart} onClick={() => {console.log("단지정보");  navigate("/");}}/>
               <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/");}}/>
               <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/");}}/>
               <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/");}}/>
-              <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/");}}/>
+              <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/settings");}}/>
               <IconButton text="즐겨찾기" imageurl={IconStar} onClick={() => {console.log("즐겨찾기");  navigate("/");}}/>
               <IconButton text="채팅" imageurl={IconMsg} onClick={() => {console.log("채팅");  navigate("/");}}/>
               <IconButton text="방문차량등록" imageurl={IconReceipt} onClick={() => {console.log("방문차량등록");  navigate("/");}}/>
             </div>
           :
           <></>
-        )}
+        }
 
-        {user.isLogin ? (
+        {isLogin ? (
           <div style={{ marginTop: "20px", marginBottom: "8px" }}>
             <div
               style={{
@@ -282,7 +281,7 @@ export const MainPage = () => {
                 <p><Link to="/">공지사항</Link></p>
                 <p><Link to="/">Login</Link></p>
                 <p><Link to="/">단지 즐겨찾기</Link></p>
-                <p><Link to="/">마이페이지</Link></p>
+                <p><Link to="/settings">마이페이지</Link></p>
                 <p><Link to="/">채팅</Link></p>
                 <p><Link to="/">방문차량등록</Link></p>
                 <p><Link to="/">내 예약 정보</Link></p>
@@ -291,9 +290,9 @@ export const MainPage = () => {
               </div>
             </div>
           </div>
-        ) : (
+        : 
           <></>
-        )}
+        }
       </div>
     </>
   );

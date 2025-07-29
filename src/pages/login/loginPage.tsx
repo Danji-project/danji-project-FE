@@ -178,6 +178,8 @@ const SpiltBar = () => {
 };
 
 const SocialLogin = () => {
+  document.cookie = 'origin=${encodeURIComponent(window.location.origin)}; path=/; SameSite=Lax'; 
+
   return (
     <div
       style={{ flexDirection: "row", margin: "0 auto", textAlign: "center" }}
