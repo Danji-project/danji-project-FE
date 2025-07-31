@@ -335,7 +335,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       fileId: string | number | null
     ): string => {
       if (!fileId) return "/profile_imgSrc.jpg";
-      return `/api/files/${fileId}`;
+      return `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${fileId}`;
     };
 
     // 여러 방법으로 시도하는 함수

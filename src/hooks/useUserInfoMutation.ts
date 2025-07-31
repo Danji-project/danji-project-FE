@@ -41,6 +41,14 @@ export const useUserInfoMutation = () => {
       // 로그인 상태 설정
       setIsLogin(true);
 
+      // 프로필 이미지 URL 결정
+      let profileImageUrl = "/profile_imgSrc.jpg";
+      if (data.data.profileImageUrl) {
+        profileImageUrl = data.data.profileImageUrl;
+      } else if (data.data.fileId) {
+        profileImageUrl = `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${data.data.fileId}`;
+      }
+
       // 사용자 정보 일괄 업데이트
       updateUserInfo({
         // 기본 정보
@@ -61,6 +69,9 @@ export const useUserInfoMutation = () => {
         numberOfResidents: data.data.numberOfResidents,
         region: data.data.region,
         unit: data.data.unit,
+
+        // 프로필 이미지
+        profileImage: profileImageUrl,
       });
     },
     onError: (err: Error) => {

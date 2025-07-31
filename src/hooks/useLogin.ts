@@ -43,10 +43,67 @@ export const useLogin = () => {
         throw new Error(errorMessages.default);
       }
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data?.token) {
         localStorage.setItem("user_token", data.token);
       }
+
+      // 로그인 성공 후 사용자 정보 가져오기
+      try {
+        console.log("로그인 성공 - 사용자 정보 조회 시작");
+        const userInfoResponse = await axios.get(
+          `/api${API_ENDPOINTS.USER.MEMBER}`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        console.log("사용자 정보 조회 성공:", userInfoResponse.data);
+
+        // 프로필 이미지 URL 결정
+        let profileImageUrl = "/profile_imgSrc.jpg";
+        if (userInfoResponse.data.data?.profileImageUrl) {
+          profileImageUrl = userInfoResponse.data.data.profileImageUrl;
+        } else if (userInfoResponse.data.data?.fileId) {
+          profileImageUrl = `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${userInfoResponse.data.data.fileId}`;
+        }
+
+        // 사용자 정보 일괄 업데이트
+        const userData = userInfoResponse.data.data;
+        user.updateUserInfo({
+          // 기본 정보
+          email: userData.email,
+          name: userData.name,
+          nickname: userData.nickname,
+          phoneNumber: userData.phoneNumber,
+
+          // 아파트 정보
+          apartmentId: userData.apartmentId,
+          apartmentName: userData.apartmentName,
+          building: userData.building,
+          carNumber: userData.carNumber,
+          fileId: userData.fileId,
+          location: userData.location,
+          memberApartmentId: userData.memberApartmentId,
+          moveInDate: userData.moveInDate,
+          numberOfResidents: userData.numberOfResidents,
+          region: userData.region,
+          unit: userData.unit,
+
+          // 프로필 이미지
+          profileImage: profileImageUrl,
+        });
+
+        console.log("로그인 후 사용자 정보 업데이트 완료:", {
+          name: userData.name,
+          nickname: userData.nickname,
+          phoneNumber: userData.phoneNumber,
+        });
+      } catch (error) {
+        console.error("사용자 정보 조회 실패:", error);
+        // 사용자 정보 조회가 실패해도 로그인은 성공한 것으로 처리
+      }
+
       user.setIsLogin(true);
       navigate("/", { replace: true });
     },
