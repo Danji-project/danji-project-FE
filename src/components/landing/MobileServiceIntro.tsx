@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   List,
@@ -11,6 +12,12 @@ import { Box } from "@mui/system";
 
 const MobileServiceIntro = () => {
   const [topState, setTopState] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChatClick = () => {
+    navigate("/chat");
+    setTopState(false);
+  };
 
   const toggleDrawer =
     (anchor: "top", open: boolean) =>
@@ -37,7 +44,9 @@ const MobileServiceIntro = () => {
       <List>
         {["채팅", "공지사항", "시설 정보", "문의하기"].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton
+              onClick={text === "채팅" ? handleChatClick : undefined}
+            >
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>

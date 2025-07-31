@@ -48,7 +48,7 @@ export const useUserInfoMutation = () => {
       if (data.data.profileImageUrl) {
         profileImageUrl = data.data.profileImageUrl;
       } else if (data.data.fileId) {
-        profileImageUrl = `/api/files/${data.data.fileId}`;
+        profileImageUrl = `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${data.data.fileId}`;
       }
 
       // 사용자 정보 일괄 업데이트

@@ -239,7 +239,7 @@ const ContentBody = () => {
               imageurl={IconMsg}
               onClick={() => {
                 console.log("채팅");
-                navigate("/");
+                navigate("/chat");
               }}
             />
             <IconButton
@@ -374,7 +374,7 @@ export const MainPage = () => {
                   <Link to="/my-page">마이페이지</Link>
                 </p>
                 <p>
-                  <Link to="/">채팅</Link>
+                  <Link to="/chat">채팅</Link>
                 </p>
                 <p>
                   <Link to="/">방문차량등록</Link>

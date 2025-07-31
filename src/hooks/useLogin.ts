@@ -87,7 +87,7 @@ export const useLogin = () => {
         if (userInfoResponse.data.data?.profileImageUrl) {
           profileImageUrl = userInfoResponse.data.data.profileImageUrl;
         } else if (userInfoResponse.data.data?.fileId) {
-          profileImageUrl = `/api/files/${userInfoResponse.data.data.fileId}`;
+          profileImageUrl = `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${userInfoResponse.data.data.fileId}`;
         }
 
         // 사용자 정보 일괄 업데이트

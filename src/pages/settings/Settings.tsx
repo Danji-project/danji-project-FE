@@ -230,6 +230,7 @@ const Settings = () => {
           <form onSubmit={handleSubmit}>
             <div className={styles["section__content"]}>
               <ProfileImageEditor
+                currentImage={user.profileImage}
                 onImageChange={handleImageChange}
                 size="large"
               />
