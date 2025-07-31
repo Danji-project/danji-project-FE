@@ -328,6 +328,7 @@ const ContentBody = () => {
 export const MainPage = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { Logout } = useLogout();
+  const user = useUserInfo();
 
   const logout = () => {
     Logout();
@@ -364,30 +365,35 @@ export const MainPage = () => {
                 <p>
                   <Link to="/">공지사항</Link>
                 </p>
-                <p>
-                  <Link to="/">Login</Link>
-                </p>
-                <p>
-                  <Link to="/">단지 즐겨찾기</Link>
-                </p>
-                <p>
-                  <Link to="/my-page">마이페이지</Link>
-                </p>
-                <p>
-                  <Link to="/chat">채팅</Link>
-                </p>
-                <p>
-                  <Link to="/">방문차량등록</Link>
-                </p>
-                <p>
-                  <Link to="/">내 예약 정보</Link>
-                </p>
-                <p>
-                  <Link to="/">단지 등록</Link>
-                </p>
-                <p onClick={logout}>
-                  <Link to="/">로그아웃</Link>
-                </p>
+                {!user.isLogin ? (
+                  <p>
+                    <Link to="/login">Login</Link>
+                  </p>
+                ) : (
+                  <>
+                    <p>
+                      <Link to="/">단지 즐겨찾기</Link>
+                    </p>
+                    <p>
+                      <Link to="/my-page">마이페이지</Link>
+                    </p>
+                    <p>
+                      <Link to="/chat">채팅</Link>
+                    </p>
+                    <p>
+                      <Link to="/">방문차량등록</Link>
+                    </p>
+                    <p>
+                      <Link to="/">내 예약 정보</Link>
+                    </p>
+                    <p>
+                      <Link to="/">단지 등록</Link>
+                    </p>
+                    <p onClick={logout}>
+                      <Link to="/">로그아웃</Link>
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>
