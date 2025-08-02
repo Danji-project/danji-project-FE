@@ -101,10 +101,67 @@
       transform: scale(1.1);
     }
 
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     svg {
       width: 12px;
       height: 12px;
     }
+  }
+
+  &__upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  // 기존 스피너는 제거하고 새로운 진행률 표시로 교체
+  &__spinner {
+    display: none; // 사용하지 않음
+  }
+
+  // 새로운 업로드 진행률 표시 (최적화됨)
+  .upload-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .progress-circle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .progress-ring {
+    transform: rotate(-90deg);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  .progress-ring-circle {
+    transition: stroke-dashoffset 0.3s ease;
+    stroke-linecap: round;
+  }
+
+  .progress-text {
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
 
   &__info {
@@ -122,6 +179,194 @@
     font-size: 15px;
     color: #111111;
     margin: 0;
+  }
+
+  &__edit-info-btn {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: rgb(151, 187, 255);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgb(130, 170, 255);
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// 파일 미리보기 및 압축 정보 (새로 추가)
+.file-preview {
+  margin-top: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  background: #f9fafb;
+}
+
+.preview-image {
+  width: 100%;
+  max-width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.compression-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #6b7280;
+
+  span {
+    &:first-child {
+      font-weight: 500;
+    }
+  }
+}
+
+.compression-saved {
+  color: rgb(34, 197, 94) !important;
+  font-weight: 600;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+// 프로필 편집 모달
+.profile-edit-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.profile-edit-form {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+}
+
+.form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: rgb(151, 187, 255);
+    }
+
+    &::placeholder {
+      color: #9ca3af;
+    }
+  }
+}
+
+.file-select-btn {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+
+  &:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+
+  button {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+}
+
+.cancel-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+
+  &:hover {
+    background: #e5e7eb;
+  }
+}
+
+.save-btn {
+  background: rgb(151, 187, 255);
+  color: white;
+
+  &:hover {
+    background: rgb(130, 170, 255);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
   }
 }
 
@@ -197,6 +442,13 @@
     font-size: 14px;
     color: #767676;
     height: 18px;
+  }
+
+  &__residents {
+    font-size: 12px;
+    color: rgb(151, 187, 255);
+    margin: 4px 0 0 0;
+    font-weight: 500;
   }
 
   &__actions {
@@ -352,5 +604,21 @@
       width: 70px;
       height: 70px;
     }
+  }
+
+  // 프로필 편집 폼 반응형
+  .profile-edit-form {
+    margin: 10px;
+    padding: 20px;
+    max-height: 90vh;
+  }
+
+  .file-preview {
+    text-align: center;
+  }
+
+  .preview-image {
+    max-width: 100px;
+    height: 70px;
   }
 }

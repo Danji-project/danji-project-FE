@@ -259,38 +259,74 @@ const ContentBody = () => {
 export const MainPage = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { Logout } = useLogout();
+  const user = useUserInfo();
 
   const logout = () => {
     Logout();
-  }
+  };
 
   return (
     <>
-      <div style={{position:'relative'}}>
-        <MainPageHeader sideMenuOpen={setIsSideMenuOpen}/>
-        <ContentBody/>
-        {
-          isSideMenuOpen?
-          <div className={`${styles['sidemenu-div-outline']}`} onClick={()=>{setIsSideMenuOpen(false);}}>
-            <div className={`${styles['sidemenu-div-maxline']}`}>
-              <div className={`${styles['sidemenu-div-content']}`}>
-                <div style={{ textAlign:'right'}}>
-                  <button className={`${styles['sidemenu-button']}`} onClick={()=>{setIsSideMenuOpen(false);}}/>
+      <div style={{ position: "relative" }}>
+        <MainPageHeader sideMenuOpen={setIsSideMenuOpen} />
+        <ContentBody />
+        {isSideMenuOpen ? (
+          <div
+            className={`${styles["sidemenu-div-outline"]}`}
+            onClick={() => {
+              setIsSideMenuOpen(false);
+            }}
+          >
+            <div className={`${styles["sidemenu-div-maxline"]}`}>
+              <div className={`${styles["sidemenu-div-content"]}`}>
+                <div style={{ textAlign: "right" }}>
+                  <button
+                    className={`${styles["sidemenu-button"]}`}
+                    onClick={() => {
+                      setIsSideMenuOpen(false);
+                    }}
+                  />
                 </div>
-                <p><Link to="/">단지정보</Link></p>
-                <p><Link to="/">커뮤니티</Link></p>
-                <p><Link to="/">공지사항</Link></p>
-                <p><Link to="/">Login</Link></p>
-                <p><Link to="/">단지 즐겨찾기</Link></p>
-                <p><Link to="/my-page">마이페이지</Link></p>
-                <p><Link to="/">채팅</Link></p>
-                <p><Link to="/">방문차량등록</Link></p>
-                <p><Link to="/">내 예약 정보</Link></p>
-                <p><Link to="/">단지 등록</Link></p>
-                <p onClick={logout}><Link to="/">로그아웃</Link></p>
+                <p>
+                  <Link to="/">단지정보</Link>
+                </p>
+                <p>
+                  <Link to="/">커뮤니티</Link>
+                </p>
+                <p>
+                  <Link to="/">공지사항</Link>
+                </p>
+                {!user.isLogin ? (
+                  <p>
+                    <Link to="/login">Login</Link>
+                  </p>
+                ) : (
+                  <>
+                    <p>
+                      <Link to="/">단지 즐겨찾기</Link>
+                    </p>
+                    <p><Link to="/my-page">마이페이지</Link></p>
+                    <p>
+                      <Link to="/chat">채팅</Link>
+                    </p>
+                    <p>
+                      <Link to="/">방문차량등록</Link>
+                    </p>
+                    <p>
+                      <Link to="/">내 예약 정보</Link>
+                    </p>
+                    <p>
+                      <Link to="/">단지 등록</Link>
+                    </p>
+                    <p onClick={logout}>
+                      <Link to="/">로그아웃</Link>
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>
+        )
         : 
           <></>
         }

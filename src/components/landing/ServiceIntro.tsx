@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 const ServiceIntro = () => {
+  const navigate = useNavigate();
+
+  const handleChatClick = () => {
+    navigate("/chat");
+  };
+
   return (
     <div className="service-intro">
       <div className="logo-wrapper">
@@ -14,7 +22,7 @@ const ServiceIntro = () => {
       </div>
       <ul className="service-list">
         <li>
-          <button>채팅</button>
+          <button onClick={handleChatClick}>채팅</button>
         </li>
         <li>
           <button>공지사항</button>
