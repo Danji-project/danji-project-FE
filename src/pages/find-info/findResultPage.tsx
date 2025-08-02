@@ -21,7 +21,7 @@ function BoldWord({ text, boldWord }: { text: string; boldWord: string }) {
 const FindInfoHeader = () => {
   return (
     <div>
-      <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
+      <Header title="아이디/비밀번호 찾기" hasBackButton={true} />
     </div>
   );
 };

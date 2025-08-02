@@ -17,7 +17,7 @@ interface FindInfoResponse {
 const FindInfoHeader = () => {
   return (
     <div>
-      <Header title="아이디/비밀번호 찾기" type="sub" hasBackButton={true} />
+      <Header title="아이디/비밀번호 찾기" hasBackButton={true} />
     </div>
   );
 };
@@ -195,6 +195,7 @@ const FindInfoPassword = () => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.response?.status);
+          throw new Error(error.response?.statusText);
         }
         throw new Error("이메일을 찾는 중 오류가 발생했습니다.");
       }
@@ -224,7 +225,7 @@ const FindInfoPassword = () => {
           return;
         }
         const encodeEamil = encodeURI(email);
-        const response = await axios.post(
+        const response = await axios.get(
           `/api/mail/certification-code/verify?email=${encodeEamil}&code=${otp}`,
           { withCredentials: true }
         );
@@ -238,7 +239,8 @@ const FindInfoPassword = () => {
             throw new Error(
               "인증에 실패하였습니다. 올바른 인증 코드를 입력하세요."
             );
-          console.log(error.response?.status);
+          console.log(error.response);
+          throw new Error(error.response?.statusText);
         }
         throw new Error("인증을 확인하는 중 오류가 발생했습니다.");
       }
@@ -249,6 +251,7 @@ const FindInfoPassword = () => {
     onError: (err: Error) => {
       setSuccessOTP(false);
       console.log(err.message);
+      setOTPError(err.message);
     },
   });
 

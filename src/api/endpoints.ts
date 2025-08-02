@@ -10,11 +10,11 @@ export const API_ENDPOINTS = {
     CERTIFICATION: "/mail/certification-code/send",
   },
 
-  FIND: {
-    EMAIL: "/member/find-id",
-    RESET_PW: "/memeber/rest-password",
+  FIND:{
+    EMAIL: '/member/find-id',
+    RESET_PW: '/member/reset-password',
   },
-
+  
   // 사용자 관련 엔드포인트
   USER: {
     PROFILE: "/users/profile",

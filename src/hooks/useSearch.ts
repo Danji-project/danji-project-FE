@@ -1,15 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../api/endpoints";
+import { BaseApartInfo } from "../model/BaseApartInfoModel";
 
 interface SearchResponse {
   token: string;
 }
 
-export const useSearch = ({searchText}:{searchText:string}) => {
-  const navigate = useNavigate();
-
+export const useSearch = ({searchText, setApartments}:{
+  searchText:string;
+  setApartments: React.Dispatch<React.SetStateAction<BaseApartInfo[] | undefined>>;
+}) => {
   const mutation = useMutation<SearchResponse, Error>({
     mutationFn: async () => {
       try {

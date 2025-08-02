@@ -11,7 +11,7 @@ export const SettingsRoutes = () => {
     if (pathname === "/settings") {
       return (
         <>
-          <Header title="프로필 수정" type="sub" hasBackButton={true} />
+          <Header title="프로필 수정" hasBackButton={true} />
           <Settings />
         </>
       );

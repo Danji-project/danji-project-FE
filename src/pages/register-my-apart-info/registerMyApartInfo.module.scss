@@ -1,0 +1,28 @@
+// 메인 컨텐츠
+.mypage__content {
+  flex: 1;
+  max-height: calc(100vh);
+  padding: 2px;
+  position: relative;
+}
+
+.search__btn {
+    height: 52px;
+    width: 100%;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #97BBFF;
+    color: white;
+    border: 1px solid rgb(232, 232, 232);
+
+    &:hover {
+        background: rgb(130, 170, 255);
+        border-color: rgb(130, 170, 255);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
+        color: white;
+    }
+}

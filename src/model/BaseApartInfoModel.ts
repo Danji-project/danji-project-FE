@@ -1,6 +1,6 @@
 interface IBaseApartInfoBase
 {
-    apartID : number;
+    apartID : string;
     locatin : string;
     apartName : string;
     apartDetailName : string;
@@ -12,7 +12,7 @@ interface IBaseApartInfoBase
 
 export class BaseApartInfo implements IBaseApartInfoBase
 {
-    apartID : number;
+    apartID : string;
     locatin: string;
     apartName: string;
     apartDetailName: string;
@@ -23,7 +23,7 @@ export class BaseApartInfo implements IBaseApartInfoBase
     isuseBookmark : boolean;
     bookmark : boolean;
 
-    constructor(id:number, loc : string, name:string, detail:string, total:number, size:number, month:number, url:string, isusebookmark:boolean, bookmark:boolean)
+    constructor(id:string, loc : string, name:string, detail:string, total:number, size:number, month:number, url:string, isusebookmark:boolean, bookmark:boolean)
     {
         this.apartID = id;
         this.locatin = loc;

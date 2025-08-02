@@ -36,7 +36,7 @@ class PasswordInfo {
 const HeaderTitle = () => {
   return (
     <div>
-      <Header title="비밀번호 재설정" type="sub" hasBackButton={true} />
+      <Header title="비밀번호 재설정" hasBackButton={true} />
     </div>
   );
 };

@@ -19,7 +19,7 @@ interface ToggleBtnProps {
 }
 
 
-export const ToggleBtn = ({
+const ToggleBtn = ({
   checked,
   onChange,
   id,
