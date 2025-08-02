@@ -63,8 +63,9 @@ const ContentBody = () => {
   const [apparts, setApparts] = useState<BaseApartInfo[]>([]);
   const [newapparts, setNewApparts] = useState<BaseApartInfo[]>([]);
 
+  const [fetchedAparts, setFetchedAparts] = useState<BaseApartInfo[]>();
   const [searchText, setSearchText] = useState<string>("");
-  const serchmutation = useSearch({ searchText: searchText });
+  const serchmutation = useSearch({ searchText: searchText, setApartments:setFetchedAparts });
   const isLogin = useUserInfo((state) => state.isLogin);
 
   const serch = () => {
@@ -84,7 +85,7 @@ const ContentBody = () => {
     // 이후에는 목업 대신 실제 데이터를 가져올 수 있도록 수정해야할 것.
     const fetchedAparts: BaseApartInfo[] = [
       {
-        apartID: 1,
+        apartID: "1",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -96,7 +97,7 @@ const ContentBody = () => {
         bookmark: false,
       },
       {
-        apartID: 2,
+        apartID: "2",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -108,7 +109,7 @@ const ContentBody = () => {
         bookmark: false,
       },
       {
-        apartID: 3,
+        apartID: "3",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -120,7 +121,7 @@ const ContentBody = () => {
         bookmark: false,
       },
       {
-        apartID: 4,
+        apartID: "4",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -136,7 +137,7 @@ const ContentBody = () => {
 
     const fetchedUsers: BaseApartInfo[] = [
       {
-        apartID: 1,
+        apartID: "1",
         locatin: "역삼",
         apartName: "래미안",
         apartDetailName: "래미안 루체라",
@@ -148,7 +149,7 @@ const ContentBody = () => {
         bookmark: false,
       },
       {
-        apartID: 2,
+        apartID: "2",
         locatin: "역삼",
         apartName: "래미안",
         apartDetailName: "래미안 루체라",

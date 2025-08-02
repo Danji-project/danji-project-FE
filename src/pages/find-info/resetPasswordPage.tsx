@@ -36,7 +36,7 @@ class PasswordInfo {
 const HeaderTitle = () => {
   return (
     <div>
-      <Header title="비밀번호 재설정" type="sub" hasBackButton={true} />
+      <Header title="비밀번호 재설정" hasBackButton={true} />
     </div>
   );
 };
@@ -84,9 +84,10 @@ const PasswordForm = () => {
     mutationFn: async () => {
       try {
         localStorage.setItem("isSuccess", "true");
+        
         const response = await axios.post(
           `/api${API_ENDPOINTS.FIND.RESET_PW}`,
-          { email: email, password: password },
+          { email: email, password: password.data },
           { withCredentials: true }
         );
 

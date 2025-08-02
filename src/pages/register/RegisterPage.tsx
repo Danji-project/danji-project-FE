@@ -422,7 +422,7 @@ const RegisterPage = () => {
       </div>
     ) : (
       <div className={`${isEmailLoading ? styles.dimmed : ""}`}>
-        <Header title="회원가입" type="sub" hasBackButton />
+        <Header title="회원가입" hasBackButton />
         <RegisterForm />
         {isIdComponent()}
       </div>

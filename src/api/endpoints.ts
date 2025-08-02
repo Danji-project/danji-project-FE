@@ -12,7 +12,7 @@ export const API_ENDPOINTS = {
 
   FIND:{
     EMAIL: '/member/find-id',
-    RESET_PW: '/memeber/rest-password',
+    RESET_PW: '/member/reset-password',
   },
   
   // 사용자 관련 엔드포인트
@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
     UPDATE_PROFILE: '/users/profile',
     DELETE_ACCOUNT: '/users',
     MEMBER: '/member',
+    GETAPARTMENT: '/apartment/',
   },
   
   // 게시판 관련 엔드포인트

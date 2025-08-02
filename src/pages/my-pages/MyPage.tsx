@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
+import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
 
 import LogoIcon from "../../assets/logo.svg";
 
@@ -46,6 +47,12 @@ const ProfileSection = () => {
 // 아파트 정보 섹션
 const ApartmentSection = () => {
   const user = useUserInfo();
+  const navigate = useNavigate();
+
+  const registerApart = () => {
+    navigate("/register-my-apart-info");
+  }
+
   return (
     <>
       {
@@ -56,7 +63,7 @@ const ApartmentSection = () => {
             <p>등록된 단지가 없습니다.</p>
           </div>
           <div className={styles["non-apartment__div-btn"]}>
-            <button className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}>단지 등록</button>
+            <button className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`} onClick={registerApart}>단지 등록</button>
           </div>
         </div>
         :
@@ -135,12 +142,14 @@ const BottomNavigation = () => {
 const MyPage = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
+  const { executeUserInfoMutation, isPending } = useUserInfoMutation();
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
   useEffect(() => {
     if (!user.isLogin) {
       navigate("/login", { replace: true });
     }
+    executeUserInfoMutation();
   }, [user.isLogin, navigate]);
 
   // 로그인하지 않은 사용자인 경우 아무것도 렌더링하지 않음

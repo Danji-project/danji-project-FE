@@ -1,17 +1,19 @@
 import { Outlet, useLocation } from "react-router-dom";
 
 import Header from "../layouts/Header";
+import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 
 export const MyPageRoutes = () => {
   const location = useLocation();
 
   const renderHeader = () => {
-    if (location.pathname === "/my-page") {
-      return (
+    switch (location.pathname)
+    {
+      case "/my-page":
+        return (
         <>
           <Header
             title="마이페이지"
-            type="sub"
             hasBackButton={true}
             hasIcons={
               <svg
@@ -40,6 +42,9 @@ export const MyPageRoutes = () => {
           <Outlet />
         </>
       );
+    
+      case "/register-my-apart-info":
+        return <RegisterMyApart/>;
     }
   };
 
