@@ -10,6 +10,7 @@ import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
 import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import { MainPage } from "../pages/main/MainPage";
+import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 
 import MyPage from "../pages/my-pages/MyPage";
 import { SettingsRoutes } from "./SettingsRoutes";
@@ -34,6 +35,7 @@ const AppRoutes = () => {
         {/* 마이페이지 라우팅 */}
         <Route element={<MyPageRoutes />}>
           <Route path="/my-page" element={<MyPage />} />
+          <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
         </Route>
 
         {/* 설정 라우팅 */}

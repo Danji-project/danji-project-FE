@@ -4,13 +4,13 @@ import { useUserInfo } from "../../stores/userStore";
 import { useSearch } from "../../hooks/useSearch";
 import { BaseApartInfo } from "../../model/BaseApartInfoModel";
 import { useNavigate } from "react-router-dom";
-import { useLogout } from "../../hooks/useLogin";
+import { useLogout } from "../../hooks/useLogout";
 
 import { Link } from "react-router-dom";
 
 import SearchBox from "../../components/common/search-box/search-box";
 import ApartCard from "../../components/apart-card/apart-card";
-import { IconButton } from "../../components/common/icon-button/Icon-button";
+import { IconButton } from "../../components/common/Icon-button/Icon-button";
 
 import styles from "./MainPage.module.scss";
 import MenuIcon from "../../assets/button/MenuBtn.svg";
@@ -28,7 +28,7 @@ const MainPageHeader = ({
 }: {
   sideMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const user = useUserInfo();
+  const isLogin = useUserInfo((state) => state.isLogin);
 
   return (
     <div
@@ -40,7 +40,7 @@ const MainPageHeader = ({
       }}
     >
       <h1 style={{ fontWeight: "600", fontSize: "20px" }}>DANJITALK</h1>
-      {user.isLogin ? (
+      {isLogin ? (
         <button
           onClick={() => {
             sideMenuOpen(true);
@@ -63,16 +63,17 @@ const ContentBody = () => {
   const [apparts, setApparts] = useState<BaseApartInfo[]>([]);
   const [newapparts, setNewApparts] = useState<BaseApartInfo[]>([]);
 
+  const [fetchedAparts, setFetchedAparts] = useState<BaseApartInfo[]>();
   const [searchText, setSearchText] = useState<string>("");
-  const serchmutation = useSearch({ searchText: searchText });
-  const user = useUserInfo();
+  const serchmutation = useSearch({ searchText: searchText, setApartments:setFetchedAparts });
+  const isLogin = useUserInfo((state) => state.isLogin);
 
   const serch = () => {
     serchmutation.Search();
   };
 
   const bookmarked = () => {
-    console.log(user.isLogin);
+    console.log(isLogin);
   };
 
   const showDetailInfo = () => {
@@ -84,7 +85,7 @@ const ContentBody = () => {
     // 이후에는 목업 대신 실제 데이터를 가져올 수 있도록 수정해야할 것.
     const fetchedAparts: BaseApartInfo[] = [
       {
-        apartID: 1,
+        apartID: "1",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -92,11 +93,11 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
       {
-        apartID: 2,
+        apartID: "2",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -104,11 +105,11 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
       {
-        apartID: 3,
+        apartID: "3",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -116,11 +117,11 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
       {
-        apartID: 4,
+        apartID: "4",
         locatin: "강남",
         apartName: "힐스",
         apartDetailName: "강남 힐스",
@@ -128,134 +129,64 @@ const ContentBody = () => {
         totalHouseHolds: 1200,
         moveVailableMonth: 2,
         picture: "https://placehold.co/150x180",
-        isuseBookmark: user.isLogin,
+        isuseBookmark: isLogin,
         bookmark: false,
       },
     ];
     setApparts(fetchedAparts);
 
-    if (user.isLogin) {
-      const fetchedUsers: BaseApartInfo[] = [
-        {
-          apartID: 1,
-          locatin: "역삼",
-          apartName: "래미안",
-          apartDetailName: "래미안 루체라",
-          houseSize: 40,
-          totalHouseHolds: 800,
-          moveVailableMonth: 6,
-          picture: "https://placehold.co/150x180",
-          isuseBookmark: user.isLogin,
-          bookmark: false,
-        },
-        {
-          apartID: 2,
-          locatin: "역삼",
-          apartName: "래미안",
-          apartDetailName: "래미안 루체라",
-          houseSize: 40,
-          totalHouseHolds: 800,
-          moveVailableMonth: 6,
-          picture: "https://placehold.co/150x180",
-          isuseBookmark: user.isLogin,
-          bookmark: false,
-        },
-      ];
-      setNewApparts(fetchedUsers);
-    }
+    const fetchedUsers: BaseApartInfo[] = [
+      {
+        apartID: "1",
+        locatin: "역삼",
+        apartName: "래미안",
+        apartDetailName: "래미안 루체라",
+        houseSize: 40,
+        totalHouseHolds: 800,
+        moveVailableMonth: 6,
+        picture: "https://placehold.co/150x180",
+        isuseBookmark: isLogin,
+        bookmark: false,
+      },
+      {
+        apartID: "2",
+        locatin: "역삼",
+        apartName: "래미안",
+        apartDetailName: "래미안 루체라",
+        houseSize: 40,
+        totalHouseHolds: 800,
+        moveVailableMonth: 6,
+        picture: "https://placehold.co/150x180",
+        isuseBookmark: isLogin,
+        bookmark: false,
+      },
+    ];
+    setNewApparts(fetchedUsers);
+    
   }, []);
 
   return (
     <>
       <div>
-        <SearchBox
-          content={searchText}
-          placeholder="궁금한 단지를 검색해보세요!"
-          onSearch={serch}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-          }}
-        />
-        {user.isLogin ? (
-          <div
-            style={{
-              marginTop: "20px",
-              marginBottom: "8px",
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            <IconButton
-              text="단지정보"
-              imageurl={IconChart}
-              onClick={() => {
-                console.log("단지정보");
-                navigate("/");
-              }}
-            />
-            <IconButton
-              text="커뮤니티"
-              imageurl={IconGamepad}
-              onClick={() => {
-                console.log("커뮤니티");
-                navigate("/");
-              }}
-            />
-            <IconButton
-              text="공지사항"
-              imageurl={IconDanger}
-              onClick={() => {
-                console.log("공지사항");
-                navigate("/");
-              }}
-            />
-            <IconButton
-              text="시설정보"
-              imageurl={IconGraph}
-              onClick={() => {
-                console.log("시설정보");
-                navigate("/");
-              }}
-            />
-            <IconButton
-              text="마이페이지"
-              imageurl={IconUser}
-              onClick={() => {
-                console.log("마이페이지");
-                navigate("/");
-              }}
-            />
-            <IconButton
-              text="즐겨찾기"
-              imageurl={IconStar}
-              onClick={() => {
-                console.log("즐겨찾기");
-                navigate("/");
-              }}
-            />
-            <IconButton
-              text="채팅"
-              imageurl={IconMsg}
-              onClick={() => {
-                console.log("채팅");
-                navigate("/chat");
-              }}
-            />
-            <IconButton
-              text="방문차량등록"
-              imageurl={IconReceipt}
-              onClick={() => {
-                console.log("방문차량등록");
-                navigate("/");
-              }}
-            />
-          </div>
-        ) : (
+        <SearchBox content={searchText} placeholder="궁금한 단지를 검색해보세요!"
+                   onSearch={serch} onChange={(e) => {setSearchText(e.target.value)}}/>
+        {
+          isLogin ?
+            <div style={{marginTop:'20px', marginBottom:'8px', display:'flex', flexWrap:'wrap', justifyContent:'space-between'}}>
+              <IconButton text="단지정보" imageurl={IconChart} onClick={() => {console.log("단지정보");  navigate("/");}}/>
+              <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/");}}/>
+              <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/");}}/>
+              <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/");}}/>
+              <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/my-page");}}/>
+              <IconButton text="즐겨찾기" imageurl={IconStar} onClick={() => {console.log("즐겨찾기");  navigate("/");}}/>
+              <IconButton text="채팅" imageurl={IconMsg} onClick={() => {console.log("채팅");  navigate("/");}}/>
+              <IconButton text="방문차량등록" imageurl={IconReceipt} onClick={() => {console.log("방문차량등록");  navigate("/");}}/>
+            </div>
+          :
           <></>
-        )}
+        }
 
-        {user.isLogin ? (
+        {isLogin ? (
           <div style={{ marginTop: "20px", marginBottom: "8px" }}>
             <div
               style={{
@@ -374,9 +305,7 @@ export const MainPage = () => {
                     <p>
                       <Link to="/">단지 즐겨찾기</Link>
                     </p>
-                    <p>
-                      <Link to="/my-page">마이페이지</Link>
-                    </p>
+                    <p><Link to="/my-page">마이페이지</Link></p>
                     <p>
                       <Link to="/chat">채팅</Link>
                     </p>
@@ -397,9 +326,10 @@ export const MainPage = () => {
               </div>
             </div>
           </div>
-        ) : (
+        )
+        : 
           <></>
-        )}
+        }
       </div>
     </>
   );

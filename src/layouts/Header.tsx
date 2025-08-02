@@ -1,10 +1,11 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./Header.module.scss";
+import SearchBox from "../components/common/search-box/search-box";
 
 interface HeaderProps {
   title: string;
-  type: "main" | "sub";
+  hasSearchBox?: boolean;
   hasBackButton?: boolean;
   hasText?: boolean;
   hasIcons?: React.ReactNode;
@@ -15,7 +16,43 @@ interface HeaderProps {
   onClickButton?: () => void;
   iconComponent?: React.ReactNode;
   onIconClick?: () => void;
+  onChangeText?: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
+
+const SearchHeader: React.FC<HeaderProps> = ({
+  title,
+  hasBackButton,
+  onClickButton,
+  onChangeText,
+}) => {
+  const navigate = useNavigate();
+  const navigateBack = () => {
+    navigate(-1);
+  };
+
+  return (
+    <header
+      className={`${styles.header} ${styles["header--sub"]}`}
+      role="banner"
+    >
+      <div className={styles.header__container}>
+        {hasBackButton && (
+          <button
+            type="button"
+            onClick={navigateBack}
+            className={styles["header__back-button"]}
+            style={{width:'12%'}}
+          >
+            <IoIosArrowBack size={20} />
+          </button>
+        )}
+        <div style={{width:'100%'}}>
+          <SearchBox content={title} placeholder="" onChange={(e)=>{if(onChangeText){onChangeText(e);}}} onSearch={()=>{onClickButton}}/>
+        </div>
+      </div>
+    </header>
+  );
+};
 
 const TitleHeader: React.FC<HeaderProps> = ({
   title,
@@ -65,6 +102,9 @@ const TitleHeader: React.FC<HeaderProps> = ({
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
+  if(props.hasSearchBox)
+    return <SearchHeader {...props}/>;
+
   return <TitleHeader {...props} />;
 };
 

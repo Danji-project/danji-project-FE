@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import { useUserInfo } from "../../stores/userStore";
 
-import { Checkbox } from "../../components/checkbox/Checkbox";
+import { Checkbox } from "../../components/Checkbox/Checkbox";
 import InputFiled from "../../components/input-filed/InputField";
 import Spinners from "../../components/common/spinners/Spinners";
 import Header from "../../layouts/Header";
@@ -17,7 +17,7 @@ import LogoIcon from "../../assets/logo.svg";
 const LoginHeader = () => {
   return (
     <div>
-      <Header title="로그인" type="sub" hasBackButton={true} />
+      <Header title="로그인" hasBackButton={true} />
       <div style={{ textAlign: "center" }}>
         <img src={LogoIcon} />
       </div>
@@ -182,13 +182,13 @@ const SocialLogin = () => {
     <div
       style={{ flexDirection: "row", margin: "0 auto", textAlign: "center" }}
     >
-      <a href="https://danjitalk.duckdns.org/oauth2/authorization/kakao">
+      <a href={`https://danjitalk.duckdns.org/oauth2/authorization/kakao?origin=${encodeURIComponent(window.location.origin)}`}>
         <img src={KakaoIcon} />
       </a>
-      <a href="https://danjitalk.duckdns.org/oauth2/authorization/google">
+      <a href={`https://danjitalk.duckdns.org/oauth2/authorization/google?origin=${encodeURIComponent(window.location.origin)}`}>
         <img style={{ margin: "0px 20px" }} src={GoogleIcon} />
       </a>
-      <a href="https://danjitalk.duckdns.org/oauth2/authorization/naver">
+      <a href={`https://danjitalk.duckdns.org/oauth2/authorization/naver?origin=${encodeURIComponent(window.location.origin)}`}>
         <img src={NaverIcon} />
       </a>
     </div>

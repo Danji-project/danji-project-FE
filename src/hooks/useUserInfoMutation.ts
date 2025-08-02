@@ -32,6 +32,7 @@ export const useUserInfoMutation = () => {
     mutationFn: async () => {
       try {
         const response = await axios.get(`/api${API_ENDPOINTS.USER.MEMBER}`);
+        //console.log(response.data);
         return response.data;
       } catch (error) {
         throw new Error("사용자 정보를 가져오는데 실패했습니다.");

@@ -17,7 +17,7 @@ const SearchBox = ({
     return(
         <>
         <div className={`${styles['search-box-outline']}`}>
-            <input className={`${styles['search-box-input']}`} content={content} 
+            <input className={`${styles['search-box-input']}`} value={content} 
                    onChange={onChange} placeholder={placeholder} onKeyDown={(e) => {if(e.key == "Enter") onSearch();}}/>
             <button className={`${styles['search-box-button']}`} onClick={() => {onSearch();}}><img src={SerchIcon}/></button>
         </div>
