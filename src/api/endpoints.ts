@@ -23,6 +23,7 @@ export const API_ENDPOINTS = {
     UPLOAD_PROFILE_IMAGE: "/member",
     MEMBER: "/member",
     UPDATE_MEMBER: "/member",
+    GETAPARTMENT: '/apartment/',
   },
 
   // 파일 업로드 관련 엔드포인트

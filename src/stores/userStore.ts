@@ -25,22 +25,18 @@ interface ImageCompressionOptions {
 interface IUserInfoBase {
   // 사용자 데이터
   apartmentID?: string | null;
-  apartmentName?: string| null;
-  building?: string| null;
   email: string;
   password: string;
   fileID?: string| null;
-  location?: string| null;
   memberApartmentID?: string| null;
-  moveInDate?: string| null;
   name?: string| null;
   nickname?: string| null;
   phoneNumber?: string| null;
-  region?: string| null;
   uint?: string
 
   // 사용자 데이터 받아온 이후 정해지는 것들
   isLogin: boolean;
+  isUserPandding: boolean;
   error: string;
 
   // 아파트 정보
@@ -122,6 +118,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
   name: "",
   phoneNumber: "",
   isLogin: false,
+  isUserPandding: false,
   error: "",
 
   // 아파트 정보 초기값
@@ -619,6 +616,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       name: "",
       phoneNumber: "",
       isLogin: false,
+      isUserPandding: false,
       error: "",
       apartmentId: null,
       apartmentName: null,

@@ -13,26 +13,9 @@ import LogoIcon from "../../assets/logo.svg";
 import SearchBox from "../../components/common/search-box/search-box";
 import InputFiled from "../../components/input-filed/InputField";
 
-const RegisterApartHeader = ({isSearch, setFetchedAparts, searchText, setSearchText, search}:
-{
-  isSearch:boolean; 
-  setFetchedAparts: Dispatch<SetStateAction<BaseApartInfo[] | undefined>>;
-  searchText:string;
-  setSearchText: Dispatch<SetStateAction<string>>;
-  search: () => void;
-}) => {
-  
-
+const RegisterApartHeader = () => {
   return (
     <div>
-      {/* {
-        isSearch ?
-          <Header title={searchText} hasBackButton={true} hasSearchBox={true} onChangeText={(e)=>{setSearchText(e.target.value);}} onClickButton={search}/>
-        :
-        <>
-          <Header title="단지 수정" hasBackButton={true}/>
-        </>
-      } */}
       <Header title="단지 수정" hasBackButton={true}/>
     </div>
   );
@@ -46,16 +29,23 @@ const ApartListBody = ({Appart, setAppart, setIsSearch, setSearchText}:
   setSearchText: Dispatch<SetStateAction<string>>;
 }) => {
 
-  const [selectedApartmentID, setSelectedApartmentID] = useState<string | undefined>(undefined);
+  const [selectedApartmentID, setSelectedApartmentID] = useState<number | undefined>(undefined);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedApartmentID(event.target.value);
+    let x = Number.parseInt(event.target.value);
+    setSelectedApartmentID(x);
   };
 
   const selectBtnClick = () => {
     setSearchText("");
     setIsSearch(false);
-    //setAppart(Appart.find(apart => apart.apartID === selectedApartmentID));
+    console.log(Appart);
+    console.log(selectedApartmentID);
+    console.log(Appart.find(apart => apart.id === selectedApartmentID));
+    setAppart(Appart.find(apart => apart.id === selectedApartmentID));
   };
+
+  console.log("Appart");
+  console.log(Appart);
 
   return (
     <div style={{display:'flex', flexDirection:'column', height:'calc(var(--device-height) - 200px)'}}>
@@ -64,17 +54,16 @@ const ApartListBody = ({Appart, setAppart, setIsSearch, setSearchText}:
         <div style={{flex:'1 0 auto', overflowY:'auto'}}>
           {
             Appart.map((element) => (
-              <div key={element.apartID}>
-                <input type="radio" name="apartmentlist" value={element.apartID}
-                        checked={selectedApartmentID == element.apartID}
-                        onChange={handleChange}>
-                  <ApartList
-                    key={element.apartID}
-                    element={element}
-                  />
-                </input>
-              </div>
-            ))
+              <>
+                <ApartList
+                btnType="radio"
+                selected={element.id === selectedApartmentID}
+                onSelect={(id)=>{setSelectedApartmentID(id);}}
+                key={element.id}
+                element={element}/>
+                <div className={`${styles["div-centerline"]}`} />
+              </>
+              ))
           }
         </div>
       </div>
@@ -83,9 +72,10 @@ const ApartListBody = ({Appart, setAppart, setIsSearch, setSearchText}:
   );
 };
 
-const ApartInfoBody = ({Appart, setIsSearch, searchText, setSearchText}:
+const ApartInfoBody = ({Appart, setAppart, setIsSearch, searchText, setSearchText}:
 {
   Appart:BaseApartInfo | null | undefined; 
+  setAppart: Dispatch<SetStateAction<BaseApartInfo | null | undefined>>;
   setIsSearch: Dispatch<SetStateAction<boolean>>;
   searchText:string;
   setSearchText: Dispatch<SetStateAction<string>>;
@@ -101,21 +91,20 @@ const ApartInfoBody = ({Appart, setIsSearch, searchText, setSearchText}:
     navigate('/my-page');
   };
 
+  console.log(Appart);
+
   return (
     <div style={{display:'flex', flexDirection:'column', height:'calc(var(--device-height) - 200px)'}}>
-      {/* <div>
-        <SearchBox  content={searchText}
-                    placeholder="등록하고자 하는 아파트를 검색하세요"
-                    onChange={(e)=>{setSearchText(e.target.value)}}
-                    onSearch={()=>{setIsSearch(true);}}/>
-      </div> */}
       <div style={{position:'relative', display:'flex', marginTop:'20px', marginBottom:'20px', overflow:'auto', flex:'1'}}>
         <div style={{flex:'1 0 auto', overflowY:'auto'}}>
           {
             Appart ?
             <>
+            <div className={`${styles.inputForm}`}>
               <p>단지 정보</p>
-              <ApartList key={Appart.apartID} element={Appart}/>
+              <ApartList key={Appart.id} element={Appart} selected={Appart ? true : false}
+                         btnType="delete" onSelect={()=>{setAppart(null);}}
+                          />
               <InputFiled type="text"
                           label="동"
                           name="dong"
@@ -123,6 +112,7 @@ const ApartInfoBody = ({Appart, setIsSearch, searchText, setSearchText}:
                           value={dong}
                           onChange={(e) => { setdong(e.target.value); }}
                           placeholder="ex. 101동"
+                          className={`${styles.InputFiled}`}
                         />
               <InputFiled type="text"
                           label="호"
@@ -131,6 +121,7 @@ const ApartInfoBody = ({Appart, setIsSearch, searchText, setSearchText}:
                           value={ho}
                           onChange={(e) => { setho(e.target.value); }}
                           placeholder="ex. 1001호"
+                          className={`${styles.InputFiled}`}
                         />
               <InputFiled type="text"
                           label="입주일"
@@ -138,7 +129,8 @@ const ApartInfoBody = ({Appart, setIsSearch, searchText, setSearchText}:
                           id="date"
                           value={date}
                           onChange={(e) => { setdate(e.target.value); }}
-                          placeholder="ex. 101동"
+                          placeholder="YYYY-MM-DD"
+                          className={`${styles.InputFiled}`}
                         />
               <InputFiled type="text"
                           label="거주인원"
@@ -147,6 +139,7 @@ const ApartInfoBody = ({Appart, setIsSearch, searchText, setSearchText}:
                           value={person}
                           onChange={(e) => { setperson(e.target.value); }}
                           placeholder="숫자만 입력하세요."
+                          className={`${styles.InputFiled}`}
                         />
               <InputFiled type="text"
                           label="차량등록"
@@ -155,7 +148,10 @@ const ApartInfoBody = ({Appart, setIsSearch, searchText, setSearchText}:
                           value={car[0]}
                           onChange={(e) => {  }}
                           placeholder="ex. 12가 1234"
+                          className={`${styles.InputFiled}`}
                         />
+              <button className={`${styles.car_add_button}`}>+ 차량 추가 등록</button>
+            </div>
             </>
             :
             <div style={{height:'100%',textAlign:'center', alignContent:'center', justifyContent:'center', margin:'0 auto'}}>
@@ -208,7 +204,8 @@ const RegisterMyApart = () => {
 
   return (
     <>
-      <RegisterApartHeader isSearch={isSearch} setFetchedAparts={setFetchedAparts} searchText={searchText} setSearchText={setSearchText} search={search}/>
+      <RegisterApartHeader />
+      {/* isSearch={isSearch} setFetchedAparts={setFetchedAparts} searchText={searchText} setSearchText={setSearchText} search={search}/> */}
       <div>
         <SearchBox  content={searchText}
                     placeholder="등록하고자 하는 아파트를 검색하세요"
@@ -220,7 +217,7 @@ const RegisterMyApart = () => {
           isSearch ? 
           <ApartListBody Appart={fetchedAparts? fetchedAparts : []} setIsSearch={setIsSearch} setAppart={setApparts} setSearchText={setSearchText}/>
           :
-          <ApartInfoBody Appart={apparts} setIsSearch={setIsSearch} searchText={searchText} setSearchText={setSearchText}/>
+          <ApartInfoBody Appart={apparts} setIsSearch={setIsSearch} searchText={searchText} setAppart={setApparts} setSearchText={setSearchText}/>
         }
       </div>
     </>

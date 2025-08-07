@@ -85,80 +85,103 @@ const ContentBody = () => {
     // 이후에는 목업 대신 실제 데이터를 가져올 수 있도록 수정해야할 것.
     const fetchedAparts: BaseApartInfo[] = [
       {
-        apartID: "1",
-        locatin: "강남",
-        apartName: "힐스",
-        apartDetailName: "강남 힐스",
+        id: 1,
+        location: "강남",
+        name: "힐스",
+        region: "강남 힐스",
+        apartDetailName:"강남 힐스",
         houseSize: 32,
-        totalHouseHolds: 1200,
+        buildingCount: 1200,
+        totalUnit: 1200,
         moveVailableMonth: 2,
-        picture: "https://placehold.co/150x180",
+        thumbnailFileUrl: "https://placehold.co/150x180",
         isuseBookmark: isLogin,
-        bookmark: false,
+        bookmark:false,
       },
       {
-        apartID: "2",
-        locatin: "강남",
-        apartName: "힐스",
-        apartDetailName: "강남 힐스",
+        id: 1,
+        location: "강남",
+        name: "힐스",
+        region: "강남 힐스",
+        apartDetailName:"강남 힐스",
         houseSize: 32,
-        totalHouseHolds: 1200,
+        buildingCount: 1200,
+        totalUnit: 1200,
         moveVailableMonth: 2,
-        picture: "https://placehold.co/150x180",
+        thumbnailFileUrl: "https://placehold.co/150x180",
         isuseBookmark: isLogin,
-        bookmark: false,
-      },
-      {
-        apartID: "3",
-        locatin: "강남",
-        apartName: "힐스",
-        apartDetailName: "강남 힐스",
+        bookmark:false,
+      },{
+        id: 2,
+        location: "강남",
+        name: "힐스",
+        region: "강남 힐스",
+        apartDetailName:"강남 힐스",
         houseSize: 32,
-        totalHouseHolds: 1200,
+        buildingCount: 1200,
+        totalUnit: 1200,
         moveVailableMonth: 2,
-        picture: "https://placehold.co/150x180",
+        thumbnailFileUrl: "https://placehold.co/150x180",
         isuseBookmark: isLogin,
-        bookmark: false,
-      },
-      {
-        apartID: "4",
-        locatin: "강남",
-        apartName: "힐스",
-        apartDetailName: "강남 힐스",
+        bookmark:false,
+      },{
+        id: 3,
+        location: "강남",
+        name: "힐스",
+        region: "강남 힐스",
+        apartDetailName:"강남 힐스",
         houseSize: 32,
-        totalHouseHolds: 1200,
+        buildingCount: 1200,
+        totalUnit: 1200,
         moveVailableMonth: 2,
-        picture: "https://placehold.co/150x180",
+        thumbnailFileUrl: "https://placehold.co/150x180",
         isuseBookmark: isLogin,
-        bookmark: false,
+        bookmark:false,
+      },{
+        id: 4,
+        location: "강남",
+        name: "힐스",
+        region: "강남 힐스",
+        apartDetailName:"강남 힐스",
+        houseSize: 32,
+        buildingCount: 1200,
+        totalUnit: 1200,
+        moveVailableMonth: 2,
+        thumbnailFileUrl: "https://placehold.co/150x180",
+        isuseBookmark: isLogin,
+        bookmark:false,
       },
     ];
     setApparts(fetchedAparts);
 
     const fetchedUsers: BaseApartInfo[] = [
       {
-        apartID: "1",
-        locatin: "역삼",
-        apartName: "래미안",
-        apartDetailName: "래미안 루체라",
+        id: 1,
+        location: "역삼",
+        name: "래미안",
+        region: "역삼 래미안 루체라",
+        apartDetailName:"역삼 래미안 루체라",
         houseSize: 40,
-        totalHouseHolds: 800,
+        buildingCount: 800,
+        totalUnit: 800,
         moveVailableMonth: 6,
-        picture: "https://placehold.co/150x180",
+        thumbnailFileUrl: "https://placehold.co/150x180",
         isuseBookmark: isLogin,
-        bookmark: false,
+        bookmark:false,
       },
       {
-        apartID: "2",
-        locatin: "역삼",
-        apartName: "래미안",
-        apartDetailName: "래미안 루체라",
+        id: 2,
+        location: "역삼",
+        name: "래미안",
+        region: "역삼 래미안 루체라",
+        apartDetailName:"역삼 래미안 루체라",
         houseSize: 40,
-        totalHouseHolds: 800,
+        buildingCount: 800,
+        totalUnit: 800,
         moveVailableMonth: 6,
-        picture: "https://placehold.co/150x180",
+        thumbnailFileUrl: "https://placehold.co/150x180",
         isuseBookmark: isLogin,
-        bookmark: false,
+        bookmark:false,
       },
     ];
     setNewApparts(fetchedUsers);
@@ -209,7 +232,7 @@ const ContentBody = () => {
             >
               {newapparts.map((element) => (
                 <ApartCard
-                  key={element.apartID}
+                  key={element.id}
                   element={element}
                   onBookMarked={bookmarked}
                   onClickCard={showDetailInfo}
@@ -243,7 +266,7 @@ const ContentBody = () => {
           >
             {apparts.map((element) => (
               <ApartCard
-                key={element.apartID}
+                key={element.id}
                 element={element}
                 onBookMarked={bookmarked}
                 onClickCard={showDetailInfo}
