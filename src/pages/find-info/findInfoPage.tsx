@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction  } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
@@ -7,6 +7,7 @@ import axios from "axios";
 
 import InputFiled from "../../components/input-filed/InputField";
 import Header from "../../layouts/Header";
+import Spinners from "../../components/common/spinners/Spinners";
 
 import styles from "./findInfoPage.module.scss";
 
@@ -152,7 +153,7 @@ const FindInfoEmailForm = () => {
   );
 };
 
-const FindInfoPassword = () => {
+const FindInfoPassword = ({setLoading}:{setLoading: Dispatch<SetStateAction<boolean>>;}) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
@@ -259,6 +260,8 @@ const FindInfoPassword = () => {
     setSuccessOTP(otp.length == 6);
     checkAPIMutation.mutate();
   };
+
+  setLoading(checkAPIMutation.isPending || sendEmailMutation.isPending);
 
   return (
     <>
@@ -372,6 +375,7 @@ const SelectBtn = () => {
   );
   const navigate = useNavigate();
   const user = useUserInfo();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 이미 로그인된 사용자는 홈페이지로 리다이렉트
   useEffect(() => {
@@ -387,6 +391,15 @@ const SelectBtn = () => {
 
   return (
     <>
+      {
+        isLoading ? (
+          <div className={[styles.register, styles.dimmed].join(" ")}>
+            <Spinners />
+          </div>
+        ) : (
+          <></>
+        )
+      }
       <FindInfoHeader />
       <button
         className={`${styles["top-button"]}`}
@@ -408,7 +421,7 @@ const SelectBtn = () => {
       >
         비밀번호 찾기
       </button>
-      {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword />}
+      {isSelctEmail ? <FindInfoEmailForm /> : <FindInfoPassword setLoading={setIsLoading}/>}
     </>
   );
 };
