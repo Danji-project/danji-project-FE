@@ -10,11 +10,11 @@ export const API_ENDPOINTS = {
     CERTIFICATION: "/mail/certification-code/send",
   },
 
-  FIND:{
-    EMAIL: '/member/find-id',
-    RESET_PW: '/member/reset-password',
+  FIND: {
+    EMAIL: "/member/find-id",
+    RESET_PW: "/member/reset-password",
   },
-  
+
   // 사용자 관련 엔드포인트
   USER: {
     PROFILE: "/users/profile",
@@ -66,20 +66,5 @@ export const API_ENDPOINTS = {
     RECENT_KEYWORDS: "/search/recent-keywords",
     ADD_RECENT_KEYWORD: "/search/recent-keywords",
     RECENT_APARTMENT: "/search/recent-apartment",
-  },
-
-  // 채팅 관련 엔드포인트
-  CHAT: {
-    REQUEST: "/chat/request",
-    APPROVE_REQUEST: "/chat/request",
-    REJECT_REQUEST: "/chat/request",
-    CANCEL_REQUEST: "/chat/request",
-    RECEIVED_REQUESTS: "/chat/request/received",
-    SENT_REQUESTS: "/chat/request/sent",
-    DIRECT_ROOMS: "/chat/direct",
-    GROUP_ROOMS: "/chat/group",
-    ROOM_DETAIL: "/chat/room",
-    SEARCH_USERS: "/users/search",
-    WS_TOKEN: "/ws/token",
   },
 };

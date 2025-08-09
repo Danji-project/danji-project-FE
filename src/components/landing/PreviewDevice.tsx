@@ -22,7 +22,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       className={`preview-device ${
-        isOpen || isAlertOpen || isAuthLoading || isEmailLoading || isPending
+        isOpen || isAuthLoading || isEmailLoading || isPending
           ? "of-hidden"
           : ""
       }`}
