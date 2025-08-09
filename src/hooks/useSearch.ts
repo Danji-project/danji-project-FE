@@ -4,7 +4,10 @@ import { API_ENDPOINTS } from "../api/endpoints";
 import { BaseApartInfo } from "../model/BaseApartInfoModel";
 
 interface SearchResponse {
-  token: string;
+  code: string;
+  data:{
+    apartments:BaseApartInfo[];
+  }
 }
 
 export const useSearch = ({searchText, setApartments}:{
@@ -18,6 +21,7 @@ export const useSearch = ({searchText, setApartments}:{
           `/api${API_ENDPOINTS.SEARCH.DANJI}?keyword=${searchText}`
         );
         
+        console.log(response.data);
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -27,9 +31,10 @@ export const useSearch = ({searchText, setApartments}:{
       }
     },
     onSuccess: (data) => {
-      if (data?.token) {
-        localStorage.setItem("user_token", data.token);
+      if (data?.data?.apartments) {
+        setApartments(data?.data?.apartments);
       }
+      console.log(data?.data);
     },
     onError: (err: Error) => {
       console.log(err.message);

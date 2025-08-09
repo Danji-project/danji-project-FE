@@ -53,13 +53,13 @@ const LoginForm = ({
   );
 
   const { Login, isLogining } = useLogin();
+  setIsLoading(isLogining);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!emailError) {
       user.setPassword(password);
       user.setEmail(email);
-      setIsLoading(isLogining);
       Login();
 
       if (isSaveEmail) {
@@ -214,20 +214,18 @@ export const LoginPage = () => {
 
   return (
     <>
-      <div>
-        {isLoading ? (
-          <div className={[styles.register, styles.dimmed].join(" ")}>
-            <Spinners />
-          </div>
-        ) : (
-          <></>
-        )}
-        <div>
-          <LoginHeader />
-          <LoginForm setIsLoading={setIsLoading} />
-          <SpiltBar />
-          <SocialLogin />
+      { isLoading ? (
+        <div className={[styles.register, styles.dimmed].join(" ")}>
+          <Spinners />
         </div>
+      ) : (
+        <></>
+      )}
+      <div>
+        <LoginHeader />
+        <LoginForm setIsLoading={setIsLoading} />
+        <SpiltBar />
+        <SocialLogin />
       </div>
     </>
   );

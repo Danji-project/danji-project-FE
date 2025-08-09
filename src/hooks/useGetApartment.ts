@@ -11,8 +11,8 @@ export const useGetApartmentMutation = ({
   apartmentID,
   setApartment,
 }: {
-  apartmentID: string | undefined | null;
-  setApartment: React.Dispatch<React.SetStateAction<BaseApartInfo | undefined>>;
+  apartmentID: number | undefined | null;
+  setApartment: React.Dispatch<React.SetStateAction<BaseApartInfo | null| undefined>>;
 }) => {
   const mutation = useMutation<ApartmentResponse, Error>({
     mutationFn: async () => {
@@ -31,7 +31,7 @@ export const useGetApartmentMutation = ({
     },
     onSuccess: (data) => {
       try{
-        const apart = new BaseApartInfo(1, "서초", "폴리스", "서초 폴리스", 32, 1200, 6,"https://placehold.co/150x180",true,false);
+        const apart = new BaseApartInfo(100, 1, "서초", "폴리스", "서초 폴리스", "https://placehold.co/150x180", 2, false);
         setApartment(apart);
       }catch(err)
       {

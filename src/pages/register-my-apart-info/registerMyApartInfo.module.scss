@@ -19,10 +19,42 @@
     border: 1px solid rgb(232, 232, 232);
 
     &:hover {
-        background: rgb(130, 170, 255);
-        border-color: rgb(130, 170, 255);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
-        color: white;
+      background: rgb(130, 170, 255);
+      border-color: rgb(130, 170, 255);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
+      color: white;
     }
+}
+
+.div-centerline {
+  width: 100%;
+  margin: 0;
+  border: 1px solid;
+  border-block-color: #EDEDED;
+  border-width: 1px 0px 0px 0px;
+}
+
+.inputForm{
+  p{
+    font-size: 16px;
+    font-weight: 600;
+    color: #111111;
+  }
+
+  .car_add_button{
+    width: 100%;
+    border: #97BBFF 1px solid;
+    border-radius: 6px;
+    height: 40px;
+    color: #97BBFF;
+
+    &:hover{
+      background-color: #EDEDED;
+    }
+  }
+
+  .InputFiled{
+    margin-bottom: 20px;
+  }
 }
