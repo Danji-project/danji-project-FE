@@ -24,6 +24,7 @@ export const useLogin = () => {
 
   const mutation = useMutation<LoginResponse, Error>({
     mutationFn: async () => {
+      user.isUserPandding = true;
       try {
         const requestData = { loginId: user.email, password: user.password };
         console.log("로그인 요청:", {
@@ -66,6 +67,7 @@ export const useLogin = () => {
       }
     },
     onSuccess: async (data) => {
+      user.isUserPandding = false;
       if (data?.token) {
         localStorage.setItem("user_token", data.token);
       }
@@ -130,6 +132,7 @@ export const useLogin = () => {
       navigate("/", { replace: true });
     },
     onError: (err: Error) => {
+      user.isUserPandding = false;
       user.setError(err.message);
       user.setIsLogin(false);
     },

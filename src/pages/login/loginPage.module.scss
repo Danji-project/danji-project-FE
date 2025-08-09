@@ -113,6 +113,7 @@ $font-size-midium: 16px;
   right: 0;
   z-index: 9999;
   transform: translate(0%, 0%);
+  height: 100vh;
 
   &.dimmed {
     &::after {
