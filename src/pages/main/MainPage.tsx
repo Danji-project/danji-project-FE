@@ -3,14 +3,14 @@ import { type Dispatch, type SetStateAction } from "react";
 import { useUserInfo } from "../../stores/userStore";
 import { useSearch } from "../../hooks/useSearch";
 import { BaseApartInfo } from "../../model/BaseApartInfoModel";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 
 import { Link } from "react-router-dom";
 
 import SearchBox from "../../components/common/search-box/search-box";
 import ApartCard from "../../components/apart-card/apart-card";
-import { IconButton } from "../../components/common/Icon-button/Icon-button";
+import { IconButton } from "../../components/common/icon-button/Icon-button";
 
 import styles from "./MainPage.module.scss";
 import MenuIcon from "../../assets/button/MenuBtn.svg";
@@ -59,13 +59,17 @@ const MainPageHeader = ({
 
 const ContentBody = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [apparts, setApparts] = useState<BaseApartInfo[]>([]);
   const [newapparts, setNewApparts] = useState<BaseApartInfo[]>([]);
 
   const [fetchedAparts, setFetchedAparts] = useState<BaseApartInfo[]>();
   const [searchText, setSearchText] = useState<string>("");
-  const serchmutation = useSearch({ searchText: searchText, setApartments:setFetchedAparts });
+  const serchmutation = useSearch({
+    searchText: searchText,
+    setApartments: setFetchedAparts,
+  });
   const isLogin = useUserInfo((state) => state.isLogin);
 
   const serch = () => {
@@ -162,29 +166,100 @@ const ContentBody = () => {
       },
     ];
     setNewApparts(fetchedUsers);
-    
   }, []);
 
   return (
     <>
       <div>
-        <SearchBox content={searchText} placeholder="궁금한 단지를 검색해보세요!"
-                   onSearch={serch} onChange={(e) => {setSearchText(e.target.value)}}/>
-        {
-          isLogin ?
-            <div style={{marginTop:'20px', marginBottom:'8px', display:'flex', flexWrap:'wrap', justifyContent:'space-between'}}>
-              <IconButton text="단지정보" imageurl={IconChart} onClick={() => {console.log("단지정보");  navigate("/");}}/>
-              <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/");}}/>
-              <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/");}}/>
-              <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/");}}/>
-              <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/my-page");}}/>
-              <IconButton text="즐겨찾기" imageurl={IconStar} onClick={() => {console.log("즐겨찾기");  navigate("/");}}/>
-              <IconButton text="채팅" imageurl={IconMsg} onClick={() => {console.log("채팅");  navigate("/");}}/>
-              <IconButton text="방문차량등록" imageurl={IconReceipt} onClick={() => {console.log("방문차량등록");  navigate("/");}}/>
-            </div>
-          :
+        <SearchBox
+          content={searchText}
+          placeholder="궁금한 단지를 검색해보세요!"
+          onSearch={serch}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+          }}
+        />
+        {isLogin ? (
+          <div
+            style={{
+              marginTop: "20px",
+              marginBottom: "8px",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            <IconButton
+              text="단지정보"
+              imageurl={IconChart}
+              onClick={() => {
+                console.log("단지정보");
+                navigate("/");
+              }}
+              active={location.pathname === "/"}
+            />
+            <IconButton
+              text="커뮤니티"
+              imageurl={IconGamepad}
+              onClick={() => {
+                console.log("커뮤니티");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="공지사항"
+              imageurl={IconDanger}
+              onClick={() => {
+                console.log("공지사항");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="시설정보"
+              imageurl={IconGraph}
+              onClick={() => {
+                console.log("시설정보");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="마이페이지"
+              imageurl={IconUser}
+              onClick={() => {
+                console.log("마이페이지");
+                navigate("/my-page");
+              }}
+              active={location.pathname.startsWith("/my-page")}
+            />
+            <IconButton
+              text="즐겨찾기"
+              imageurl={IconStar}
+              onClick={() => {
+                console.log("즐겨찾기");
+                navigate("/");
+              }}
+            />
+            <IconButton
+              text="채팅"
+              imageurl={IconMsg}
+              onClick={() => {
+                console.log("채팅");
+                navigate("/chat");
+              }}
+              active={location.pathname.startsWith("/chat")}
+            />
+            <IconButton
+              text="방문차량등록"
+              imageurl={IconReceipt}
+              onClick={() => {
+                console.log("방문차량등록");
+                navigate("/");
+              }}
+            />
+          </div>
+        ) : (
           <></>
-        }
+        )}
 
         {isLogin ? (
           <div style={{ marginTop: "20px", marginBottom: "8px" }}>
@@ -305,7 +380,9 @@ export const MainPage = () => {
                     <p>
                       <Link to="/">단지 즐겨찾기</Link>
                     </p>
-                    <p><Link to="/my-page">마이페이지</Link></p>
+                    <p>
+                      <Link to="/my-page">마이페이지</Link>
+                    </p>
                     <p>
                       <Link to="/chat">채팅</Link>
                     </p>
@@ -326,10 +403,9 @@ export const MainPage = () => {
               </div>
             </div>
           </div>
-        )
-        : 
+        ) : (
           <></>
-        }
+        )}
       </div>
     </>
   );
