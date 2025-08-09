@@ -205,6 +205,93 @@ $z-index-border: 1;
     }
   }
 
+  &__date_input {
+    font-size: $font-size-medium;
+    line-height: 22px;
+    border: none;
+    border-bottom: $border-width solid $color-border;
+    color: $color-text-primary;
+    transition: $transition-fast;
+    background-color: $color-background-transparent;
+    width: 20px;
+    height: $input-height;
+
+    &--with-button {
+      padding-right: 72px;
+
+      @media screen and (max-width: $breakpoint-mobile) {
+        padding-right: 64px;
+      }
+    }
+
+    &--error {
+      color: $color-error;
+      border-bottom-color: $color-error;
+
+      &:focus {
+        border-bottom-color: $color-error;
+        outline: none;
+
+        & + .input-field__password-toggle {
+          color: $color-error;
+          border-color: $color-error;
+          border-bottom-color: $color-error;
+        }
+
+        & + .input-field__action-button {
+          color: $color-white;
+          border-color: $color-error;
+          background-color: $color-error;
+        }
+      }
+
+      & + .input-field__password-toggle {
+        color: $color-error;
+        border-bottom-color: $color-error;
+      }
+
+      & + .input-field__action-button {
+        color: $color-white;
+        border-color: $color-error;
+        background-color: $color-error;
+      }
+    }
+
+    &:focus {
+      border-bottom: $border-width solid $color-primary-light;
+      outline: none;
+
+      &:not(.input-field__input--error) + .input-field__password-toggle {
+        color: $color-primary;
+        border-color: $color-primary;
+      }
+
+      &:not(.input-field__input--error) + .input-field__action-button {
+        color: $color-white;
+        border-color: $color-primary-light;
+        background-color: $color-primary-light;
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      border-bottom-style: solid;
+      opacity: 0.7;
+      color: $color-text-disabled;
+
+      & + .input-field__password-toggle {
+        color: $color-text-secondary;
+        border-color: $color-text-secondary;
+      }
+
+      & + .input-field__action-button {
+        color: $color-text-secondary;
+        border-color: $color-text-secondary;
+      }
+    }
+  }
+
+
   &__password-toggle {
     position: absolute;
     right: 0;

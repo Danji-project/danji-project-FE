@@ -24,7 +24,6 @@ interface ImageCompressionOptions {
 
 interface IUserInfoBase {
   // 사용자 데이터
-  apartmentID?: string | null;
   email: string;
   password: string;
   fileID?: string| null;
@@ -40,17 +39,16 @@ interface IUserInfoBase {
   error: string;
 
   // 아파트 정보
-  apartmentId: null;
+  apartmentId: number | null;
   apartmentName: null | string;
-  building: null;
-  carNumber: null | number;
+  building: string | null;
+  carNumber: null | string[];
   fileId: null | string | number;
   location: string | null;
   memberApartmentId: number | null;
   moveInDate: null | string;
   numberOfResidents: number | null;
   region: string | null;
-  unit: null;
 
   // 파일 업로드 관련 (최적화됨)
   profileImage: string;
@@ -72,14 +70,13 @@ interface IUserInfoBase {
   setApartmentId: (apartmentId: null) => void;
   setApartmentName: (apartmentName: null | string) => void;
   setBuilding: (building: null) => void;
-  setCarNumber: (carNumber: null | number) => void;
+  setCarNumber: (carNumber: null | string[]) => void;
   setFileId: (fileId: null | string | number) => void;
   setLocation: (location: string | null) => void;
   setMemberApartmentId: (memberApartmentId: number | null) => void;
   setMoveInDate: (moveInDate: null | string) => void;
   setNumberOfResidents: (numberOfResidents: number | null) => void;
   setRegion: (region: string | null) => void;
-  setUnit: (unit: null) => void;
 
   // 파일 업로드 관련 setter 함수들 (최적화됨)
   setProfileImage: (imageUrl: string) => void;
@@ -161,7 +158,6 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
   setMoveInDate: (moveInDate) => set({ moveInDate }),
   setNumberOfResidents: (numberOfResidents) => set({ numberOfResidents }),
   setRegion: (region) => set({ region }),
-  setUnit: (unit) => set({ unit }),
 
   // 파일 업로드 관련 setter 함수들 (최적화됨)
   setProfileImage: (imageUrl) => set({ profileImage: imageUrl }),
@@ -628,7 +624,6 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       moveInDate: null,
       numberOfResidents: null,
       region: null,
-      unit: null,
       profileImage: "/profile_imgSrc.jpg",
       isUploading: false,
       uploadProgress: 0,

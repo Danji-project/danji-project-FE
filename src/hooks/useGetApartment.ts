@@ -11,8 +11,8 @@ export const useGetApartmentMutation = ({
   apartmentID,
   setApartment,
 }: {
-  apartmentID: string | undefined | null;
-  setApartment: React.Dispatch<React.SetStateAction<BaseApartInfo | null>>;
+  apartmentID: number | undefined | null;
+  setApartment: React.Dispatch<React.SetStateAction<BaseApartInfo | null| undefined>>;
 }) => {
   const mutation = useMutation<ApartmentResponse, Error>({
     mutationFn: async () => {

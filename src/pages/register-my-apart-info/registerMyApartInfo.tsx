@@ -5,6 +5,7 @@ import { BaseApartInfo } from "../../model/BaseApartInfoModel";
 import { useSearch } from "../../hooks/useSearch";
 
 import { useGetApartmentMutation } from "../../hooks/useGetApartment";
+import { useUserApartAdd } from "../../hooks/useUserApartAdd";
 
 import styles from "./registerMyApartInfo.module.scss"
 import Header from "../../layouts/Header";
@@ -81,14 +82,101 @@ const ApartInfoBody = ({Appart, setAppart, setIsSearch, searchText, setSearchTex
   setSearchText: Dispatch<SetStateAction<string>>;
 }) => {
   const navigate = useNavigate();
+  const user = useUserInfo();
+  const {AddApart} = useUserApartAdd();
   const [dong, setdong] = useState<string>('');
   const [ho, setho] = useState<string>('');
   const [date, setdate] = useState<string>('');
   const [person, setperson] = useState<string>('');
-  const [car, setcar] = useState<string[]>([]);
+  const [car, setCar] = useState<string[]>(['']);
 
   const selectBtnClick = () => {
+    if(Appart)
+    {
+      user.apartmentId = Appart.id;
+      user.building = dong;
+      user.uint = ho;
+      user.moveInDate = date;
+      user.numberOfResidents = Number.parseInt(person);
+      user.carNumber = car;
+      AddApart();
+    }
     navigate('/my-page');
+  };
+
+  
+  const checkDate = () => {
+    let onlyDate = date.replace(/[-]/g,'');
+    let result = "";
+    let tempZero = 0;
+
+    while(onlyDate.length < 8)
+    {
+      onlyDate += "0";
+      tempZero++;
+    }
+    
+    if(onlyDate.length > 8)
+      onlyDate = onlyDate.slice(0,8);
+
+    if(onlyDate.length == 8)
+    {
+      let tempNum = Number.parseInt(onlyDate);
+      console.log(result + "   :   " +tempNum);
+
+      result += `${(Math.floor(tempNum / 10000))}`;
+      tempNum = tempNum % 10000;
+
+      console.log(result + "   :   " +tempNum);
+
+      if(Math.floor(tempNum / 100) <= 12)
+      {
+        result =  result+`-${(Math.floor(tempNum / 100))}`;
+        tempNum = tempNum % 100;
+      }
+      else
+      {
+        result = result+`-0${(Math.floor(tempNum / 1000))}`;
+        tempNum = tempNum % 1000;
+      }
+
+      console.log(result + "   :   " +tempNum);
+
+      for(let i = 0; i < tempZero; i++)
+        tempNum = tempNum / 10;
+
+      if(tempNum < 10)
+        result =  result+`-0${tempNum}`;
+      else
+        result =  result+`-${tempNum}`;
+
+      console.log(result + "   :   " +tempNum);
+      setdate(result);
+    }
+    else
+    {
+      //error = "올바른 날짜를 입력하세요.";
+    }
+  }
+
+  const checkIsNumber = (data : string) : boolean => {
+    console.log(data);
+    const value = data.replace(/[^0-9]/g, ''); // 숫자만 허용
+    if(!value && data)
+      return false;
+    return true;
+  };
+
+  const addCar = (newCar: string) => {
+    setCar(prevCars => [...prevCars, newCar]);
+  };
+
+  const updateCar = (index: number, value: string) => {
+    setCar(prevCars => {
+      const updatedCars = [...prevCars];
+      updatedCars[index] = value;
+      return updatedCars;
+    });
   };
 
   console.log(Appart);
@@ -123,12 +211,14 @@ const ApartInfoBody = ({Appart, setAppart, setIsSearch, searchText, setSearchTex
                           placeholder="ex. 1001호"
                           className={`${styles.InputFiled}`}
                         />
-              <InputFiled type="text"
+              <InputFiled type="date"
                           label="입주일"
                           name="date"
                           id="date"
+                          pattern="[0-9]{8}"
                           value={date}
-                          onChange={(e) => { setdate(e.target.value); }}
+                          onBlur={checkDate}
+                          onChange={(e) => { checkIsNumber(e.target.value) ? setdate(e.target.value) : e}}
                           placeholder="YYYY-MM-DD"
                           className={`${styles.InputFiled}`}
                         />
@@ -137,20 +227,30 @@ const ApartInfoBody = ({Appart, setAppart, setIsSearch, searchText, setSearchTex
                           name="person"
                           id="person"
                           value={person}
-                          onChange={(e) => { setperson(e.target.value); }}
+                          onChange={(e) => { checkIsNumber(e.target.value)? setperson(e.target.value) : e }}
                           placeholder="숫자만 입력하세요."
                           className={`${styles.InputFiled}`}
                         />
-              <InputFiled type="text"
-                          label="차량등록"
-                          name="car"
-                          id="car"
-                          value={car[0]}
-                          onChange={(e) => {  }}
-                          placeholder="ex. 12가 1234"
-                          className={`${styles.InputFiled}`}
-                        />
-              <button className={`${styles.car_add_button}`}>+ 차량 추가 등록</button>
+
+              <div>
+                <p>차량등록</p>
+                {
+                  car.map((element, index) => (
+                    <>
+                    <InputFiled type="text"
+                                  label=""
+                                  name="car"
+                                  id="car"
+                                  value={element}
+                                  onChange={(e) => { updateCar(index, e.target.value); }}
+                                  placeholder="ex. 12가 1234"
+                                  className={`${styles.InputFiled}`}
+                                />
+                    </>
+                  ))
+                }
+              </div>
+              <button onClick={(e) => { addCar('');}} className={`${styles.car_add_button}`}>+ 차량 추가 등록</button>
             </div>
             </>
             :
@@ -173,7 +273,7 @@ const RegisterMyApart = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isSelectedApparts, setIsSelectedApparts] = useState<boolean>(false);
   const [apparts, setApparts] = useState<BaseApartInfo | null>();
-  const { getApartmentMutation, isPending } = useGetApartmentMutation({ apartmentID: user.apartmentID, setApartment: setApparts});
+  const { getApartmentMutation, isPending } = useGetApartmentMutation({ apartmentID: user.apartmentId, setApartment: setApparts});
   const [fetchedAparts, setFetchedAparts] = useState<BaseApartInfo[] | undefined>([]);
 
 
@@ -191,7 +291,7 @@ const RegisterMyApart = () => {
       navigate("/login", { replace: true });
     }
 
-    if(user.apartmentID){
+    if(user.apartmentId){
       getApartmentMutation();
       setIsSelectedApparts(true);
     }
