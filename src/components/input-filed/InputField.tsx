@@ -4,7 +4,7 @@ import styles from './InputField.module.scss';
 interface InputFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label: string;
-  type?: 'text' | 'email' | 'password' | 'search';
+  type?: 'text' | 'email' | 'password' | 'search' | 'date';
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -134,6 +134,39 @@ export const InputField = ({
     />
   );
 
+  const renderDateInput = () => (
+    <>
+      <input
+        id={id}
+        type="text"
+        name={name}
+        value={value}
+        onChange={handleChange}
+        placeholder={placeholder}
+        required={required}
+        disabled={disabled}
+        minLength={minLength}
+        pattern={pattern}
+        className={`${styles['input-field__input']} ${error ? styles['input-field__input--error'] : ''} ${
+          actionButton ? styles['input-field__wrapper--with-button'] : ''
+        }`}
+        aria-invalid={!!error}
+        aria-errormessage={error ? `${id}-error` : undefined}
+        {...rest}/>
+      <input
+        id={id}
+        type={type}
+        name={name}
+        value={value}
+        onChange={handleChange}
+        className={`${styles['input-field__date_input']} ${error ? styles['input-field__date_input--error'] : ''}`}
+        aria-invalid={!!error}
+        aria-errormessage={error ? `${id}-error` : undefined}
+        {...rest}
+      />
+    </>
+  );
+
   const renderRegularInput = () => (
     <input
       id={id}
@@ -164,7 +197,7 @@ export const InputField = ({
         {label}
       </label>
       <div className={styles['input-field__wrapper']}>
-        {type === 'password' ? renderPasswordInput() : renderRegularInput()}
+        {type === 'password' ? renderPasswordInput() : type === 'date' ? renderDateInput() : renderRegularInput()}
 
         {type === 'password' && showPasswordToggle && (
           <button

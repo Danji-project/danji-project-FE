@@ -96,7 +96,7 @@ const ApartCard: React.FC<ApartProps> = ({ element , onBookMarked, onClickCard})
   return (
     <div style={{width:'150px', marginBottom:'8px', marginTop:'8px'}} onClick={onClickCard}>
       <div style={{position:'relative', borderRadius:'8px'}}>
-        <img style={{width:'150px', height:'180px', borderRadius:'8px'}} src={element.picture}/>
+        <img style={{width:'150px', height:'180px', borderRadius:'8px'}} src={element.thumbnailFileUrl}/>
         <div className={`${styles['div-overray']}`}>
           {
             element.isuseBookmark
@@ -107,15 +107,15 @@ const ApartCard: React.FC<ApartProps> = ({ element , onBookMarked, onClickCard})
           }
           <div className={`${styles["div-div-overray"]}`}>
             <img src={LocationIcon}/>
-            <p>{element.locatin}</p>
+            <p>{element.region}</p>
           </div>
         </div>
       </div>
       <div style={{cursor:'pointer'}}>
-        <p style={{fontSize:'14px', fontWeight:'600', color:'rgba(151, 187, 255, 1)'}}>{element.apartName}</p>
+        <p style={{fontSize:'14px', fontWeight:'600', color:'rgba(151, 187, 255, 1)'}}>{element.name}</p>
         <p style={{fontSize:'14px', color:'rgba(17, 17, 17, 1)'}}>{element.apartDetailName}</p>
         <div className={`${styles["div-detail-info"]}`}>
-          <p>총{element.totalHouseHolds}세대</p>
+          <p>총{element.totalUnit.toLocaleString()}세대</p>
           <p>|</p>
           <p>{element.houseSize}평</p>
           <p>|</p>
