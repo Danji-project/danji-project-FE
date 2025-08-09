@@ -1,450 +1,484 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUserInfo } from "../../stores/userStore";
-import { useChat } from "../../hooks/useChat";
+import { useMemo, useState, useRef, useEffect } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import Header from "../../layouts/Header";
-import ChatRequestModal from "../../components/chat/ChatRequestModal";
 import styles from "./ChatPage.module.scss";
-import type { ChatRoom, ChatRequest } from "../../api/chatApi";
+
+type ChatParticipant = {
+  id: number;
+  name: string;
+  avatarUrl?: string;
+};
+
+type ChatRoom = {
+  id: number;
+  name: string;
+  lastMessage?: string;
+  lastMessageTime?: string;
+  unreadCount?: number;
+  participants: ChatParticipant[];
+  type: "dm" | "group";
+};
+
+type ChatMessage = {
+  id: number;
+  roomId: number;
+  senderId: number;
+  senderName: string;
+  text: string;
+  timestamp: string;
+  isOwn: boolean;
+};
+
+type ReceivedRequest = {
+  id: number;
+  name: string;
+  avatarUrl?: string;
+  timeLabel: string;
+  text: string;
+};
+
+type SentRequest = {
+  id: number;
+  name: string;
+  avatarUrl?: string;
+  timeLabel: string;
+  text: string;
+  status: "pending";
+};
+
+const mockRooms: ChatRoom[] = [
+  {
+    id: 1,
+    name: "관리사무소",
+    lastMessage: "민원 접수되었습니다.",
+    lastMessageTime: "오전 10:24",
+    unreadCount: 2,
+    participants: [{ id: 1, name: "관리자" }],
+    type: "dm",
+  },
+  {
+    id: 2,
+    name: "501동 이웃방",
+    lastMessage: "오늘 모임 있어요!",
+    lastMessageTime: "어제",
+    unreadCount: 0,
+    participants: [
+      { id: 2, name: "김이웃" },
+      { id: 3, name: "박이웃" },
+    ],
+    type: "group",
+  },
+  {
+    id: 3,
+    name: "관리사무소 공지",
+    lastMessage: "이번 주 소독 일정 안내",
+    lastMessageTime: "2일 전",
+    unreadCount: 1,
+    participants: [
+      { id: 1, name: "관리자" },
+      { id: 4, name: "입주민" },
+      { id: 5, name: "입주민" },
+    ],
+    type: "group",
+  },
+];
+
+const mockMessages: ChatMessage[] = [
+  {
+    id: 101,
+    roomId: 1,
+    senderId: 1,
+    senderName: "관리자",
+    text: "안녕하세요. 무엇을 도와드릴까요?",
+    timestamp: new Date().toISOString(),
+    isOwn: false,
+  },
+  {
+    id: 102,
+    roomId: 1,
+    senderId: 999,
+    senderName: "나",
+    text: "엘리베이터 점검 일정이 궁금합니다.",
+    timestamp: new Date().toISOString(),
+    isOwn: true,
+  },
+];
+
+const mockReceived: ReceivedRequest[] = [
+  {
+    id: 1,
+    name: "한예빈",
+    timeLabel: "3분 전",
+    text: "아파트 관련해서 정보 좀 얻고자 연락드렸어요. 혹시 아파트 도서관 사용을 위해 정액권을 끊어야 하나요?",
+  },
+  {
+    id: 2,
+    name: "이진아",
+    timeLabel: "3분 전",
+    text: "안녕하세요!",
+  },
+];
+
+const mockSent: SentRequest[] = [
+  {
+    id: 1,
+    name: "한예빈",
+    timeLabel: "3분 전",
+    text: "아파트 관련해서 정보 좀 얻고자 연락드렸어요. 혹시 아파트 도서관 사용을 위해 정액권을 끊어야 하나요?",
+    status: "pending",
+  },
+  {
+    id: 2,
+    name: "이진아",
+    timeLabel: "3분 전",
+    text: "안녕하세요!",
+    status: "pending",
+  },
+];
 
 const ChatPage = () => {
-  const navigate = useNavigate();
-  const user = useUserInfo();
-  const {
-    directRooms,
-    groupRooms,
-    receivedRequests,
-    sentRequests,
-    isLoading,
-    isConnected,
-    loadDirectRooms,
-    loadGroupRooms,
-    loadReceivedRequests,
-    loadSentRequests,
-    sendChatRequestAction,
-    approveRequest,
-    rejectRequest,
-    cancelRequest,
-  } = useChat();
+  const [view, setView] = useState<"list" | "room">("list");
+  const [rooms] = useState<ChatRoom[]>(mockRooms);
+  const [tab, setTab] = useState<"individual" | "group" | "received" | "sent">(
+    "individual"
+  );
+  const [activeRoomId, setActiveRoomId] = useState<number | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const endRef = useRef<HTMLDivElement | null>(null);
+  const [received, setReceived] = useState<ReceivedRequest[]>(mockReceived);
+  const [sent, setSent] = useState<SentRequest[]>(mockSent);
 
-  const [selectedTab, setSelectedTab] = useState<
-    "individual" | "group" | "received" | "sent"
-  >("individual");
-  const [searchText, setSearchText] = useState("");
-  const [newMessage, setNewMessage] = useState("");
-  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
-  const [isChatRequestModalOpen, setIsChatRequestModalOpen] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const activeRoom = useMemo(
+    () => rooms.find((r) => r.id === activeRoomId) || null,
+    [rooms, activeRoomId]
+  );
 
-  // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
-  useEffect(() => {
-    if (!user.isLogin) {
-      navigate("/login", { replace: true });
-    }
-  }, [user.isLogin, navigate]);
-
-  // 스크롤을 맨 아래로 이동
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const dmRooms = useMemo(() => rooms.filter((r) => r.type === "dm"), [rooms]);
+  const groupRooms = useMemo(
+    () => rooms.filter((r) => r.type === "group"),
+    [rooms]
+  );
 
   useEffect(() => {
-    scrollToBottom();
-  }, []);
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, view]);
 
-  // 메시지 전송
-  const handleSendMessage = () => {
-    if (newMessage.trim() && selectedRoomId) {
-      // WebSocket을 통해 메시지 전송
-      setNewMessage("");
-    }
+  const enterRoom = (roomId: number) => {
+    setActiveRoomId(roomId);
+    setMessages(mockMessages.filter((m) => m.roomId === roomId));
+    setView("room");
   };
 
-  // Enter 키로 메시지 전송
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
+  const leaveRoom = () => {
+    setView("list");
   };
 
-  // 채팅 요청 처리
-  const handleApproveRequest = async (requestId: number) => {
-    try {
-      await approveRequest(requestId);
-    } catch (error) {
-      console.error("채팅 요청 승인 실패:", error);
-    }
+  const sendMessage = () => {
+    const text = input.trim();
+    if (!text || !activeRoomId) return;
+    const newMsg: ChatMessage = {
+      id: Date.now(),
+      roomId: activeRoomId,
+      senderId: 999,
+      senderName: "나",
+      text,
+      timestamp: new Date().toISOString(),
+      isOwn: true,
+    };
+    setMessages((prev) => [...prev, newMsg]);
+    setInput("");
   };
 
-  const handleRejectRequest = async (requestId: number) => {
-    try {
-      await rejectRequest(requestId);
-    } catch (error) {
-      console.error("채팅 요청 거절 실패:", error);
-    }
-  };
-
-  const handleCancelRequest = async (requestId: number) => {
-    try {
-      await cancelRequest(requestId);
-    } catch (error) {
-      console.error("채팅 요청 취소 실패:", error);
-    }
-  };
-
-  const handleSendChatRequest = async (receiverId: number, message: string) => {
-    try {
-      await sendChatRequestAction(receiverId, message);
-    } catch (error) {
-      console.error("채팅 요청 전송 실패:", error);
-      throw error;
-    }
-  };
-
-  // 로그인하지 않은 사용자인 경우 아무것도 렌더링하지 않음
-  if (!user.isLogin) {
-    return null;
-  }
-
-  // 필터링된 채팅방 목록 (안전 처리 추가)
-  const filteredDirectRooms = Array.isArray(directRooms)
-    ? directRooms.filter((room) =>
-        room.name.toLowerCase().includes(searchText.toLowerCase())
-      )
-    : [];
-
-  const filteredGroupRooms = Array.isArray(groupRooms)
-    ? groupRooms.filter((room) =>
-        room.name.toLowerCase().includes(searchText.toLowerCase())
-      )
-    : [];
-
-  const filteredReceivedRequests = Array.isArray(receivedRequests)
-    ? receivedRequests.filter((request) =>
-        request.message.toLowerCase().includes(searchText.toLowerCase())
-      )
-    : [];
-
-  const filteredSentRequests = Array.isArray(sentRequests)
-    ? sentRequests.filter((request) =>
-        request.message.toLowerCase().includes(searchText.toLowerCase())
-      )
-    : [];
+  // 검색 기능은 요구사항에서 제외되었습니다.
 
   return (
-    <div className={styles["chat-page"]}>
-      <Header title="채팅" type="main" hasBackButton={true} />
+    <div className={styles.chatPage}>
+      <Header title="채팅" hasBackButton={true} />
 
-      <div className={styles["chat-container"]}>
-        {/* 탭 네비게이션 */}
-        <div className={styles["tab-navigation"]}>
-          <button
-            className={`${styles["tab-button"]} ${
-              selectedTab === "individual" ? styles["active"] : ""
-            }`}
-            onClick={() => setSelectedTab("individual")}
-          >
-            1:1 채팅
-          </button>
-          <button
-            className={`${styles["tab-button"]} ${
-              selectedTab === "group" ? styles["active"] : ""
-            }`}
-            onClick={() => setSelectedTab("group")}
-          >
-            단체 채팅
-          </button>
-          <button
-            className={`${styles["tab-button"]} ${
-              selectedTab === "received" ? styles["active"] : ""
-            }`}
-            onClick={() => setSelectedTab("received")}
-          >
-            받은 요청
-          </button>
-          <button
-            className={`${styles["tab-button"]} ${
-              selectedTab === "sent" ? styles["active"] : ""
-            }`}
-            onClick={() => setSelectedTab("sent")}
-          >
-            보낸 요청
-          </button>
-        </div>
-
-        {/* 검색바 및 채팅 요청 버튼 */}
-        <div className={styles["search-container"]}>
-          <div className={styles["search-wrapper"]}>
-            <input
-              type="text"
-              placeholder="채팅방 또는 연락처 검색"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              className={styles["search-input"]}
-            />
+      {view === "list" && (
+        <div className={styles.listPane}>
+          <div className={styles.tabs}>
             <button
-              className={styles["new-chat-button"]}
-              onClick={() => setIsChatRequestModalOpen(true)}
+              className={`${styles.tabButton} ${
+                tab === "individual" ? styles.active : ""
+              }`}
+              onClick={() => setTab("individual")}
             >
-              새 채팅
+              1:1 채팅
+            </button>
+            <button
+              className={`${styles.tabButton} ${
+                tab === "group" ? styles.active : ""
+              }`}
+              onClick={() => setTab("group")}
+            >
+              단체 채팅
+            </button>
+            <button
+              className={`${styles.tabButton} ${
+                tab === "received" ? styles.active : ""
+              }`}
+              onClick={() => setTab("received")}
+            >
+              받은 요청
+            </button>
+            <button
+              className={`${styles.tabButton} ${
+                tab === "sent" ? styles.active : ""
+              }`}
+              onClick={() => setTab("sent")}
+            >
+              보낸 요청
             </button>
           </div>
-        </div>
-
-        {/* 1:1 채팅 목록 */}
-        {selectedTab === "individual" && (
-          <div className={styles["chat-rooms"]}>
-            {isLoading ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>⏳</div>
-                <h3>로딩 중...</h3>
-              </div>
-            ) : filteredDirectRooms.length === 0 ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>💬</div>
-                <h3>1:1 채팅이 없습니다</h3>
-                <p>새로운 1:1 대화를 시작해보세요</p>
-              </div>
-            ) : (
-              filteredDirectRooms.map((room) => (
-                <div key={room.id} className={styles["chat-room-item"]}>
-                  <div className={styles["room-avatar"]}>
-                    <img
-                      src={
-                        room.participants[0]?.profileImage ||
-                        "/profile_imgSrc.jpg"
-                      }
-                      alt={room.name}
-                    />
-                  </div>
-                  <div className={styles["room-info"]}>
-                    <div className={styles["room-header"]}>
-                      <h4>{room.name}</h4>
-                      <span className={styles["last-time"]}>
-                        {room.lastMessageTime}
-                      </span>
-                    </div>
-                    <div className={styles["room-footer"]}>
-                      <p className={styles["last-message"]}>
-                        {room.lastMessage || "메시지가 없습니다"}
-                      </p>
-                      {room.unreadCount > 0 && (
-                        <span className={styles["unread-count"]}>
-                          {room.unreadCount}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+          {tab === "individual" && (
+            <>
+              {dmRooms.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <div>💬</div>
+                  <p>채팅방이 없습니다</p>
                 </div>
-              ))
-            )}
-          </div>
-        )}
-
-        {/* 단체 채팅 목록 */}
-        {selectedTab === "group" && (
-          <div className={styles["chat-rooms"]}>
-            {isLoading ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>⏳</div>
-                <h3>로딩 중...</h3>
-              </div>
-            ) : filteredGroupRooms.length === 0 ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>👥</div>
-                <h3>단체 채팅이 없습니다</h3>
-                <p>단체 채팅방을 만들어보세요</p>
-              </div>
-            ) : (
-              filteredGroupRooms.map((room) => (
-                <div key={room.id} className={styles["chat-room-item"]}>
-                  <div className={styles["room-avatar"]}>
-                    <img src="/profile_imgSrc.jpg" alt={room.name} />
-                  </div>
-                  <div className={styles["room-info"]}>
-                    <div className={styles["room-header"]}>
-                      <h4>{room.name}</h4>
-                      <span className={styles["last-time"]}>
-                        {room.lastMessageTime}
-                      </span>
-                    </div>
-                    <div className={styles["room-footer"]}>
-                      <p className={styles["last-message"]}>
-                        {room.lastMessage || "메시지가 없습니다"}
-                      </p>
-                      {room.unreadCount > 0 && (
-                        <span className={styles["unread-count"]}>
-                          {room.unreadCount}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        )}
-
-        {/* 받은 요청 목록 */}
-        {selectedTab === "received" && (
-          <div className={styles["chat-rooms"]}>
-            {isLoading ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>⏳</div>
-                <h3>로딩 중...</h3>
-              </div>
-            ) : filteredReceivedRequests.length === 0 ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>📥</div>
-                <h3>받은 요청이 없습니다</h3>
-                <p>다른 사용자의 채팅 요청을 기다려보세요</p>
-              </div>
-            ) : (
-              filteredReceivedRequests.map((request) => (
-                <div key={request.id} className={styles["chat-room-item"]}>
-                  <div className={styles["room-avatar"]}>
-                    <img src="/profile_imgSrc.jpg" alt="요청자" />
-                  </div>
-                  <div className={styles["room-info"]}>
-                    <div className={styles["room-header"]}>
-                      <h4>채팅 요청</h4>
-                      <span className={styles["last-time"]}>
-                        {new Date(request.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <div className={styles["room-footer"]}>
-                      <p className={styles["last-message"]}>
-                        {request.message}
-                      </p>
-                      <div style={{ display: "flex", gap: "8px" }}>
-                        <button
-                          onClick={() => handleApproveRequest(request.id)}
-                          style={{
-                            padding: "4px 8px",
-                            fontSize: "12px",
-                            backgroundColor: "#2773e6",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          승인
-                        </button>
-                        <button
-                          onClick={() => handleRejectRequest(request.id)}
-                          style={{
-                            padding: "4px 8px",
-                            fontSize: "12px",
-                            backgroundColor: "#ff4757",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          거절
-                        </button>
+              ) : (
+                <ul className={styles.roomList}>
+                  {dmRooms.map((room) => (
+                    <li
+                      key={room.id}
+                      className={styles.dmItem}
+                      onClick={() => enterRoom(room.id)}
+                    >
+                      <div className={styles.avatar}>
+                        <img src="/profile_imgSrc.jpg" alt={room.name} />
                       </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        )}
+                      <div className={styles.roomMeta}>
+                        <div className={styles.metaRow}>
+                          <h4 className={styles.name}>{room.name}</h4>
+                          <span className={styles.time}>
+                            {room.lastMessageTime}
+                          </span>
+                        </div>
+                        <p className={styles.messageText}>
+                          {room.lastMessage || "메시지가 없습니다"}
+                        </p>
+                      </div>
+                      <button
+                        className={styles.menuButton}
+                        aria-label="메뉴"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <BsThreeDotsVertical />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
 
-        {/* 보낸 요청 목록 */}
-        {selectedTab === "sent" && (
-          <div className={styles["chat-rooms"]}>
-            {isLoading ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>⏳</div>
-                <h3>로딩 중...</h3>
-              </div>
-            ) : filteredSentRequests.length === 0 ? (
-              <div className={styles["empty-state"]}>
-                <div className={styles["empty-icon"]}>📤</div>
-                <h3>보낸 요청이 없습니다</h3>
-                <p>채팅 요청을 보내보세요</p>
-              </div>
-            ) : (
-              filteredSentRequests.map((request) => (
-                <div key={request.id} className={styles["chat-room-item"]}>
-                  <div className={styles["room-avatar"]}>
-                    <img src="/profile_imgSrc.jpg" alt="수신자" />
-                  </div>
-                  <div className={styles["room-info"]}>
-                    <div className={styles["room-header"]}>
-                      <h4>채팅 요청</h4>
-                      <span className={styles["last-time"]}>
-                        {new Date(request.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <div className={styles["room-footer"]}>
-                      <p className={styles["last-message"]}>
-                        {request.message}
-                      </p>
-                      <div style={{ display: "flex", gap: "8px" }}>
-                        <span style={{ fontSize: "12px", color: "#666" }}>
-                          {request.status === "PENDING" && "대기 중"}
-                          {request.status === "APPROVED" && "승인됨"}
-                          {request.status === "REJECTED" && "거절됨"}
-                        </span>
-                        {request.status === "PENDING" && (
+          {tab === "group" && (
+            <>
+              {groupRooms.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <div>👥</div>
+                  <p>단체 채팅이 없습니다</p>
+                </div>
+              ) : (
+                <ul className={styles.roomList}>
+                  {groupRooms.map((room) => (
+                    <li
+                      key={room.id}
+                      className={styles.dmItem}
+                      onClick={() => enterRoom(room.id)}
+                    >
+                      <div className={styles.groupAvatarStack}>
+                        <img src="/profile_imgSrc.jpg" alt="member-1" />
+                        <img src="/profile_imgSrc.jpg" alt="member-2" />
+                      </div>
+                      <div className={styles.roomMeta}>
+                        <div className={styles.metaRow}>
+                          <h4 className={styles.name}>{room.name}</h4>
+                          <span className={styles.time}>
+                            {room.lastMessageTime}
+                          </span>
+                        </div>
+                        <p className={styles.messageText}>
+                          {room.lastMessage ||
+                            `${room.participants.length}명 참여중`}
+                        </p>
+                      </div>
+                      <button
+                        className={styles.menuButton}
+                        aria-label="메뉴"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <BsThreeDotsVertical />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+
+          {tab === "received" && (
+            <>
+              {received.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <div>📥</div>
+                  <p>받은 요청이 없습니다</p>
+                </div>
+              ) : (
+                <ul className={styles.requestList}>
+                  {received.map((r) => (
+                    <li key={r.id} className={styles.requestItem}>
+                      <div className={styles.avatar}>
+                        <img src="/profile_imgSrc.jpg" alt={r.name} />
+                      </div>
+                      <div className={styles.requestBody}>
+                        <div className={styles.requestHeader}>
+                          <strong className={styles.requestName}>
+                            {r.name}
+                          </strong>
+                          <span className={styles.requestTime}>
+                            {r.timeLabel}
+                          </span>
+                        </div>
+                        <p className={styles.requestText}>{r.text}</p>
+                        <div className={styles.requestActions}>
                           <button
-                            onClick={() => handleCancelRequest(request.id)}
-                            style={{
-                              padding: "4px 8px",
-                              fontSize: "12px",
-                              backgroundColor: "#ff4757",
-                              color: "white",
-                              border: "none",
-                              borderRadius: "4px",
-                              cursor: "pointer",
-                            }}
+                            className={styles.rejectBtn}
+                            onClick={() =>
+                              setReceived((prev) =>
+                                prev.filter((x) => x.id !== r.id)
+                              )
+                            }
+                          >
+                            거절
+                          </button>
+                          <span>|</span>
+                          <button
+                            className={styles.acceptBtn}
+                            onClick={() =>
+                              setReceived((prev) =>
+                                prev.filter((x) => x.id !== r.id)
+                              )
+                            }
+                          >
+                            수락
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+
+          {tab === "sent" && (
+            <>
+              {sent.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <div>📤</div>
+                  <p>보낸 요청이 없습니다</p>
+                </div>
+              ) : (
+                <ul className={styles.requestList}>
+                  {sent.map((s) => (
+                    <li key={s.id} className={styles.requestItem}>
+                      <div className={styles.avatar}>
+                        <img src="/profile_imgSrc.jpg" alt={s.name} />
+                      </div>
+                      <div className={styles.requestBody}>
+                        <div className={styles.requestHeader}>
+                          <strong className={styles.requestName}>
+                            {s.name}
+                          </strong>
+                          <span className={styles.requestTime}>
+                            {s.timeLabel}
+                          </span>
+                        </div>
+                        <p className={styles.requestText}>{s.text}</p>
+                        <div className={styles.requestActions}>
+                          <span className={styles.pendingLabel}>대기중</span>
+                          <span>|</span>
+                          <button
+                            className={styles.cancelBtn}
+                            onClick={() =>
+                              setSent((prev) =>
+                                prev.filter((x) => x.id !== s.id)
+                              )
+                            }
                           >
                             취소
                           </button>
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+        </div>
+      )}
 
-        {/* 메시지 입력 영역 */}
-        <div className={styles["message-input-container"]}>
-          <div className={styles["message-input-wrapper"]}>
+      {view === "room" && activeRoom && (
+        <div className={styles.roomPane}>
+          <div className={styles.roomHeader}>
+            <button className={styles.backBtn} onClick={leaveRoom}>
+              ←
+            </button>
+            <div className={styles.roomTitle}>
+              <h3>{activeRoom.name}</h3>
+              <span>{activeRoom.participants.length}명</span>
+            </div>
+          </div>
+
+          <div className={styles.messages}>
+            {messages.map((m) => (
+              <div
+                key={m.id}
+                className={`${styles.message} ${
+                  m.isOwn ? styles.own : styles.other
+                }`}
+              >
+                <div className={styles.bubble}>
+                  <p>{m.text}</p>
+                  <span className={styles.msgTime}>
+                    {new Date(m.timestamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <div ref={endRef} />
+          </div>
+
+          <div className={styles.inputBar}>
             <input
-              type="text"
-              placeholder="메시지를 입력하세요..."
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className={styles["message-input"]}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="메시지를 입력하세요"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage();
+                }
+              }}
             />
-            <button
-              onClick={handleSendMessage}
-              className={styles["send-button"]}
-              disabled={!newMessage.trim() || !selectedRoomId}
-            >
+            <button disabled={!input.trim()} onClick={sendMessage}>
               전송
             </button>
           </div>
         </div>
-
-        {/* 채팅 요청 모달 */}
-        <ChatRequestModal
-          isOpen={isChatRequestModalOpen}
-          onClose={() => setIsChatRequestModalOpen(false)}
-          onSendRequest={handleSendChatRequest}
-        />
-      </div>
+      )}
     </div>
   );
 };

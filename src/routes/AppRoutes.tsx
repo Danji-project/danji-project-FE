@@ -12,8 +12,9 @@ import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import { MainPage } from "../pages/main/MainPage";
 import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 
-import MyPage from "../pages/my-pages/MyPage";
 import { SettingsRoutes } from "./SettingsRoutes";
+
+import MyPage from "../pages/my-pages/MyPage";
 import Settings from "../pages/settings/Settings";
 import ChatPage from "../pages/chat/ChatPage";
 

@@ -1,7 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ServiceIntro = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isChatActive = location.pathname.startsWith("/chat");
 
   const handleChatClick = () => {
     navigate("/chat");
@@ -22,7 +24,17 @@ const ServiceIntro = () => {
       </div>
       <ul className="service-list">
         <li>
-          <button onClick={handleChatClick}>채팅</button>
+          <button
+            onClick={handleChatClick}
+            aria-current={isChatActive ? "page" : undefined}
+            style={{
+              color: isChatActive ? "#2773e6" : undefined,
+              fontWeight: isChatActive ? 700 : undefined,
+              borderBottom: isChatActive ? "2px solid #2773e6" : undefined,
+            }}
+          >
+            채팅
+          </button>
         </li>
         <li>
           <button>공지사항</button>

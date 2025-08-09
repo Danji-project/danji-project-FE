@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 
@@ -158,25 +158,31 @@ const ApartmentSection = () => {
 
   const registerApart = () => {
     navigate("/register-my-apart-info");
-  }
+  };
 
   return (
     <>
-      {
-        user.apartmentID == null?
+      {user.apartmentId == null ? (
         <div className={styles["non-apartment"]}>
           <div className={styles["non-apartment__card"]}>
             <img src={LogoIcon} />
             <p>등록된 단지가 없습니다.</p>
           </div>
           <div className={styles["non-apartment__div-btn"]}>
-            <button className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`} onClick={registerApart}>단지 등록</button>
+            <button
+              className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}
+              onClick={registerApart}
+            >
+              단지 등록
+            </button>
           </div>
         </div>
-        :
+      ) : (
         <div className={styles["apartment"]}>
           <div className={styles["apartment__header"]}>
-            <h3 className={styles["apartment__title"]}>{user.nickname}의 아파트</h3>
+            <h3 className={styles["apartment__title"]}>
+              {user.nickname}의 아파트
+            </h3>
             <button className={styles["apartment__edit-btn"]}>수정</button>
           </div>
 
@@ -187,24 +193,28 @@ const ApartmentSection = () => {
               className={styles["apartment__image"]}
             />
             <div className={styles["apartment__info"]}>
-              <h4 className={styles["apartment__name"]}>{user.apartmentName}</h4>
+              <h4 className={styles["apartment__name"]}>
+                {user.apartmentName}
+              </h4>
               <p className={styles["apartment__address"]}>{user.location}</p>
-              <p className={styles["apartment__unit"]}>{user.uint}</p>
+              <p className={styles["apartment__unit"]}>{user.unit}</p>
             </div>
           </div>
 
           <div className={styles["apartment__actions"]}>
             <button
-              className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}>
+              className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}
+            >
               등록해제
             </button>
             <button
-              className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}>
+              className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}
+            >
               바로가기
             </button>
           </div>
         </div>
-      }
+      )}
     </>
   );
 };
