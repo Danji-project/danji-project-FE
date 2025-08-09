@@ -2,13 +2,6 @@ import { create } from "zustand";
 import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
 
-interface UploadResponse {
-  url: string;
-  filename: string;
-  size: number;
-  profileImageUrl?: string;
-}
-
 interface MemberProfileUpdateResponse {
   uploadResponse: any;
   userInfo: any;
@@ -23,38 +16,29 @@ interface ImageCompressionOptions {
 }
 
 interface IUserInfoBase {
-  // 사용자 데이터
-  apartmentID?: string | null;
-  apartmentName?: string| null;
-  building?: string| null;
+  // 사용자 기본 데이터
   email: string;
   password: string;
-  fileID?: string| null;
-  location?: string| null;
-  memberApartmentID?: string| null;
-  moveInDate?: string| null;
-  name?: string| null;
-  nickname?: string| null;
-  phoneNumber?: string| null;
-  region?: string| null;
-  uint?: string
+  name?: string | null;
+  nickname?: string | null;
+  phoneNumber?: string | null;
 
-  // 사용자 데이터 받아온 이후 정해지는 것들
+  // 로그인/오류 상태
   isLogin: boolean;
   error: string;
 
   // 아파트 정보
-  apartmentId: null;
-  apartmentName: null | string;
-  building: null;
-  carNumber: null | number;
-  fileId: null | string | number;
+  apartmentId: string | number | null;
+  apartmentName: string | null;
+  building: string | null;
+  carNumber: number | null;
+  fileId: string | number | null;
   location: string | null;
   memberApartmentId: number | null;
-  moveInDate: null | string;
+  moveInDate: string | null;
   numberOfResidents: number | null;
   region: string | null;
-  unit: null;
+  unit: string | null;
 
   // 파일 업로드 관련 (최적화됨)
   profileImage: string;
@@ -73,17 +57,17 @@ interface IUserInfoBase {
   setError: (error: string) => void;
 
   // 아파트 정보 setter 함수들
-  setApartmentId: (apartmentId: null) => void;
-  setApartmentName: (apartmentName: null | string) => void;
-  setBuilding: (building: null) => void;
-  setCarNumber: (carNumber: null | number) => void;
-  setFileId: (fileId: null | string | number) => void;
+  setApartmentId: (apartmentId: string | number | null) => void;
+  setApartmentName: (apartmentName: string | null) => void;
+  setBuilding: (building: string | null) => void;
+  setCarNumber: (carNumber: number | null) => void;
+  setFileId: (fileId: string | number | null) => void;
   setLocation: (location: string | null) => void;
   setMemberApartmentId: (memberApartmentId: number | null) => void;
-  setMoveInDate: (moveInDate: null | string) => void;
+  setMoveInDate: (moveInDate: string | null) => void;
   setNumberOfResidents: (numberOfResidents: number | null) => void;
   setRegion: (region: string | null) => void;
-  setUnit: (unit: null) => void;
+  setUnit: (unit: string | null) => void;
 
   // 파일 업로드 관련 setter 함수들 (최적화됨)
   setProfileImage: (imageUrl: string) => void;
@@ -353,12 +337,17 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
     const tryUpload = async (method: "blob" | "string" | "separate") => {
       const formData = new FormData();
 
-      const requestDto = {
-        password: memberData.password || "",
-        name: memberData.name || "",
-        nickname: memberData.nickname || "",
-        phoneNumber: memberData.phoneNumber || "",
-      };
+      // 비밀번호를 포함하여 빈 문자열은 보내지 않도록 동적으로 DTO 구성
+      const requestDto: Record<string, string> = {};
+      if (typeof memberData.name === "string")
+        requestDto.name = memberData.name;
+      if (typeof memberData.nickname === "string")
+        requestDto.nickname = memberData.nickname;
+      if (typeof memberData.phoneNumber === "string")
+        requestDto.phoneNumber = memberData.phoneNumber;
+      // 비밀번호는 사용자가 입력한 경우에만 포함
+      if (memberData.password && memberData.password.trim().length > 0)
+        requestDto.password = memberData.password;
 
       switch (method) {
         case "blob":
@@ -435,15 +424,23 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       let lastError;
 
       console.log("FormData 구성:");
-      console.log(
-        "- requestDto:",
-        JSON.stringify({
-          password: memberData.password || "",
-          name: memberData.name || "",
-          nickname: memberData.nickname || "",
-          phoneNumber: memberData.phoneNumber || "",
-        })
-      );
+      const requestDtoLog = {
+        ...(typeof memberData.name === "string" && memberData.name.trim() !== ""
+          ? { name: memberData.name }
+          : {}),
+        ...(typeof memberData.nickname === "string" &&
+        memberData.nickname.trim() !== ""
+          ? { nickname: memberData.nickname }
+          : {}),
+        ...(typeof memberData.phoneNumber === "string" &&
+        memberData.phoneNumber.trim() !== ""
+          ? { phoneNumber: memberData.phoneNumber }
+          : {}),
+        ...(memberData.password && memberData.password.trim().length > 0
+          ? { password: "****" }
+          : {}),
+      } as Record<string, string>;
+      console.log("- requestDto:", JSON.stringify(requestDtoLog));
       if (finalProfileFile) {
         console.log(
           "- multipartFile:",
