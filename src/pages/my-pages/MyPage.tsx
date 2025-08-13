@@ -4,6 +4,7 @@ import { useUserInfo } from "../../stores/userStore";
 
 import { useProfileImageUpload } from "../../hooks/useFileUpload";
 import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
+import { useUserApartDelete } from "../../hooks/useUserApartDelete";
 
 import LogoIcon from "../../assets/logo.svg";
 
@@ -155,15 +156,20 @@ const ProfileSection = () => {
 const ApartmentSection = () => {
   const user = useUserInfo();
   const navigate = useNavigate();
+  const {DeleteApart} = useUserApartDelete();
 
   const registerApart = () => {
     navigate("/register-my-apart-info");
   }
 
+  const DeleteApartMutation = () => {
+    DeleteApart();
+  }
+
   return (
     <>
       {
-        user.apartmentID == null?
+        user.apartmentId == null?
         <div className={styles["non-apartment"]}>
           <div className={styles["non-apartment__card"]}>
             <img src={LogoIcon} />
@@ -194,7 +200,7 @@ const ApartmentSection = () => {
           </div>
 
           <div className={styles["apartment__actions"]}>
-            <button
+            <button onClick={DeleteApartMutation}
               className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}>
               등록해제
             </button>
