@@ -3,9 +3,12 @@ import AppRoutes from "../../routes/AppRoutes";
 import PreviewDevice from "./PreviewDevice";
 import ServiceIntro from "./ServiceIntro";
 import MobileServiceIntro from "./MobileServiceIntro";
+import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
 
 const LandingIntro = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const { executeUserInfoMutation, isPending } = useUserInfoMutation();
+  
   useEffect(() => {
     const mobileResize = () => {
       if (window.innerWidth < 960) {
@@ -15,6 +18,7 @@ const LandingIntro = () => {
       }
     };
 
+    executeUserInfoMutation();
     mobileResize();
     window.addEventListener("resize", mobileResize);
 
