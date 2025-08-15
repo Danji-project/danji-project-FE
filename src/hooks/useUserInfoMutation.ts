@@ -9,7 +9,7 @@ interface UserInfoResponse {
     apartmentId: null;
     apartmentName: null | string;
     building: null;
-    carNumber: null | string[];
+    carNumbers: null | string[];
     email: string;
     fileId: null | string | number;
     location: string | null;
@@ -62,7 +62,7 @@ export const useUserInfoMutation = () => {
         apartmentId: data.data.apartmentId,
         apartmentName: data.data.apartmentName,
         building: data.data.building,
-        carNumber: data.data.carNumber,
+        carNumber: data.data.carNumbers,
         fileId: data.data.fileId,
         location: data.data.location,
         memberApartmentId: data.data.memberApartmentId,
@@ -73,7 +73,7 @@ export const useUserInfoMutation = () => {
 
         // 프로필 이미지
         profileImage: profileImageUrl,};
-
+        
       // 사용자 정보 일괄 업데이트
       updateUserInfo(updatedData);
 

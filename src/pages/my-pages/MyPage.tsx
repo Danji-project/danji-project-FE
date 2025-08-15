@@ -183,7 +183,7 @@ const ApartmentSection = () => {
         <div className={styles["apartment"]}>
           <div className={styles["apartment__header"]}>
             <h3 className={styles["apartment__title"]}>{user.nickname}의 아파트</h3>
-            <button className={styles["apartment__edit-btn"]}>수정</button>
+            <button className={styles["apartment__edit-btn"]} onClick={registerApart}>수정</button>
           </div>
 
           <div className={styles["apartment__card"]}>
@@ -194,8 +194,8 @@ const ApartmentSection = () => {
             />
             <div className={styles["apartment__info"]}>
               <h4 className={styles["apartment__name"]}>{user.apartmentName}</h4>
-              <p className={styles["apartment__address"]}>{user.location}</p>
-              <p className={styles["apartment__unit"]}>{user.uint}</p>
+              <p className={styles["apartment__address"]}>{user.region}</p>
+              <p className={styles["apartment__unit"]}>{user.building} {user.unit}호</p>
             </div>
           </div>
 
