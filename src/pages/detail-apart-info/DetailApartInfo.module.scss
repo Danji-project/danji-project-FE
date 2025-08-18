@@ -1,0 +1,58 @@
+.div-tabbtn {
+    display: flex;
+    flex-direction: row;
+    border: none;
+    padding: 0;
+    margin: 0;
+    height: 48px;
+
+    button{
+        flex: 1;
+        height: 100%;
+        background-color: white;
+        color: #111111;
+        border-bottom: 1px solid #EDEDED;
+        font-weight: 400;
+    }
+    
+    .tabbtn-select{
+        border-bottom: 2px solid #97BBFF;
+        color: #97BBFF;
+        font-weight: 600;
+    }
+}
+
+.div-imgscroll{
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+
+    img{
+        height: 70px;
+        width: 70px;
+        border-radius: 6px;
+        margin-right: 12px;
+    }
+}
+
+.btn {
+    flex: 1;
+    height: 40px;
+    width: 100%;
+    margin: 20px 0px 20px 0px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+    color: #97BBFF;
+    border: 1px solid rgb(232, 232, 232);
+    border-radius: 6px;
+
+    &:hover {
+    background: rgb(248, 248, 248);
+    border-color: #97BBFF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
+    }
+}

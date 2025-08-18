@@ -102,7 +102,7 @@ const ApartInfoBody = ({Appart, setAppart, setIsSearch, searchText, setSearchTex
         user.carNumber = car;
         AddApart();
       }
-    navigate('/my-page');
+    navigate('/my-page', { replace: true });
   };
 
   

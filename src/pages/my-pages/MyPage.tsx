@@ -205,7 +205,8 @@ const ApartmentSection = () => {
               등록해제
             </button>
             <button
-              className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}>
+              className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}
+              onClick={()=>{navigate('/apart-Info');}}>
               바로가기
             </button>
           </div>
