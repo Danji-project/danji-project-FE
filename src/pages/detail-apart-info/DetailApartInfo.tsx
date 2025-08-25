@@ -3,9 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 
 import Header from "../../layouts/Header";
+import ComboBox from "../../components/common/combobox/ComboBox";
+import PostSummary from "../../components/post-summary/PostSummary";
 import style from "./DetailApartInfo.module.scss"
 
 import LocationIcon from '../../assets/Icon/LocationIconBlue.png';
+
+import { useGetApartCommunityLookup } from "../../hooks/useApartCommunityLookup";
+import { BasePost } from "../../model/BasePostModel";
 
 const DetailApartHeader = ({apartName}:{apartName : string}) => {
   return (
@@ -34,7 +39,7 @@ const TabButton = ({selectedTab, setSelectedTab}:{
     );
 }
 
-const SelectPage = ({selectedTab} : {selectedTab : "apartinfo" | "community" | "notify" | "facilityinfo"}) => {
+const SelectPage = ({selectedTab, apartID} : {selectedTab : "apartinfo" | "community" | "notify" | "facilityinfo"; apartID:string;}) => {
   let content = <ApartInfoPage/>;
 
   switch(selectedTab)
@@ -43,7 +48,7 @@ const SelectPage = ({selectedTab} : {selectedTab : "apartinfo" | "community" | "
       content = <ApartInfoPage/>;
       break;
     case "community":
-      content = <CommunityPage/>;
+      content = <CommunityPage apartID={apartID}/>;
       break;
     case "notify":
       content = <NotifyPage/>;
@@ -54,9 +59,9 @@ const SelectPage = ({selectedTab} : {selectedTab : "apartinfo" | "community" | "
   }
 
   return(
-    <>
-    {content}
-    </>
+    <div style={{marginTop:'20px', marginBottom:'20px'}}>
+      {content}
+    </div>
   )
 }
 
@@ -174,10 +179,37 @@ const ApartInfoPage = () => {
   );
 }
 
-const CommunityPage = () => {
+const CommunityPage = ({apartID}:{apartID:string}) => {
+  const [selectedItem, setSelectedItem] = useState<string>('전체');
+  const [selectedSortOption, setSelectedSortOption] = useState<'ALL' | 'POPULAR' | 'LATEST'>('ALL');
+  const options = ['전체', '최신순', '인기순'];
+  const [postSummarys, setPostSummarys] = useState<BasePost[]>([]);
+  const { getApartCommunityLookupMutation, isPending }= useGetApartCommunityLookup({apartmentID : apartID, sort : selectedSortOption, setPostSummary : setPostSummarys});
+  
+  const updateCommunity = ({data}:{data:string}) => {
+    if(data == options[1])
+      setSelectedSortOption('ALL');
+    else if(data == options[2])
+      setSelectedSortOption('LATEST');
+    else if(data == options[3])
+      setSelectedSortOption('POPULAR');
+
+    getApartCommunityLookupMutation();
+  }
+
+  useEffect(() => {
+    updateCommunity({data:selectedItem});
+  }, [apartID]);
+
   return(
     <>
       <div>아파트 커뮤니티 페이지</div>
+      <div>
+        <p>{selectedItem}</p>
+        <ComboBox options={options} placeholder="" selectItem={selectedItem} updateSelectOption={updateCommunity} setSelectOption={setSelectedItem}/>
+        {
+        }
+      </div>
     </>
   );
 }
@@ -201,6 +233,7 @@ const FacilityinfoPage = () => {
 const DetailApartInfo = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
+  const [apartsID, setApartID] = useState<string | null>();
   const [selectedTab, setSelectedTab] = useState<"apartinfo" | "community" | "notify" | "facilityinfo">("apartinfo");
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
@@ -208,13 +241,25 @@ const DetailApartInfo = () => {
     if (!user.isLogin) {
       navigate("/login", { replace: true });
     }
+    else{
+      let menu = localStorage.getItem("selectMenu");
+      console.log(menu);
+      setSelectedTab(menu == 'community' || menu == 'notify' || menu == 'facilityinfo' ? menu : 'apartinfo');
+      
+      let apartmentId = localStorage.getItem("selectApart");
+      setApartID(apartmentId);
+    }
   }, [user, navigate]);
 
   return (
     <>
       <DetailApartHeader apartName={user.apartmentName ? user.apartmentName : '오류'}/>
       <TabButton selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
-      <SelectPage selectedTab={selectedTab}/>
+      {
+        apartsID?
+        <SelectPage selectedTab={selectedTab} apartID={apartsID}/>
+        :<></>
+      }
     </>
   );
 };

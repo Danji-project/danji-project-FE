@@ -206,7 +206,7 @@ const ApartmentSection = () => {
             </button>
             <button
               className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}
-              onClick={()=>{navigate('/apart-Info');}}>
+              onClick={()=>{localStorage.setItem("selectApart", user.apartmentId ? user.apartmentId.toString() : ''); navigate('/apart-Info');}}>
               바로가기
             </button>
           </div>

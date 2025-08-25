@@ -76,11 +76,16 @@ const ContentBody = () => {
     console.log(isLogin);
   };
 
-  const showDetailInfo = () => {
+  const showDetailInfo = (eleId:number) => {
     // 시설 정보 자세히 보여주는 화면으로 이동 하도록 하면 될듯..?
+    console.log(eleId)
+    localStorage.setItem("selectApart", eleId.toString());
+    navigate('/apart-Info');
   };
 
   useEffect(() => {
+    localStorage.removeItem("selectMenu");
+
     // 예시: 목업 데이터
     // 이후에는 목업 대신 실제 데이터를 가져올 수 있도록 수정해야할 것.
     const fetchedAparts: BaseApartInfo[] = [
@@ -94,24 +99,11 @@ const ContentBody = () => {
         buildingCount: 1200,
         totalUnit: 1200,
         moveVailableMonth: 2,
-        thumbnailFileUrl: "https://placehold.co/150x180",
+        thumbnailFileUrl: null,
         isuseBookmark: isLogin,
         bookmark:false,
       },
       {
-        id: 1,
-        location: "강남",
-        name: "힐스",
-        region: "강남 힐스",
-        apartDetailName:"강남 힐스",
-        houseSize: 32,
-        buildingCount: 1200,
-        totalUnit: 1200,
-        moveVailableMonth: 2,
-        thumbnailFileUrl: "https://placehold.co/150x180",
-        isuseBookmark: isLogin,
-        bookmark:false,
-      },{
         id: 2,
         location: "강남",
         name: "힐스",
@@ -121,7 +113,7 @@ const ContentBody = () => {
         buildingCount: 1200,
         totalUnit: 1200,
         moveVailableMonth: 2,
-        thumbnailFileUrl: "https://placehold.co/150x180",
+        thumbnailFileUrl: null,
         isuseBookmark: isLogin,
         bookmark:false,
       },{
@@ -134,7 +126,7 @@ const ContentBody = () => {
         buildingCount: 1200,
         totalUnit: 1200,
         moveVailableMonth: 2,
-        thumbnailFileUrl: "https://placehold.co/150x180",
+        thumbnailFileUrl: null,
         isuseBookmark: isLogin,
         bookmark:false,
       },{
@@ -147,7 +139,20 @@ const ContentBody = () => {
         buildingCount: 1200,
         totalUnit: 1200,
         moveVailableMonth: 2,
-        thumbnailFileUrl: "https://placehold.co/150x180",
+        thumbnailFileUrl: null,
+        isuseBookmark: isLogin,
+        bookmark:false,
+      },{
+        id: 5,
+        location: "강남",
+        name: "힐스",
+        region: "강남 힐스",
+        apartDetailName:"강남 힐스",
+        houseSize: 32,
+        buildingCount: 1200,
+        totalUnit: 1200,
+        moveVailableMonth: 2,
+        thumbnailFileUrl: null,
         isuseBookmark: isLogin,
         bookmark:false,
       },
@@ -165,7 +170,7 @@ const ContentBody = () => {
         buildingCount: 800,
         totalUnit: 800,
         moveVailableMonth: 6,
-        thumbnailFileUrl: "https://placehold.co/150x180",
+        thumbnailFileUrl: null,
         isuseBookmark: isLogin,
         bookmark:false,
       },
@@ -179,7 +184,7 @@ const ContentBody = () => {
         buildingCount: 800,
         totalUnit: 800,
         moveVailableMonth: 6,
-        thumbnailFileUrl: "https://placehold.co/150x180",
+        thumbnailFileUrl: null,
         isuseBookmark: isLogin,
         bookmark:false,
       },
@@ -197,9 +202,9 @@ const ContentBody = () => {
           isLogin ?
             <div style={{marginTop:'20px', marginBottom:'8px', display:'flex', flexWrap:'wrap', justifyContent:'space-between'}}>
               <IconButton text="단지정보" imageurl={IconChart} onClick={() => {console.log("단지정보");  navigate("/");}}/>
-              <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/");}}/>
-              <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/");}}/>
-              <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/");}}/>
+              <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/apart-Info"); localStorage.setItem("selectMenu", 'community');}}/>
+              <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/apart-Info"); localStorage.setItem("selectMenu", 'notify');}}/>
+              <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/apart-Info"); localStorage.setItem("selectMenu", 'facilityinfo');}}/>
               <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/my-page");}}/>
               <IconButton text="즐겨찾기" imageurl={IconStar} onClick={() => {console.log("즐겨찾기");  navigate("/");}}/>
               <IconButton text="채팅" imageurl={IconMsg} onClick={() => {console.log("채팅");  navigate("/");}}/>
@@ -209,7 +214,7 @@ const ContentBody = () => {
           <></>
         }
 
-        {isLogin ? (
+        {!fetchedAparts && isLogin ? (
           <div style={{ marginTop: "20px", marginBottom: "8px" }}>
             <div
               style={{
@@ -235,7 +240,7 @@ const ContentBody = () => {
                   key={element.id}
                   element={element}
                   onBookMarked={bookmarked}
-                  onClickCard={showDetailInfo}
+                  onClickCard={(e) => {showDetailInfo(element.id)}}
                 />
               ))}
             </div>
@@ -244,6 +249,25 @@ const ContentBody = () => {
           <></>
         )}
 
+        {
+          fetchedAparts ? 
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+              }}
+            >
+              {fetchedAparts.map((element) => (
+                <ApartCard
+                  key={element.id}
+                  element={element}
+                  onBookMarked={bookmarked}
+                  onClickCard={(e) => {showDetailInfo(element.id)}}
+                />
+              ))}
+            </div>
+        :
         <div style={{ marginTop: "20px", marginBottom: "8px" }}>
           <div
             style={{
@@ -269,11 +293,12 @@ const ContentBody = () => {
                 key={element.id}
                 element={element}
                 onBookMarked={bookmarked}
-                onClickCard={showDetailInfo}
+                onClickCard={(e) => {showDetailInfo(element.id)}}
               />
             ))}
           </div>
         </div>
+        }
       </div>
     </>
   );
@@ -285,6 +310,7 @@ export const MainPage = () => {
   const user = useUserInfo();
 
   const logout = () => {
+    localStorage.removeItem("selectMenu");
     Logout();
   };
 

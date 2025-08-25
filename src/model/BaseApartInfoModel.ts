@@ -1,12 +1,12 @@
 interface IBaseApartInfoBase
 {
-    buildingcount : number;
+    buildingCount : number;
     id : number;
     location : string;
     name : string;
     region : string;
-    thumbnailFileUrl : string;
-    totalUint : number;
+    thumbnailFileUrl : string | null;
+    totalUnit : number;
     bookmark : boolean;
 
     moveVailableMonth? : number;
@@ -23,7 +23,7 @@ export class BaseApartInfo implements IBaseApartInfoBase
     location : string;
     name : string;
     region : string;
-    thumbnailFileUrl : string;
+    thumbnailFileUrl : string | null;
     totalUnit : number;
     bookmark : boolean;
     
