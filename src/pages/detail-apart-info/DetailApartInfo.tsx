@@ -4,12 +4,14 @@ import { useUserInfo } from "../../stores/userStore";
 
 import Header from "../../layouts/Header";
 import ComboBox from "../../components/common/combobox/ComboBox";
+import Spinners from "../../components/common/spinners/Spinners";
 import PostSummary from "../../components/post-summary/PostSummary";
 import style from "./DetailApartInfo.module.scss"
 
 import LocationIcon from '../../assets/Icon/LocationIconBlue.png';
 
 import { useGetApartCommunityLookup } from "../../hooks/useApartCommunityLookup";
+import { useGetFeedDetailInfo } from "../../hooks/useFeedDetailInfo";
 import { BasePost } from "../../model/BasePostModel";
 
 const DetailApartHeader = ({apartName}:{apartName : string}) => {
@@ -67,8 +69,6 @@ const SelectPage = ({selectedTab, apartID} : {selectedTab : "apartinfo" | "commu
 
 const ApartInfoPage = () => {
   const user = useUserInfo();
-
-
   const testsss :string[] = ["https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70"];
   
   return(
@@ -103,8 +103,10 @@ const ApartInfoPage = () => {
         </div>
         <div className={`${style['div-imgscroll']}`}>
           {
-            testsss.map((element)=>(
-              <img src={element}/>
+            testsss.map((element, index)=>(
+              <div key={index}>
+                <img src={element}/>
+              </div>
             ))
           }
         </div>
@@ -187,12 +189,13 @@ const CommunityPage = ({apartID}:{apartID:string}) => {
   const { getApartCommunityLookupMutation, isPending }= useGetApartCommunityLookup({apartmentID : apartID, sort : selectedSortOption, setPostSummary : setPostSummarys});
   
   const updateCommunity = ({data}:{data:string}) => {
-    if(data == options[1])
+    console.log(data);
+    if(data == options[0])
       setSelectedSortOption('ALL');
+    else if(data == options[1])
+      setSelectedSortOption('POPULAR');
     else if(data == options[2])
       setSelectedSortOption('LATEST');
-    else if(data == options[3])
-      setSelectedSortOption('POPULAR');
 
     getApartCommunityLookupMutation();
   }
@@ -201,13 +204,34 @@ const CommunityPage = ({apartID}:{apartID:string}) => {
     updateCommunity({data:selectedItem});
   }, [apartID]);
 
+
+
   return(
     <>
-      <div>아파트 커뮤니티 페이지</div>
+    {
+      isPending?
+      <>
+        <div className={[style.register, style.dimmed].join(" ")}>
+          <Spinners />
+        </div>
+      </>
+      :
+      <></>
+    }
       <div>
         <p>{selectedItem}</p>
-        <ComboBox options={options} placeholder="" selectItem={selectedItem} updateSelectOption={updateCommunity} setSelectOption={setSelectedItem}/>
+        <ComboBox options={options} placeholder="" selectItem={selectedItem} 
+                  setSelectOption={(e) => {setSelectedItem(e); updateCommunity({data:e.toString()})}}/>
         {
+          postSummarys.map((feed)=>(
+            <li key={feed.feedId}
+                style={{ padding: '8px', cursor: 'pointer' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
+                onClick={(e) => {}}>
+              {feed.title}
+            </li>
+          ))
         }
       </div>
     </>
@@ -238,18 +262,13 @@ const DetailApartInfo = () => {
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
   useEffect(() => {
-    if (!user.isLogin) {
-      navigate("/login", { replace: true });
-    }
-    else{
       let menu = localStorage.getItem("selectMenu");
       console.log(menu);
       setSelectedTab(menu == 'community' || menu == 'notify' || menu == 'facilityinfo' ? menu : 'apartinfo');
       
       let apartmentId = localStorage.getItem("selectApart");
       setApartID(apartmentId);
-    }
-  }, [user, navigate]);
+  }, [navigate]);
 
   return (
     <>

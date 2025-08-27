@@ -35,6 +35,27 @@
     }
 }
 
+.register {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  &.dimmed {
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+
+
 .btn {
     flex: 1;
     height: 40px;

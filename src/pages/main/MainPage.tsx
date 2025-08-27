@@ -240,7 +240,7 @@ const ContentBody = () => {
                   key={element.id}
                   element={element}
                   onBookMarked={bookmarked}
-                  onClickCard={(e) => {showDetailInfo(element.id)}}
+                  onClickCard={() => {showDetailInfo(element.id)}}
                 />
               ))}
             </div>
@@ -263,7 +263,7 @@ const ContentBody = () => {
                   key={element.id}
                   element={element}
                   onBookMarked={bookmarked}
-                  onClickCard={(e) => {showDetailInfo(element.id)}}
+                  onClickCard={() => {showDetailInfo(element.id)}}
                 />
               ))}
             </div>
@@ -293,7 +293,7 @@ const ContentBody = () => {
                 key={element.id}
                 element={element}
                 onBookMarked={bookmarked}
-                onClickCard={(e) => {showDetailInfo(element.id)}}
+                onClickCard={() => {showDetailInfo(element.id)}}
               />
             ))}
           </div>
