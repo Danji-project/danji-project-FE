@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { type Dispatch, type SetStateAction } from "react";
+import styles from './ComboBox.module.scss';
 
 interface ComboBoxProps {
   options: string[];
@@ -13,12 +14,6 @@ interface ComboBoxProps {
 const ComboBox: React.FC<ComboBoxProps> = ({ options, selectItem, setSelectOption, updateOther, placeholder , updateSelectOption}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectOption(event.target.value);
-    setIsOpen(true);
-    updateOther ? updateOther({data : event.target.value}) : '';
-  };
-
   const handleOptionClick = (option: string) => {
     setSelectOption(option);
     setIsOpen(false);
@@ -26,16 +21,15 @@ const ComboBox: React.FC<ComboBoxProps> = ({ options, selectItem, setSelectOptio
   };
 
   return (
-    <div style={{ position: 'relative', width: '80px' }}>
-      <input
-        type="text"
-        value={selectItem}
-        onChange={handleInputChange}
-        placeholder={placeholder}
-        onFocus={() => setIsOpen(true)}
-      />
+    <div onClick={() => setIsOpen(!isOpen)} onBlur={() => setIsOpen(false)}
+         style={{  width: '80px', position: 'relative'}}>
+      <div  className={`${styles.ComboBoxContainer}`}>
+        <button className={`${styles.buttonContainer}`}
+        >{selectItem}</button>
+        <div>^</div>
+      </div>
       {isOpen && options.length > 0 && (
-        <ul style={{ position: 'absolute', border: '1px solid #ccc', background: '#fff', listStyle: 'none', padding: 0, margin: 0 }}>
+        <ul className={`${styles.ComboBoxSelectOptions}`}>
           {options.map(option => (
             <li
               key={option}
@@ -49,6 +43,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({ options, selectItem, setSelectOptio
           ))}
         </ul>
       )}
+      
     </div>
   );
 };

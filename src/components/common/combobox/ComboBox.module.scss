@@ -1,0 +1,33 @@
+.ComboBoxContainer{
+    cursor:pointer;
+    display:flex; 
+    justify-content:space-between; 
+    margin-bottom:2px; 
+    padding:0px 8px; 
+    border-radius:3px; 
+    background-color:#97BBFF;
+
+    div{
+        color: white;
+    }
+}
+
+.buttonContainer{
+    color:white; 
+    background-color:#97BBFF; 
+    height:30px; 
+    border:none; 
+    border-inline:none;
+}
+
+.ComboBoxSelectOptions{ 
+    position: absolute; 
+    border : 1px solid #ccc; 
+    border-radius:4px; 
+    background-color: #fff; 
+    list-style: none; 
+    padding: 0;
+    margin: 0; 
+    width:80px;
+    z-index: 99999;
+}

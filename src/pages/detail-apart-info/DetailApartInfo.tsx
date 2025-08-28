@@ -13,6 +13,7 @@ import LocationIcon from '../../assets/Icon/LocationIconBlue.png';
 import { useGetApartCommunityLookup } from "../../hooks/useApartCommunityLookup";
 import { useGetFeedDetailInfo } from "../../hooks/useFeedDetailInfo";
 import { BasePost } from "../../model/BasePostModel";
+import { width } from "@mui/system";
 
 const DetailApartHeader = ({apartName}:{apartName : string}) => {
   return (
@@ -218,19 +219,23 @@ const CommunityPage = ({apartID}:{apartID:string}) => {
       :
       <></>
     }
-      <div>
+      <div style={{display:'flex', justifyContent:'space-between'}}>
         <p>{selectedItem}</p>
         <ComboBox options={options} placeholder="" selectItem={selectedItem} 
                   setSelectOption={(e) => {setSelectedItem(e); updateCommunity({data:e.toString()})}}/>
+      </div>
+      <div style={{position:'relative', height:'450px', overflowY:'auto', marginTop:'20px'}}>
         {
-          postSummarys.map((feed)=>(
-            <li key={feed.feedId}
-                style={{ padding: '8px', cursor: 'pointer' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
-                onClick={(e) => {}}>
-              {feed.title}
-            </li>
+          postSummarys.map((feed, index)=>(
+            <div key={`${index}`}>
+              <li
+                  style={{ padding: '8px', cursor: 'pointer' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
+                  onClick={(e) => {}}>
+                <PostSummary element={feed} onClick={()=>{}}/>
+              </li>
+            </div>
           ))
         }
       </div>
