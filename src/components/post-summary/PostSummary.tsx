@@ -21,14 +21,20 @@ const PostSummary: React.FC<PostProps> = ({ element, onClick }) => {
   }).replace(/\./g, '.').substring(0,10); // 구분자를 '.'으로 변경
 
   return (
-    <div onClick={()=>{onClick(element.feedId)}} className={`${styles.divBorder}`}>
-      <div className={`${styles.Container}`}>
-        <div style={{height:'44px'}}>
-          <p className={`${styles.titleP}`}>{element.title}</p>
-          <p className={`${styles.contentP}`}>{element.contents}</p>
+    <div className={`${styles.divBorder}`}>
+      <div onClick={()=>{onClick(element.feedId)}}>
+        <div className={`${styles.Container}`}>
+          <div style={{height:'44px'}}>
+            <p className={`${styles.titleP}`}>{element.title}</p>
+            <p className={`${styles.contentP}`}>{element.contents}</p>
+          </div>
+          {
+            element.thumbnailFileUrl ?
+            <img style={{width:'62px', height:'62px', borderRadius:'4px', border:'none'}} src={element.thumbnailFileUrl ?`${element.thumbnailFileUrl}`: undefined}/>
+            :
+            <></>
+          }
         </div>
-        <img  src={element.thumbnailFileUrl ?`https://s3.ap-northeast-2.amazonaws.com/danjitalk/${element.thumbnailFileUrl[0]}`: undefined}/>
-      </div>
 
         <div className={`${styles.Container}`}>
           <div className={`${styles.leftContainer}`}>
@@ -47,6 +53,7 @@ const PostSummary: React.FC<PostProps> = ({ element, onClick }) => {
             <p>{element.commentCount}</p>
           </div>
         </div>
+      </div>
     </div>
   );
 };

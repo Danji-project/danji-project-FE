@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { type Dispatch, type SetStateAction } from "react";
 import styles from './ComboBox.module.scss';
+import DownArrow from '../../../assets/Icon/DownArrowIcon.svg';
 
 interface ComboBoxProps {
   options: string[];
@@ -26,7 +27,7 @@ const ComboBox: React.FC<ComboBoxProps> = ({ options, selectItem, setSelectOptio
       <div  className={`${styles.ComboBoxContainer}`}>
         <button className={`${styles.buttonContainer}`}
         >{selectItem}</button>
-        <div>^</div>
+        <img src={DownArrow}/>
       </div>
       {isOpen && options.length > 0 && (
         <ul className={`${styles.ComboBoxSelectOptions}`}>

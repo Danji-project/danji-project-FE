@@ -2,6 +2,7 @@
 {
     display:flex; 
     justify-content:space-between;
+    margin-bottom: 8px;
 
     .titleP{
         font-weight: 600;
@@ -41,6 +42,6 @@
 }
 
 .divBorder{
-    border-bottom: 1px solid #EDEDED;
-    padding-bottom: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }

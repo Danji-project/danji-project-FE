@@ -16,7 +16,7 @@ export const useGetApartCommunityLookup = ({
   sort,
   setPostSummary
 }: {
-  apartmentID: string;
+  apartmentID: number | null;
   sort :'ALL' | 'POPULAR' | 'LATEST';
   setPostSummary: React.Dispatch<React.SetStateAction<BasePost[]>>;
 }) => {

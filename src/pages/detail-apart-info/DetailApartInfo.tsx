@@ -9,11 +9,13 @@ import PostSummary from "../../components/post-summary/PostSummary";
 import style from "./DetailApartInfo.module.scss"
 
 import LocationIcon from '../../assets/Icon/LocationIconBlue.png';
+import MakeFeedBtn from '../../assets/Icon/MakeFeedBtnIcon.svg'
 
 import { useGetApartCommunityLookup } from "../../hooks/useApartCommunityLookup";
+import { useGetApartmentMutation } from "../../hooks/useGetApartment";
 import { useGetFeedDetailInfo } from "../../hooks/useFeedDetailInfo";
 import { BasePost } from "../../model/BasePostModel";
-import { width } from "@mui/system";
+import { BaseApartInfo } from "../../model/BaseApartInfoModel";
 
 const DetailApartHeader = ({apartName}:{apartName : string}) => {
   return (
@@ -42,16 +44,16 @@ const TabButton = ({selectedTab, setSelectedTab}:{
     );
 }
 
-const SelectPage = ({selectedTab, apartID} : {selectedTab : "apartinfo" | "community" | "notify" | "facilityinfo"; apartID:string;}) => {
+const SelectPage = ({selectedTab, apartID, isLogin, apartmentInfo} : {selectedTab : "apartinfo" | "community" | "notify" | "facilityinfo"; apartID:number; isLogin:boolean; apartmentInfo:BaseApartInfo|null;}) => {
   let content = <ApartInfoPage/>;
 
   switch(selectedTab)
   {
     case "apartinfo":
-      content = <ApartInfoPage/>;
+      content = <ApartInfoPage apartmentInfo={apartmentInfo}/>;
       break;
     case "community":
-      content = <CommunityPage apartID={apartID}/>;
+      content = <CommunityPage apartID={apartID} isLogin={isLogin}/>;
       break;
     case "notify":
       content = <NotifyPage/>;
@@ -68,7 +70,7 @@ const SelectPage = ({selectedTab, apartID} : {selectedTab : "apartinfo" | "commu
   )
 }
 
-const ApartInfoPage = () => {
+const ApartInfoPage = ({apartmentInfo}:{apartmentInfo:BaseApartInfo|null}) => {
   const user = useUserInfo();
   const testsss :string[] = ["https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70"];
   
@@ -87,7 +89,7 @@ const ApartInfoPage = () => {
           </div>
           <div>
             <p>총 세대 수</p>
-            <p>{}</p>
+            <p>{apartmentInfo?.totalUnit}</p>
           </div>
           <div>
             <p>건물 유형</p>
@@ -182,7 +184,7 @@ const ApartInfoPage = () => {
   );
 }
 
-const CommunityPage = ({apartID}:{apartID:string}) => {
+const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolean}) => {
   const [selectedItem, setSelectedItem] = useState<string>('전체');
   const [selectedSortOption, setSelectedSortOption] = useState<'ALL' | 'POPULAR' | 'LATEST'>('ALL');
   const options = ['전체', '최신순', '인기순'];
@@ -205,7 +207,7 @@ const CommunityPage = ({apartID}:{apartID:string}) => {
     updateCommunity({data:selectedItem});
   }, [apartID]);
 
-
+  console.log("사용자 로그인 여부 : " + isLogin);
 
   return(
     <>
@@ -219,26 +221,36 @@ const CommunityPage = ({apartID}:{apartID:string}) => {
       :
       <></>
     }
-      <div style={{display:'flex', justifyContent:'space-between'}}>
-        <p>{selectedItem}</p>
-        <ComboBox options={options} placeholder="" selectItem={selectedItem} 
-                  setSelectOption={(e) => {setSelectedItem(e); updateCommunity({data:e.toString()})}}/>
+      <div>
+        <div style={{display:'flex', justifyContent:'space-between'}}>
+          <p>{selectedItem}</p>
+          <ComboBox options={options} placeholder="" selectItem={selectedItem} 
+                    setSelectOption={(e) => {setSelectedItem(e); updateCommunity({data:e.toString()})}}/>
+        </div>
+        <div style={{position:'relative', height:'425px', overflowY:'auto', marginTop:'10px'}}>
+          {
+            postSummarys.map((feed, index)=>(
+              <div key={`${index}`} style={{borderBottom:'1px solid #EDEDED'}}>
+                <li
+                    style={{ padding: '8px', cursor: 'pointer' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
+                    onClick={(e) => {}}>
+                  <PostSummary element={feed} onClick={()=>{}}/>
+                </li>
+              </div>
+            ))
+          }
+        </div>
       </div>
-      <div style={{position:'relative', height:'450px', overflowY:'auto', marginTop:'20px'}}>
-        {
-          postSummarys.map((feed, index)=>(
-            <div key={`${index}`}>
-              <li
-                  style={{ padding: '8px', cursor: 'pointer' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
-                  onClick={(e) => {}}>
-                <PostSummary element={feed} onClick={()=>{}}/>
-              </li>
-            </div>
-          ))
-        }
-      </div>
+      {
+        isLogin ? 
+        <div style={{position:'absolute', right:'20px', bottom:'20px'}}>
+          <button><img src={MakeFeedBtn}/></button>
+        </div>
+        :
+        <></>
+      }
     </>
   );
 }
@@ -262,8 +274,10 @@ const FacilityinfoPage = () => {
 const DetailApartInfo = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
-  const [apartsID, setApartID] = useState<string | null>();
+  const [apartsID, setApartID] = useState<number | null>();
   const [selectedTab, setSelectedTab] = useState<"apartinfo" | "community" | "notify" | "facilityinfo">("apartinfo");
+  const [apartment, setApartment] = useState<BaseApartInfo | null>();
+  const {getApartmentMutation, isPending} = useGetApartmentMutation({apartmentID:apartsID, setApartment:setApartment});
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
   useEffect(() => {
@@ -272,16 +286,36 @@ const DetailApartInfo = () => {
       setSelectedTab(menu == 'community' || menu == 'notify' || menu == 'facilityinfo' ? menu : 'apartinfo');
       
       let apartmentId = localStorage.getItem("selectApart");
-      setApartID(apartmentId);
-  }, [navigate]);
+      const id = Number(apartmentId);
+      console.log(id);
+      setApartID(id);
+
+  }, []);
+
+  useEffect(() => {
+    if (apartsID !== null) {
+      getApartmentMutation();
+    }
+  }, [apartsID]); // apartsID가 변경될 때마다 호출
+
 
   return (
     <>
-      <DetailApartHeader apartName={user.apartmentName ? user.apartmentName : '오류'}/>
+      {
+        isPending?
+        <>
+          <div className={[style.register, style.dimmed].join(" ")}>
+            <Spinners />
+          </div>
+        </>
+        :
+        <></>
+      }
+      <DetailApartHeader apartName={apartment ? apartment.name : isPending ? '로딩중': '오류'}/>
       <TabButton selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
       {
         apartsID?
-        <SelectPage selectedTab={selectedTab} apartID={apartsID}/>
+        <SelectPage selectedTab={selectedTab} apartID={apartsID} isLogin={user.isLogin} apartmentInfo={apartment}/>
         :<></>
       }
     </>
