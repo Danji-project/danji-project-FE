@@ -62,12 +62,12 @@
     width: 100%;
     margin: 20px 0px 20px 0px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.2s ease;
     background: white;
     color: #97BBFF;
-    border: 1px solid rgb(232, 232, 232);
+    border: 1px solid #97BBFF;
     border-radius: 6px;
 
     &:hover {
@@ -76,4 +76,33 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
     }
+}
+
+
+.datacard{
+  background-color:#F9FBFF;
+  border-radius:6px;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+
+  div{
+    display: flex;
+    p {
+      width: 30%;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    div{
+      width: 70%;
+      display: block;
+      p{
+        width: 100%;
+        font-weight: 400;
+      }
+    }
+  }
 }
