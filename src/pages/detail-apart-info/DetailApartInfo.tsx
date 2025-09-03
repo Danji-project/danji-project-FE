@@ -228,6 +228,7 @@ const ApartInfoPage = ({apartmentInfo}:{apartmentInfo:BaseApartInfo|null|undefin
 }
 
 const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolean}) => {
+  const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<string>('전체');
   const [selectedSortOption, setSelectedSortOption] = useState<'ALL' | 'POPULAR' | 'LATEST'>('ALL');
   const options = ['전체', '최신순', '인기순'];
@@ -278,7 +279,7 @@ const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolea
                     style={{ padding: '8px', cursor: 'pointer' }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
-                    onClick={(e) => {}}>
+                    onClick={(e) => {navigate('/community/feed'); localStorage.setItem('selectFeedID', feed.feedId.toString());}}>
                   <PostSummary element={feed} onClick={()=>{}}/>
                 </li>
               </div>
