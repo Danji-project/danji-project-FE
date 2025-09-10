@@ -1,10 +1,10 @@
 import { BasePost } from "../../model/BasePostModel";
 import styles from './PostSummary.module.scss';
 
-import EyesIcon from '../../assets/Icon/eyesIcon.png'
-import HeartIcon from '../../assets/Icon/heartIcon.png'
-import BookMarkIcon from '../../assets/Icon/bookmarkIcon.png'
-import CommentIcon from '../../assets/Icon/commentIcon.png'
+import EyesIcon from '../../assets/Icon/eyesIcon.svg'
+import HeartIcon from '../../assets/Icon/heartIcon.svg'
+import BookMarkIcon from '../../assets/Icon/bookmarkIcon.svg'
+import CommentIcon from '../../assets/Icon/commentIcon.svg'
 
 interface PostProps{
   element : BasePost;

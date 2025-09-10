@@ -36,7 +36,7 @@ const TabButton = ({selectedTab, setSelectedTab}:{
           <button className={`${selectedTab === 'community' ? style['tabbtn-select']:''}`} 
                   onClick={()=>{setSelectedTab('community')}}>커뮤니티</button>
           <button className={`${selectedTab === 'notify' ? style['tabbtn-select']:''}`} 
-                  onClick={()=>{setSelectedTab('notify')}}>공지사항</button>
+                  onClick={()=>{alert('지금은 사용할 수 없습니다.'); setSelectedTab(selectedTab)}}>공지사항</button>
           <button className={`${selectedTab === 'facilityinfo' ? style['tabbtn-select']:''}`} 
                   onClick={()=>{setSelectedTab('facilityinfo')}}>시설정보</button>
         </div>
@@ -290,7 +290,7 @@ const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolea
       {
         isLogin ? 
         <div style={{position:'absolute', right:'20px', bottom:'20px'}}>
-          <button><img src={MakeFeedBtn}/></button>
+          <button onClick={()=>{apartID ? localStorage.setItem('apartmentId', apartID.toString()) : localStorage.removeItem('apartmentId'); navigate('/make/feed');}}><img src={MakeFeedBtn}/></button>
         </div>
         :
         <></>
@@ -302,7 +302,7 @@ const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolea
 const NotifyPage = () => {
   return(
     <>
-      <div>공지사항 페이지</div>
+      <div>추후 개발 예정입니다.</div>
     </>
   );
 }
@@ -333,7 +333,6 @@ const DetailApartInfo = () => {
       const id = Number(apartmentId);
       console.log(id);
       setApartID(id);
-
   }, []);
 
   useEffect(() => {
