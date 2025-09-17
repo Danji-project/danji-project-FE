@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
 import { FeedDetailPost } from "../model/BaseFeedDetailModel";
@@ -13,8 +14,10 @@ export const useGetApartCommunityFeed = ({
   setPost
 }: {
   feedID: string | null;
-  setPost: React.Dispatch<React.SetStateAction<FeedDetailPost | undefined>>;
+  setPost: React.Dispatch<React.SetStateAction<FeedDetailPost>>;
 }) => {
+  const navigate = useNavigate();
+
   const mutation = useMutation<ApartPostSummaryResponse, Error>({
     mutationFn: async () => {
       try {
@@ -23,8 +26,14 @@ export const useGetApartCommunityFeed = ({
           const response = await axios.get(`/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedID}`);
           return response.data;
         }
+        else if(localStorage.getItem("changeFeed"))
+        {
+          let feedid = localStorage.getItem("changeFeed");
+          const response = await axios.get(`/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}`);
+          return response.data;
+        }
         else
-          throw new Error("Appartment ID Error");
+          throw new Error("feed ID Error");
       } catch (error) {
         throw error;
       }
@@ -48,8 +57,37 @@ export const useGetApartCommunityFeed = ({
     mutation.mutate();
   };
 
+  const deletemutation = useMutation<ApartPostSummaryResponse, Error>({
+    mutationFn: async () => {
+      try {
+        if(feedID)
+        {
+          const response = await axios.delete(`/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedID}`);
+          return response.data;
+        }
+        else
+          throw new Error("feed ID Error");
+      } catch (error) {
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      navigate("/apart-Info", { replace: true });
+    },
+    onError: (err: Error) => {
+      console.log('delete err');
+      console.log(err);
+    },
+  });
+
+  const useDeleteFeedDetailInfoMutation = () => {
+    deletemutation.mutate();
+  };
+
   return {
     getApartCommunityFeedMutation,
+    useDeleteFeedDetailInfoMutation,
     isPending: mutation.isPending,
+    isDeletePending: deletemutation.isPending,
   };
 };

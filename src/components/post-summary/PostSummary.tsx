@@ -24,7 +24,7 @@ const PostSummary: React.FC<PostProps> = ({ element, onClick }) => {
     <div className={`${styles.divBorder}`}>
       <div onClick={()=>{onClick(element.feedId)}}>
         <div className={`${styles.Container}`}>
-          <div style={{height:'44px'}}>
+          <div style={{height:'52px', overflow:'hidden'}}>
             <p className={`${styles.titleP}`}>{element.title}</p>
             <p className={`${styles.contentP}`}>{element.contents}</p>
           </div>

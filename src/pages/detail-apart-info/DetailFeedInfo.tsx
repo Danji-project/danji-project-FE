@@ -12,23 +12,23 @@ import EyesIcon from '../../assets/Icon/eyesIcon.svg'
 import HeartIcon from '../../assets/Icon/heartIcon.svg'
 import BookMarkIcon from '../../assets/Icon/bookmarkIcon.svg'
 import CommentIcon from '../../assets/Icon/commentIcon.svg'
-import DotDotDot from '../../assets/button/IconDotDotDot.svg'
 
 import Spinners from "../../components/common/spinners/Spinners";
 import style from "./DetailApartInfo.module.scss"
 
 import Header from "../../layouts/Header";
-import { margin } from "@mui/system";
 
-const FeedHeader = ({title, isMine}:{title:string|undefined; isMine:boolean}) => {
+const FeedHeader = ({title, isMine, feedId, setFeedInfo}:{title:string|undefined; isMine:boolean; feedId:string|null; setFeedInfo:Dispatch<SetStateAction<FeedDetailPost>>}) => {
+  const navigate = useNavigate();
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null); // 메뉴 참조
-
+  const {useDeleteFeedDetailInfoMutation} = useGetApartCommunityFeed({feedID:feedId, setPost:setFeedInfo});
+  
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const { clientX, clientY } = event;
-    setMenuPosition({ top: clientY, left: clientX-80 });
+    const { clientX } = event;
+    setMenuPosition({ top: 110, left: (clientX - 70 > 315 ? 315 : clientX - 70 )});
     setMenuVisible(true);
     event.stopPropagation();
   };
@@ -36,6 +36,17 @@ const FeedHeader = ({title, isMine}:{title:string|undefined; isMine:boolean}) =>
   const handleMenuItemClick = (item: number) => {
     setMenuVisible(false); // 메뉴 클릭 후 숨기기
     // 메뉴 클릭시 동작으로
+    if(item === 1)
+    {
+      console.log("click it");
+      feedId ? localStorage.setItem("changeFeed", feedId) : localStorage.removeItem("changeFeed");
+      navigate("/make/feed", {replace:true});
+    }
+    else if(item === 2)
+    {
+      useDeleteFeedDetailInfoMutation();
+      console.log("click delete");
+    }
   };
 
   const handleOutsideClick = (event: MouseEvent) => {
@@ -74,11 +85,11 @@ const FeedHeader = ({title, isMine}:{title:string|undefined; isMine:boolean}) =>
           menuVisible && menuPosition?
                 <ul style={{ position:'absolute', zIndex:'999999', 
                               top: menuPosition.top,
-                              left: menuPosition.left,
-                              backgroundColor:'white', border:'1px solid black',
+                              left: menuPosition.left, width:'70px',
+                              backgroundColor:'white', border:'1px solid #EDEDED', borderRadius:'4px',
                               listStyle: 'none', padding: '10px', margin: 0, cursor:'pointer'}}>
-                  <li onClick={() => handleMenuItemClick(1)}>수정</li>
-                  <li onClick={() => handleMenuItemClick(2)}>삭제</li>
+                  <li style={{fontSize:'15px', width:'49px', borderBottom:'1px solid #EDEDED', padding:'0px 8px 8px 8px', textAlign:'center', verticalAlign:'center'}} onClick={() => handleMenuItemClick(1)}>수정</li>
+                  <li style={{fontSize:'15px', width:'49px', padding:'8px 8px 0px 8px', textAlign:'center', verticalAlign:'center'}} onClick={() => handleMenuItemClick(2)}>삭제</li>
                 </ul>
           :
           <></>
@@ -174,11 +185,11 @@ const CommentBody = ({Comments, TotalComments}:{Comments:CommentBase[] | undefin
 const DetailFeedInfo = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
-  const [feedInfo, setFeedInfo] = useState<FeedDetailPost>();
+  const [feedInfo, setFeedInfo] = useState<FeedDetailPost>(new FeedDetailPost(null));
   const [totalComments, setTotalComments] = useState<number>(0);
   const [comments, setComments] = useState<CommentBase[]>();
   const [feedId, setFeedId] = useState<string | null>(null);
-  const {getApartCommunityFeedMutation, isPending} = useGetApartCommunityFeed({feedID:feedId, setPost:setFeedInfo});
+  const {getApartCommunityFeedMutation, isPending, isDeletePending} = useGetApartCommunityFeed({feedID:feedId, setPost:setFeedInfo});
   const { getFeedCommentInfoMutation, isCommunityPending } = useGetFeedCommentInfo({feedId:feedId, setFeedComment:setComments, setTotalElements:setTotalComments});
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
@@ -198,7 +209,7 @@ const DetailFeedInfo = () => {
   return (
     <>
       {
-        isPending || isCommunityPending?
+        isPending || isCommunityPending || isDeletePending?
         <>
           <div className={[style.register, style.dimmed].join(" ")}>
             <Spinners />
@@ -207,7 +218,8 @@ const DetailFeedInfo = () => {
         :
         <></>
       }
-      <FeedHeader title={feedInfo?.title} isMine={feedInfo ? feedInfo?.isAuthor : false}/>
+      <FeedHeader title={feedInfo?.title} isMine={feedInfo ? feedInfo.isAuthor : false}
+                  feedId={feedId} setFeedInfo={setFeedInfo}/>
       <div>
         <DataBody FeedDetail={feedInfo}/>
         <div className={`${style["login-div-centerline"]}`} />

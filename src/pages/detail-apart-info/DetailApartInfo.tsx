@@ -13,7 +13,6 @@ import MakeFeedBtn from '../../assets/Icon/MakeFeedBtnIcon.svg'
 
 import { useGetApartCommunityLookup } from "../../hooks/useApartCommunityLookup";
 import { useGetApartmentMutation } from "../../hooks/useGetApartment";
-import { useGetFeedDetailInfo } from "../../hooks/useFeedDetailInfo";
 import { BasePost } from "../../model/BasePostModel";
 import { BaseApartInfo } from "../../model/BaseApartInfoModel";
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useUserInfo } from "../../stores/userStore";
 import { useMakeFeedMutation } from "../../hooks/useMakeFeed";
+import { useGetApartCommunityFeed } from "../../hooks/useApartCommunityFeed";
 
 import InputField from "../../components/common/input-field/InputField";
 import Header from "../../layouts/Header";
@@ -11,7 +12,9 @@ import { FeedDetailPost } from "../../model/BaseFeedDetailModel";
 import styles from './MakeFeed.module.scss';
 import Spinners from "../../components/common/spinners/Spinners";
 
-const FeedHeader = ({useMakeFeed}:{useMakeFeed:Function}) => {
+const FeedHeader = ({useMakeFeed, feedID}:{useMakeFeed:Function; feedID:string|null}) => {
+  console.log(feedID);
+
   return(
       <div>
         <Header title={'글쓰기'} hasBackButton={true}
@@ -21,22 +24,24 @@ const FeedHeader = ({useMakeFeed}:{useMakeFeed:Function}) => {
     )
 }
 
-const BodyData = ({setFeed}:{setFeed:FeedDetailPost}) => {
+const BodyData = ({feedData}:{feedData:FeedDetailPost;}) => {
     const [title, setTitle] = useState<string>('');
     const [content, setContents] = useState<string>('');
 
   // 외부 클릭 감지
   useEffect(() => {
-  }, []);
+    setTitle(feedData.title);
+    setContents(feedData.contents);
+  }, [feedData.title, feedData.contents]);
   
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setTitle(e.target.value);
-      setFeed.title = e.target.value;
+      feedData.title = e.target.value;
     };
 
     const contentChange = (e:React.ChangeEvent<HTMLTextAreaElement>)=>{
       setContents(e.target.value);
-      setFeed.contents = e.target.value;
+      feedData.contents = e.target.value;
     }
   
   return(
@@ -63,23 +68,31 @@ const BodyData = ({setFeed}:{setFeed:FeedDetailPost}) => {
 const MakeFeed = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
-  const [feedApartID, setFeedApartID] = useState<string|null>('');
-  const [feedData, setFeedData] = useState<FeedDetailPost>(new FeedDetailPost(null));
-  const { useMakeFeed, isPending }= useMakeFeedMutation({appartID: feedApartID, feedData:feedData});
+  const [feedApartID, setFeedApartID] = useState<string|null>(localStorage.getItem("apartmentId"));
+  const [feedID, setFeedID] = useState<string|null>(localStorage.getItem("changeFeed"));
+  const [feedData, setFeedData] = useState<FeedDetailPost>( new FeedDetailPost(null));
+  const { useMakeFeed, isPending }= useMakeFeedMutation({appartID: feedApartID, feedData:feedData, images:[], feedid:feedID});
+  const {getApartCommunityFeedMutation, isPending : getIsPending} = useGetApartCommunityFeed({feedID:feedID, setPost:setFeedData});
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
   useEffect(() => {
     if (!user.isLogin) {
       navigate("/login", { replace: true });
     }
-
-    setFeedApartID(localStorage.getItem("apartmentId"));
+    setFeedID(localStorage.getItem("changeFeed"));
+    if(feedID)
+    {
+      getApartCommunityFeedMutation();
+    }
+    else{
+      setFeedData(new FeedDetailPost(null));
+    }
   }, []);
 
   return (
     <>
       {
-        isPending?
+        isPending || getIsPending?
         <>
           <div className={[styles.register, styles.dimmed].join(" ")}>
             <Spinners />
@@ -88,8 +101,8 @@ const MakeFeed = () => {
         :
         <></>
       }
-      <FeedHeader useMakeFeed={useMakeFeed}/>
-      <BodyData setFeed={feedData}/>
+      <FeedHeader useMakeFeed={useMakeFeed} feedID={feedID}/>
+      <BodyData feedData={feedData}/>
     </>
   );
 };
