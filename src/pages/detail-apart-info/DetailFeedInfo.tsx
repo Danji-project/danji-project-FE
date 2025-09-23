@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState, useRef, type Dispatch, type SetStateAction  } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,11 +13,13 @@ import EyesIcon from '../../assets/Icon/eyesIcon.svg'
 import HeartIcon from '../../assets/Icon/heartIcon.svg'
 import BookMarkIcon from '../../assets/Icon/bookmarkIcon.svg'
 import CommentIcon from '../../assets/Icon/commentIcon.svg'
+import SendMsgIcon from '../../assets/Icon/SendMsgIcon.svg';
 
 import Spinners from "../../components/common/spinners/Spinners";
 import style from "./DetailApartInfo.module.scss"
 
 import Header from "../../layouts/Header";
+import CommentBox from '../../components/common/comment-box/CommentBox';
 
 const FeedHeader = ({title, isMine, feedId, setFeedInfo}:{title:string|undefined; isMine:boolean; feedId:string|null; setFeedInfo:Dispatch<SetStateAction<FeedDetailPost>>}) => {
   const navigate = useNavigate();
@@ -116,7 +119,7 @@ const DataBody = ({FeedDetail} : {FeedDetail : FeedDetailPost | undefined;}) => 
   }, [FeedDetail]);
 
 
-
+  console.log(FeedDetail?.contents);
     return(
         <>
         <div>
@@ -140,7 +143,12 @@ const DataBody = ({FeedDetail} : {FeedDetail : FeedDetailPost | undefined;}) => 
           </div>
 
           <div style={{margin:'12px 0px', padding:'12px', fontSize:'14px',backgroundColor:'#F9FBFF', borderRadius:'6px', minHeight:'100px'}}>
-            {FeedDetail?.contents}
+            {FeedDetail?.contents.split('\n').map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                {index < FeedDetail?.contents.split('\n').length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </div>
           <div className={`${style['div-imgscroll']}`}>
             {
@@ -164,20 +172,40 @@ const DataBody = ({FeedDetail} : {FeedDetail : FeedDetailPost | undefined;}) => 
     )
 }
 
-const CommentBody = ({Comments, TotalComments}:{Comments:CommentBase[] | undefined; TotalComments:number}) => {
-  console.log(TotalComments);  
+const CommentBody = ({Comments, TotalComments, nowCommnet, setPerentID, setNowComment, addComments}:
+  {Comments:CommentBase[] | undefined; TotalComments:number; nowCommnet:string;
+    setPerentID:Dispatch<SetStateAction<string>>; setNowComment:Dispatch<SetStateAction<string>>; addComments : () => void}) => {
+  
+  const handleMenuItemClick = (item: number) => {
+      // 메뉴 클릭시 동작
+      if(item === 1)
+      {
+          console.log("change click it");
+      }
+      else
+      {
+          console.log("delete click it");
+      }
+  };
+
   return(
       <>
-        <p style={{fontWeight:'600', fontSize:'16px'}}>댓글 ({TotalComments})</p>
-        {
-          Comments?
-          <div>
-
-          </div>
-          :
-          <>
-          </>
-        }
+        <div style={{height:'80%', overflow:'auto'}}>
+          <p style={{fontWeight:'600', fontSize:'16px'}}>댓글 ({TotalComments})</p>
+          {
+            Comments?
+            <div>
+                  {Comments.map((child, index) => (
+                      <div key={index}>
+                          <CommentBox data={child} setPerentID={setPerentID} handleMenuItemClick={handleMenuItemClick}/>
+                      </div>
+                  ))}
+            </div>
+            :
+            <>
+            </>
+          }
+        </div>
       </>
     )
 }
@@ -190,7 +218,13 @@ const DetailFeedInfo = () => {
   const [comments, setComments] = useState<CommentBase[]>();
   const [feedId, setFeedId] = useState<string | null>(null);
   const {getApartCommunityFeedMutation, isPending, isDeletePending} = useGetApartCommunityFeed({feedID:feedId, setPost:setFeedInfo});
-  const { getFeedCommentInfoMutation, isCommunityPending } = useGetFeedCommentInfo({feedId:feedId, setFeedComment:setComments, setTotalElements:setTotalComments});
+  const { getFeedCommentInfoMutation, setFeedCommentMutation ,isCommunityPending } = useGetFeedCommentInfo({feedId:feedId, setFeedComment:setComments, setTotalElements:setTotalComments});
+  const [parentId, setParentId] = useState<string>('');
+  const [nowCommnet, setNowComment] = useState<string>('');
+
+  const parentRef = useRef<HTMLDivElement | null>(null);
+  const [parentSize, setParentSize] = useState({ width: 0, height: 0 });
+
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
   useEffect(() => {
@@ -198,13 +232,35 @@ const DetailFeedInfo = () => {
       navigate("/login", { replace: true });
     }
 
+    localStorage.removeItem("changeFeed");
     setFeedId(localStorage.getItem("selectFeedID"));
     localStorage.setItem("selectMenu", 'community');
     getApartCommunityFeedMutation();
     getFeedCommentInfoMutation();
+
+    const updateSize = () => {
+            if (parentRef.current) {
+                setParentSize({
+                    width: parentRef.current?.offsetWidth,
+                    height: parentRef.current?.offsetHeight,
+                });
+            }
+        };
+
+      updateSize(); // 초기 크기 설정
+      window.addEventListener('resize', updateSize); // 창 크기 변경 시 크기 업데이트
+
+      return () => {
+          window.removeEventListener('resize', updateSize); // 클린업
+          }
   }, []);
 
-  console.log(feedInfo);
+  const AddComments= () =>{
+    setFeedCommentMutation({feedid:feedId, contents:nowCommnet, parentId:parentId});
+    setComments([]);
+    getApartCommunityFeedMutation();
+    getFeedCommentInfoMutation();
+  }
 
   return (
     <>
@@ -218,17 +274,26 @@ const DetailFeedInfo = () => {
         :
         <></>
       }
-      <FeedHeader title={feedInfo?.title} isMine={feedInfo ? feedInfo.isAuthor : false}
-                  feedId={feedId} setFeedInfo={setFeedInfo}/>
-      <div>
-        <DataBody FeedDetail={feedInfo}/>
-        <div className={`${style["login-div-centerline"]}`} />
-        <CommentBody Comments={comments} TotalComments={totalComments}/>
-      </div>
       <>
-        <div style={{position:'absolute', bottom:'0', width:'87%', zIndex:'9999', height:'52px', margin:'20px 0px 42px 0px'}}>
-          <input style={{height:'52px',width:'95%',padding:'10px', borderInline:'none', borderRadius:'6px', border:'1px solid #97BBFF'}} type="text" placeholder={`${user.apartmentName}님, 댓글을 작성해보세요!`}/>
+      <div ref={parentRef} style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        <FeedHeader title={feedInfo?.title} isMine={feedInfo ? feedInfo.isAuthor : false}
+                    feedId={feedId} setFeedInfo={setFeedInfo}/>
+        <div style={{marginBottom:'60px'}}>
+          <DataBody FeedDetail={feedInfo}/>
+          <div className={`${style["login-div-centerline"]}`} />
+          <CommentBody Comments={comments} TotalComments={totalComments} 
+                        setPerentID={setParentId} addComments={AddComments} 
+                        nowCommnet={nowCommnet} setNowComment={setNowComment}/>
         </div>
+        
+        <div style={{display:'flex', backgroundColor:'white', position:'fixed', bottom: 60, width: parentSize.width, zIndex: '9999', height: '52px'}}>
+          <input style={{height:'52px',width:'95%',padding:'10px', borderInline:'none', borderRadius:'6px', border:'1px solid #97BBFF'}} type="text" placeholder={`${user.apartmentName}님, 댓글을 작성해보세요!`}
+                value={nowCommnet} onChange={e => setNowComment(e.target.value)}/>
+          <button onClick={() => AddComments} style={{margin:'16px 0px 16px 16px '}}>
+            <img src={SendMsgIcon} alt="전송"/>
+          </button>
+        </div>
+      </div>
       </>
     </>
   );

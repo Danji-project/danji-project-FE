@@ -58,8 +58,82 @@ export const useGetFeedCommentInfo = ({
     mutation.mutate();
   };
 
+  const commentMutation = useMutation({
+    mutationFn: async ({feedid, contents, parentId}:{feedid:string|null; contents:string; parentId:string|null;}) => {
+      try {
+        const url = `/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}/comments`;
+        const method = 'post';
+
+        const response = await axios({
+          url,
+          method,
+          data: {
+            contents: contents,
+            parentId: parentId ? parentId : '',
+          },
+        });
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          throw new Error(status?.toString());
+        }
+        throw new Error("오류남 왤까");
+      }
+    },
+    onSuccess: (data) => {
+      if (data) {
+      }
+    },
+    onError: (err: Error) => {
+      console.log(err.message);
+    },
+  });
+
+
+  const setFeedCommentMutation = ({feedid, contents, parentId}:{feedid:string|null; contents:string; parentId:string|null;}) => {
+    commentMutation.mutate({feedid, contents, parentId});
+  }
+
+  const changeCommentMutation = useMutation({
+    mutationFn: async ({feedid, contents, commentId}:{feedid:string|null; contents:string; commentId:string|null;}) => {
+      try {
+        const url = `/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}/comments/${commentId}`;
+        const method = 'put';
+
+        const response = await axios({
+          url,
+          method,
+          data: {
+            contents: contents,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          throw new Error(status?.toString());
+        }
+        throw new Error("오류남 왤까");
+      }
+    },
+    onSuccess: (data) => {
+      if (data) {
+      }
+    },
+    onError: (err: Error) => {
+      console.log(err.message);
+    },
+  });
+
+  const resetFeedCommentMutation = ({feedid, contents, commentId}:{feedid:string|null; contents:string; commentId:string|null;}) => {
+    changeCommentMutation.mutate({feedid, contents, commentId});
+  }
+
   return {
     getFeedCommentInfoMutation,
-    isCommunityPending: mutation.isPending,
+    setFeedCommentMutation,
+    resetFeedCommentMutation,
+    isCommunityPending: mutation.isPending || commentMutation.isPending || changeCommentMutation.isPending,
   };
 };

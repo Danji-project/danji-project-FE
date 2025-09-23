@@ -12,6 +12,11 @@ import { FeedDetailPost } from "../../model/BaseFeedDetailModel";
 import styles from './MakeFeed.module.scss';
 import Spinners from "../../components/common/spinners/Spinners";
 
+import PictureExample from "../../assets/PictureExample.svg"
+import deleteIcon from "../../assets/Icon/DeleteIcon.svg"
+
+const MAX_IMAGES = 10;
+
 const FeedHeader = ({useMakeFeed, feedID}:{useMakeFeed:Function; feedID:string|null}) => {
   console.log(feedID);
 
@@ -35,14 +40,52 @@ const BodyData = ({feedData}:{feedData:FeedDetailPost;}) => {
   }, [feedData.title, feedData.contents]);
   
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTitle(e.target.value);
-      feedData.title = e.target.value;
-    };
+    setTitle(e.target.value);
+    feedData.title = e.target.value;
+  };
 
-    const contentChange = (e:React.ChangeEvent<HTMLTextAreaElement>)=>{
-      setContents(e.target.value);
-      feedData.contents = e.target.value;
+  const contentChange = (e:React.ChangeEvent<HTMLTextAreaElement>)=>{
+    setContents(e.target.value);
+    feedData.contents = e.target.value;
+  }
+
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    // 숨겨진 input을 클릭
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newFiles = Array.from(files);
+    const totalImages = previewUrls.length + newFiles.length;
+
+    // 최대 이미지 개수(10개) 초과 시 알림
+    if (totalImages > MAX_IMAGES) {
+      alert(`이미지는 최대 ${MAX_IMAGES}개까지 업로드할 수 있습니다.`);
+      return;
+    }
+
+    // 새로운 파일들을 읽어서 미리보기 URL 생성
+    newFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrls(prev => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageDelete = (indexToDelete: number) => {
+    setPreviewUrls(prev => prev.filter((_, index) => index !== indexToDelete));
+  };
+
   
   return(
     <>
@@ -59,6 +102,62 @@ const BodyData = ({feedData}:{feedData:FeedDetailPost;}) => {
         <textarea placeholder="내용을 입력해주세요."
                 value={content} onChange={contentChange}
                 style={{resize:'none', width:'100%', height:'292px', padding:'15px 12px', verticalAlign:'top', textAlign:'left', lineHeight:'normal'}}/>
+        
+        <div style={{padding:'20px 0px'}}>
+          <input
+            type="file" multiple
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleImageChange}
+            style={{ display: 'none' }} // input 태그 숨기기
+          />
+          <p style={{fontSize:'16px', fontWeight:'600'}}>사진첨부</p>
+          <div style={{display:'flex', overflow:'auto', padding:'12px 0px'}}>
+            {
+              previewUrls.length < 10 ?
+              <button onClick={handleButtonClick} style={{marginRight:'12px'}}>
+                <img src={PictureExample}/>
+              </button>
+              :
+              <></>
+            }
+            {
+              previewUrls.length > 0 ?
+              previewUrls.map((url, index) => (
+                <div key={index} style={{position: 'relative', marginRight:'12px'}}>
+                  <img 
+                    src={url} 
+                    alt={`미리보기 ${index + 1}`} 
+                    style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius:'4px'}}
+                  />
+                  <button
+                      onClick={() => handleImageDelete(index)}
+                      style={{
+                        position: 'absolute',
+                        top: '0px', right: '0px',
+                        width: '70px', 
+                        height: '70px',
+                        padding: '0',
+                        background:'rgba(0, 0, 0, 0.1)',
+                        border: 'none',
+                        borderRadius:'4px',
+                        color: 'white',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px'
+                      }}><img src={deleteIcon} style={{position: 'absolute', top: '8px', right: '8px', width:'10px'}}/></button>
+                </div>
+              ))
+            :
+              <div style={{alignContent:"end"}}>
+                <p style={{fontSize:'13px', color:'#767676'}}>390 * 460</p>
+                <p style={{fontSize:'13px', color:'#767676'}}>최대 10장의 이미지 첨부가 가능합니다.</p>
+              </div>
+            }
+          </div>
+        </div>
       </div>
     </>
     )
