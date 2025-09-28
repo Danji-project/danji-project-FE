@@ -1,0 +1,30 @@
+.chat {
+  &__other {
+    margin-top: 20px;
+    align-self: start;
+    display: flex;
+    &__text {
+      max-width: 200px;
+      margin-left: 20px;
+      padding: 1rem;
+      background-color: rgb(234, 241, 255);
+      border-radius: 5px;
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        width: 13px;
+        height: 19px;
+        background-color: rgb(234, 241, 255);
+        right: 100%;
+        clip-path: polygon(0 50%, 100% 0, 100% 100%);
+        top: 14px;
+      }
+    }
+    &__time {
+      font-size: 14px;
+      align-self: end;
+      margin-left: 10px;
+    }
+  }
+}

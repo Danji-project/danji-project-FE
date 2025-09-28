@@ -1,0 +1,19 @@
+.chat {
+  &__mine {
+    align-self: end;
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 30px 0;
+    &__text {
+      max-width: 140px;
+      padding: 1rem;
+      background-color: rgb(151, 187, 255);
+      border-radius: 12px;
+    }
+    &__time {
+      align-self: end;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+  }
+}

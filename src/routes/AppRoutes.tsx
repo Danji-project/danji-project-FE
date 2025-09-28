@@ -17,6 +17,7 @@ import { SettingsRoutes } from "./SettingsRoutes";
 import MyPage from "../pages/my-pages/MyPage";
 import Settings from "../pages/settings/Settings";
 import ChatPage from "../pages/chat/ChatPage";
+import ChatDetail from "../components/chatting/chat-detail/ChatDetail";
 
 const AppRoutes = () => {
   return (
@@ -46,6 +47,7 @@ const AppRoutes = () => {
 
         {/* 채팅 라우팅 */}
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat/chat-detail" element={<ChatDetail />} />
       </Routes>
     </Suspense>
   );

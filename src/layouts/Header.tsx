@@ -7,6 +7,7 @@ interface HeaderProps {
   title: string;
   hasSearchBox?: boolean;
   hasBackButton?: boolean;
+  hasExit?: string;
   hasText?: boolean;
   hasIcons?: React.ReactNode;
   hasUserIcon?: boolean;
@@ -16,7 +17,7 @@ interface HeaderProps {
   onClickButton?: () => void;
   iconComponent?: React.ReactNode;
   onIconClick?: () => void;
-  onChangeText?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  onChangeText?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const SearchHeader: React.FC<HeaderProps> = ({
@@ -41,13 +42,24 @@ const SearchHeader: React.FC<HeaderProps> = ({
             type="button"
             onClick={navigateBack}
             className={styles["header__back-button"]}
-            style={{width:'12%'}}
+            style={{ width: "12%" }}
           >
             <IoIosArrowBack size={20} />
           </button>
         )}
-        <div style={{width:'100%'}}>
-          <SearchBox content={title} placeholder="" onChange={(e)=>{if(onChangeText){onChangeText(e);}}} onSearch={()=>{onClickButton}}/>
+        <div style={{ width: "100%" }}>
+          <SearchBox
+            content={title}
+            placeholder=""
+            onChange={(e) => {
+              if (onChangeText) {
+                onChangeText(e);
+              }
+            }}
+            onSearch={() => {
+              onClickButton;
+            }}
+          />
         </div>
       </div>
     </header>
@@ -57,6 +69,7 @@ const SearchHeader: React.FC<HeaderProps> = ({
 const TitleHeader: React.FC<HeaderProps> = ({
   title,
   hasBackButton,
+  hasExit,
   hasIcons,
   iconComponent,
   buttonText,
@@ -96,14 +109,16 @@ const TitleHeader: React.FC<HeaderProps> = ({
         >
           {hasIcons}
         </button>
+        <button type="button" className={styles["header__exit"]}>
+          {hasExit}
+        </button>
       </div>
     </header>
   );
 };
 
 const Header: React.FC<HeaderProps> = (props) => {
-  if(props.hasSearchBox)
-    return <SearchHeader {...props}/>;
+  if (props.hasSearchBox) return <SearchHeader {...props} />;
 
   return <TitleHeader {...props} />;
 };
