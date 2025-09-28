@@ -1,39 +1,47 @@
 interface IBaseApartInfoBase
 {
-    apartID : string;
-    locatin : string;
-    apartName : string;
-    apartDetailName : string;
-    totalHouseHolds : number;
-    houseSize : number;
-    moveVailableMonth : number;
-    picture : string;
+    buildingcount : number;
+    id : number;
+    location : string;
+    name : string;
+    region : string;
+    thumbnailFileUrl : string;
+    totalUint : number;
+    bookmark : boolean;
+
+    moveVailableMonth? : number;
+    picture? : string;
+    houseSize? : number;
+    apartDetailName? : string;
+    isuseBookmark? : boolean;
 }
 
 export class BaseApartInfo implements IBaseApartInfoBase
 {
-    apartID : string;
-    locatin: string;
-    apartName: string;
-    apartDetailName: string;
-    totalHouseHolds: number;
-    houseSize: number;
-    moveVailableMonth: number;
-    picture : string;
-    isuseBookmark : boolean;
+    buildingCount : number;
+    id : number;
+    location : string;
+    name : string;
+    region : string;
+    thumbnailFileUrl : string;
+    totalUnit : number;
     bookmark : boolean;
+    
+    moveVailableMonth? : number;
+    picture? : string;
+    houseSize? : number;
+    apartDetailName? : string;
+    isuseBookmark? : boolean;
 
-    constructor(id:string, loc : string, name:string, detail:string, total:number, size:number, month:number, url:string, isusebookmark:boolean, bookmark:boolean)
+    constructor(buildingcount:number, id:number, loc:string, name:string, region:string, thumb:string, uint:number, book:boolean)
     {
-        this.apartID = id;
-        this.locatin = loc;
-        this.apartName = name;
-        this.apartDetailName = detail;
-        this.totalHouseHolds = total;
-        this.houseSize = size;
-        this.moveVailableMonth = month;
-        this.picture = url;
-        this.isuseBookmark = isusebookmark;
-        this.bookmark = bookmark;
+        this.buildingCount = buildingcount;
+        this.id = id;
+        this.location = loc;
+        this.name = name;
+        this.region = region;
+        this.thumbnailFileUrl = thumb;
+        this.totalUnit = uint;
+        this.bookmark = book;
     }
 }

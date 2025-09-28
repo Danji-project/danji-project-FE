@@ -16,15 +16,19 @@ interface ImageCompressionOptions {
 }
 
 interface IUserInfoBase {
-  // 사용자 기본 데이터
+  
   email: string;
   password: string;
-  name?: string | null;
-  nickname?: string | null;
-  phoneNumber?: string | null;
+  fileID?: string| null;
+  memberApartmentID?: string| null;
+  name?: string| null;
+  nickname?: string| null;
+  phoneNumber?: string| null;
+  uint?: string
 
-  // 로그인/오류 상태
+  // 사용자 데이터 받아온 이후 정해지는 것들
   isLogin: boolean;
+  isUserPandding: boolean;
   error: string;
 
   // 아파트 정보
@@ -57,11 +61,11 @@ interface IUserInfoBase {
   setError: (error: string) => void;
 
   // 아파트 정보 setter 함수들
-  setApartmentId: (apartmentId: string | number | null) => void;
-  setApartmentName: (apartmentName: string | null) => void;
-  setBuilding: (building: string | null) => void;
-  setCarNumber: (carNumber: number | null) => void;
-  setFileId: (fileId: string | number | null) => void;
+  setApartmentId: (apartmentId: null) => void;
+  setApartmentName: (apartmentName: null | string) => void;
+  setBuilding: (building: null) => void;
+  setCarNumber: (carNumber: null | string[]) => void;
+  setFileId: (fileId: null | string | number) => void;
   setLocation: (location: string | null) => void;
   setMemberApartmentId: (memberApartmentId: number | null) => void;
   setMoveInDate: (moveInDate: string | null) => void;
@@ -106,6 +110,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
   name: "",
   phoneNumber: "",
   isLogin: false,
+  isUserPandding: false,
   error: "",
 
   // 아파트 정보 초기값
@@ -148,7 +153,6 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
   setMoveInDate: (moveInDate) => set({ moveInDate }),
   setNumberOfResidents: (numberOfResidents) => set({ numberOfResidents }),
   setRegion: (region) => set({ region }),
-  setUnit: (unit) => set({ unit }),
 
   // 파일 업로드 관련 setter 함수들 (최적화됨)
   setProfileImage: (imageUrl) => set({ profileImage: imageUrl }),
@@ -616,6 +620,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       name: "",
       phoneNumber: "",
       isLogin: false,
+      isUserPandding: false,
       error: "",
       apartmentId: null,
       apartmentName: null,
@@ -627,7 +632,6 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       moveInDate: null,
       numberOfResidents: null,
       region: null,
-      unit: null,
       profileImage: "/profile_imgSrc.jpg",
       isUploading: false,
       uploadProgress: 0,
