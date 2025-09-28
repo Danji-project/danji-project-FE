@@ -1,0 +1,17 @@
+.chat {
+  &__input {
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    &__box {
+      width: 85%;
+      padding: 1rem 0.75rem;
+      border: 1px solid rgba(151, 187, 255, 1);
+      border-radius: 6px;
+      outline: none;
+    }
+  }
+}
