@@ -12,10 +12,11 @@ const TabsList = ({
 }) => {
   return (
     <div className={styles.tabsList}>
-      {content.map((c: string) => (
+      {content.map((c: string, i: number) => (
         <div
           className={styles.tabs}
           style={{ width: `${100 / content.length}%` }}
+          key={i}
         >
           <button
             className={`${styles.tabsButton} ${

@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "../../layouts/Header";
 import TabsList from "../../components/common/tabs/TabsList";
 import OneChat from "../../components/chatting/one-chat/OneChat";
+import useChat from "../../hooks/useChat";
 
 const ChatPage = () => {
   const [tabs, setTabs] = useState("oneChat");
+
+  useChat();
 
   return (
     <>
