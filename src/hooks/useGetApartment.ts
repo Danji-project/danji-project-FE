@@ -5,6 +5,7 @@ import { BaseApartInfo } from "../model/BaseApartInfoModel";
 
 interface ApartmentResponse {
   token: string;
+  data : BaseApartInfo;
 }
 
 export const useGetApartmentMutation = ({
@@ -12,11 +13,12 @@ export const useGetApartmentMutation = ({
   setApartment,
 }: {
   apartmentID: number | undefined | null;
-  setApartment: React.Dispatch<React.SetStateAction<BaseApartInfo | null| undefined>>;
+  setApartment: React.Dispatch<React.SetStateAction<BaseApartInfo | null| undefined>> | null;
 }) => {
   const mutation = useMutation<ApartmentResponse, Error>({
     mutationFn: async () => {
       try {
+        console.log('apartmentID '+apartmentID);
         if(apartmentID)
         {
           const response = await axios.get(`/api${API_ENDPOINTS.USER.GETAPARTMENT}${apartmentID}`);
@@ -31,8 +33,8 @@ export const useGetApartmentMutation = ({
     },
     onSuccess: (data) => {
       try{
-        const apart = new BaseApartInfo(100, 1, "서초", "폴리스", "서초 폴리스", "https://placehold.co/150x180", 2, false);
-        setApartment(apart);
+        if(setApartment && data.data)
+          setApartment(data.data);
       }catch(err)
       {
         throw err;

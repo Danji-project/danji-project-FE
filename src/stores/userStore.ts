@@ -20,11 +20,10 @@ interface IUserInfoBase {
   email: string;
   password: string;
   fileID?: string| null;
-  memberApartmentID?: string| null;
   name?: string| null;
   nickname?: string| null;
   phoneNumber?: string| null;
-  uint?: string
+  unit?: string
 
   // 사용자 데이터 받아온 이후 정해지는 것들
   isLogin: boolean;
@@ -124,7 +123,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
   moveInDate: null,
   numberOfResidents: null,
   region: null,
-  unit: null,
+  unit: '',
 
   // 파일 업로드 관련 초기값 (최적화됨)
   profileImage: "/profile_imgSrc.jpg",

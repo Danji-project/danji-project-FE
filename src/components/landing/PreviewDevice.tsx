@@ -1,6 +1,5 @@
 import * as React from "react";
 import StatusBar from "./StatusBar";
-import { useEffect } from "react";
 import { useDialogStore } from "../../stores/dialogStore";
 import { useAlertStore } from "../../stores/alertStore";
 import useAuthCode from "../../hooks/useAuthCode";
@@ -13,11 +12,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { isEmailLoading } = useCheckEmail();
   const { isOpen } = useDialogStore();
   const { isAlertOpen } = useAlertStore();
-  const { executeUserInfoMutation, isPending } = useUserInfoMutation();
-
-  useEffect(() => {
-    executeUserInfoMutation();
-  }, []);
+  const { isPending } = useUserInfoMutation();
 
   return (
     <div

@@ -9,7 +9,7 @@ interface UserInfoResponse {
     apartmentId: null;
     apartmentName: null | string;
     building: null;
-    carNumber: null | number;
+    carNumbers: null | string[];
     email: string;
     fileId: null | string | number;
     location: string | null;
@@ -20,7 +20,7 @@ interface UserInfoResponse {
     numberOfResidents: number | null;
     phoneNumber: string;
     region: string | null;
-    unit: null;
+    unit: string;
     profileImageUrl?: string; // 프로필 이미지 URL (선택적)
   };
 }
@@ -52,9 +52,7 @@ export const useUserInfoMutation = () => {
         profileImageUrl = `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${data.data.fileId}`;
       }
 
-      // 사용자 정보 일괄 업데이트
-      updateUserInfo({
-        // 기본 정보
+      const updatedData: any = {// 기본 정보
         email: data.data.email,
         name: data.data.name,
         nickname: data.data.nickname,
@@ -64,7 +62,7 @@ export const useUserInfoMutation = () => {
         apartmentId: data.data.apartmentId,
         apartmentName: data.data.apartmentName,
         building: data.data.building,
-        carNumber: data.data.carNumber,
+        carNumber: data.data.carNumbers,
         fileId: data.data.fileId,
         location: data.data.location,
         memberApartmentId: data.data.memberApartmentId,
@@ -74,8 +72,10 @@ export const useUserInfoMutation = () => {
         unit: data.data.unit,
 
         // 프로필 이미지
-        profileImage: profileImageUrl,
-      });
+        profileImage: profileImageUrl,};
+        
+      // 사용자 정보 일괄 업데이트
+      updateUserInfo(updatedData);
 
       console.log("사용자 정보 업데이트 완료:", {
         name: data.data.name,

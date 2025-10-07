@@ -25,6 +25,7 @@ export const API_ENDPOINTS = {
     UPDATE_MEMBER: "/member",
     ADD_APART: "/member-apartments",
     GETAPARTMENT: '/apartment/',
+    GETCOMMUNITYFEED: '/community/feeds',
   },
 
   // 파일 업로드 관련 엔드포인트
