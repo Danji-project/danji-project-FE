@@ -6,6 +6,7 @@ import { FindResultPage } from "../pages/find-info/findResultPage";
 import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
 import { MainPage } from "../pages/main/MainPage";
+import DetailApartInfo from "../pages/detail-apart-info/DetailApartInfo";
 
 const AuthRoutes = () => {
   const location = useLocation();
@@ -26,6 +27,8 @@ const AuthRoutes = () => {
         return <FindResultPage />;
       case "/reset-password":
         return <ResetPasswordPage/>
+      case "/apart-Info":
+        return <DetailApartInfo/>
       default:
         return <Outlet />;
     }

@@ -94,9 +94,9 @@ const ApartCard: React.FC<ApartProps> = ({ element , onBookMarked, onClickCard})
   const generateId = useId();
 
   return (
-    <div style={{width:'150px', marginBottom:'8px', marginTop:'8px'}} onClick={onClickCard}>
+    <div style={{cursor:'pointer', width:'150px', marginBottom:'8px', marginTop:'8px'}} onClick={onClickCard}>
       <div style={{position:'relative', borderRadius:'8px'}}>
-        <img style={{width:'150px', height:'180px', borderRadius:'8px'}} src={element.thumbnailFileUrl}/>
+        <img style={{width:'150px', height:'180px', borderRadius:'8px'}} src={element.thumbnailFileUrl ? `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${element.thumbnailFileUrl}` : 'https://placehold.co/150x180'}/>
         <div className={`${styles['div-overray']}`}>
           {
             element.isuseBookmark
@@ -111,7 +111,7 @@ const ApartCard: React.FC<ApartProps> = ({ element , onBookMarked, onClickCard})
           </div>
         </div>
       </div>
-      <div style={{cursor:'pointer'}}>
+      <div>
         <p style={{fontSize:'14px', fontWeight:'600', color:'rgba(151, 187, 255, 1)'}}>{element.name}</p>
         <p style={{fontSize:'14px', color:'rgba(17, 17, 17, 1)'}}>{element.apartDetailName}</p>
         <div className={`${styles["div-detail-info"]}`}>

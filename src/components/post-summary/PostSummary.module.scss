@@ -1,0 +1,47 @@
+.Container
+{
+    display:flex; 
+    justify-content:space-between;
+    margin-bottom: 8px;
+
+    .titleP{
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    .contentP{
+        font-weight: 400;
+        font-size: 14px;
+    }
+
+    .leftContainer
+    {
+        display:flex; 
+        justify-content:space-between;
+        p{
+            font-size: 12px
+        };
+    }
+    
+    .rightContainer
+    {
+        display:flex; 
+        justify-content:flex-end;
+        align-items: center;
+        p{
+            font-size: 12px;
+            margin-right: 8px;
+        };
+
+        img{
+            width: 12px;
+            height: 12px;
+            margin-right: 3px;
+        }
+    }
+}
+
+.divBorder{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

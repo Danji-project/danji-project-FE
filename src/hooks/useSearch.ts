@@ -37,6 +37,7 @@ export const useSearch = ({searchText, setApartments}:{
       console.log(data?.data);
     },
     onError: (err: Error) => {
+      setApartments(undefined);
       console.log(err.message);
     },
   });
