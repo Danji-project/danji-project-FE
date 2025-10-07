@@ -27,7 +27,6 @@ interface IUserInfoBase {
   email: string;
   password: string;
   fileID?: string| null;
-  memberApartmentID?: string| null;
   name?: string| null;
   nickname?: string| null;
   phoneNumber?: string| null;

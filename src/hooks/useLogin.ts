@@ -94,7 +94,7 @@ export const useLogin = () => {
 
         // 사용자 정보 일괄 업데이트
         const userData = userInfoResponse.data.data;
-        user.updateUserInfo({
+        const userupdate = {
           // 기본 정보
           email: userData.email,
           name: userData.name,
@@ -116,7 +116,9 @@ export const useLogin = () => {
 
           // 프로필 이미지
           profileImage: profileImageUrl,
-        });
+        }
+        
+        user.updateUserInfo(userupdate);
 
         console.log("로그인 후 사용자 정보 업데이트 완료:", {
           name: userData.name,
