@@ -1,4 +1,4 @@
-import { useEffect, useState, type Dispatch, type SetStateAction  } from "react";
+import { use, useEffect, useState, type Dispatch, type SetStateAction  } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 import { BaseApartInfo } from "../../model/BaseApartInfoModel";
@@ -84,23 +84,24 @@ const ApartInfoBody = ({Appart, setAppart, setIsSearch, searchText, setSearchTex
   const navigate = useNavigate();
   const user = useUserInfo();
   const {AddApart} = useUserApartAdd();
-  const [dong, setdong] = useState<string>('');
-  const [ho, setho] = useState<string>('');
-  const [date, setdate] = useState<string>('');
-  const [person, setperson] = useState<string>('');
-  const [car, setCar] = useState<string[]>(['']);
+  const [dong, setdong] = useState<string>(user.building ? user.building : '');
+  const [ho, setho] = useState<string>(user.unit ? user.unit : '');
+  const [date, setdate] = useState<string>(user.moveInDate ? user.moveInDate : '');
+  const [person, setperson] = useState<string>(user.numberOfResidents? user.numberOfResidents.toString() : '');
+  const [car, setCar] = useState<string[]>(user.carNumber ? user.carNumber : ['']);
 
   const selectBtnClick = () => {
     if(Appart)
-    {
-      user.apartmentId = Appart.id;
-      user.building = dong;
-      user.uint = ho;
-      user.moveInDate = date;
-      user.numberOfResidents = Number.parseInt(person);
-      user.carNumber = car;
-      AddApart();
-    }
+      if(isChainge)
+      {
+        user.apartmentId = Appart.id;
+        user.building = dong;
+        user.unit = ho;
+        user.moveInDate = date;
+        user.numberOfResidents = Number.parseInt(person);
+        user.carNumber = car;
+        AddApart();
+      }
     navigate('/my-page');
   };
 
@@ -179,7 +180,7 @@ const ApartInfoBody = ({Appart, setAppart, setIsSearch, searchText, setSearchTex
     });
   };
 
-  console.log(Appart);
+  const isChainge = user.apartmentId != Appart?.id || user.building != dong || user.unit != ho || user.moveInDate != date || user.numberOfResidents != Number.parseInt(person) || user.carNumber != car;
 
   return (
     <div style={{display:'flex', flexDirection:'column', height:'calc(var(--device-height) - 200px)'}}>
