@@ -41,14 +41,14 @@ const FeedHeader = ({title, isMine, feedId, setFeedInfo}:{title:string|undefined
     // 메뉴 클릭시 동작으로
     if(item === 1)
     {
-      console.log("click it");
+      console.log("click change feed");
       feedId ? localStorage.setItem("changeFeed", feedId) : localStorage.removeItem("changeFeed");
       navigate("/make/feed", {replace:true});
     }
     else if(item === 2)
     {
       useDeleteFeedDetailInfoMutation();
-      console.log("click delete");
+      console.log("click delete feed");
     }
   };
 
@@ -172,19 +172,31 @@ const DataBody = ({FeedDetail} : {FeedDetail : FeedDetailPost | undefined;}) => 
     )
 }
 
-const CommentBody = ({Comments, TotalComments, nowCommnet, setPerentID, setNowComment, addComments}:
-  {Comments:CommentBase[] | undefined; TotalComments:number; nowCommnet:string;
-    setPerentID:Dispatch<SetStateAction<string>>; setNowComment:Dispatch<SetStateAction<string>>; addComments : () => void}) => {
+const CommentBody = ({Comments, TotalComments, setPerentID, setCommentId, setComment, deleteFeedCommentMutation, UpdateComments}:
+  {Comments:CommentBase[] | undefined; TotalComments:number;
+    setPerentID:Dispatch<SetStateAction<CommentBase | undefined>>;
+    setCommentId:Dispatch<SetStateAction<CommentBase | undefined>>;
+    setComment:Dispatch<SetStateAction<string>>;
+    deleteFeedCommentMutation: ({feedid, commentId}:{feedid:string, commentId:string})=>void;
+  UpdateComments:()=>void}) => {
   
-  const handleMenuItemClick = (item: number) => {
+  const handleMenuItemClick = ({index, comment}:{index: number; comment:CommentBase;}) => {
       // 메뉴 클릭시 동작
-      if(item === 1)
+      if(index === 1)
       {
-          console.log("change click it");
+        console.log("change click it");
+        if(comment)
+        {
+          setPerentID(undefined);
+          setCommentId(comment);
+          setComment(comment.contents);
+        }
       }
       else
       {
-          console.log("delete click it");
+        console.log("delete click it");
+        deleteFeedCommentMutation({feedid:comment.feedId.toString(), commentId:comment.commentId.toString()});
+        UpdateComments();
       }
   };
 
@@ -197,7 +209,7 @@ const CommentBody = ({Comments, TotalComments, nowCommnet, setPerentID, setNowCo
             <div>
                   {Comments.map((child, index) => (
                       <div key={index}>
-                          <CommentBox data={child} setPerentID={setPerentID} handleMenuItemClick={handleMenuItemClick}/>
+                          <CommentBox data={child} setPerentID={() => {setPerentID(child); setCommentId(undefined); setComment('');}} handleMenuItemClick={handleMenuItemClick}/>
                       </div>
                   ))}
             </div>
@@ -218,16 +230,28 @@ const DetailFeedInfo = () => {
   const [comments, setComments] = useState<CommentBase[]>();
   const [feedId, setFeedId] = useState<string | null>(null);
   const {getApartCommunityFeedMutation, isPending, isDeletePending} = useGetApartCommunityFeed({feedID:feedId, setPost:setFeedInfo});
-  const { getFeedCommentInfoMutation, setFeedCommentMutation ,isCommunityPending } = useGetFeedCommentInfo({feedId:feedId, setFeedComment:setComments, setTotalElements:setTotalComments});
-  const [parentId, setParentId] = useState<string>('');
+  const { getFeedCommentInfoMutation, setFeedCommentMutation , resetFeedCommentMutation, deleteFeedCommentMutation,isCommunityPending } = useGetFeedCommentInfo({feedId:feedId, setFeedComment:setComments, setTotalElements:setTotalComments});
+  const [parent, setParentId] = useState<CommentBase>();
+  const [changeCommentId, setChangeCommentId] = useState<CommentBase>();
   const [nowCommnet, setNowComment] = useState<string>('');
 
   const parentRef = useRef<HTMLDivElement | null>(null);
-  const [parentSize, setParentSize] = useState({ width: 0, height: 0 });
-
+  const [parentSize, setParentSize] = useState({ top : 0, width: 0, height: 0 });
+  const [isCommentChanged, setIsCommentChanged] = useState(false);
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
   useEffect(() => {
+    if (isCommentChanged) {
+        setComments([]);
+        getFeedCommentInfoMutation();
+        setParentId(undefined);
+        setChangeCommentId(undefined);
+        getApartCommunityFeedMutation();
+        setNowComment('');
+        setIsCommentChanged(false); // 상태 초기화
+        return;
+    }
+
     if (!user.isLogin) {
       navigate("/login", { replace: true });
     }
@@ -239,13 +263,16 @@ const DetailFeedInfo = () => {
     getFeedCommentInfoMutation();
 
     const updateSize = () => {
-            if (parentRef.current) {
-                setParentSize({
-                    width: parentRef.current?.offsetWidth,
-                    height: parentRef.current?.offsetHeight,
-                });
-            }
-        };
+        if (parentRef.current) {
+        const rect = parentRef.current.getBoundingClientRect();
+        console.log(rect);
+            setParentSize({
+                top: window.innerHeight - rect.top - 35, // 버튼 아래
+                width: parentRef.current?.offsetWidth,
+                height: parentRef.current?.offsetHeight,
+            });
+        }
+    };
 
       updateSize(); // 초기 크기 설정
       window.addEventListener('resize', updateSize); // 창 크기 변경 시 크기 업데이트
@@ -253,12 +280,27 @@ const DetailFeedInfo = () => {
       return () => {
           window.removeEventListener('resize', updateSize); // 클린업
           }
-  }, []);
+  }, [window.innerHeight, isCommentChanged]);
 
   const AddComments= () =>{
-    setFeedCommentMutation({feedid:feedId, contents:nowCommnet, parentId:parentId});
+    handleAddComment();
+  }
+
+  const handleAddComment = async () => {
+    if(changeCommentId)
+      await resetFeedCommentMutation({ feedid: feedId, contents: nowCommnet, commentId: changeCommentId ? changeCommentId.commentId.toString() : null });
+    else
+      await setFeedCommentMutation({ feedid: feedId, contents: nowCommnet, parentId: parent ? parent.commentId.toString() : null });
+      
+      // 댓글 추가 완료 후 상태 업데이트
+      setIsCommentChanged(true);
+  };
+
+  const UpdateComments = () => {
+    getFeedCommentInfoMutation();
     setComments([]);
-    getApartCommunityFeedMutation();
+    setParentId(undefined);
+    setNowComment('');
     getFeedCommentInfoMutation();
   }
 
@@ -275,23 +317,49 @@ const DetailFeedInfo = () => {
         <></>
       }
       <>
-      <div ref={parentRef} style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      <div ref={parentRef} style={{ display: 'flex', flexDirection: 'column'}}>
         <FeedHeader title={feedInfo?.title} isMine={feedInfo ? feedInfo.isAuthor : false}
                     feedId={feedId} setFeedInfo={setFeedInfo}/>
-        <div style={{marginBottom:'60px'}}>
+        <div style={{marginBottom:'70px'}}>
           <DataBody FeedDetail={feedInfo}/>
           <div className={`${style["login-div-centerline"]}`} />
           <CommentBody Comments={comments} TotalComments={totalComments} 
-                        setPerentID={setParentId} addComments={AddComments} 
-                        nowCommnet={nowCommnet} setNowComment={setNowComment}/>
+                        setPerentID={setParentId} setCommentId={setChangeCommentId}
+                        setComment={setNowComment}
+                        deleteFeedCommentMutation={deleteFeedCommentMutation} 
+                        UpdateComments={UpdateComments}/>
         </div>
         
-        <div style={{display:'flex', backgroundColor:'white', position:'fixed', bottom: 60, width: parentSize.width, zIndex: '9999', height: '52px'}}>
-          <input style={{height:'52px',width:'95%',padding:'10px', borderInline:'none', borderRadius:'6px', border:'1px solid #97BBFF'}} type="text" placeholder={`${user.apartmentName}님, 댓글을 작성해보세요!`}
-                value={nowCommnet} onChange={e => setNowComment(e.target.value)}/>
-          <button onClick={() => AddComments} style={{margin:'16px 0px 16px 16px '}}>
-            <img src={SendMsgIcon} alt="전송"/>
-          </button>
+        <div style={{ display:'flex', position:'fixed', flexDirection:'column', top: parentSize.top, zIndex: '9999', width: parentSize.width, backgroundColor:'white'}}>
+          <div>
+            {
+              parent ?
+              <div style={{display:'flex', width: parentSize.width, marginBottom:'10px'}}>
+                <p style={{backgroundColor:'white', bottom: 120, width: parentSize.width, fontSize:'12px'}}>{parent.commentMemberResponseDto.nickname}님께 댓글쓰는 중...</p>
+                <button onClick={() => {setParentId(undefined);}}>X</button>
+              </div>
+              :
+              <></>
+            }
+          </div>
+          <div>
+            {
+              changeCommentId ?
+              <div style={{display:'flex', width: parentSize.width, marginBottom:'10px'}}>
+                <p style={{backgroundColor:'white', bottom: 120, width: parentSize.width, fontSize:'12px'}}>{changeCommentId.commentMemberResponseDto.nickname} 댓글 수정 중...</p>
+                <button onClick={() => {setChangeCommentId(undefined);}}>X</button>
+              </div>
+              :
+              <></>
+            }
+          </div>
+          <div style={{display:'flex', width: parentSize.width, height: '52px'}}>
+            <textarea style={{height:'52px',width:'95%',padding:'10px', borderInline:'none', borderRadius:'6px', border:'1px solid #97BBFF', resize:'none'}} placeholder={`${user.apartmentName}님, 댓글을 작성해보세요!`}
+                  value={nowCommnet} onChange={e => setNowComment(e.target.value)}/>
+            <button onClick={() => {AddComments();}} style={{margin:'16px 0px 16px 16px '}}>
+              <img src={SendMsgIcon} alt="전송"/>
+            </button>
+          </div>
         </div>
       </div>
       </>

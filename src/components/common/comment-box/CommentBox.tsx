@@ -2,7 +2,9 @@ import type { Dispatch, SetStateAction } from "react";
 import type { CommentBase } from "../../../model/BaseCommentModel";
 import React, { useEffect, useRef, useState } from "react";
 
-const CommentBox = ({data, setPerentID, handleMenuItemClick} : { data: CommentBase, setPerentID: Dispatch<SetStateAction<string>>; handleMenuItemClick : (index: number) => void }) => {
+const CommentBox = ({data, setPerentID, handleMenuItemClick} : 
+    { data: CommentBase, setPerentID: () => void ; 
+        handleMenuItemClick : ({index, comment}:{index: number; comment:CommentBase;}) => void }) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
     const menudivRef = useRef<HTMLDivElement | null>(null); // 메뉴 참조
@@ -17,7 +19,7 @@ const CommentBox = ({data, setPerentID, handleMenuItemClick} : { data: CommentBa
             // 메뉴 위치 계산
             setMenuPosition({
                 top: rect.bottom + window.scrollY, // 버튼 아래
-                left: (screenX - 100 > 315 ? 270 : screenX - 100 ), // 버튼 왼쪽
+                left: rect.left - (rect.width * 5), // 버튼 왼쪽
             });
             setMenuVisible(prev => !prev); // 메뉴 토글
         }
@@ -31,11 +33,18 @@ const CommentBox = ({data, setPerentID, handleMenuItemClick} : { data: CommentBa
         }
     };
 
+    const handleScroll = () => {
+        // 스크롤 시 메뉴 숨김
+        setMenuVisible(false);
+    };
+
     // 외부 클릭 감지
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
+        window.addEventListener('scroll', handleScroll);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
@@ -64,23 +73,25 @@ const CommentBox = ({data, setPerentID, handleMenuItemClick} : { data: CommentBa
                     }
                     {
                         menuVisible && menuPosition ?
-                            <ul ref={menuRef} style={{
-                                position: 'absolute',
-                                zIndex: '999999',
-                                top: menuPosition.top,
-                                left: menuPosition.left,
-                                width: '70px',
-                                backgroundColor: 'white',
-                                border: '1px solid #EDEDED',
-                                borderRadius: '4px',
-                                listStyle: 'none',
-                                padding: '10px',
-                                margin: 0,
-                                cursor: 'pointer'
-                            }}>
-                                <li style={{ fontSize: '15px', width: '49px', borderBottom: '1px solid #EDEDED', padding: '0px 8px 8px 8px', textAlign: 'center', verticalAlign: 'center' }} onClick={() => { handleMenuItemClick(1); setMenuVisible(false); }}>수정</li>
-                                <li style={{ fontSize: '15px', width: '49px', padding: '8px 8px 0px 8px', textAlign: 'center', verticalAlign: 'center' }} onClick={() => { handleMenuItemClick(2); setMenuVisible(false); }}>삭제</li>
-                            </ul>
+                            <div style={{ display:'flex', position:'fixed', flexDirection:'column', 
+                                    top: menuPosition.top,
+                                    left: menuPosition.left + 100, 
+                                    zIndex: '9999', width: '70px', backgroundColor:'white'}}>
+                                <ul ref={menuRef} style={{
+                                    position: 'absolute',
+                                    width: '70px',
+                                    backgroundColor: 'white',
+                                    border: '1px solid #EDEDED',
+                                    borderRadius: '4px',
+                                    listStyle: 'none',
+                                    padding: '10px',
+                                    margin: 0,
+                                    cursor: 'pointer'
+                                }}>
+                                    <li style={{ fontSize: '15px', width: '49px', borderBottom: '1px solid #EDEDED', padding: '0px 8px 8px 8px', textAlign: 'center', verticalAlign: 'center' }} onClick={() => { handleMenuItemClick({index:1, comment:data}); setMenuVisible(false); }}>수정</li>
+                                    <li style={{ fontSize: '15px', width: '49px', padding: '8px 8px 0px 8px', textAlign: 'center', verticalAlign: 'center' }} onClick={() => { handleMenuItemClick({index:2, comment:data}); setMenuVisible(false); }}>삭제</li>
+                                </ul>
+                            </div>
                             :
                             <></>
                     }
@@ -93,7 +104,7 @@ const CommentBox = ({data, setPerentID, handleMenuItemClick} : { data: CommentBa
                         </React.Fragment>
                     ))}
                 </div>
-                <div style={{ cursor: 'pointer', fontSize: '12px', color: '#505050' }} onClick={() => { setPerentID(data.commentId.toString()) }}>
+                <div style={{ cursor: 'pointer', fontSize: '12px', color: '#505050' }} onClick={() => { setPerentID(data) }}>
                     댓글쓰기                
                 </div>
                 {data.childrenCommentDto.map((child, index) => (

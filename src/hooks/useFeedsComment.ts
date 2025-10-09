@@ -61,9 +61,12 @@ export const useGetFeedCommentInfo = ({
   const commentMutation = useMutation({
     mutationFn: async ({feedid, contents, parentId}:{feedid:string|null; contents:string; parentId:string|null;}) => {
       try {
+        console.log('add comment');
+
         const url = `/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}/comments`;
         const method = 'post';
 
+        console.log('add comment');
         const response = await axios({
           url,
           method,
@@ -130,10 +133,39 @@ export const useGetFeedCommentInfo = ({
     changeCommentMutation.mutate({feedid, contents, commentId});
   }
 
+  const DeleteFeedCommentMutation = useMutation({
+    mutationFn: async ({feedid, commentId}:{feedid:string; commentId:string;}) => {
+      try {
+        const url = `/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}/comments/${commentId}`;
+
+        const response = await axios.delete(url);
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          throw new Error(status?.toString());
+        }
+        throw new Error("오류남 왤까");
+      }
+    },
+    onSuccess: (data) => {
+      if (data) {
+      }
+    },
+    onError: (err: Error) => {
+      console.log(err.message);
+    },
+  });
+
+  const deleteFeedCommentMutation=({feedid, commentId}:{feedid:string, commentId:string}) => {
+    DeleteFeedCommentMutation.mutate({feedid, commentId});
+  }
+
   return {
     getFeedCommentInfoMutation,
     setFeedCommentMutation,
     resetFeedCommentMutation,
-    isCommunityPending: mutation.isPending || commentMutation.isPending || changeCommentMutation.isPending,
+    deleteFeedCommentMutation,
+    isCommunityPending: mutation.isPending || commentMutation.isPending || changeCommentMutation.isPending || DeleteFeedCommentMutation.isPending,
   };
 };
