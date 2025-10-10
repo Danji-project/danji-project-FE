@@ -15,10 +15,11 @@ interface SearchResponse {
   }
 }
 
-export const useMakeFeedMutation = ({appartID, feedData, images, feedid}:{
+export const useMakeFeedMutation = ({appartID, feedData, images, deleteImage, feedid}:{
   appartID : string | null;
   feedData: FeedDetailPost | undefined;
   images : File[];
+  deleteImage : string[];
   feedid:string|null;
 }) => {
   const navigate = useNavigate();
@@ -46,6 +47,11 @@ export const useMakeFeedMutation = ({appartID, feedData, images, feedid}:{
             if (file instanceof File) {
               formData.append('multipartFileList', file);
             }
+          });
+
+        if(deleteImage)
+          deleteImage.forEach((file) => {
+            formData.append('deleteFileUrls', file);
           });
 
         const url = feedid ?`/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}` : `/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}`;

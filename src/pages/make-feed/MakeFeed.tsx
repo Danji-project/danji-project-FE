@@ -29,14 +29,21 @@ const FeedHeader = ({useMakeFeed, feedID}:{useMakeFeed:Function; feedID:string|n
     )
 }
 
-const BodyData = ({feedData}:{feedData:FeedDetailPost;}) => {
-    const [title, setTitle] = useState<string>('');
-    const [content, setContents] = useState<string>('');
+const BodyData = ({feedData, setImages, setDeleteImage}:{feedData:FeedDetailPost; setImages:Dispatch<SetStateAction<File[]>>; setDeleteImage:Dispatch<SetStateAction<string[]>>;}) => {
+  const [title, setTitle] = useState<string>('');
+  const [content, setContents] = useState<string>('');
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 외부 클릭 감지
   useEffect(() => {
     setTitle(feedData.title);
     setContents(feedData.contents);
+
+    feedData.s3ObjectResponseDtoList.forEach(url => {
+      setPreviewUrls(prev => [...prev, url.fullUrl]);
+    })
+
   }, [feedData.title, feedData.contents]);
   
   const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,9 +55,6 @@ const BodyData = ({feedData}:{feedData:FeedDetailPost;}) => {
     setContents(e.target.value);
     feedData.contents = e.target.value;
   }
-
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => {
     // 숨겨진 input을 클릭
@@ -79,11 +83,21 @@ const BodyData = ({feedData}:{feedData:FeedDetailPost;}) => {
         setPreviewUrls(prev => [...prev, reader.result as string]);
       };
       reader.readAsDataURL(file);
+
+      setImages(prev => [...prev, file]);
     });
   };
 
   const handleImageDelete = (indexToDelete: number) => {
+    if(previewUrls[indexToDelete].includes('https://s3'))
+    {
+      feedData.s3ObjectResponseDtoList.forEach(url => {
+        if(url.fullUrl === previewUrls[indexToDelete])
+          setDeleteImage(prev => [...prev, url.url]);
+      })
+    }
     setPreviewUrls(prev => prev.filter((_, index) => index !== indexToDelete));
+    setImages(prev => prev.filter((_, index) => index !== indexToDelete));
   };
 
   
@@ -170,7 +184,9 @@ const MakeFeed = () => {
   const [feedApartID, setFeedApartID] = useState<string|null>(localStorage.getItem("apartmentId"));
   const [feedID, setFeedID] = useState<string|null>(localStorage.getItem("changeFeed"));
   const [feedData, setFeedData] = useState<FeedDetailPost>( new FeedDetailPost(null));
-  const { useMakeFeed, isPending }= useMakeFeedMutation({appartID: feedApartID, feedData:feedData, images:[], feedid:feedID});
+  const [images, setImages] = useState<File[]>([]);
+  const [deleteImage, setDeleteImage] = useState<string[]>([]);
+  const { useMakeFeed, isPending }= useMakeFeedMutation({appartID: feedApartID, feedData:feedData, images:images, deleteImage:deleteImage, feedid:feedID});
   const {getApartCommunityFeedMutation, isPending : getIsPending} = useGetApartCommunityFeed({feedID:feedID, setPost:setFeedData});
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
@@ -201,7 +217,7 @@ const MakeFeed = () => {
         <></>
       }
       <FeedHeader useMakeFeed={useMakeFeed} feedID={feedID}/>
-      <BodyData feedData={feedData}/>
+      <BodyData feedData={feedData} setImages={setImages} setDeleteImage={setDeleteImage}/>
     </>
   );
 };
