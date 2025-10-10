@@ -50,9 +50,10 @@ export const useMakeFeedMutation = ({appartID, feedData, images, deleteImage, fe
           });
 
         if(deleteImage)
-          deleteImage.forEach((file) => {
-            formData.append('deleteFileUrls', file);
-          });
+        {
+          const files = JSON.stringify(deleteImage);
+          formData.append('deleteFileUrls', files);
+        }
 
         const url = feedid ?`/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}` : `/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}`;
         const method = feedid ? 'put' : 'post';
