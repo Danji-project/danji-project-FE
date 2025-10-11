@@ -1,11 +1,16 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation , useNavigate} from "react-router-dom";
 
 import Header from "../layouts/Header";
 import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 
 export const MyPageRoutes = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
+  const goSettings = () => {
+    navigate("/settings");
+  };
+  
   const renderHeader = () => {
     switch (location.pathname)
     {
@@ -38,6 +43,7 @@ export const MyPageRoutes = () => {
                 />
               </svg>
             }
+            onIconClick={goSettings}
           />
           <Outlet />
         </>

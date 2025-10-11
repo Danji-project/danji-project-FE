@@ -12,11 +12,13 @@ import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import { MainPage } from "../pages/main/MainPage";
 import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 import DetailApartInfo from "../pages/detail-apart-info/DetailApartInfo";
+import DetailFeedInfo from "../pages/detail-apart-info/DetailFeedInfo";
 
 import MyPage from "../pages/my-pages/MyPage";
 import { SettingsRoutes } from "./SettingsRoutes";
 import Settings from "../pages/settings/Settings";
 import ChatPage from "../pages/chat/ChatPage";
+import MakeFeed from "../pages/make-feed/MakeFeed";
 
 const AppRoutes = () => {
   return (
@@ -24,6 +26,8 @@ const AppRoutes = () => {
       <Routes>
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
+        <Route path="/community/feed" element={<DetailFeedInfo />} />
+        <Route path="/make/feed" element={<MakeFeed />} />
 
         {/* 인증 관련 라우팅 */}
         <Route path="/register" element={<RegisterPage />} />
