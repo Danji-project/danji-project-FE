@@ -7,6 +7,8 @@ import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
 import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
 import { MainPage } from "../pages/main/MainPage";
 import DetailApartInfo from "../pages/detail-apart-info/DetailApartInfo";
+import DetailFeedInfo from "../pages/detail-apart-info/DetailFeedInfo";
+import MakeFeed from "../pages/make-feed/MakeFeed";
 
 const AuthRoutes = () => {
   const location = useLocation();
@@ -26,9 +28,13 @@ const AuthRoutes = () => {
       case "/find-result":
         return <FindResultPage />;
       case "/reset-password":
-        return <ResetPasswordPage/>
+        return <ResetPasswordPage/>;
       case "/apart-Info":
-        return <DetailApartInfo/>
+        return <DetailApartInfo/>;
+      case "/community/feed":
+        return <DetailFeedInfo/>;
+      case "/make/feed":
+        return <MakeFeed/>;
       default:
         return <Outlet />;
     }

@@ -59,7 +59,7 @@ const MainPageHeader = ({
 
 const ContentBody = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const user = useUserInfo();
 
   const [apparts, setApparts] = useState<BaseApartInfo[]>([]);
   const [newapparts, setNewApparts] = useState<BaseApartInfo[]>([]);
@@ -204,10 +204,43 @@ const ContentBody = () => {
         {
           isLogin ?
             <div style={{marginTop:'20px', marginBottom:'8px', display:'flex', flexWrap:'wrap', justifyContent:'space-between'}}>
-              <IconButton text="단지정보" imageurl={IconChart} onClick={() => {console.log("단지정보");  navigate("/");}}/>
-              <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  navigate("/apart-Info"); localStorage.setItem("selectMenu", 'community');}}/>
-              <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  navigate("/apart-Info"); localStorage.setItem("selectMenu", 'notify');}}/>
-              <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  navigate("/apart-Info"); localStorage.setItem("selectMenu", 'facilityinfo');}}/>
+              <IconButton text="단지정보" imageurl={IconChart} onClick={() => {console.log("단지정보");
+                if(user.apartmentId){
+                  navigate("/apart-Info"); 
+                  localStorage.setItem("selectMenu", 'apartinfo'); 
+                  localStorage.setItem("selectApart", user.apartmentId?.toString());
+                }
+                else{
+                  alert('마이페이지에서 먼저 단지등록을 해주세요.');
+                }}}/>
+              <IconButton text="커뮤니티" imageurl={IconGamepad} onClick={() => {console.log("커뮤니티");  
+                if(user.apartmentId){
+                  navigate("/apart-Info"); 
+                  localStorage.setItem("selectMenu", 'community'); 
+                  localStorage.setItem("selectApart", user.apartmentId?.toString());
+                }
+                else{
+                  alert('마이페이지에서 먼저 단지등록을 해주세요.');
+                }
+                }}/>
+              <IconButton text="공지사항" imageurl={IconDanger} onClick={() => {console.log("공지사항");  
+                if(user.apartmentId){
+                  navigate("/apart-Info"); 
+                  localStorage.setItem("selectMenu", 'notify');
+                  localStorage.setItem("selectApart", user.apartmentId?.toString());
+                }
+                else{
+                  alert('마이페이지에서 먼저 단지등록을 해주세요.');
+                }}}/>
+              <IconButton text="시설정보" imageurl={IconGraph} onClick={() => {console.log("시설정보");  
+                if(user.apartmentId){
+                  navigate("/apart-Info"); 
+                  localStorage.setItem("selectMenu", 'facilityinfo');
+                  localStorage.setItem("selectApart", user.apartmentId?.toString());
+                }
+                else{
+                  alert('마이페이지에서 먼저 단지등록을 해주세요.');
+                }}}/>
               <IconButton text="마이페이지" imageurl={IconUser} onClick={() => {console.log("마이페이지");  navigate("/my-page");}}/>
               <IconButton text="즐겨찾기" imageurl={IconStar} onClick={() => {console.log("즐겨찾기");  navigate("/");}}/>
               <IconButton text="채팅" imageurl={IconMsg} onClick={() => {console.log("채팅");  navigate("/");}}/>

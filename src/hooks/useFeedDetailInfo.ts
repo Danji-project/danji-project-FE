@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
-import { FeedDetailPost } from "../model/BasePostModel";
+import { FeedDetailPost } from "../model/BaseFeedDetailModel";
 
 interface ApartPostSummaryResponse {
   code: string;

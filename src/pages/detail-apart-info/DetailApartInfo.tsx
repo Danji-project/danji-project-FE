@@ -13,7 +13,6 @@ import MakeFeedBtn from '../../assets/Icon/MakeFeedBtnIcon.svg'
 
 import { useGetApartCommunityLookup } from "../../hooks/useApartCommunityLookup";
 import { useGetApartmentMutation } from "../../hooks/useGetApartment";
-import { useGetFeedDetailInfo } from "../../hooks/useFeedDetailInfo";
 import { BasePost } from "../../model/BasePostModel";
 import { BaseApartInfo } from "../../model/BaseApartInfoModel";
 
@@ -36,7 +35,7 @@ const TabButton = ({selectedTab, setSelectedTab}:{
           <button className={`${selectedTab === 'community' ? style['tabbtn-select']:''}`} 
                   onClick={()=>{setSelectedTab('community')}}>커뮤니티</button>
           <button className={`${selectedTab === 'notify' ? style['tabbtn-select']:''}`} 
-                  onClick={()=>{setSelectedTab('notify')}}>공지사항</button>
+                  onClick={()=>{alert('지금은 사용할 수 없습니다.'); setSelectedTab(selectedTab)}}>공지사항</button>
           <button className={`${selectedTab === 'facilityinfo' ? style['tabbtn-select']:''}`} 
                   onClick={()=>{setSelectedTab('facilityinfo')}}>시설정보</button>
         </div>
@@ -228,6 +227,7 @@ const ApartInfoPage = ({apartmentInfo}:{apartmentInfo:BaseApartInfo|null|undefin
 }
 
 const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolean}) => {
+  const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<string>('전체');
   const [selectedSortOption, setSelectedSortOption] = useState<'ALL' | 'POPULAR' | 'LATEST'>('ALL');
   const options = ['전체', '최신순', '인기순'];
@@ -278,7 +278,7 @@ const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolea
                     style={{ padding: '8px', cursor: 'pointer' }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
-                    onClick={(e) => {}}>
+                    onClick={(e) => {navigate('/community/feed'); localStorage.setItem('selectFeedID', feed.feedId.toString());}}>
                   <PostSummary element={feed} onClick={()=>{}}/>
                 </li>
               </div>
@@ -289,7 +289,7 @@ const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolea
       {
         isLogin ? 
         <div style={{position:'absolute', right:'20px', bottom:'20px'}}>
-          <button><img src={MakeFeedBtn}/></button>
+          <button onClick={()=>{apartID ? localStorage.setItem('apartmentId', apartID.toString()) : localStorage.removeItem('apartmentId'); navigate('/make/feed');}}><img src={MakeFeedBtn}/></button>
         </div>
         :
         <></>
@@ -301,7 +301,7 @@ const CommunityPage = ({apartID, isLogin}:{apartID:number | null, isLogin:boolea
 const NotifyPage = () => {
   return(
     <>
-      <div>공지사항 페이지</div>
+      <div>추후 개발 예정입니다.</div>
     </>
   );
 }
@@ -332,7 +332,6 @@ const DetailApartInfo = () => {
       const id = Number(apartmentId);
       console.log(id);
       setApartID(id);
-
   }, []);
 
   useEffect(() => {
