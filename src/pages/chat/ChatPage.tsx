@@ -134,7 +134,7 @@ const ChatPage = () => {
 
   return (
     <div className={styles["chat-page"]}>
-      <Header title="채팅" type="main" hasBackButton={true} />
+      <Header title="채팅" hasBackButton={true} />
 
       <div className={styles["chat-container"]}>
         {/* 탭 네비게이션 */}
