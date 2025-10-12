@@ -78,6 +78,12 @@ const BodyData = ({feedData, setImages, setDeleteImage}:{feedData:FeedDetailPost
 
     // 새로운 파일들을 읽어서 미리보기 URL 생성
     newFiles.forEach(file => {
+      // 파일 크기 확인 (3MB 초과)
+      if (file.size > 3145728) {
+        alert(`${file.name} 파일은 3MB를 초과하여 업로드할 수 없습니다.`);
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrls(prev => [...prev, reader.result as string]);

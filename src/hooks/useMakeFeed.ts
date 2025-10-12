@@ -51,8 +51,9 @@ export const useMakeFeedMutation = ({appartID, feedData, images, deleteImage, fe
 
         if(deleteImage)
         {
-          const files = JSON.stringify(deleteImage);
-          formData.append('deleteFileUrls', files);
+          formData.append('deleteFileUrls', 
+            new Blob([JSON.stringify(deleteImage)], { type: 'application/json' })
+          );
         }
 
         const url = feedid ?`/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedid}` : `/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}`;
@@ -88,12 +89,29 @@ export const useMakeFeedMutation = ({appartID, feedData, images, deleteImage, fe
     },
   });
 
+  const calculateByteLength = (text: string): number => {
+    const encoder = new TextEncoder();
+    const encoded = encoder.encode(text);
+    return encoded.length;
+  };
+
+
   const useMakeFeed: Function = () => {
     if (!feedData?.title.trim() || !feedData?.contents.trim()) {
       alert('제목과 내용을 입력해주세요.');
       return;
     }
-    console.log("make feed " + feedid);
+
+    const totalLength = calculateByteLength(feedData?.title) + calculateByteLength(feedData?.contents);
+
+    if(totalLength > 1048576)
+    {
+      console.log("1MB 초과");
+      alert("제목과 내용의 글자수가 약 100만 자를 넘을 수 없습니다.\n이모지를 포함할 경우, 업로드 가능한 글자수가 적어질 수 있습니다.");
+      return;
+    }
+
+    console.log(feedid ? "make feed " + feedid : "make new feed");
     mutation.mutate(feedid);
   };
 
