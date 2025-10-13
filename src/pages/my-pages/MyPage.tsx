@@ -156,20 +156,19 @@ const ProfileSection = () => {
 const ApartmentSection = () => {
   const user = useUserInfo();
   const navigate = useNavigate();
-  const {DeleteApart} = useUserApartDelete();
+  const { DeleteApart } = useUserApartDelete();
 
   const registerApart = () => {
     navigate("/register-my-apart-info");
-  }
+  };
 
   const DeleteApartMutation = () => {
     DeleteApart();
-  }
+  };
 
   return (
     <>
-      {
-        user.apartmentId == null?
+      {user.apartmentId == null ? (
         <div className={styles["non-apartment"]}>
           <div className={styles["non-apartment__card"]}>
             <img src={LogoIcon} />
@@ -187,8 +186,15 @@ const ApartmentSection = () => {
       ) : (
         <div className={styles["apartment"]}>
           <div className={styles["apartment__header"]}>
-            <h3 className={styles["apartment__title"]}>{user.nickname}의 아파트</h3>
-            <button className={styles["apartment__edit-btn"]} onClick={registerApart}>수정</button>
+            <h3 className={styles["apartment__title"]}>
+              {user.nickname}의 아파트
+            </h3>
+            <button
+              className={styles["apartment__edit-btn"]}
+              onClick={registerApart}
+            >
+              수정
+            </button>
           </div>
 
           <div className={styles["apartment__card"]}>
@@ -198,20 +204,33 @@ const ApartmentSection = () => {
               className={styles["apartment__image"]}
             />
             <div className={styles["apartment__info"]}>
-              <h4 className={styles["apartment__name"]}>{user.apartmentName}</h4>
+              <h4 className={styles["apartment__name"]}>
+                {user.apartmentName}
+              </h4>
               <p className={styles["apartment__address"]}>{user.region}</p>
-              <p className={styles["apartment__unit"]}>{user.building} {user.unit}호</p>
+              <p className={styles["apartment__unit"]}>
+                {user.building} {user.unit}호
+              </p>
             </div>
           </div>
 
           <div className={styles["apartment__actions"]}>
-            <button onClick={DeleteApartMutation}
-              className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}>
+            <button
+              onClick={DeleteApartMutation}
+              className={`${styles["apartment__btn"]} ${styles["apartment__btn--unregister"]}`}
+            >
               등록해제
             </button>
             <button
               className={`${styles["apartment__btn"]} ${styles["apartment__btn--goto"]}`}
-              onClick={()=>{localStorage.setItem("selectApart", user.apartmentId ? user.apartmentId.toString() : ''); navigate('/apart-Info');}}>
+              onClick={() => {
+                localStorage.setItem(
+                  "selectApart",
+                  user.apartmentId ? user.apartmentId.toString() : ""
+                );
+                navigate("/apart-Info");
+              }}
+            >
               바로가기
             </button>
           </div>
