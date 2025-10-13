@@ -84,10 +84,44 @@ export const useGetApartCommunityFeed = ({
     deletemutation.mutate();
   };
 
+  
+  const increaseViewCountMutation = useMutation({
+    mutationFn: async () => {
+      try {
+        if(feedID)
+        {
+          const response = await axios.post(`/api${API_ENDPOINTS.USER.GETCOMMUNITYFEED}/${feedID}/view`);
+          return response.data;
+        }
+        else
+          throw new Error("feed ID Error");
+      } catch (error) {
+        throw error;
+      }
+    },
+    onSuccess: (data) => {
+      try{
+        if (data?.data) {
+        }
+      }catch(err)
+      {
+        throw err;
+      }
+    },
+    onError: (err: Error) => {
+        console.log(err);
+    },
+  });
+
+  const useIncreaseViewCountMutation = () => {
+    increaseViewCountMutation.mutate();
+  };
+
   return {
     getApartCommunityFeedMutation,
     useDeleteFeedDetailInfoMutation,
-    isPending: mutation.isPending,
+    useIncreaseViewCountMutation,
+    isPending: mutation.isPending || increaseViewCountMutation.isPending,
     isDeletePending: deletemutation.isPending,
   };
 };

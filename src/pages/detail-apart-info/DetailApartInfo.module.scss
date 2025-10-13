@@ -1,3 +1,7 @@
+$backgroundcolor-disabled: #eaf1ff;
+$backgroundcolor-default: #97bbff;
+$font-color-disabled: #c0c0c0;
+
 .div-tabbtn {
     display: flex;
     flex-direction: row;
@@ -158,4 +162,35 @@
   border: 1px solid;
   border-block-color: #EDEDED;
   border-width: 1px 0px 0px 0px;
+}
+
+.bluebtn {
+  font-size: 14px;
+  color: #c0c0c0;
+  background-color: $backgroundcolor-disabled;
+  height: 40px;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  border-radius: 8px;
+
+  &:hover {
+    color: #fff;
+    background-color: $backgroundcolor-default;
+    border-color: $backgroundcolor-default;
+    box-shadow: 0 0 0 1px rgba(151, 187, 255, 0.3);
+  }
+
+  &--valid {
+    color: #fff;
+    background-color: $backgroundcolor-default;
+  }
+
+  &:disabled {
+    background-color: $backgroundcolor-disabled;
+    border-color: $backgroundcolor-disabled;
+    cursor: not-allowed;
+    color: $font-color-disabled;
+    opacity: 0.7;
+    box-shadow: 0 0 0 0;
+  }
 }

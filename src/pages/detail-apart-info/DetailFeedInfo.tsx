@@ -7,7 +7,7 @@ import { useGetApartCommunityFeed } from "../../hooks/useApartCommunityFeed";
 import { useGetFeedCommentInfo } from "../../hooks/useFeedsComment";
 
 import { useUserInfo } from "../../stores/userStore";
-import { CommentBase } from "../../model/BaseCommentModel";
+import { CommentBase, type ICommentMemberResponse } from "../../model/BaseCommentModel";
 
 import EyesIcon from '../../assets/Icon/eyesIcon.svg'
 import HeartIcon from '../../assets/Icon/heartIcon.svg'
@@ -179,6 +179,7 @@ const CommentBody = ({Comments, TotalComments, setPerentID, setCommentId, setCom
     setComment:Dispatch<SetStateAction<string>>;
     deleteFeedCommentMutation: ({feedid, commentId}:{feedid:string, commentId:string})=>void;
   UpdateComments:()=>void}) => {
+  const navigate = useNavigate();
   
   const handleMenuItemClick = ({index, comment}:{index: number; comment:CommentBase;}) => {
       // 메뉴 클릭시 동작
@@ -200,6 +201,14 @@ const CommentBody = ({Comments, TotalComments, setPerentID, setCommentId, setCom
       }
   };
 
+  const applyChatting = ({receiver}:{receiver:ICommentMemberResponse}) => {
+    localStorage.setItem("ChatID", receiver.memberId.toString());
+    localStorage.setItem("ChatName", receiver.nickname);
+    localStorage.setItem("ChatUrl", `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${receiver.fileId}`);
+    navigate("/community/applychat");
+    //navigate("/login", { replace: true });
+  }
+
   return(
       <>
         <div style={{height:'80%', overflow:'auto'}}>
@@ -209,7 +218,8 @@ const CommentBody = ({Comments, TotalComments, setPerentID, setCommentId, setCom
             <div>
                   {Comments.map((child, index) => (
                       <div key={index}>
-                          <CommentBox data={child} setPerentID={() => {setPerentID(child); setCommentId(undefined); setComment('');}} handleMenuItemClick={handleMenuItemClick}/>
+                          <CommentBox data={child} setPerentID={() => {setPerentID(child); setCommentId(undefined); setComment('');}} 
+                                      applyChat={() => applyChatting({receiver : child.commentMemberResponseDto})} handleMenuItemClick={handleMenuItemClick}/>
                       </div>
                   ))}
             </div>
@@ -229,7 +239,7 @@ const DetailFeedInfo = () => {
   const [totalComments, setTotalComments] = useState<number>(0);
   const [comments, setComments] = useState<CommentBase[]>();
   const [feedId, setFeedId] = useState<string | null>(null);
-  const {getApartCommunityFeedMutation, isPending, isDeletePending} = useGetApartCommunityFeed({feedID:feedId, setPost:setFeedInfo});
+  const {getApartCommunityFeedMutation, useIncreaseViewCountMutation, isPending, isDeletePending} = useGetApartCommunityFeed({feedID:feedId, setPost:setFeedInfo});
   const { getFeedCommentInfoMutation, setFeedCommentMutation , resetFeedCommentMutation, deleteFeedCommentMutation,isCommunityPending } = useGetFeedCommentInfo({feedId:feedId, setFeedComment:setComments, setTotalElements:setTotalComments});
   const [parent, setParentId] = useState<CommentBase>();
   const [changeCommentId, setChangeCommentId] = useState<CommentBase>();
@@ -257,10 +267,14 @@ const DetailFeedInfo = () => {
     }
 
     localStorage.removeItem("changeFeed");
+    localStorage.removeItem("ChatID");
+    localStorage.removeItem("ChatName");
+    localStorage.removeItem("ChatUrl");
     setFeedId(localStorage.getItem("selectFeedID"));
     localStorage.setItem("selectMenu", 'community');
     getApartCommunityFeedMutation();
     getFeedCommentInfoMutation();
+    useIncreaseViewCountMutation();
 
     const updateSize = () => {
         if (parentRef.current) {

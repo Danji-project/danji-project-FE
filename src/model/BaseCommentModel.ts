@@ -1,4 +1,4 @@
-interface ICommentMemberResponse{
+export interface ICommentMemberResponse{
     memberId: number;
     nickname: string;
     fileId: number;
