@@ -1,0 +1,92 @@
+.apart__card {
+  width: calc((100% - 20px) / 2);
+  &__image {
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+        to bottom,
+        rgba(30, 37, 51, 0) 0%,
+        rgba(30, 37, 51, 0.5) 100%
+      );
+    }
+    > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__location {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    img {
+      width: 0.8rem;
+    }
+    span {
+      font-size: 14px;
+      color: #fff;
+    }
+  }
+  &__information {
+    margin-top: 10px;
+    > span {
+      display: block;
+      color: rgb(151, 187, 255);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    div {
+      font-size: 15px;
+      font-weight: 300;
+    }
+    p {
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgb(118, 118, 118);
+      span {
+        padding: 0 5px;
+        &:first-child {
+          padding-left: 0;
+        }
+        &:first-child,
+        &:nth-child(2) {
+          position: relative;
+          &::after {
+            content: "";
+            position: absolute;
+            width: 1px;
+            height: 10px;
+            background-color: rgb(118, 118, 118);
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+  &__bookmark {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
