@@ -14,6 +14,13 @@ export const fetchedApartments: BaseApartInfo[] = [
     thumbnailFileUrl: "/icons/gangnam_hill.png",
     isUseBookmark: true,
     bookmark: false,
+    picture: [
+      "/icons/gangnam_hill.png",
+      "/pictures/gangnam_hill_2.jpg",
+      "/pictures/gangnam_hill_3.jpg",
+      "/pictures/gangnam_hill_4.jpg",
+      "/pictures/gangnam_hill_4.jpg",
+    ],
   },
   {
     id: 2,
@@ -28,5 +35,11 @@ export const fetchedApartments: BaseApartInfo[] = [
     thumbnailFileUrl: "/icons/gangnam_ruchera.png",
     isUseBookmark: true,
     bookmark: false,
+    picture: [
+      "/icons/gangnam_hill.png",
+      "/pictures/gangnam_hill_2.jpg",
+      "/pictures/gangnam_hill_3.jpg",
+      "/pictures/gangnam_hill_4.jpg",
+    ],
   },
 ];

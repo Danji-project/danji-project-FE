@@ -1,12 +1,14 @@
 import React from "react";
 
 import styles from "./ApartCard.module.scss";
+import { Link } from "react-router-dom";
+import type { BaseApartInfo } from "../../../model/BaseApartInfoModel";
 
-const ApartCard = ({ apartment }: { apartment: any }) => {
+const ApartCard = ({ apartment }: { apartment: BaseApartInfo }) => {
   return (
-    <div className={styles["apart__card"]}>
+    <Link className={styles["apart__card"]} to={`/apart-info/${apartment.id}`}>
       <div className={styles["apart__card__image"]}>
-        <img src={apartment.thumbnailFileUrl} alt="apart-card" />
+        <img src={apartment.thumbnailFileUrl!} alt="apart-card" />
         <div className={styles["apart__card__location"]}>
           <img src={"/icons/location_mark.svg"} alt="location__mark" />
           <span>{apartment.location}</span>
@@ -24,7 +26,7 @@ const ApartCard = ({ apartment }: { apartment: any }) => {
           <span>{apartment.moveAbleMonth}월 입주</span>
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

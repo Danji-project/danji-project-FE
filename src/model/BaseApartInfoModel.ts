@@ -9,7 +9,7 @@ interface IBaseApartInfoBase {
   bookmark: boolean;
 
   moveAbleMonth?: number;
-  picture?: string;
+  picture?: string[];
   houseSize?: number;
   apartDetailName?: string;
   isUseBookmark?: boolean;
@@ -26,7 +26,7 @@ export class BaseApartInfo implements IBaseApartInfoBase {
   bookmark: boolean;
 
   moveAbleMonth?: number;
-  picture?: string;
+  picture?: string[];
   houseSize?: number;
   apartDetailName?: string;
   isUseBookmark?: boolean;

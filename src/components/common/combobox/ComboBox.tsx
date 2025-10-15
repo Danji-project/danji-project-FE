@@ -1,50 +1,80 @@
-import React, { useState } from 'react';
-import { type Dispatch, type SetStateAction } from "react";
-import styles from './ComboBox.module.scss';
-import DownArrow from '../../../assets/Icon/DownArrowIcon.svg';
+import React, {
+  useEffect,
+  useRef,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 
-interface ComboBoxProps {
-  options: string[];
-  placeholder?: string;
-  selectItem : string;
-  setSelectOption: Dispatch<SetStateAction<string>>;
-  updateSelectOption?: Dispatch<SetStateAction<string>>;
-  updateOther ? : ({data}:{data:string}) => void;
-}
+import styles from "./Combobox.module.scss";
+import { useFeedList } from "../../../hooks/useFeedList";
 
-const ComboBox: React.FC<ComboBoxProps> = ({ options, selectItem, setSelectOption, updateOther, placeholder , updateSelectOption}) => {
-  const [isOpen, setIsOpen] = useState(false);
+const ComboBox = ({
+  contents,
+  state,
+  setState,
+  isOpen,
+  setIsOpen,
+  apartmentId,
+}: {
+  contents: string[];
+  state: string;
+  setState: Dispatch<SetStateAction<string>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  apartmentId: number;
+}) => {
+  const entCombo = useRef<HTMLDivElement | null>(null);
 
-  const handleOptionClick = (option: string) => {
-    setSelectOption(option);
-    setIsOpen(false);
-    updateOther ? updateOther({data : option}) : '';
-  };
+  const { feedListMutate } = useFeedList(apartmentId, state);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        entCombo.current &&
+        !entCombo.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div onClick={() => setIsOpen(!isOpen)} onBlur={() => setIsOpen(false)}
-         style={{  width: '80px', position: 'relative'}}>
-      <div  className={`${styles.ComboBoxContainer}`}>
-        <button className={`${styles.buttonContainer}`}
-        >{selectItem}</button>
-        <img src={DownArrow}/>
-      </div>
-      {isOpen && options.length > 0 && (
-        <ul className={`${styles.ComboBoxSelectOptions}`}>
-          {options.map(option => (
-            <li
-              key={option}
-              onClick={() => handleOptionClick(option)}
-              style={{ padding: '8px', cursor: 'pointer' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#fff'}
+    <div className={styles["combo__box"]} ref={entCombo}>
+      {contents.map(
+        (c: string) =>
+          c.split("/")[1] === state && (
+            <button
+              className={styles["combo__box__button"]}
+              onClick={() => {
+                setIsOpen(true);
+              }}
             >
-              {option}
-            </li>
-          ))}
-        </ul>
+              <span>{c.split("/")[0]}</span>
+              <img src="/icons/chevron.png" alt="chevron" />
+            </button>
+          )
       )}
-      
+      {isOpen && (
+        <div className={styles["combo__box__lists"]}>
+          {contents.map((cc: string) => (
+            <button
+              onClick={() => {
+                setState(cc.split("/")[1]);
+                setIsOpen(false);
+                feedListMutate();
+              }}
+            >
+              {cc.split("/")[0]}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

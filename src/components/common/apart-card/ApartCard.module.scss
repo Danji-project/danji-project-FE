@@ -1,4 +1,5 @@
 .apart__card {
+  display: block;
   width: calc((100% - 20px) / 2);
   &__image {
     width: 100%;

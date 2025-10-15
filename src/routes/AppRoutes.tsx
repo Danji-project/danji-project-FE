@@ -16,6 +16,7 @@ import Settings from "../pages/settings/Settings";
 import ChatPage from "../pages/chat/ChatPage";
 import MainPage from "../pages/main/MainPage";
 import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
+import ApartInfo from "../pages/apart-info/ApartInfo";
 
 const AppRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
       <Routes>
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
+        <Route path="/apart-info/:id" element={<ApartInfo />} />
 
         {/* 인증 관련 라우팅 */}
         <Route path="/register" element={<RegisterPage />} />

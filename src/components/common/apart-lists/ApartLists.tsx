@@ -19,7 +19,7 @@ const ApartLists = ({
         <button>더보기</button>
       </div>
       <div className={styles["apart__lists__main"]}>
-        {fetchedLists.map((apartment: any) => (
+        {fetchedLists.map((apartment: BaseApartInfo) => (
           <ApartCard apartment={apartment} />
         ))}
       </div>
