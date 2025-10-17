@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useRootPositionStore } from "../stores/rootPositionStore";
 
 export const useRootPosition = () => {
@@ -9,7 +9,10 @@ export const useRootPosition = () => {
     setPositionRight,
   } = useRootPositionStore();
 
-  const refCallback = useCallback((node: HTMLDivElement | null) => {
+  const nodeRef = useRef<HTMLDivElement | null>(null);
+
+  const updatePosition = useCallback(() => {
+    const node = nodeRef.current;
     if (node) {
       setPositionLeft(node.getBoundingClientRect().left);
       setPositionTop(node.getBoundingClientRect().top);
@@ -17,6 +20,25 @@ export const useRootPosition = () => {
       setPositionRight(node.getBoundingClientRect().right);
     }
   }, []);
+
+  const refCallback = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (node) {
+        nodeRef.current = node;
+        updatePosition();
+      } else {
+        nodeRef.current = null;
+      }
+    },
+    [updatePosition]
+  );
+
+  useEffect(() => {
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [updatePosition]);
 
   return refCallback;
 };

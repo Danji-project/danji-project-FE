@@ -17,7 +17,6 @@ export const useComment = (feedId: number) => {
     onSuccess: (data) => {
       if (data) {
         setFetch(data);
-        console.log(data);
       }
     },
   });
@@ -26,12 +25,29 @@ export const useComment = (feedId: number) => {
     if (feedId) getCommentMutate.mutate();
   };
 
+  const addCommentMutation = useMutation({
+    mutationFn: async (payload: {
+      contents: string;
+      parentId?: number | null;
+    }) => {
+      const res = await axios.post(
+        `/api/community/feeds/${feedId}/comments`,
+        payload
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      getCommentMutation();
+    },
+  });
+
   useEffect(() => {
     getCommentMutation();
   }, [feedId]);
 
   return {
     getCommentMutation,
+    addCommentMutation,
     commentSelectPending: getCommentMutate.isPending,
   };
 };

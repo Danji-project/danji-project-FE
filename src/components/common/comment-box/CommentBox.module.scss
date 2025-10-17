@@ -1,15 +1,40 @@
 .comment__box {
-  &__margin {
-    padding-left: 30px;
-    position: relative;
-    &::before {
+  display: block;
+  position: relative;
+  &__child {
+    &::after {
       content: "";
-      display: block;
+      position: absolute;
       width: 30px;
       height: 30px;
-      background: url("../../../assets/Icon/cm_child.png") no-repeat center;
-      position: absolute;
+      background: url("../../../assets/Icon/cm_child.svg") no-repeat center;
       left: 0;
+      top: 0;
+    }
+    &__textbox {
+      margin-bottom: 20px;
+      textarea {
+        resize: none;
+        width: 100%;
+        height: 80px;
+        outline: none;
+        padding: 10px;
+        font-size: 12px;
+        border: 1px solid rgb(151, 187, 255);
+        border-radius: 6px;
+        margin-bottom: 10px;
+      }
+      button {
+        width: 100px;
+        padding: 10px 0;
+        background-color: rgb(151, 187, 255);
+        border-radius: 6px;
+        color: #fff;
+        cursor: pointer;
+        &:disabled {
+          opacity: 0.45;
+        }
+      }
     }
   }
   &__userInfo {
