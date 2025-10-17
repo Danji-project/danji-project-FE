@@ -1,0 +1,18 @@
+.apart__lists {
+  margin-top: 26px;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__title {
+      font-weight: 700;
+      font-size: 18px;
+    }
+  }
+  &__main {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+}

@@ -1,0 +1,30 @@
+.menu__sidebar {
+  width: 245px;
+  height: var(--device-height);
+  position: fixed;
+  background-color: rgb(60, 75, 102);
+  z-index: 1000000;
+  margin-left: calc(var(--device-width) - 245px);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  > button {
+    align-self: end;
+    margin-bottom: 40px;
+    cursor: pointer;
+  }
+  > ul {
+    li {
+      a {
+        color: #fff;
+        padding-bottom: 20px;
+      }
+      button {
+        color: #fff;
+        padding-bottom: 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+  }
+}

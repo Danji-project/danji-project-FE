@@ -1,0 +1,123 @@
+.apart__detail {
+  margin-top: 16px;
+  &__location {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 5px;
+    background-color: rgb(121, 150, 204);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    span {
+      color: #fff;
+      font-size: 15px;
+    }
+  }
+  &__basic {
+    &__title {
+      font-weight: 700;
+    }
+    &__info {
+      margin-top: 10px;
+      background-color: rgb(249, 251, 255);
+      padding: 10px;
+      dl {
+        display: flex;
+        margin-bottom: 10px;
+        dd {
+          font-weight: 600;
+          font-size: 15px;
+          width: 30%;
+        }
+        &:nth-child(4) {
+          dt {
+            span {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+    &__pictures {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 20px;
+      &__card {
+        width: 70px;
+        height: 70px;
+        overflow: hidden;
+        border-radius: 8px;
+        position: relative;
+        &__black {
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+          }
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        span {
+          position: absolute;
+          color: #fff;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 100000;
+        }
+      }
+    }
+    &__chat__button {
+      border-bottom: 1px solid rgb(237, 237, 237);
+      button {
+        width: 100%;
+        padding: 14px 0;
+        border: 1px solid rgb(151, 187, 255);
+        color: rgb(151, 187, 255);
+        font-weight: 600;
+        border-radius: 6px;
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+  &__environment {
+    &__title {
+      margin-top: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    &__info {
+      background-color: rgb(249, 251, 255);
+      padding: 10px;
+      dl {
+        display: flex;
+        margin-bottom: 10px;
+        dd {
+          font-weight: 600;
+          font-size: 15px;
+          width: 30%;
+        }
+        &:nth-child(2),
+        &:nth-child(3) {
+          dt {
+            span {
+              display: block;
+            }
+          }
+        }
+        &:nth-child(4) {
+          dt {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+}

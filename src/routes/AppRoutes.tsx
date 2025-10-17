@@ -9,16 +9,16 @@ import { LoginPage } from "../pages/login/loginPage";
 import { FindInfoPage } from "../pages/find-info/findInfoPage";
 import { FindResultPage } from "../pages/find-info/findResultPage";
 import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
-import { MainPage } from "../pages/main/MainPage";
-import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
-import DetailApartInfo from "../pages/detail-apart-info/DetailApartInfo";
-import DetailFeedInfo from "../pages/detail-apart-info/DetailFeedInfo";
 
 import MyPage from "../pages/my-pages/MyPage";
 import { SettingsRoutes } from "./SettingsRoutes";
 import Settings from "../pages/settings/Settings";
 import ChatPage from "../pages/chat/ChatPage";
-import MakeFeed from "../pages/make-feed/MakeFeed";
+import MainPage from "../pages/main/MainPage";
+import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
+import ApartInfo from "../pages/apart-info/ApartInfo";
+import CommunityWrite from "../pages/community-register/CommunityWrite";
+import CommunityDetail from "../pages/community-detail/CommunityDetail";
 
 const AppRoutes = () => {
   return (
@@ -26,8 +26,12 @@ const AppRoutes = () => {
       <Routes>
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
-        <Route path="/community/feed" element={<DetailFeedInfo />} />
-        <Route path="/make/feed" element={<MakeFeed />} />
+        <Route path="/apart-info/:id" element={<ApartInfo />} />
+        <Route path="/apart-info/:id/write" element={<CommunityWrite />} />
+        <Route
+          path="/apart-info/:id/community-detail/:feedId"
+          element={<CommunityDetail />}
+        />
 
         {/* 인증 관련 라우팅 */}
         <Route path="/register" element={<RegisterPage />} />
@@ -36,7 +40,6 @@ const AppRoutes = () => {
         <Route path="/find" element={<FindInfoPage />} />
         <Route path="/find-result" element={<FindResultPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/apart-Info" element={<DetailApartInfo />} />
 
         {/* 마이페이지 라우팅 */}
         <Route element={<MyPageRoutes />}>
