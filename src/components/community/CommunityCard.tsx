@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { FeedList3 } from "../../stores/useFeedListStore";
 
 import styles from "./CommunityCard.module.scss";
 import SmallIcon from "../common/small-icon/SmallIcon";
+import type { BaseApartInfo } from "../../model/BaseApartInfoModel";
+import { Link } from "react-router-dom";
+import { useFeedViewIncrease } from "../../hooks/useFeedViewIncrease";
 
-const CommunityCard = ({ cardData }: { cardData: FeedList3 }) => {
+const CommunityCard = ({
+  cardData,
+  apartData,
+}: {
+  cardData: FeedList3;
+  apartData: BaseApartInfo;
+}) => {
+  const { feedViewIncreaseMutate } = useFeedViewIncrease(cardData.feedId);
+
   return (
-    <div className={styles["community__card"]}>
+    <Link
+      className={styles["community__card"]}
+      to={`/apart-info/${apartData.id}/community-detail/${cardData.feedId}`}
+      onClick={() => {
+        feedViewIncreaseMutate();
+      }}
+    >
       <div className={styles["community__card__top"]}>
         <div className={styles["community__card__top__text"]}>
           <h2>{cardData.title}</h2>
@@ -43,7 +60,7 @@ const CommunityCard = ({ cardData }: { cardData: FeedList3 }) => {
           />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

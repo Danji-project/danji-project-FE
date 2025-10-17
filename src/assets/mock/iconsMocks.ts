@@ -4,10 +4,12 @@ import type { IconButtonProps } from "../../components/common/icon-button/Icon-b
 export const IconsMocks = (): IconButtonProps[] => {
   const navigate = useNavigate();
 
+  const random = Math.floor(Math.random() * 2 + 1);
+
   return [
     {
       onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-        navigate("/apart-info");
+        navigate(`/apart-info/${random}`);
       },
       imageUrl: "/icons/apart-info-icon.png",
       text: "단지 정보",

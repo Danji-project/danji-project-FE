@@ -10,16 +10,20 @@ import styles from "./CommunityList.module.scss";
 import ComboBox from "../common/combobox/ComboBox";
 import { sortContents } from "../../assets/mock/tabsMocks";
 import CommunityCard from "./CommunityCard";
+import { useRootPositionStore } from "../../stores/rootPositionStore";
+import { useNavigate } from "react-router-dom";
 
 const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
   const [selectedSort, setSelectedSort] = useState("ALL");
   const [isOpen, setIsOpen] = useState(false);
   const { feedListMutate } = useFeedList(apartData.id, selectedSort);
   const { data } = useFeedListStore();
+  const { positionTop, positionLeft } = useRootPositionStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     feedListMutate();
-  }, []);
+  }, [data]);
 
   return (
     <div className={styles["community__list"]}>
@@ -39,9 +43,21 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
       </div>
       <div className={styles["community__list__main"]}>
         {data.feedDtoList.map((fdl: FeedList3) => (
-          <CommunityCard cardData={fdl} />
+          <CommunityCard cardData={fdl} apartData={apartData} />
         ))}
       </div>
+      <button
+        className={styles["community__list__write"]}
+        style={{
+          bottom: `${positionTop}px`,
+          left: `${positionLeft}px`,
+        }}
+        onClick={() => {
+          navigate(`/apart-info/${apartData.id}/write`);
+        }}
+      >
+        <img src={"/icons/write.svg"} alt="write" />
+      </button>
     </div>
   );
 };

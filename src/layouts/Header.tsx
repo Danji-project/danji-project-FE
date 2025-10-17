@@ -1,7 +1,6 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./Header.module.scss";
-import SearchBox from "../components/common/search-box/search-box";
 
 interface HeaderProps {
   title: string;
@@ -14,10 +13,12 @@ interface HeaderProps {
   buttonText?: string;
   hasRightButton?: boolean;
   onClickButton?: () => void;
+  onClick?: () => void;
   iconComponent?: React.ReactNode;
   onIconClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onChangeText?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickHeader?: () => void;
+  buttonDisabled?: boolean;
 }
 
 const SearchHeader: React.FC<HeaderProps> = ({
@@ -56,7 +57,10 @@ const TitleHeader: React.FC<HeaderProps> = ({
   title,
   hasBackButton,
   hasIcons,
+  buttonText,
+  buttonDisabled,
   onIconClick,
+  onClick,
   onClickHeader, // 일반 버튼과 함께 사용할 경우, 버튼 이벤트에 event.stopPropagation(); 를 함께 사용해주어야 한다.
 }) => {
   const navigate = useNavigate();
@@ -83,13 +87,24 @@ const TitleHeader: React.FC<HeaderProps> = ({
           {title}
         </h1>
         <div>
-          <button
-            type="button"
-            className={styles["header__icons"]}
-            onClick={onIconClick}
-          >
-            {hasIcons}
-          </button>
+          {hasIcons && (
+            <button
+              type="button"
+              className={styles["header__icons"]}
+              onClick={onIconClick}
+            >
+              {hasIcons}
+            </button>
+          )}
+          {buttonText && (
+            <button
+              onClick={onClick}
+              disabled={buttonDisabled}
+              className={styles["header__btn"]}
+            >
+              {buttonText}
+            </button>
+          )}
         </div>
       </div>
     </header>

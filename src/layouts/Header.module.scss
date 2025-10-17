@@ -9,6 +9,13 @@
   position: relative;
   z-index: 10;
 
+  &__btn {
+    color: rgb(151, 187, 255);
+    &:disabled {
+      color: rgb(153, 153, 153);
+    }
+  }
+
   &__container {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
