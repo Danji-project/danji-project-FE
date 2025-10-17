@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./ApartCard.module.scss";
 import { Link } from "react-router-dom";
 import type { BaseApartInfo } from "../../../model/BaseApartInfoModel";

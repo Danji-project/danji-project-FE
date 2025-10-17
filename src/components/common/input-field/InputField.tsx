@@ -69,7 +69,6 @@ const InputField = ({
   touched,
   touches,
   verified,
-  verifyCodeError,
   checkStatus,
 }: {
   label: string;
@@ -88,7 +87,6 @@ const InputField = ({
   touched?: boolean;
   touches?: () => void;
   verified?: boolean;
-  verifyCodeError?: string;
   checkStatus?: "INITIAL" | "CHECKED" | "DUPLICATE";
 }) => {
   const id = useId();

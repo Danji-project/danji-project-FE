@@ -1,10 +1,9 @@
-import React, { useState, type Dispatch, type SetStateAction } from "react";
+import React, { useState } from "react";
 import type { CommentStore3 } from "../../../stores/useCommentStore";
 
 import styles from "./CommentBox.module.scss";
 import { getRelativeTime } from "../../../utils/date";
 import { useCommentReplyStore } from "../../../stores/useCommentReplyStore";
-import axios from "axios";
 import { useComment } from "../../../hooks/useComment";
 
 const CommentBox = ({

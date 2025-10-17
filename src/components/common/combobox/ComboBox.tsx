@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
 import styles from "./Combobox.module.scss";
 import { useFeedList } from "../../../hooks/useFeedList";

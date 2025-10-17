@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import StatusBar from "./StatusBar";
 import { useDialogStore } from "../../stores/dialogStore";
 import { useAlertStore } from "../../stores/alertStore";
@@ -23,8 +23,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
 
   const { isOpen: sidebarOpen } = useSidebarStore();
 
-  const { positionTop, positionBottom, positionRight, positionLeft } =
-    useRootPositionStore();
+  const { positionTop, positionLeft } = useRootPositionStore();
 
   return (
     <div

@@ -7,8 +7,8 @@ import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
 
 const LandingIntro = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const { executeUserInfoMutation, isPending } = useUserInfoMutation();
-  
+  const { executeUserInfoMutation } = useUserInfoMutation();
+
   useEffect(() => {
     const mobileResize = () => {
       if (window.innerWidth < 960) {

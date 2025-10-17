@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { IconButtonProps } from "../../components/common/icon-button/Icon-button";
+import type { IconButtonProps } from "../../components/common/Icon-button/IconButton";
 
 export const IconsMocks = (): IconButtonProps[] => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export const IconsMocks = (): IconButtonProps[] => {
 
   return [
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate(`/apart-info/${random}`);
       },
       imageUrl: "/icons/apart-info-icon.png",
@@ -17,7 +17,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       id: "1",
     },
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate("/apart-info/community");
       },
       imageUrl: "/icons/Gamepad.png",
@@ -26,7 +26,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       id: "2",
     },
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate("/notice");
       },
       imageUrl: "/icons/notice.png",
@@ -35,7 +35,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       id: "3",
     },
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate("/building-info");
       },
       imageUrl: "/icons/Graph.svg",
@@ -44,7 +44,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       id: "4",
     },
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate("/my-page");
       },
       imageUrl: "/icons/User.svg",
@@ -53,7 +53,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       id: "5",
     },
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate("/like");
       },
       imageUrl: "/icons/Star.png",
@@ -62,7 +62,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       id: "6",
     },
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate("/chat");
       },
       imageUrl: "/icons/Message.png",
@@ -71,7 +71,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       id: "7",
     },
     {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick: () => {
         navigate("/visit/register");
       },
       imageUrl: "/icons/Receipt.png",

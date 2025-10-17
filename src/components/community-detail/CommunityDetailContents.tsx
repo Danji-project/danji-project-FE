@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import type { FeedDetail } from "../../hooks/useFeedDetail";
 
 import styles from "./CommunityDetailContents.module.scss";

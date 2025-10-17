@@ -1,8 +1,6 @@
-import React from "react";
-
 import styles from "./IconMenu.module.scss";
 import { IconsMocks } from "../../../assets/mock/iconsMocks";
-import { IconButton, type IconButtonProps } from "../icon-button/Icon-button";
+import { IconButton, type IconButtonProps } from "../Icon-button/IconButton";
 
 const IconMenu = () => {
   const iconsMocks = IconsMocks();

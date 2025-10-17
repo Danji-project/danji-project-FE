@@ -1,9 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useRef, type Dispatch, type SetStateAction } from "react";
 
 import styles from "./WriteStyle.module.scss";
 
@@ -50,10 +45,6 @@ const WriteStyle = ({
       setFiles((prev) => [...prev, ...newFiles]);
     }
   };
-
-  React.useEffect(() => {
-    console.log(files);
-  }, [files]);
 
   return (
     <form>

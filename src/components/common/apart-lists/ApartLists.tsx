@@ -1,7 +1,4 @@
-import React from "react";
-
 import styles from "./ApartLists.module.scss";
-import { fetchedApartments } from "../../../assets/mock/apartmentMock";
 import ApartCard from "../apart-card/ApartCard";
 import type { BaseApartInfo } from "../../../model/BaseApartInfoModel";
 

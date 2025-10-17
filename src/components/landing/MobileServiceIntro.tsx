@@ -20,7 +20,7 @@ const MobileServiceIntro = () => {
   };
 
   const toggleDrawer =
-    (anchor: "top", open: boolean) =>
+    (_: any, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event &&
@@ -42,7 +42,7 @@ const MobileServiceIntro = () => {
       onKeyDown={toggleDrawer("top", false)}
     >
       <List>
-        {["채팅", "공지사항", "시설 정보", "문의하기"].map((text, index) => (
+        {["채팅", "공지사항", "시설 정보", "문의하기"].map((text) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
               onClick={text === "채팅" ? handleChatClick : undefined}

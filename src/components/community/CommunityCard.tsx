@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import type { FeedList3 } from "../../stores/useFeedListStore";
 
 import styles from "./CommunityCard.module.scss";

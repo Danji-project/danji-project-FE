@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./SmallIcon.module.scss";
 
 const SmallIcon = ({

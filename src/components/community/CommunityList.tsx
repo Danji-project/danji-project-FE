@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { BaseApartInfo } from "../../model/BaseApartInfoModel";
 import { useFeedList } from "../../hooks/useFeedList";
 import {

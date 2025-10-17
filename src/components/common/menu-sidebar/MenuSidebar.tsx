@@ -1,5 +1,3 @@
-import React, { type Dispatch, type SetStateAction } from "react";
-
 import styles from "./MenuSidebar.module.scss";
 import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { Link } from "react-router-dom";

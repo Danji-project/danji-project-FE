@@ -4,8 +4,7 @@ import axios from "axios";
 export const useFeedRegister = (
   title: string,
   contents: string,
-  apartmentId: number,
-  files: File[]
+  apartmentId: number
 ) => {
   const formData = new FormData();
 
