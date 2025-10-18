@@ -5,6 +5,7 @@ export const useFeedViewIncrease = (feedId: number) => {
   const feedViewIncrease = useMutation({
     mutationFn: async () => {
       const response = await axios.post(`/api/community/feeds/${feedId}/view`);
+      return response.data;
     },
   });
 

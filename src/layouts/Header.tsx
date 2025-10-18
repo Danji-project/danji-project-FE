@@ -1,5 +1,5 @@
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 
 interface HeaderProps {
@@ -21,12 +21,7 @@ interface HeaderProps {
   buttonDisabled?: boolean;
 }
 
-const SearchHeader: React.FC<HeaderProps> = ({
-  title,
-  hasBackButton,
-  onClickButton,
-  onChangeText,
-}) => {
+const SearchHeader: React.FC<HeaderProps> = ({ hasBackButton }) => {
   const navigate = useNavigate();
   const navigateBack = () => {
     navigate(-1);

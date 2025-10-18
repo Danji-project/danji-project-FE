@@ -84,7 +84,7 @@ const PasswordForm = () => {
     mutationFn: async () => {
       try {
         localStorage.setItem("isSuccess", "true");
-        
+
         const response = await axios.post(
           `/api${API_ENDPOINTS.FIND.RESET_PW}`,
           { email: email, password: password.data },
@@ -106,7 +106,7 @@ const PasswordForm = () => {
         navigate("/find-result", { replace: true });
       }
     },
-    onError: (err: Error) => {
+    onError: () => {
       localStorage.setItem("isSuccess", "false");
       localStorage.setItem(
         "message",

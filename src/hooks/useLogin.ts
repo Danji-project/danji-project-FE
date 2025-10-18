@@ -116,8 +116,8 @@ export const useLogin = () => {
 
           // 프로필 이미지
           profileImage: profileImageUrl,
-        }
-        
+        };
+
         user.updateUserInfo(userupdate);
 
         console.log("로그인 후 사용자 정보 업데이트 완료:", {
@@ -166,11 +166,11 @@ export const useLogout = () => {
         throw new Error(errorMessages.default);
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       user.setIsLogin(false);
       navigate("/", { replace: true });
     },
-    onError: (err: Error) => {
+    onError: () => {
       //user.setError(err.message);
       user.setIsLogin(true);
     },

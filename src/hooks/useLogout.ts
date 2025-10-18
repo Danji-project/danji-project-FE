@@ -8,7 +8,6 @@ interface LogoutResponse {
   token: string;
 }
 
-
 export const useLogout = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
@@ -19,38 +18,37 @@ export const useLogout = () => {
         const response = await axios.post(
           `/api${API_ENDPOINTS.AUTH.LOGOUT}`,
           {},
-          { 
+          {
             withCredentials: true,
-            validateStatus: () => true 
+            validateStatus: () => true,
           }
         );
         return response.data;
       } catch (error) {
         if (axios.isAxiosError(error)) {
           const status = error.response?.status;
-          if(status == 302)
-            console.log('go to login');
+          if (status == 302) console.log("go to login");
         }
         throw error;
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       user.setIsLogin(false);
-      navigate('login');
+      navigate("login");
       //window.location.reload();
     },
     onError: (err: Error) => {
       user.setError(err.message);
       user.setIsLogin(false);
-      navigate('login');
+      navigate("login");
       //window.location.reload();
     },
   });
 
   const Logout: Function = () => {
     mutation.mutate();
-    user.email = '';
-    user.password = '';
+    user.email = "";
+    user.password = "";
   };
 
   return {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../layouts/Header";
 import { useUserInfo } from "../../stores/userStore";
 import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";

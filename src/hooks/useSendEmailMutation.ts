@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
 import { useUserInfo } from "../stores/userStore";
@@ -9,11 +8,9 @@ interface Response {
   token: string;
 }
 
-
 export const useSendAuthEmail = () => {
-  const navigate = useNavigate();
   const user = useUserInfo();
-  const [errMsg, setErrMsg] = useState<string>('');
+  const [errMsg, setErrMsg] = useState<string>("");
   const [result, setResult] = useState<boolean>(false);
 
   const mutation = useMutation<Response, Error>({
@@ -57,7 +54,7 @@ export const useSendAuthEmail = () => {
   return {
     sendEmailMutation,
     isPending: mutation.isPending,
-    errMsg : errMsg,
-    isSuccess : result,
+    errMsg: errMsg,
+    isSuccess: result,
   };
 };

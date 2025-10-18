@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
-import { useFeedListStore } from "../../stores/useFeedListStore";
 import Header from "../../layouts/Header";
 import { useFeedDetail } from "../../hooks/useFeedDetail";
 import CommunityDetailContents from "../../components/community-detail/CommunityDetailContents";
