@@ -52,7 +52,7 @@ export interface UserSearchResult {
 // 1대1 채팅 요청
 export const sendChatRequest = async (receiverId: number, message: string) => {
   const response = await axios.post(
-    `${API_ENDPOINTS.CHAT.REQUEST}`,
+    `/api${API_ENDPOINTS.CHAT.REQUEST}`,
     {
       receiverId,
       message,

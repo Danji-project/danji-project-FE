@@ -205,7 +205,14 @@ const CommentBody = ({Comments, TotalComments, setPerentID, setCommentId, setCom
     localStorage.setItem("ChatID", receiver.memberId.toString());
     localStorage.setItem("ChatName", receiver.nickname);
     localStorage.setItem("ChatUrl", `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${receiver.fileId}`);
-    navigate("/community/applychat");
+
+    let id = localStorage.getItem("ChatID");
+    let name = localStorage.getItem("ChatName");
+    let url = localStorage.getItem("ChatUrl");
+
+    console.log("before : " + id+" : "+name+" : "+url)
+    
+    navigate("/community/applychat", { replace: true });
     //navigate("/login", { replace: true });
   }
 
@@ -219,7 +226,7 @@ const CommentBody = ({Comments, TotalComments, setPerentID, setCommentId, setCom
                   {Comments.map((child, index) => (
                       <div key={index}>
                           <CommentBox data={child} setPerentID={() => {setPerentID(child); setCommentId(undefined); setComment('');}} 
-                                      applyChat={() => applyChatting({receiver : child.commentMemberResponseDto})} handleMenuItemClick={handleMenuItemClick}/>
+                                      applyChat={applyChatting} handleMenuItemClick={handleMenuItemClick}/>
                       </div>
                   ))}
             </div>
