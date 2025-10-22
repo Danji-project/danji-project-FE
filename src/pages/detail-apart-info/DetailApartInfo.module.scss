@@ -165,19 +165,19 @@ $font-color-disabled: #c0c0c0;
 }
 
 .bluebtn {
+  flex: 1;
   font-size: 14px;
-  color: #c0c0c0;
-  background-color: $backgroundcolor-disabled;
+  color: #fff;
+  background-color: $backgroundcolor-default;
   height: 40px;
   transition: all 0.2s ease-in-out;
   width: 100%;
   border-radius: 8px;
 
   &:hover {
-    color: #fff;
-    background-color: $backgroundcolor-default;
-    border-color: $backgroundcolor-default;
-    box-shadow: 0 0 0 1px rgba(151, 187, 255, 0.3);
+    border-color: #97BBFF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
   }
 
   &--valid {

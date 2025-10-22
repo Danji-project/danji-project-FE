@@ -72,156 +72,183 @@ const SelectPage = ({selectedTab, apartID, isLogin, apartmentInfo} : {selectedTa
 const ApartInfoPage = ({apartmentInfo}:{apartmentInfo:BaseApartInfo|null|undefined}) => {
   const user = useUserInfo();
   const testsss :string[] = ["https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70","https://placehold.co/70x70"];
-  
+  const [isChatting, setIsChatting] = useState<boolean>(false);
+
+  console.log(apartmentInfo);
+
   return(
     <>
-      <div style={{height:'48px', marginBottom:'20px',display:'flex',flexDirection:'row' ,alignItems:'center', borderRadius:'6px', backgroundColor:"#7996CC"}} >
-        <img style={{marginLeft:'8px'}} src={LocationIcon}/>
-        <p style={{color:'white', marginLeft:'10px'}}>{user.region}</p>
-      </div>
-      <div>
-        <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>기본 정보</p>
-        <div className={style.datacard}>
-          <div>
-            <p>입주 연도</p>
-            <div>
-              <p>2015년</p>
-            </div>
-          </div>
-          <div>
-            <p>총 세대 수</p>
-            <div>
-              <p>1,200세대</p>
-            </div>
-          </div>
-          <div>
-            <p>건물 유형</p>
-            <div>
-              <p>고층아파트(최고 35층)</p>
-            </div>
-          </div>
-          <div>
-            <p>평형대 구성</p>
-            <div>
-              <p>24평(300세대)</p>
-              <p>34평(500세대)</p>
-              <p>45평(200세대)</p>
-            </div>
-          </div>
-          <div>
-            <p style={{width:'75px', marginRight:'12px'}}>관리사무소 연락처</p>
-            <div>
-              <p>02-1234-5678</p>
+    {
+      isChatting?
+      <>
+        <div className={[style.register, style.dimmed].join(" ")} style={{zIndex:'10', backgroundColor:'white'}}/>
+        <div className={[style.register, style.dimmed].join(" ")} style={{zIndex:'10', opacity:'0.2'}}/>
+        <div className={style.register} style={{placeItems:'center', display:'flex', justifyContent:'flex-end', flexDirection:'column'}}>
+          <div style={{backgroundColor:'white', zIndex:'999', width:'100%', height:'50%', borderRadius:'24px 24px 0px 0px', padding:'40px 0px', textAlign:'center'}}>
+            <p style={{color:'#111111', fontWeight:'600', fontSize:'18px'}}>{apartmentInfo?.name}</p>
+            <img style={{padding:'28px'}} src='https://placehold.co/180x60'/>
+            <p style={{color:'#767676', fontWeight:'400', fontSize:'14px'}}>단지 채팅방에 참여하여</p>
+            <p style={{color:'#767676', fontWeight:'400', fontSize:'14px'}}>더 많은 소식을 실시간으로 받아보세요!</p>
+            <div style={{display:'flex', padding:'40px 40px 20px 40px'}}>
+              <button className={`${style['btn']}`} style={{margin:'0px 10px 0px 0px'}}
+                      onClick={()=>setIsChatting(false)}>뒤로가기</button>
+              <button className={`${style['bluebtn']}`} style={{margin:'0px 10px 0px 0px'}}
+                      >참여하기</button>
             </div>
           </div>
         </div>
-        <div className={`${style['div-imgscroll']}`}>
-          {
-            testsss.map((element, index)=>(
-              <div key={index}>
-                <img src={element}/>
+      </>
+      :
+      <>
+        <div style={{height:'48px', marginBottom:'20px',display:'flex',flexDirection:'row' ,alignItems:'center', borderRadius:'6px', backgroundColor:"#7996CC"}} >
+          <img style={{marginLeft:'8px'}} src={LocationIcon}/>
+          <p style={{color:'white', marginLeft:'10px'}}>{user.region}</p>
+        </div>
+        <div>
+          <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>기본 정보</p>
+          <div className={style.datacard}>
+            <div>
+              <p>입주 연도</p>
+              <div>
+                <p>2015년</p>
               </div>
-            ))
-          }
+            </div>
+            <div>
+              <p>총 세대 수</p>
+              <div>
+                <p>1,200세대</p>
+              </div>
+            </div>
+            <div>
+              <p>건물 유형</p>
+              <div>
+                <p>고층아파트(최고 35층)</p>
+              </div>
+            </div>
+            <div>
+              <p>평형대 구성</p>
+              <div>
+                <p>24평(300세대)</p>
+                <p>34평(500세대)</p>
+                <p>45평(200세대)</p>
+              </div>
+            </div>
+            <div>
+              <p style={{width:'75px', marginRight:'12px'}}>관리사무소 연락처</p>
+              <div>
+                <p>02-1234-5678</p>
+              </div>
+            </div>
+          </div>
+          <div className={`${style['div-imgscroll']}`}>
+            {
+              testsss.map((element, index)=>(
+                <div key={index}>
+                  <img src={element}/>
+                </div>
+              ))
+            }
+          </div>
+          <button className={`${style['btn']}`} onClick={() => setIsChatting(true)}>단지 채팅 참여하기</button>
         </div>
-        <button className={`${style['btn']}`}>단지 채팅 참여하기</button>
-      </div>
 
-      <div>
-        <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>거주 환경</p>
-        <div className={style.datacard}>
-          <div>
-            <p>평균 매매가</p>
+        <div>
+          <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>거주 환경</p>
+          <div className={style.datacard}>
             <div>
-              <p>34평 기준 22억원</p>
+              <p>평균 매매가</p>
+              <div>
+                <p>34평 기준 22억원</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <p>전세가</p>
             <div>
-              <p>12억 원 / 월세 500만원 (보증금3억)</p>
+              <p>전세가</p>
+              <div>
+                <p>12억 원 / 월세 500만원 (보증금3억)</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <p>주차 공간</p>
             <div>
-              <p>세대 당 1.5대 (총 1,800대 주차 가능)</p>
+              <p>주차 공간</p>
+              <div>
+                <p>세대 당 1.5대 (총 1,800대 주차 가능)</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <p>층간 소음</p>
             <div>
-              <p>(보통)</p>
+              <p>층간 소음</p>
+              <div>
+                <p>(보통)</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <p>단열 & 냉난방</p>
             <div>
-              <p>우수</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>주변 인프라 & 편의시설</p>
-        <div className={style.datacard}>
-          <div>
-            <p>교통</p>
-            <div>
-              <p>2호선 삼성역 도보 7분</p>
-              <p>버스 정류장 도보 5분</p>
-              <p>(간선 341, 472 / 지선 2412)</p>
-            </div>
-          </div>
-          <div>
-            <p>주변시설</p>
-            <div>
-              <p>삼성초, 대치중, 휘문고 (도보 10분 이내)</p>
-              <p>이마트 트레이더스 (도보 5분)</p>
-              <p>스타벅스 (단지 내)</p>
-              <p>강남세브란스병원 (차량 10분)</p>
+              <p>단열 & 냉난방</p>
+              <div>
+                <p>우수</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>아파트 시설 & 커뮤니티</p>
-        <div className={style.datacard}>
-          <div>
-            <p>단지 내 시설</p>
+        <div>
+          <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>주변 인프라 & 편의시설</p>
+          <div className={style.datacard}>
             <div>
-              <p>피트니스 센터 / 독서실 / 주민 카페</p>
-              <p>키즈카페 & 어린이 놀이터 3개소</p>
-              <p>실내 골프 연습장</p>
+              <p>교통</p>
+              <div>
+                <p>2호선 삼성역 도보 7분</p>
+                <p>버스 정류장 도보 5분</p>
+                <p>(간선 341, 472 / 지선 2412)</p>
+              </div>
             </div>
-          </div>
-          <div>
-            <p>보안</p>
             <div>
-              <p>24시간 경비 & CCTV 120대 운영</p>
-              <p>무인 택배함 5개 운영</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>단지 내 주요 이슈</p>
-        <div className={style.datacard}>
-          <div>
-            <p>최근 공지사항</p>
-            <div>
-              <p>2025년 3월 1일 ~ 3월 10일 승강기 교체 공사 진행</p>
-              <p>입주민 전용 주차 스티커 발급 신청</p>
-            </div>
-          </div>
-          <div>
-            <p>입주민 평점</p>
-            <div>
-              <p>4.5/5.0</p>
+              <p>주변시설</p>
+              <div>
+                <p>삼성초, 대치중, 휘문고 (도보 10분 이내)</p>
+                <p>이마트 트레이더스 (도보 5분)</p>
+                <p>스타벅스 (단지 내)</p>
+                <p>강남세브란스병원 (차량 10분)</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div>
+          <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>아파트 시설 & 커뮤니티</p>
+          <div className={style.datacard}>
+            <div>
+              <p>단지 내 시설</p>
+              <div>
+                <p>피트니스 센터 / 독서실 / 주민 카페</p>
+                <p>키즈카페 & 어린이 놀이터 3개소</p>
+                <p>실내 골프 연습장</p>
+              </div>
+            </div>
+            <div>
+              <p>보안</p>
+              <div>
+                <p>24시간 경비 & CCTV 120대 운영</p>
+                <p>무인 택배함 5개 운영</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p style={{fontSize:'16px', fontWeight:'600', marginLeft:'3px'}}>단지 내 주요 이슈</p>
+          <div className={style.datacard}>
+            <div>
+              <p>최근 공지사항</p>
+              <div>
+                <p>2025년 3월 1일 ~ 3월 10일 승강기 교체 공사 진행</p>
+                <p>입주민 전용 주차 스티커 발급 신청</p>
+              </div>
+            </div>
+            <div>
+              <p>입주민 평점</p>
+              <div>
+                <p>4.5/5.0</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    }
     </>
   );
 }
