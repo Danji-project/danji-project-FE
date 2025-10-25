@@ -3,7 +3,7 @@ import { useCommentStore } from "../stores/useCommentStore";
 import axios from "axios";
 import { useEffect } from "react";
 
-export const useComment = (feedId: number) => {
+export const useComment = (feedId: number, commentId: number) => {
   const { setFetch } = useCommentStore();
 
   const getCommentMutate = useMutation({
@@ -41,6 +41,24 @@ export const useComment = (feedId: number) => {
     },
   });
 
+  const updateCommentMutation = useMutation({
+    mutationFn: async (contents: string) => {
+      const res = await axios.put(
+        `/api/community/feeds/${feedId}/comments/${commentId}`,
+        {
+          contents,
+        }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      getCommentMutation();
+    },
+    onError: (e) => {
+      console.error(e);
+    },
+  });
+
   useEffect(() => {
     getCommentMutation();
   }, [feedId]);
@@ -48,6 +66,7 @@ export const useComment = (feedId: number) => {
   return {
     getCommentMutation,
     addCommentMutation,
+    updateCommentMutation,
     commentSelectPending: getCommentMutate.isPending,
   };
 };

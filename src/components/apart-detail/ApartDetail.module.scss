@@ -83,6 +83,12 @@
         border-radius: 6px;
         font-size: 15px;
         margin-bottom: 20px;
+        cursor: pointer;
+        &:hover {
+          background-color: rgb(151, 187, 255);
+          color: #fff;
+          transition: all 0.4s;
+        }
       }
     }
   }

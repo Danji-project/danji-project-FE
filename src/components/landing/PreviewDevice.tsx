@@ -10,6 +10,7 @@ import { useRootPosition } from "../../hooks/useRootPosition";
 import { useSidebarStore } from "../../stores/sidebarStore";
 import { useRootPositionStore } from "../../stores/rootPositionStore";
 import { useLogout } from "../../hooks/useLogin";
+import { usePendingStore } from "../../stores/usePendingStore";
 
 const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { isAuthLoading } = useAuthCode();
@@ -18,6 +19,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { isAlertOpen } = useAlertStore();
   const { isPending } = useUserInfoMutation();
   const { isPending: logoutPending } = useLogout();
+  const { apartChatBlack, profilePending } = usePendingStore();
 
   const rootRef = useRootPosition();
 
@@ -35,7 +37,9 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         isEmailLoading ||
         isPending ||
         sidebarOpen ||
-        logoutPending
+        logoutPending ||
+        apartChatBlack ||
+        profilePending
           ? "of-hidden"
           : ""
       }`}
@@ -51,7 +55,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
           <Spinners />
         </div>
       )}
-      {sidebarOpen && (
+      {(sidebarOpen || apartChatBlack || profilePending) && (
         <div
           className="div-background-black"
           style={{

@@ -14,8 +14,6 @@ export const useFeedList = (apartmentId: number, sort: string) => {
     },
     onSuccess: (data) => {
       setFetch(data);
-
-      console.log(data);
     },
   });
 

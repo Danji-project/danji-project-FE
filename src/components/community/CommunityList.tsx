@@ -23,7 +23,7 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
 
   useEffect(() => {
     feedListMutate();
-  }, [data]);
+  }, []);
 
   return (
     <div className={styles["community__list"]}>

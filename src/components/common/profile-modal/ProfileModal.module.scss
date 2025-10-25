@@ -1,0 +1,107 @@
+.profile__modal {
+  position: fixed;
+  width: 300px;
+  height: 200px;
+  background-color: #fff;
+  border-radius: 10px;
+  z-index: 100000000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  &__final {
+    position: fixed;
+    width: 300px;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 10px;
+    z-index: 100000000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    &__title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    p {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: rgb(153, 153, 153);
+    }
+    textarea {
+      width: 90%;
+      resize: none;
+      height: 200px;
+      border: 1px solid rgb(153, 153, 153);
+      padding: 10px;
+      outline: none;
+      &::placeholder {
+        letter-spacing: -1px;
+      }
+    }
+    &__button {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      button {
+        width: 130px;
+        background-color: rgb(151, 187, 255);
+        padding: 10px 0;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        &:nth-child(1) {
+          background-color: rgb(234, 241, 255);
+          color: rgb(192, 192, 192);
+          &:hover {
+            background-color: rgb(151, 187, 255);
+            color: #fff;
+            transition: all 0.4s;
+          }
+        }
+      }
+    }
+  }
+  &__profile {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__nickname {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  &__button {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    button {
+      width: 130px;
+      background-color: rgb(151, 187, 255);
+      padding: 10px 0;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      &:nth-child(1) {
+        background-color: rgb(234, 241, 255);
+        color: rgb(192, 192, 192);
+        &:hover {
+          background-color: rgb(151, 187, 255);
+          color: #fff;
+          transition: all 0.4s;
+        }
+      }
+    }
+  }
+}

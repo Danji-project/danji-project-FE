@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom";
 import type { FeedDetail } from "../../hooks/useFeedDetail";
 
 import styles from "./CommunityDetailContents.module.scss";
@@ -8,6 +9,8 @@ import {
   type CommentStore3,
 } from "../../stores/useCommentStore";
 import CommentBox from "../common/comment-box/CommentBox";
+import { usePendingStore } from "../../stores/usePendingStore";
+import ProfileModal from "../common/profile-modal/ProfileModal";
 
 const CommunityDetailContents = ({
   contentData,
@@ -15,6 +18,7 @@ const CommunityDetailContents = ({
   contentData: FeedDetail | null;
 }) => {
   const feedId = contentData?.data?.feedId;
+  const { profilePending } = usePendingStore();
 
   const { data: commentData } = useCommentStore();
 
@@ -43,12 +47,12 @@ const CommunityDetailContents = ({
             number={contentData?.data.reactionCount!}
           />
           <SmallIcon
-            iconSrc="/icons/seeSight.svg"
-            number={contentData?.data.viewCount!}
+            iconSrc="/icons/bookmark.svg"
+            number={contentData?.data.bookmarkCount!}
           />
           <SmallIcon
-            iconSrc="/icons/seeSight.svg"
-            number={contentData?.data.viewCount!}
+            iconSrc="/icons/comment.svg"
+            number={contentData?.data.commentCount!}
           />
         </div>
       </div>
@@ -75,7 +79,7 @@ const CommunityDetailContents = ({
         </button>
       </div>
       <div className={styles["feed__detail__contents__comment"]}>
-        <h1>댓글({commentData.content.length})</h1>
+        <h1>댓글({contentData.data.commentCount})</h1>
         <div className={styles["feed__detail__contents__comment__wrapper"]}>
           {commentData.content.map((com: CommentStore3) => (
             <>
@@ -84,6 +88,11 @@ const CommunityDetailContents = ({
           ))}
         </div>
       </div>
+      {profilePending &&
+        ReactDOM.createPortal(
+          <ProfileModal />,
+          document.getElementById("root")!
+        )}
     </div>
   );
 };
