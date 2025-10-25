@@ -19,7 +19,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { isAlertOpen } = useAlertStore();
   const { isPending } = useUserInfoMutation();
   const { isPending: logoutPending } = useLogout();
-  const { apartChatBlack, profilePending } = usePendingStore();
+  const { apartChatBlack, profilePending, modalPending } = usePendingStore();
 
   const rootRef = useRootPosition();
 
@@ -39,7 +39,8 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         sidebarOpen ||
         logoutPending ||
         apartChatBlack ||
-        profilePending
+        profilePending ||
+        modalPending
           ? "of-hidden"
           : ""
       }`}
@@ -55,7 +56,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
           <Spinners />
         </div>
       )}
-      {(sidebarOpen || apartChatBlack || profilePending) && (
+      {(sidebarOpen || apartChatBlack || profilePending || modalPending) && (
         <div
           className="div-background-black"
           style={{

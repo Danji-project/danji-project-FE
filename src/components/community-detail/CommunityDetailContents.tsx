@@ -11,6 +11,9 @@ import {
 import CommentBox from "../common/comment-box/CommentBox";
 import { usePendingStore } from "../../stores/usePendingStore";
 import ProfileModal from "../common/profile-modal/ProfileModal";
+import TextModal from "../common/text-modal/TextModal";
+import { useModalTextStore } from "../../stores/useModalText";
+import { useEffect } from "react";
 
 const CommunityDetailContents = ({
   contentData,
@@ -18,11 +21,20 @@ const CommunityDetailContents = ({
   contentData: FeedDetail | null;
 }) => {
   const feedId = contentData?.data?.feedId;
-  const { profilePending } = usePendingStore();
+  const { profilePending, modalPending } = usePendingStore();
 
   const { data: commentData } = useCommentStore();
+  const { modalText } = useModalTextStore();
 
-  useComment(feedId!);
+  console.log(commentData);
+
+  useComment(
+    feedId!,
+    commentData.content.length > 0
+      ? commentData.content?.filter((item) => item.feedId === feedId!)[0]
+          .commentId
+      : null
+  );
 
   if (!feedId) return <div>대기중...</div>;
 
@@ -91,6 +103,11 @@ const CommunityDetailContents = ({
       {profilePending &&
         ReactDOM.createPortal(
           <ProfileModal />,
+          document.getElementById("root")!
+        )}
+      {modalPending &&
+        ReactDOM.createPortal(
+          <TextModal text={modalText} />,
           document.getElementById("root")!
         )}
     </div>

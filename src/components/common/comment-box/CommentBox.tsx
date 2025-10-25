@@ -7,6 +7,8 @@ import { useCommentReplyStore } from "../../../stores/useCommentReplyStore";
 import { useComment } from "../../../hooks/useComment";
 import { usePendingStore } from "../../../stores/usePendingStore";
 import { useProfileStore } from "../../../stores/useProfileStore";
+import { useUserInfo } from "../../../stores/userStore";
+import { useModalTextStore } from "../../../stores/useModalText";
 
 const CommentBox = ({
   comment,
@@ -20,10 +22,13 @@ const CommentBox = ({
   const { isOn, isReply, targetId, setReplyOn, resetReply } =
     useCommentReplyStore();
 
+  const { isLogin, nickname } = useUserInfo();
+
   const [mode, setMode] = useState<"CONTENT" | "EDIT">("CONTENT");
   const [commentContents, setCommentContents] = useState("");
 
-  const { setProfilePending } = usePendingStore();
+  const { setProfilePending, setModalPending } = usePendingStore();
+  const { setModalText } = useModalTextStore();
 
   const { setMembers } = useProfileStore();
 
@@ -56,7 +61,7 @@ const CommentBox = ({
       className={`${styles["comment__box"]} ${
         depth > 0 ? styles["comment__box__child"] : ""
       }`}
-      style={{ paddingLeft: `${depth * 40}px` }}
+      style={{ paddingLeft: `40px` }}
     >
       <div className={styles["comment__box__userInfo"]}>
         <div
@@ -96,13 +101,27 @@ const CommentBox = ({
             <button
               onClick={() => {
                 resetReply();
-                setMode("EDIT");
-                setCommentContents(comment.contents);
+                if (
+                  isLogin &&
+                  nickname === comment.commentMemberResponseDto.nickname
+                ) {
+                  setMode("EDIT");
+                  setCommentContents(comment.contents);
+                } else {
+                  setModalPending(true);
+                  setModalText("수정 권한이 없는 사용자입니다.");
+                }
               }}
             >
               수정
             </button>
-            <button>삭제</button>
+            <button
+              onClick={() => {
+                resetReply();
+              }}
+            >
+              삭제
+            </button>
           </div>
         )}
       </div>

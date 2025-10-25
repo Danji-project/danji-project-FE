@@ -3,7 +3,7 @@ import { useCommentStore } from "../stores/useCommentStore";
 import axios from "axios";
 import { useEffect } from "react";
 
-export const useComment = (feedId: number, commentId: number) => {
+export const useComment = (feedId: number, commentId: number | null) => {
   const { setFetch } = useCommentStore();
 
   const getCommentMutate = useMutation({
