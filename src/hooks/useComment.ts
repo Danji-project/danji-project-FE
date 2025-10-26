@@ -3,7 +3,7 @@ import { useCommentStore } from "../stores/useCommentStore";
 import axios from "axios";
 import { useEffect } from "react";
 
-export const useComment = (feedId: number, commentId: number | null) => {
+export const useComment = (feedId: number) => {
   const { setFetch } = useCommentStore();
 
   const getCommentMutate = useMutation({
@@ -25,6 +25,38 @@ export const useComment = (feedId: number, commentId: number | null) => {
     if (feedId) getCommentMutate.mutate();
   };
 
+  useEffect(() => {
+    getCommentMutation();
+  }, [feedId]);
+
+  return {
+    getCommentMutation,
+    commentSelectPending: getCommentMutate.isPending,
+  };
+};
+
+export const useUpdateComment = (feedId: number, commentId: number) => {
+  const { getCommentMutation } = useComment(feedId);
+
+  const updateMutate = useMutation({
+    mutationFn: async (contents: string) => {
+      const res = await axios.put(
+        `/api/community/feeds/${feedId}/comments/${commentId}`,
+        { contents }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      getCommentMutation();
+    },
+  });
+
+  return { updateMutate };
+};
+
+export const useAddComment = (feedId: number) => {
+  const { getCommentMutation } = useComment(feedId);
+
   const addCommentMutation = useMutation({
     mutationFn: async (payload: {
       contents: string;
@@ -41,32 +73,23 @@ export const useComment = (feedId: number, commentId: number | null) => {
     },
   });
 
-  const updateCommentMutation = useMutation({
-    mutationFn: async (contents: string) => {
-      const res = await axios.put(
-        `/api/community/feeds/${feedId}/comments/${commentId}`,
-        {
-          contents,
-        }
+  return { addCommentMutation };
+};
+
+export const useDeleteComment = (feedId: number, commentId: number) => {
+  const { getCommentMutation } = useComment(feedId);
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(
+        `/api/community/feeds/${feedId}/comments/${commentId}`
       );
       return res.data;
     },
     onSuccess: () => {
       getCommentMutation();
     },
-    onError: (e) => {
-      console.error(e);
-    },
   });
 
-  useEffect(() => {
-    getCommentMutation();
-  }, [feedId]);
-
-  return {
-    getCommentMutation,
-    addCommentMutation,
-    updateCommentMutation,
-    commentSelectPending: getCommentMutate.isPending,
-  };
+  return { deleteCommentMutation };
 };

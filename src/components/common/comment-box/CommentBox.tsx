@@ -4,7 +4,12 @@ import type { CommentStore3 } from "../../../stores/useCommentStore";
 import styles from "./CommentBox.module.scss";
 import { getRelativeTime } from "../../../utils/date";
 import { useCommentReplyStore } from "../../../stores/useCommentReplyStore";
-import { useComment } from "../../../hooks/useComment";
+import {
+  useAddComment,
+  useComment,
+  useDeleteComment,
+  useUpdateComment,
+} from "../../../hooks/useComment";
 import { usePendingStore } from "../../../stores/usePendingStore";
 import { useProfileStore } from "../../../stores/useProfileStore";
 import { useUserInfo } from "../../../stores/userStore";
@@ -34,10 +39,14 @@ const CommentBox = ({
 
   const [commentContent, setCommentContent] = useState("");
 
-  const { addCommentMutation, updateCommentMutation } = useComment(
+  const { updateMutate } = useUpdateComment(comment.feedId, comment.commentId);
+
+  const { deleteCommentMutation } = useDeleteComment(
     comment.feedId,
     comment.commentId
   );
+
+  const { addCommentMutation } = useAddComment(comment.feedId);
 
   const handleReplyClick = () => {
     if (isOn && targetId === comment.commentId) resetReply();
@@ -118,6 +127,15 @@ const CommentBox = ({
             <button
               onClick={() => {
                 resetReply();
+                if (
+                  !isLogin ||
+                  comment.commentMemberResponseDto.nickname !== nickname
+                ) {
+                  setModalPending(true);
+                  setModalText("삭제 권한이 없는 사용자입니다.");
+                } else {
+                  deleteCommentMutation.mutate();
+                }
               }}
             >
               삭제
@@ -138,7 +156,7 @@ const CommentBox = ({
             <div className={styles["comment__box__content__btn"]}>
               <button
                 onClick={() => {
-                  updateCommentMutation.mutate(commentContents);
+                  updateMutate.mutate(commentContents);
                   setMode("CONTENT");
                   setCommentContents("");
                 }}
