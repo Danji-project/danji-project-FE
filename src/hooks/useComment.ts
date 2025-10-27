@@ -25,6 +25,38 @@ export const useComment = (feedId: number) => {
     if (feedId) getCommentMutate.mutate();
   };
 
+  useEffect(() => {
+    getCommentMutation();
+  }, [feedId]);
+
+  return {
+    getCommentMutation,
+    commentSelectPending: getCommentMutate.isPending,
+  };
+};
+
+export const useUpdateComment = (feedId: number, commentId: number) => {
+  const { getCommentMutation } = useComment(feedId);
+
+  const updateMutate = useMutation({
+    mutationFn: async (contents: string) => {
+      const res = await axios.put(
+        `/api/community/feeds/${feedId}/comments/${commentId}`,
+        { contents }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      getCommentMutation();
+    },
+  });
+
+  return { updateMutate };
+};
+
+export const useAddComment = (feedId: number) => {
+  const { getCommentMutation } = useComment(feedId);
+
   const addCommentMutation = useMutation({
     mutationFn: async (payload: {
       contents: string;
@@ -41,13 +73,23 @@ export const useComment = (feedId: number) => {
     },
   });
 
-  useEffect(() => {
-    getCommentMutation();
-  }, [feedId]);
+  return { addCommentMutation };
+};
 
-  return {
-    getCommentMutation,
-    addCommentMutation,
-    commentSelectPending: getCommentMutate.isPending,
-  };
+export const useDeleteComment = (feedId: number, commentId: number) => {
+  const { getCommentMutation } = useComment(feedId);
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(
+        `/api/community/feeds/${feedId}/comments/${commentId}`
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      getCommentMutation();
+    },
+  });
+
+  return { deleteCommentMutation };
 };

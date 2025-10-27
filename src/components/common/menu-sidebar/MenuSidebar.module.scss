@@ -3,7 +3,7 @@
   height: var(--device-height);
   position: fixed;
   background-color: rgb(60, 75, 102);
-  z-index: 1000000;
+  z-index: 10000000;
   margin-left: calc(var(--device-width) - 245px);
   padding: 28px;
   display: flex;
