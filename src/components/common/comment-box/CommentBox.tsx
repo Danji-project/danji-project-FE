@@ -6,7 +6,6 @@ import { getRelativeTime } from "../../../utils/date";
 import { useCommentReplyStore } from "../../../stores/useCommentReplyStore";
 import {
   useAddComment,
-  useComment,
   useDeleteComment,
   useUpdateComment,
 } from "../../../hooks/useComment";
@@ -18,11 +17,9 @@ import { useModalTextStore } from "../../../stores/useModalText";
 const CommentBox = ({
   comment,
   depth = 0,
-  parentId,
 }: {
   comment: CommentStore3;
   depth?: number;
-  parentId?: number;
 }) => {
   const { isOn, isReply, targetId, setReplyOn, resetReply } =
     useCommentReplyStore();
@@ -193,12 +190,7 @@ const CommentBox = ({
 
       {/* 재귀 랜더링 */}
       {comment.childrenCommentDto?.map((child: CommentStore3) => (
-        <CommentBox
-          key={child.commentId}
-          comment={child}
-          depth={depth + 1}
-          parentId={comment.commentId}
-        />
+        <CommentBox key={child.commentId} comment={child} depth={depth + 1} />
       ))}
     </div>
   );

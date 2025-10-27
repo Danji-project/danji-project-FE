@@ -2,13 +2,6 @@ import { create } from "zustand";
 import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
 
-interface UploadResponse {
-  url: string;
-  filename: string;
-  size: number;
-  profileImageUrl?: string;
-}
-
 interface MemberProfileUpdateResponse {
   uploadResponse: any;
   userInfo: any;
@@ -26,11 +19,11 @@ interface IUserInfoBase {
   // 사용자 데이터
   email: string;
   password: string;
-  fileID?: string| null;
-  name?: string| null;
-  nickname?: string| null;
-  phoneNumber?: string| null;
-  unit?: string
+  fileID?: string | null;
+  name?: string | null;
+  nickname?: string | null;
+  phoneNumber?: string | null;
+  unit?: string;
 
   // 사용자 데이터 받아온 이후 정해지는 것들
   isLogin: boolean;
@@ -128,7 +121,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
   moveInDate: null,
   numberOfResidents: null,
   region: null,
-  unit: '',
+  unit: "",
 
   // 파일 업로드 관련 초기값 (최적화됨)
   profileImage: "/profile_imgSrc.jpg",

@@ -85,7 +85,7 @@ const CommunityDetailContents = ({
         <div className={styles["feed__detail__contents__comment__wrapper"]}>
           {commentData.content.map((com: CommentStore3) => (
             <>
-              <CommentBox comment={com} parentId={com.commentId} />
+              <CommentBox comment={com} />
             </>
           ))}
         </div>
