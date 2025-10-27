@@ -405,6 +405,9 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       }
     };
 
+    let uploadResponse;
+    let lastError;
+
     try {
       // 프로필 이미지 미리보기 (파일이 있는 경우)
       if (finalProfileFile) {
@@ -415,9 +418,6 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
       }
 
       setUploadProgress(15);
-
-      let uploadResponse;
-      let lastError;
 
       console.log("FormData 구성:");
       console.log(
