@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "../../layouts/Header";
 import WriteStyle from "../../components/community-register/WriteStyle";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,8 +20,7 @@ const CommunityWrite = () => {
   const { feedRegister, feedRegisterPending } = useFeedRegister(
     title,
     content,
-    filteredApartData.id,
-    files
+    filteredApartData.id
   );
 
   return (
