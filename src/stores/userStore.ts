@@ -455,6 +455,7 @@ export const useUserInfo = create<IUserInfoBase>((set, get) => ({
         } catch (error2) {
           console.warn("방법 2 실패:", error2);
           lastError = error2;
+          console.error(lastError);
 
           // 방법 3 시도: 개별 필드
           console.log("방법 3 시도: 개별 필드로 전송");
