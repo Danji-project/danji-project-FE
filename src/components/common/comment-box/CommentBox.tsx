@@ -10,7 +10,6 @@ import {
   useUpdateComment,
 } from "../../../hooks/useComment";
 import { usePendingStore } from "../../../stores/usePendingStore";
-import { useProfileStore } from "../../../stores/useProfileStore";
 import { useUserInfo } from "../../../stores/userStore";
 import { useModalTextStore } from "../../../stores/useModalText";
 
@@ -31,8 +30,6 @@ const CommentBox = ({
 
   const { setProfilePending, setModalPending } = usePendingStore();
   const { setModalText } = useModalTextStore();
-
-  const { setMembers } = useProfileStore();
 
   const [commentContent, setCommentContent] = useState("");
 
@@ -74,7 +71,6 @@ const CommentBox = ({
           className={styles["comment__box__userInfo__profile"]}
           onClick={() => {
             setProfilePending(true);
-            setMembers(comment.commentMemberResponseDto);
           }}
         >
           <img

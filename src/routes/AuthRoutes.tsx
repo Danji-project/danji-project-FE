@@ -1,11 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
-import RegisterPage from "../pages/register/RegisterPage";
-import { LoginPage } from "../pages/login/loginPage";
-import { FindInfoPage } from "../pages/find-info/findInfoPage";
-import { FindResultPage } from "../pages/find-info/findResultPage";
-import { ResetPasswordPage } from "../pages/find-info/resetPasswordPage";
-import RegisterSuccessPage from "../pages/register/RegisterSuccessPage";
 import MainPage from "../pages/main/MainPage";
+import LoginPage from "../pages/login/LoginPage";
+import RegisterAccount from "../pages/register-account/RegisterAccount";
 
 const AuthRoutes = () => {
   const location = useLocation();
@@ -14,18 +10,10 @@ const AuthRoutes = () => {
     switch (location.pathname) {
       case "/":
         return <MainPage />;
-      case "/register":
-        return <RegisterPage />;
-      case "/register-success":
-        return <RegisterSuccessPage />;
       case "/login":
         return <LoginPage />;
-      case "/find":
-        return <FindInfoPage />;
-      case "/find-result":
-        return <FindResultPage />;
-      case "/reset-password":
-        return <ResetPasswordPage />;
+      case "/register-account":
+        return <RegisterAccount />;
       default:
         return <Outlet />;
     }

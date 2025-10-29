@@ -4,7 +4,17 @@ import { useModalTextStore } from "../../../stores/useModalText";
 import { usePendingStore } from "../../../stores/usePendingStore";
 import styles from "./TextModal.module.scss";
 
-const TextModal = ({ text }: { text: string }) => {
+const TextModal = ({
+  text,
+  usingConfirm,
+  onCancel,
+  onSend,
+}: {
+  text: string;
+  usingConfirm?: boolean;
+  onCancel?: () => void;
+  onSend?: () => void;
+}) => {
   useRootPosition();
 
   const { setModalPending } = usePendingStore();
@@ -22,15 +32,30 @@ const TextModal = ({ text }: { text: string }) => {
         marginLeft: `calc((var(--device-width) - 300px) / 2)`,
       }}
     >
-      <p>{text}</p>
-      <button
-        onClick={() => {
-          setModalPending(false);
-          setModalText("");
-        }}
-      >
-        확인
-      </button>
+      {usingConfirm && <h2>중복확인</h2>}
+      <p className={usingConfirm ? styles["text__modal__confirm__text"] : ""}>
+        {text}
+      </p>
+      {!usingConfirm && (
+        <button
+          onClick={() => {
+            setModalPending(false);
+            setModalText("");
+          }}
+        >
+          확인
+        </button>
+      )}
+      {usingConfirm && (
+        <div className={styles["text__modal__flex__button"]}>
+          <button type="button" onClick={onCancel}>
+            취소
+          </button>
+          <button type="button" onClick={onSend}>
+            인증번호 전송
+          </button>
+        </div>
+      )}
     </div>
   );
 };

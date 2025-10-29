@@ -1,0 +1,53 @@
+.login__input {
+  &__email,
+  &__password {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 26px;
+    label {
+      font-weight: 700;
+    }
+    &__wrapper {
+      position: relative;
+      input {
+        width: 100%;
+        padding: 20px 0;
+        border: none;
+        border-bottom: 1px solid black;
+        font-size: 15px;
+        &:focus {
+          outline: none;
+        }
+      }
+      button {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: 10px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+      }
+    }
+    > span {
+      font-size: 14px;
+      display: block;
+      margin-top: 10px;
+      color: rgb(217, 28, 28);
+      font-weight: 200;
+      line-height: 1.45;
+      b {
+        display: block;
+      }
+    }
+  }
+}
+.error {
+  border-bottom: 1px solid rgb(217, 28, 28) !important;
+  color: rgb(217, 28, 28) !important;
+}

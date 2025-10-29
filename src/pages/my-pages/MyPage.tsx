@@ -3,9 +3,8 @@ import { useUserInfo } from "../../stores/userStore";
 import styles from "./MyPage.module.scss";
 
 const MyPage = () => {
-  const { email, name, nickname, profileImage } = useUserInfo();
-
-  console.log(name);
+  const { email, name, nickname, profileImage, password, phoneNumber } =
+    useUserInfo();
 
   return (
     <div className={styles["mypage__wrapper"]}>
@@ -14,6 +13,8 @@ const MyPage = () => {
         email={email}
         nickname={nickname!}
         profileImage={profileImage}
+        password={password!}
+        phoneNumber={phoneNumber!}
       />
     </div>
   );

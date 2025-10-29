@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import styles from "./MyPageProfile.module.scss";
-import { useProfileImageUpload } from "../../hooks/useFileUpload";
 import { useUserInfo } from "../../stores/userStore";
 
 const MyPageProfile = ({
@@ -8,15 +7,17 @@ const MyPageProfile = ({
   name,
   nickname,
   profileImage,
+  password,
+  phoneNumber,
 }: {
   email: string;
   name: string;
   nickname: string;
   profileImage: string;
+  password: string;
+  phoneNumber: string;
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const { uploadProfileImageOnly } = useProfileImageUpload();
   const { isUploading } = useUserInfo();
 
   return (
@@ -28,13 +29,7 @@ const MyPageProfile = ({
       >
         <img src={profileImage} alt="profile__image" />
         <div className={`${styles["mypage__profile__file__input"]}`}>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              uploadProfileImageOnly(e.target.files![0])
-            }
-          />
+          <input type="file" ref={fileInputRef} onChange={() => {}} />
           <button
             onClick={() => {
               fileInputRef.current?.click();
