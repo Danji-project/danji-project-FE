@@ -9,11 +9,13 @@ const TextModal = ({
   usingConfirm,
   onCancel,
   onSend,
+  onConfirm,
 }: {
   text: string;
   usingConfirm?: boolean;
   onCancel?: () => void;
   onSend?: () => void;
+  onConfirm?: () => void;
 }) => {
   useRootPosition();
 
@@ -41,6 +43,7 @@ const TextModal = ({
           onClick={() => {
             setModalPending(false);
             setModalText("");
+            if (onConfirm) onConfirm();
           }}
         >
           확인

@@ -1,7 +1,12 @@
 .register__input {
-  &__email {
+  &__email,
+  &__validation,
+  &__password,
+  &__password__confirm,
+  &__name {
     display: flex;
     flex-direction: column;
+    margin-bottom: 30px;
     label {
       font-size: 15px;
       font-weight: 700;
@@ -10,6 +15,7 @@
       width: 100%;
       display: flex;
       gap: 10px;
+      position: relative;
       input {
         width: 100%;
         padding: 14px 0;
@@ -38,4 +44,15 @@
 .error {
   border-bottom: 1px solid rgb(217, 28, 28) !important;
   color: rgb(217, 28, 28);
+}
+.eyes__button {
+  background-color: transparent !important;
+  width: 25px !important;
+  height: 25px !important;
+  position: absolute;
+  right: 1rem;
+  top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

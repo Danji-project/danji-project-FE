@@ -13,6 +13,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
     apartChatBlack,
     profilePending,
     modalPending,
+    modalLoading,
     isLoginPending,
     registerDimmed,
   } = usePendingStore();
@@ -38,7 +39,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
           : ""
       }`}
     >
-      {(isPending || isLoginPending) && (
+      {(isPending || isLoginPending || modalLoading) && (
         <div
           className="div-background-black"
           style={{
@@ -55,7 +56,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         modalPending ||
         registerDimmed) && (
         <div
-          className="div-background-black"
+          className="div-background-black-2"
           style={{
             top: `${positionTop}px`,
             left: `${positionLeft}px`,

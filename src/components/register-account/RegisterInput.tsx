@@ -1,6 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
 import { useCheckEmail } from "../../hooks/useCheckEmail";
-import { useModalTextStore } from "../../stores/useModalText";
 import { usePendingStore } from "../../stores/usePendingStore";
 import styles from "./RegisterInput.module.scss";
 
@@ -19,6 +17,12 @@ const RegisterInput = ({
   errorMessage,
   onTouch,
   isNested,
+  isValidation,
+  onCertify,
+  failedMessage,
+  isCertifyConfirmed,
+  isPasswordButton,
+  passwordTypeChange,
 }: {
   label: string;
   placeholder: string;
@@ -34,7 +38,15 @@ const RegisterInput = ({
   errorMessage: string;
   onTouch: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isNested?: boolean;
+  isValidation?: boolean;
+  onCertify?: () => void;
+  failedMessage?: string;
+  isCertifyConfirmed?: boolean;
+  isPasswordButton?: boolean;
+  passwordTypeChange?: (exports: string) => void;
 }) => {
+  console.log(type);
+
   const { checkEmailMutation } = useCheckEmail();
   const { setModalPending } = usePendingStore();
 
@@ -46,9 +58,9 @@ const RegisterInput = ({
           type={type}
           placeholder={placeholder}
           onChange={onChangeEvent}
-          onFocus={onTouch}
+          onBlur={onTouch}
           value={value}
-          readOnly={isNested}
+          readOnly={isNested || isCertifyConfirmed}
           className={isTouched && !isValid && isError ? styles["error"] : ""}
         />
         {isConfirm && (
@@ -63,6 +75,35 @@ const RegisterInput = ({
             중복확인
           </button>
         )}
+        {isPasswordButton && (
+          <button
+            className={styles["eyes__button"]}
+            type="button"
+            onClick={() => {
+              if (type === "password") {
+                passwordTypeChange!("text");
+              } else if (type === "text") {
+                passwordTypeChange!("password");
+              }
+            }}
+          >
+            {type === "text" && (
+              <img src="/icons/type_off.png" alt="type_off" />
+            )}
+            {type === "password" && (
+              <img src="/icons/type_on.png" alt="type_on" />
+            )}
+          </button>
+        )}
+        {isValidation && (
+          <button
+            type="button"
+            disabled={!isValid || isCertifyConfirmed}
+            onClick={onCertify}
+          >
+            {isCertifyConfirmed ? "인증 완료" : "인증 확인"}
+          </button>
+        )}
       </div>
       {isTouched && !isValid && isError && (
         <b
@@ -70,6 +111,7 @@ const RegisterInput = ({
             color: "rgb(217,28,28)",
             fontSize: "14px",
             fontWeight: "300",
+            display: "block",
           }}
         >
           {errorMessage}
@@ -81,12 +123,25 @@ const RegisterInput = ({
             color: "rgb(60,165,62)",
             fontSize: "14px",
             fontWeight: "300",
+            display: "block",
           }}
         >
           사용 가능한 이메일입니다.
         </b>
       ) : (
         ""
+      )}
+      {failedMessage && (
+        <b
+          style={{
+            color: "rgb(217,28,28)",
+            fontSize: "14px",
+            fontWeight: "300",
+            display: "block",
+          }}
+        >
+          {failedMessage}
+        </b>
       )}
     </div>
   );
