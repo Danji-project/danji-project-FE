@@ -7,8 +7,6 @@ const MyPageProfile = ({
   name,
   nickname,
   profileImage,
-  password,
-  phoneNumber,
 }: {
   email: string;
   name: string;
