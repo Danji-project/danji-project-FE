@@ -11,7 +11,7 @@ import CommunityDetail from "../pages/community-detail/CommunityDetail";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
-import LoginPage from "../pages/login/LoginPage";
+import LoginPage from "../pages/login/loginPage";
 
 const AppRoutes = () => {
   return (
