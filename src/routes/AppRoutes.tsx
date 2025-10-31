@@ -11,6 +11,7 @@ import CommunityDetail from "../pages/community-detail/CommunityDetail";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
+import RegisterSuccess from "../pages/register-success/RegisterSuccess";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +30,7 @@ const AppRoutes = () => {
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register-account" element={<RegisterAccount />} />
+          <Route path="/register-success" element={<RegisterSuccess />} />
         </Route>
 
         {/* 마이페이지 라우팅 */}

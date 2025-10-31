@@ -291,10 +291,8 @@ const initialState = {
 const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
-  const { modalPending, setModalPending } = usePendingStore();
-  const { modalText, setModalText } = useModalTextStore();
-
-  const [isConfirmed, setIsConfirmed] = useState(true);
+  const { modalPending, setModalPending, modalLoading } = usePendingStore();
+  const { modalText, setModalText, isOnlyConfirmed } = useModalTextStore();
 
   const emailNestCheck = () => {
     dispatch({ type: "CHANGE_NEST" });
@@ -305,7 +303,7 @@ const RegisterAccountBodies = () => {
     sendValidationPending,
     receivedValidationMutation,
     failedErrorMessage,
-  } = useSendValidation(emailNestCheck, setIsConfirmed);
+  } = useSendValidation(emailNestCheck);
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "EMAIL_CHANGE", payload: { data: e.target.value } });
@@ -417,8 +415,6 @@ const RegisterAccountBodies = () => {
     nicknameDisabled ||
     phoneDisabled;
 
-  console.log(registerState.email.isConfirmed);
-
   const { registerMutation } = useRegister();
 
   const joinSubmit = (e: React.FormEvent) => {
@@ -441,7 +437,7 @@ const RegisterAccountBodies = () => {
           type="text"
           htmlForId="email-for"
           className="email"
-          isConfirm={isConfirmed}
+          isConfirm={isOnlyConfirmed}
           onChangeEvent={changeEmail}
           value={registerState.email.value}
           isTouched={registerState.email.touched}
@@ -454,7 +450,7 @@ const RegisterAccountBodies = () => {
         {modalPending && (
           <TextModal
             text={modalText}
-            usingConfirm={isConfirmed}
+            usingConfirm={isOnlyConfirmed}
             onCancel={() => {
               setModalPending(false);
               setModalText("");

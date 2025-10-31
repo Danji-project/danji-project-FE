@@ -5,14 +5,11 @@ import axios, { AxiosError } from "axios";
 import { usePendingStore } from "../stores/usePendingStore";
 import { useModalTextStore } from "../stores/useModalText";
 
-export const useSendValidation = (
-  setEmailNestOk: () => void,
-  setIsConfirmed: Dispatch<SetStateAction<boolean>>
-) => {
+export const useSendValidation = (setEmailNestOk: () => void) => {
   const [failedErrorMessage, setFailedErrorMessage] = useState("");
 
   const { setModalPending } = usePendingStore();
-  const { setModalText } = useModalTextStore();
+  const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
 
   const sendValidationMutation = useMutation({
     mutationFn: async (email: string) => {
@@ -25,7 +22,7 @@ export const useSendValidation = (
       setModalPending(false);
       setModalText("");
       setEmailNestOk();
-      setIsConfirmed(false);
+      setIsOnlyConfirmed(true);
     },
   });
 

@@ -47,8 +47,8 @@ const RegisterInput = ({
 }) => {
   console.log(type);
 
-  const { checkEmailMutation } = useCheckEmail();
-  const { setModalPending } = usePendingStore();
+  const { checkEmailMutation, checkEmailPending } = useCheckEmail();
+  const { setModalPending, setModalLoading } = usePendingStore();
 
   return (
     <div className={styles["register__input__" + className]}>
@@ -70,6 +70,7 @@ const RegisterInput = ({
             onClick={() => {
               checkEmailMutation.mutate(value);
               setModalPending(true);
+              setModalLoading(checkEmailPending);
             }}
           >
             중복확인

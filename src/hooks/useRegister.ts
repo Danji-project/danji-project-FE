@@ -1,7 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const useRegister = () => {
+  const navigate = useNavigate();
+
   const registerMutation = useMutation({
     mutationFn: async ({
       email,
@@ -27,7 +30,7 @@ export const useRegister = () => {
       return res.data;
     },
     onSuccess: (data) => {
-      console.log(data);
+      navigate("/register-success");
     },
   });
 

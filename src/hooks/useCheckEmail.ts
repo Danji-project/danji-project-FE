@@ -3,7 +3,7 @@ import axios from "axios";
 import { useModalTextStore } from "../stores/useModalText";
 
 export const useCheckEmail = () => {
-  const { setModalText } = useModalTextStore();
+  const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
 
   const checkEmailMutation = useMutation({
     mutationFn: async (email: string) => {
@@ -18,6 +18,11 @@ export const useCheckEmail = () => {
       } else {
         setModalText(data.message);
       }
+      setIsOnlyConfirmed(false);
+    },
+    onError: () => {
+      setModalText("중복된 이메일입니다.");
+      setIsOnlyConfirmed(true);
     },
   });
 

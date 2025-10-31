@@ -19,7 +19,7 @@ const TextModal = ({
 }) => {
   useRootPosition();
 
-  const { setModalPending } = usePendingStore();
+  const { setModalPending, modalLoading } = usePendingStore();
   const { setModalText } = useModalTextStore();
 
   const { positionBottom, positionLeft } = useRootPositionStore();
@@ -36,9 +36,9 @@ const TextModal = ({
     >
       {usingConfirm && <h2>중복확인</h2>}
       <p className={usingConfirm ? styles["text__modal__confirm__text"] : ""}>
-        {text}
+        {modalLoading ? "로딩 중..." : text}
       </p>
-      {!usingConfirm && (
+      {usingConfirm && (
         <button
           onClick={() => {
             setModalPending(false);
@@ -49,7 +49,7 @@ const TextModal = ({
           확인
         </button>
       )}
-      {usingConfirm && (
+      {!usingConfirm && (
         <div className={styles["text__modal__flex__button"]}>
           <button type="button" onClick={onCancel}>
             취소

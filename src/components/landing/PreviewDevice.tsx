@@ -39,7 +39,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
           : ""
       }`}
     >
-      {(isPending || isLoginPending || modalLoading) && (
+      {(isPending || isLoginPending) && (
         <div
           className="div-background-black"
           style={{
