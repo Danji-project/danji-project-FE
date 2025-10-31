@@ -1,8 +1,7 @@
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
-import styles from "./Combobox.module.scss";
+import styles from "./ComboBox.module.scss";
 import { useFeedList } from "../../../hooks/useFeedList";
-import { usePendingStore } from "../../../stores/usePendingStore";
 
 const ComboBox = ({
   contents,

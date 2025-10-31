@@ -347,10 +347,16 @@ button {
   }
 }
 
-.div-background-black {
+.div-background-black,
+.div-background-black-2 {
   position: fixed;
   width: var(--device-width);
   height: var(--device-height);
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 10000000;
+}
+
+.div-background-black {
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10000000000;
 }

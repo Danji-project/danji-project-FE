@@ -1,0 +1,60 @@
+.register__input {
+  &__email,
+  &__validation,
+  &__password,
+  &__password__confirm,
+  &__name,
+  &__nickname,
+  &__phone {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    label {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    &__wrapper {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      position: relative;
+      input {
+        width: 100%;
+        padding: 14px 0;
+        border: none;
+        border-bottom: 1px solid black;
+        flex: 1;
+        margin-bottom: 0.6rem;
+        &:focus {
+          outline: none;
+        }
+      }
+      > button {
+        width: 80px;
+        background-color: rgb(151, 187, 255);
+        border-radius: 6px;
+        height: 50px;
+        cursor: pointer;
+        &:disabled {
+          background-color: rgb(234, 241, 255);
+          opacity: 0.45;
+        }
+      }
+    }
+  }
+}
+.error {
+  border-bottom: 1px solid rgb(217, 28, 28) !important;
+  color: rgb(217, 28, 28);
+}
+.eyes__button {
+  background-color: transparent !important;
+  width: 25px !important;
+  height: 25px !important;
+  position: absolute;
+  right: 1rem;
+  top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

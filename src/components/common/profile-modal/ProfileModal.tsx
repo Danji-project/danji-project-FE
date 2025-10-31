@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useRootPosition } from "../../../hooks/useRootPosition";
 import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { usePendingStore } from "../../../stores/usePendingStore";
-import { useProfileStore } from "../../../stores/useProfileStore";
 import styles from "./ProfileModal.module.scss";
 
 const ProfileModal = () => {
@@ -12,8 +11,6 @@ const ProfileModal = () => {
   useRootPosition();
 
   const { positionBottom, positionLeft } = useRootPositionStore();
-
-  const { fileId, nickname } = useProfileStore();
 
   if (!isFinal)
     return (
@@ -26,17 +23,8 @@ const ProfileModal = () => {
           marginLeft: `calc((var(--device-width) - 300px) / 2)`,
         }}
       >
-        <div className={styles["profile__modal__profile"]}>
-          {fileId === null ? (
-            <img src={"/profile_imgSrc.jpg"} alt="placeholder" />
-          ) : (
-            <img
-              src={`https://s3.ap-northeast-2.amazonaws.com/danjitalk/${fileId}`}
-              alt="images"
-            />
-          )}
-        </div>
-        <div className={styles["profile__modal__nickname"]}>{nickname}</div>
+        <div className={styles["profile__modal__profile"]}></div>
+        <div className={styles["profile__modal__nickname"]}></div>
         <div className={styles["profile__modal__button"]}>
           <button
             onClick={() => {
@@ -67,7 +55,7 @@ const ProfileModal = () => {
         }}
       >
         <div className={styles["profile__modal__final__title"]}>
-          {nickname}에게 대화 신청
+          에게 대화 신청
         </div>
         <p>
           대화는 상대방이 수락하면 시작됩니다. <br />

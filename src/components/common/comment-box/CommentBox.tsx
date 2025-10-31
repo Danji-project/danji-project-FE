@@ -6,23 +6,19 @@ import { getRelativeTime } from "../../../utils/date";
 import { useCommentReplyStore } from "../../../stores/useCommentReplyStore";
 import {
   useAddComment,
-  useComment,
   useDeleteComment,
   useUpdateComment,
 } from "../../../hooks/useComment";
 import { usePendingStore } from "../../../stores/usePendingStore";
-import { useProfileStore } from "../../../stores/useProfileStore";
 import { useUserInfo } from "../../../stores/userStore";
 import { useModalTextStore } from "../../../stores/useModalText";
 
 const CommentBox = ({
   comment,
   depth = 0,
-  parentId,
 }: {
   comment: CommentStore3;
   depth?: number;
-  parentId?: number;
 }) => {
   const { isOn, isReply, targetId, setReplyOn, resetReply } =
     useCommentReplyStore();
@@ -34,8 +30,6 @@ const CommentBox = ({
 
   const { setProfilePending, setModalPending } = usePendingStore();
   const { setModalText } = useModalTextStore();
-
-  const { setMembers } = useProfileStore();
 
   const [commentContent, setCommentContent] = useState("");
 
@@ -77,7 +71,6 @@ const CommentBox = ({
           className={styles["comment__box__userInfo__profile"]}
           onClick={() => {
             setProfilePending(true);
-            setMembers(comment.commentMemberResponseDto);
           }}
         >
           <img
@@ -193,12 +186,7 @@ const CommentBox = ({
 
       {/* 재귀 랜더링 */}
       {comment.childrenCommentDto?.map((child: CommentStore3) => (
-        <CommentBox
-          key={child.commentId}
-          comment={child}
-          depth={depth + 1}
-          parentId={comment.commentId}
-        />
+        <CommentBox key={child.commentId} comment={child} depth={depth + 1} />
       ))}
     </div>
   );

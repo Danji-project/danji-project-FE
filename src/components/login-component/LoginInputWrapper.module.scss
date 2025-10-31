@@ -1,0 +1,104 @@
+.login__input__wrapper {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    > img {
+      margin-top: 20px;
+      margin-bottom: 26px;
+    }
+    &__bottom__menu {
+      align-self: start;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 36px;
+      > button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 150px;
+        cursor: pointer;
+      }
+      label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      input {
+        width: 16px;
+        height: 16px;
+        border: 1px solid rgb(153, 153, 153);
+      }
+      span {
+        font-size: 14px;
+        line-height: 14px;
+        color: rgb(153, 153, 153);
+      }
+    }
+    &__buttons {
+      width: 100%;
+      margin-bottom: 40px;
+      > button {
+        font-size: 16px;
+        color: #fff;
+        width: 100%;
+        text-align: center;
+        padding: 1rem 0;
+        background-color: rgb(151, 187, 255);
+        cursor: pointer;
+        &:disabled {
+          background-color: rgb(234, 241, 255);
+          color: rgb(192, 192, 192);
+        }
+      }
+      > p {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        padding: 6px 0;
+        font-size: 14px;
+        color: rgb(153, 153, 153);
+        a {
+          color: rgb(151, 187, 255);
+        }
+      }
+    }
+    &__social__line {
+      width: 100%;
+
+      span {
+        color: rgb(153, 153, 153);
+        display: flex;
+        align-items: center;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 30px;
+        b {
+          width: 60px;
+          display: block;
+          font-weight: 200;
+        }
+        &::before,
+        &::after {
+          content: "";
+          flex: 1;
+          height: 1px;
+          background-color: rgb(153, 153, 153);
+        }
+      }
+      ul {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        li {
+          a {
+            img {
+              width: 36px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -10,9 +10,15 @@
   justify-content: center;
   align-items: center;
   gap: 2rem;
+  h2 {
+    font-size: 16px;
+  }
   p {
     color: #000;
     font-size: 16px;
+    &.text__modal__confirm__text {
+      font-size: 14px;
+    }
   }
   button {
     width: 200px;
@@ -21,5 +27,24 @@
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
+  }
+  &__flex__button {
+    display: flex;
+    gap: 10px;
+    button {
+      width: 120px;
+      background-color: rgb(151, 187, 255);
+      padding: 10px 0;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      &:first-child {
+        opacity: 0.35;
+        transition: opacity 0.45s;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
   }
 }

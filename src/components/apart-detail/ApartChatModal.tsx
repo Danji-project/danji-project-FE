@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import type { BaseApartInfo } from "../../model/BaseApartInfoModel";
 import { useRootPositionStore } from "../../stores/rootPositionStore";
 import styles from "./ApartChatModal.module.scss";
