@@ -6,10 +6,11 @@ import { usePendingStore } from "../../stores/usePendingStore";
 import TextModal from "../common/text-modal/TextModal";
 import { useModalTextStore } from "../../stores/useModalText";
 import { useSendValidation } from "../../hooks/useSendValidation";
+import { useRegister } from "../../hooks/useRegister";
 
 interface Action {
   type: string;
-  payload?: { data?: string; export?: string };
+  payload?: { data?: string; export?: string; confirmed?: boolean };
 }
 
 interface State {
@@ -85,6 +86,14 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         validationCode: { ...state.validationCode, touched: true },
       };
+    case "VERIFY_CONFIRMED_TRUE":
+      return {
+        ...state,
+        email: {
+          ...state.email,
+          isConfirmed: action.payload?.confirmed!,
+        },
+      };
     case "CHANGE_PASSWORD":
       return {
         ...state,
@@ -120,14 +129,20 @@ const reducer = (state: State, action: Action): State => {
         passwordConfirm: {
           ...state.passwordConfirm,
           value: action.payload?.data!,
-          valid: validators(action.payload?.data!, "PASSWORD_CONFIRM_VALID")!,
+          valid: validators(
+            action.payload?.data!,
+            "PASSWORD_CONFIRM_VALID",
+            state.password.value
+          )!,
           isError: !validators(
             action.payload?.data!,
-            "PASSWORD_CONFIRM_VALID"
+            "PASSWORD_CONFIRM_VALID",
+            state.password.value
           )!,
           errorMessage: !validators(
             action.payload?.data!,
-            "PASSWORD_CONFIRM_VALID"
+            "PASSWORD_CONFIRM_VALID",
+            state.password.value
           )
             ? "비밀번호와 일치하지 않습니다"
             : "",
@@ -167,6 +182,48 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         name: {
           ...state.name,
+          touched: true,
+        },
+      };
+    case "CHANGE_NICKNAME":
+      return {
+        ...state,
+        nickname: {
+          ...state.nickname,
+          value: action.payload!.data!,
+          valid: validators(action.payload!.data!, "NICKNAME_VALID")!,
+          isError: !validators(action.payload!.data!, "NICKNAME_VALID")!,
+          errorMessage: !validators(action.payload!.data!, "NICKNAME_VALID")
+            ? "닉네임을 제대로 입력해주세요"
+            : "",
+        },
+      };
+    case "TOUCH_NICKNAME":
+      return {
+        ...state,
+        nickname: {
+          ...state.nickname,
+          touched: true,
+        },
+      };
+    case "CHANGE_PHONE":
+      return {
+        ...state,
+        phone: {
+          ...state.phone,
+          value: action.payload?.data!,
+          valid: validators(action.payload?.data!, "PHONE_VALID")!,
+          isError: !validators(action.payload?.data!, "PHONE_VALID"),
+          errorMessage: !validators(action.payload?.data!, "PHONE_VALID")
+            ? "핸드폰 번호를 제대로 입력해주세요"
+            : "",
+        },
+      };
+    case "TOUCH_PHONE":
+      return {
+        ...state,
+        phone: {
+          ...state.phone,
           touched: true,
         },
       };
@@ -238,7 +295,6 @@ const RegisterAccountBodies = () => {
   const { modalText, setModalText } = useModalTextStore();
 
   const [isConfirmed, setIsConfirmed] = useState(true);
-  const [emailConfirmed, setEmailConfirmed] = useState(false);
 
   const emailNestCheck = () => {
     dispatch({ type: "CHANGE_NEST" });
@@ -274,6 +330,14 @@ const RegisterAccountBodies = () => {
     dispatch({ type: "CHANGE_NAME", payload: { data: e.target.value } });
   };
 
+  const changeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: "CHANGE_NICKNAME", payload: { data: e.target.value } });
+  };
+
+  const changePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: "CHANGE_PHONE", payload: { data: e.target.value } });
+  };
+
   const touchEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "EMAIL_TOUCHED", payload: { data: e.target.value } });
   };
@@ -294,6 +358,14 @@ const RegisterAccountBodies = () => {
     dispatch({ type: "TOUCH_NAME" });
   };
 
+  const touchNickname = () => {
+    dispatch({ type: "TOUCH_NICKNAME" });
+  };
+
+  const touchPhone = () => {
+    dispatch({ type: "TOUCH_PHONE" });
+  };
+
   const passwordTypeChange = (exports: string) => {
     dispatch({ type: "PASSWORD_TYPE_EXPORT", payload: { export: exports } });
   };
@@ -305,8 +377,63 @@ const RegisterAccountBodies = () => {
     });
   };
 
+  const emailDisabled =
+    !registerState.email.value ||
+    !registerState.email.valid ||
+    registerState.email.isError ||
+    !registerState.email.isNestOk ||
+    !registerState.email.isConfirmed;
+
+  const passwordDisabled =
+    !registerState.password.value ||
+    !registerState.password.valid ||
+    registerState.password.isError;
+
+  const passwordConfirmDisabled =
+    !registerState.passwordConfirm.value ||
+    !registerState.passwordConfirm.valid ||
+    registerState.passwordConfirm.isError;
+
+  const nameDisabled =
+    !registerState.name.value ||
+    !registerState.name.valid ||
+    registerState.name.isError;
+
+  const nicknameDisabled =
+    !registerState.nickname.value ||
+    !registerState.nickname.valid ||
+    registerState.nickname.isError;
+
+  const phoneDisabled =
+    !registerState.phone.value ||
+    !registerState.phone.valid ||
+    registerState.phone.isError;
+
+  const allDisabled =
+    emailDisabled ||
+    passwordDisabled ||
+    passwordConfirmDisabled ||
+    nameDisabled ||
+    nicknameDisabled ||
+    phoneDisabled;
+
+  console.log(registerState.email.isConfirmed);
+
+  const { registerMutation } = useRegister();
+
+  const joinSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    registerMutation.mutate({
+      email: registerState.email.value,
+      password: registerState.password.value,
+      name: registerState.name.value,
+      nickname: registerState.nickname.value,
+      phoneNumber: registerState.phone.value,
+    });
+  };
+
   return (
-    <form>
+    <form onSubmit={joinSubmit}>
       <div className={styles["register__account__bodies"]}>
         <RegisterInput
           label="이메일"
@@ -336,7 +463,10 @@ const RegisterAccountBodies = () => {
               sendValidationMutation.mutate(registerState.email.value);
             }}
             onConfirm={() => {
-              setEmailConfirmed(true);
+              dispatch({
+                type: "VERIFY_CONFIRMED_TRUE",
+                payload: { confirmed: true },
+              });
             }}
           />
         )}
@@ -362,7 +492,7 @@ const RegisterAccountBodies = () => {
               });
             }}
             failedMessage={failedErrorMessage}
-            isCertifyConfirmed={emailConfirmed}
+            isCertifyConfirmed={registerState.email.isConfirmed}
           />
         )}
         <RegisterInput
@@ -411,6 +541,37 @@ const RegisterAccountBodies = () => {
           errorMessage={registerState.name.errorMessage}
           onTouch={touchName}
         />
+        <RegisterInput
+          label="닉네임"
+          placeholder="닉네임을 입력해주세요"
+          type="text"
+          htmlForId="nicknameFor"
+          className="nickname"
+          onChangeEvent={changeNickname}
+          value={registerState.nickname.value}
+          isTouched={registerState.nickname.touched}
+          isError={registerState.nickname.isError}
+          isValid={registerState.nickname.valid}
+          errorMessage={registerState.nickname.errorMessage}
+          onTouch={touchNickname}
+        />
+        <RegisterInput
+          label="전화번호"
+          placeholder="- 제외 11자리를 입력해주세요"
+          type="text"
+          htmlForId="phoneFor"
+          className="phone"
+          onChangeEvent={changePhone}
+          value={registerState.phone.value}
+          isTouched={registerState.phone.touched}
+          isError={registerState.phone.isError}
+          errorMessage={registerState.phone.errorMessage}
+          isValid={registerState.phone.valid}
+          onTouch={touchPhone}
+        />
+        <button type="submit" disabled={allDisabled}>
+          회원가입
+        </button>
       </div>
     </form>
   );

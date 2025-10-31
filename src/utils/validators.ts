@@ -21,7 +21,10 @@ export const validators = (
   if (validator_case === "PASSWORD_CONFIRM_VALID") {
     return inputData.trim() === passwordData?.trim();
   }
-  if (validator_case === "NAME_VALID") {
-    return inputData.trim().length < 4;
+  if (validator_case === "NAME_VALID" || validator_case === "NICKNAME_VALID") {
+    return inputData !== "" && inputData.trim().length <= 4;
+  }
+  if (validator_case === "PHONE_VALID") {
+    return inputData.trim().length === 11 && !inputData.includes("-");
   }
 };

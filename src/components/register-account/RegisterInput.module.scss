@@ -3,7 +3,9 @@
   &__validation,
   &__password,
   &__password__confirm,
-  &__name {
+  &__name,
+  &__nickname,
+  &__phone {
     display: flex;
     flex-direction: column;
     margin-bottom: 30px;
