@@ -13,7 +13,6 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
     apartChatBlack,
     profilePending,
     modalPending,
-    modalLoading,
     isLoginPending,
     registerDimmed,
   } = usePendingStore();

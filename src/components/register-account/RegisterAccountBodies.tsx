@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import styles from "./RegisterAccountBodies.module.scss";
 import RegisterInput from "./RegisterInput";
 import { validators } from "../../utils/validators";
@@ -291,7 +291,7 @@ const initialState = {
 const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
-  const { modalPending, setModalPending, modalLoading } = usePendingStore();
+  const { modalPending, setModalPending } = usePendingStore();
   const { modalText, setModalText, isOnlyConfirmed } = useModalTextStore();
 
   const emailNestCheck = () => {

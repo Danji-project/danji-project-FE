@@ -8,10 +8,10 @@ import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo
 import ApartInfo from "../pages/apart-info/ApartInfo";
 import CommunityWrite from "../pages/community-register/CommunityWrite";
 import CommunityDetail from "../pages/community-detail/CommunityDetail";
-import LoginPage from "../pages/login/LoginPage";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
+import LoginPage from "../pages/login/LoginPage";
 
 const AppRoutes = () => {
   return (

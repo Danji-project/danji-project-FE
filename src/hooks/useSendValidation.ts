@@ -1,7 +1,7 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { usePendingStore } from "../stores/usePendingStore";
 import { useModalTextStore } from "../stores/useModalText";
 

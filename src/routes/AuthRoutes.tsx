@@ -1,8 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 import MainPage from "../pages/main/MainPage";
-import LoginPage from "../pages/login/LoginPage";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
+import LoginPage from "../pages/login/LoginPage";
 
 const AuthRoutes = () => {
   const location = useLocation();

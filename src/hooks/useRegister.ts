@@ -29,7 +29,7 @@ export const useRegister = () => {
 
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate("/register-success");
     },
   });
