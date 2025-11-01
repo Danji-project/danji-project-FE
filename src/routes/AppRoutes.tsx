@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { MyPageRoutes } from "./MyPageRoutes";
-import ChatPage from "../pages/chat/ChatPage";
 import MainPage from "../pages/main/MainPage";
 import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 import ApartInfo from "../pages/apart-info/ApartInfo";
@@ -11,6 +10,9 @@ import CommunityDetail from "../pages/community-detail/CommunityDetail";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
+import FindAccount from "../pages/find-account/FindAccount";
+import ChattingPage from "../pages/chat-page/ChattingPage";
+import ResetPassword from "../pages/reset-password/ResetPassword";
 import LoginPage from "../pages/login/loginPage";
 
 const AppRoutes = () => {
@@ -31,6 +33,8 @@ const AppRoutes = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register-account" element={<RegisterAccount />} />
           <Route path="/register-success" element={<RegisterSuccess />} />
+          <Route path="/find-account" element={<FindAccount />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
         {/* 마이페이지 라우팅 */}
@@ -40,7 +44,7 @@ const AppRoutes = () => {
         </Route>
 
         {/* 채팅 라우팅 */}
-        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat-page" element={<ChattingPage />} />
       </Routes>
     </Suspense>
   );

@@ -4,24 +4,28 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { usePendingStore } from "../stores/usePendingStore";
 import { useModalTextStore } from "../stores/useModalText";
+import { useCertifyInfo } from "../stores/useCertifyInfo";
 
-export const useSendValidation = (setEmailNestOk: () => void) => {
+export const useSendValidation = () => {
   const [failedErrorMessage, setFailedErrorMessage] = useState("");
 
   const { setModalPending } = usePendingStore();
   const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
+  const { setSendComplete, setCertifiedComplete, setOkMessage } =
+    useCertifyInfo();
 
   const sendValidationMutation = useMutation({
-    mutationFn: async (email: string) => {
+    mutationFn: async ({ email, type }: { email: string; type: string }) => {
       const res = await axios.post("/api/mail/certification-code/send", {
         mail: email,
+        type,
       });
       return res.data;
     },
     onSuccess: () => {
       setModalPending(false);
       setModalText("");
-      setEmailNestOk();
+      setSendComplete(true);
       setIsOnlyConfirmed(true);
     },
   });
@@ -36,6 +40,8 @@ export const useSendValidation = (setEmailNestOk: () => void) => {
     onSuccess: () => {
       setModalText("인증되었습니다.");
       setModalPending(true);
+      setCertifiedComplete(true);
+      setOkMessage("인증되었습니다.");
     },
     onError: (e) => {
       console.error(e);

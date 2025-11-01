@@ -1,11 +1,13 @@
 import { useState } from "react";
 import LoginInput from "./LoginInput";
 import styles from "./LoginInputWrapper.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import { usePendingStore } from "../../stores/usePendingStore";
 
 const LoginInputWrapper = () => {
+  const navigate = useNavigate();
+
   const [emailData, setEmailData] = useState("");
   const [passwordData, setPasswordData] = useState("");
   const [idError, setIdError] = useState("");
@@ -79,7 +81,7 @@ const LoginInputWrapper = () => {
             />
             <span>아이디 저장</span>
           </label>
-          <button type="button">
+          <button type="button" onClick={() => navigate("/find-account")}>
             <span>아이디/비밀번호 찾기</span>
             <img src="/icons/find_icon.png" alt="find" />
           </button>

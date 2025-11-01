@@ -7,6 +7,7 @@ import TextModal from "../common/text-modal/TextModal";
 import { useModalTextStore } from "../../stores/useModalText";
 import { useSendValidation } from "../../hooks/useSendValidation";
 import { useRegister } from "../../hooks/useRegister";
+import { useCertifyInfo } from "../../stores/useCertifyInfo";
 
 interface Action {
   type: string;
@@ -30,7 +31,6 @@ interface SecondState {
   touched: boolean;
   type?: string;
   errorMessage: string;
-  isNestOk?: boolean;
   isConfirmed?: boolean;
 }
 
@@ -55,14 +55,6 @@ const reducer = (state: State, action: Action): State => {
         email: {
           ...state.email,
           touched: true,
-        },
-      };
-    case "CHANGE_NEST":
-      return {
-        ...state,
-        email: {
-          ...state.email,
-          isNestOk: true,
         },
       };
     case "CHANGE_VALIDATION":
@@ -292,18 +284,17 @@ const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
   const { modalPending, setModalPending } = usePendingStore();
-  const { modalText, setModalText, isOnlyConfirmed } = useModalTextStore();
+  const { modalText, setModalTitle, setModalText, isOnlyConfirmed } =
+    useModalTextStore();
 
-  const emailNestCheck = () => {
-    dispatch({ type: "CHANGE_NEST" });
-  };
+  const { isNest } = useCertifyInfo();
 
   const {
     sendValidationMutation,
     sendValidationPending,
     receivedValidationMutation,
     failedErrorMessage,
-  } = useSendValidation(emailNestCheck);
+  } = useSendValidation();
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "EMAIL_CHANGE", payload: { data: e.target.value } });
@@ -379,7 +370,7 @@ const RegisterAccountBodies = () => {
     !registerState.email.value ||
     !registerState.email.valid ||
     registerState.email.isError ||
-    !registerState.email.isNestOk ||
+    !isNest ||
     !registerState.email.isConfirmed;
 
   const passwordDisabled =
@@ -443,7 +434,7 @@ const RegisterAccountBodies = () => {
           isTouched={registerState.email.touched}
           isError={registerState.email.isError}
           isValid={registerState.email.valid}
-          isNested={registerState.email.isNestOk}
+          isNested={isNest}
           errorMessage={registerState.email.errorMessage}
           onTouch={touchEmail}
         />
@@ -456,7 +447,10 @@ const RegisterAccountBodies = () => {
               setModalText("");
             }}
             onSend={() => {
-              sendValidationMutation.mutate(registerState.email.value);
+              sendValidationMutation.mutate({
+                email: registerState.email.value,
+                type: "SIGN_UP",
+              });
             }}
             onConfirm={() => {
               dispatch({
@@ -466,7 +460,7 @@ const RegisterAccountBodies = () => {
             }}
           />
         )}
-        {registerState.email.isNestOk && !sendValidationPending && (
+        {isNest && !sendValidationPending && (
           <RegisterInput
             label="인증번호 입력"
             placeholder="인증번호를 입력해주세요"
@@ -486,6 +480,7 @@ const RegisterAccountBodies = () => {
                 email: registerState.email.value,
                 code: registerState.validationCode.value,
               });
+              setModalTitle("인증하기");
             }}
             failedMessage={failedErrorMessage}
             isCertifyConfirmed={registerState.email.isConfirmed}

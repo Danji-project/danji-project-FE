@@ -1,0 +1,26 @@
+.find__account__wrapper {
+  display: flex;
+  flex-direction: column;
+  &__tabs {
+    margin-top: 30px;
+    margin-bottom: 40px;
+    display: flex;
+    > button {
+      flex: 1;
+      padding: 1rem 0;
+      font-size: 15px;
+      color: rgb(153, 153, 153);
+      border-bottom: 1px solid rgb(153, 153, 153);
+      cursor: pointer;
+      &.on {
+        color: rgb(151, 187, 255);
+        border-bottom: 1px solid rgb(151, 187, 255);
+        font-weight: 700;
+      }
+    }
+  }
+  &__main {
+    display: flex;
+    flex-direction: column;
+  }
+}

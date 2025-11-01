@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useCertifyInfo } from "../stores/useCertifyInfo";
 
 export const useRegister = () => {
   const navigate = useNavigate();

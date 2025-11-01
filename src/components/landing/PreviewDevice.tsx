@@ -13,6 +13,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
     apartChatBlack,
     profilePending,
     modalPending,
+    findPending,
     isLoginPending,
     registerDimmed,
   } = usePendingStore();
@@ -33,12 +34,13 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         profilePending ||
         modalPending ||
         isLoginPending ||
-        registerDimmed
+        registerDimmed ||
+        findPending
           ? "of-hidden"
           : ""
       }`}
     >
-      {(isPending || isLoginPending) && (
+      {(isPending || isLoginPending || findPending) && (
         <div
           className="div-background-black"
           style={{

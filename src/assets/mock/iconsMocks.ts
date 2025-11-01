@@ -63,7 +63,7 @@ export const IconsMocks = (): IconButtonProps[] => {
     },
     {
       onClick: () => {
-        navigate("/chat");
+        navigate("/chat-page");
       },
       imageUrl: "/icons/Message.png",
       text: "채팅",
