@@ -18,10 +18,11 @@ const FindAccountWrapper = () => {
   return (
     <div className={styles["find__account__wrapper"]}>
       <div className={styles["find__account__wrapper__tabs"]}>
-        {tabs.map((t: string) => (
+        {tabs.map((t: string, i: number) => (
           <button
             className={t.split("/")[0] === selectedTabs ? styles["on"] : ""}
             onClick={() => setSelectedTabs(t.split("/")[0])}
+            key={i}
           >
             {t.split("/")[1]}
           </button>

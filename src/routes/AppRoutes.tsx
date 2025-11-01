@@ -12,6 +12,7 @@ import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
 import FindAccount from "../pages/find-account/FindAccount";
+import ChattingPage from "../pages/chat-page/ChattingPage";
 
 const AppRoutes = () => {
   return (
@@ -39,6 +40,9 @@ const AppRoutes = () => {
           {/*  <Route path="/my-page" element={<MyPage />} /> */}
           <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
         </Route>
+
+        {/* 채팅 라우팅 */}
+        <Route path="/chat-page" element={<ChattingPage />} />
       </Routes>
     </Suspense>
   );

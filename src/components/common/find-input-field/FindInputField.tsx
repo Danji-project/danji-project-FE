@@ -1,3 +1,4 @@
+import { useCertifyInfo } from "../../../stores/useCertifyInfo";
 import styles from "./FindInputField.module.scss";
 
 const FindInputField = ({
@@ -33,6 +34,8 @@ const FindInputField = ({
   secondaryButtonArray?: string[];
   onSendCertify?: () => void;
 }) => {
+  const { sendComplete } = useCertifyInfo();
+
   return (
     <div className={styles["find__input__field__" + className]}>
       <label htmlFor={htmlFor}>{label}</label>
@@ -52,10 +55,18 @@ const FindInputField = ({
         />
         {ifEmailWillCertify && (
           <button
-            disabled={!touched || !valid || isError || errorMessage !== ""}
+            disabled={
+              !touched ||
+              !valid ||
+              isError ||
+              errorMessage !== "" ||
+              sendComplete
+            }
             onClick={onSendCertify}
           >
-            {secondaryButtonArray![0]}
+            {!sendComplete
+              ? secondaryButtonArray![0]
+              : secondaryButtonArray![1]}
           </button>
         )}
       </div>

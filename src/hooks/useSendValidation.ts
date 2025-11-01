@@ -1,27 +1,31 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { usePendingStore } from "../stores/usePendingStore";
 import { useModalTextStore } from "../stores/useModalText";
+import { useCertifyInfo } from "../stores/useCertifyInfo";
 
-export const useSendValidation = (setEmailNestOk: () => void) => {
+export const useSendValidation = (setEmailNestOk?: () => void) => {
   const [failedErrorMessage, setFailedErrorMessage] = useState("");
 
   const { setModalPending } = usePendingStore();
   const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
+  const { setSendComplete } = useCertifyInfo();
 
   const sendValidationMutation = useMutation({
-    mutationFn: async (email: string) => {
+    mutationFn: async ({ email, type }: { email: string; type: string }) => {
       const res = await axios.post("/api/mail/certification-code/send", {
         mail: email,
+        type,
       });
       return res.data;
     },
     onSuccess: () => {
       setModalPending(false);
       setModalText("");
-      setEmailNestOk();
+      if (setEmailNestOk) setEmailNestOk();
+      setSendComplete(true);
       setIsOnlyConfirmed(true);
     },
   });

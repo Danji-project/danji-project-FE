@@ -292,13 +292,8 @@ const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
   const { modalPending, setModalPending } = usePendingStore();
-  const {
-    modalText,
-    setModalTitle,
-    modalTitle,
-    setModalText,
-    isOnlyConfirmed,
-  } = useModalTextStore();
+  const { modalText, setModalTitle, setModalText, isOnlyConfirmed } =
+    useModalTextStore();
 
   const emailNestCheck = () => {
     dispatch({ type: "CHANGE_NEST" });
@@ -462,7 +457,10 @@ const RegisterAccountBodies = () => {
               setModalText("");
             }}
             onSend={() => {
-              sendValidationMutation.mutate(registerState.email.value);
+              sendValidationMutation.mutate({
+                email: registerState.email.value,
+                type: "SIGN_UP",
+              });
             }}
             onConfirm={() => {
               dispatch({

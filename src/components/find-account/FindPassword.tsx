@@ -1,8 +1,12 @@
 import { useState } from "react";
 import styles from "./FindPassword.module.scss";
 import FindInputField from "../common/find-input-field/FindInputField";
+import { useSendValidation } from "../../hooks/useSendValidation";
 
 const FindPassword = () => {
+  const { sendValidationMutation, receivedValidationMutation } =
+    useSendValidation();
+
   const [emailData, setEmailData] = useState({
     value: "",
     valid: false,
@@ -19,6 +23,7 @@ const FindPassword = () => {
     isError: false,
     touched: false,
     errorMessage: "",
+    okMessage: "",
   });
 
   const changeEmailData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +60,21 @@ const FindPassword = () => {
   const sendCertified = () => {
     // 인증번호를 보냈을 때 인증번호 input 생성
     setEmailData((prev) => ({ ...prev, isCertifiedSend: true }));
+
+    // 인증번호 보내기
+    sendValidationMutation.mutate({
+      email: emailData.value,
+      type: "FIND_PASSWORD",
+    });
+  };
+
+  const sendNumber = () => {
+    receivedValidationMutation.mutate({
+      email: emailData.value,
+      code: certifyingNumber.value,
+    });
+
+    setEmailData((prev) => ({ ...prev, isCertifiedReceived: true }));
   };
 
   return (
@@ -89,9 +109,10 @@ const FindPassword = () => {
           isError={certifyingNumber.isError}
           touched={certifyingNumber.touched}
           errorMessage={certifyingNumber.errorMessage}
-          secondaryButtonArray={["확인"]}
+          secondaryButtonArray={["확인", "확인"]}
           onTouch={touchCertifyingNumber}
           ifEmailWillCertify
+          onSendCertify={sendNumber}
         />
       )}
     </>
