@@ -2,11 +2,14 @@ import styles from "./MenuSidebar.module.scss";
 import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { Link } from "react-router-dom";
 import { useSidebarStore } from "../../../stores/sidebarStore";
+import { useLogout } from "../../../hooks/useLogout";
 
 const MenuSidebar = () => {
   const { positionLeft, positionTop } = useRootPositionStore();
 
   const { setIsOpen } = useSidebarStore();
+
+  const { logoutMutation } = useLogout();
 
   return (
     <div
@@ -55,6 +58,7 @@ const MenuSidebar = () => {
           <button
             onClick={() => {
               setIsOpen(false);
+              logoutMutation.mutate();
             }}
           >
             로그아웃

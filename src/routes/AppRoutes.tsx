@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import { MyPageRoutes } from "./MyPageRoutes";
-import ChatPage from "../pages/chat/ChatPage";
 import MainPage from "../pages/main/MainPage";
 import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 import ApartInfo from "../pages/apart-info/ApartInfo";
@@ -12,6 +11,7 @@ import LoginPage from "../pages/login/LoginPage";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
+import FindAccount from "../pages/find-account/FindAccount";
 
 const AppRoutes = () => {
   return (
@@ -31,6 +31,7 @@ const AppRoutes = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register-account" element={<RegisterAccount />} />
           <Route path="/register-success" element={<RegisterSuccess />} />
+          <Route path="/find-account" element={<FindAccount />} />
         </Route>
 
         {/* 마이페이지 라우팅 */}
@@ -38,9 +39,6 @@ const AppRoutes = () => {
           {/*  <Route path="/my-page" element={<MyPage />} /> */}
           <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
         </Route>
-
-        {/* 채팅 라우팅 */}
-        <Route path="/chat" element={<ChatPage />} />
       </Routes>
     </Suspense>
   );

@@ -1,4 +1,5 @@
 import { useCheckEmail } from "../../hooks/useCheckEmail";
+import { useModalTextStore } from "../../stores/useModalText";
 import { usePendingStore } from "../../stores/usePendingStore";
 import styles from "./RegisterInput.module.scss";
 
@@ -49,6 +50,7 @@ const RegisterInput = ({
 
   const { checkEmailMutation, checkEmailPending } = useCheckEmail();
   const { setModalPending, setModalLoading } = usePendingStore();
+  const { setModalTitle } = useModalTextStore();
 
   return (
     <div className={styles["register__input__" + className]}>
@@ -71,6 +73,7 @@ const RegisterInput = ({
               checkEmailMutation.mutate(value);
               setModalPending(true);
               setModalLoading(checkEmailPending);
+              setModalTitle("중복확인");
             }}
           >
             중복확인

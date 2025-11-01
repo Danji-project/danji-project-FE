@@ -3,6 +3,7 @@ import MainPage from "../pages/main/MainPage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
+import FindAccount from "../pages/find-account/FindAccount";
 
 const AuthRoutes = () => {
   const location = useLocation();
@@ -17,6 +18,8 @@ const AuthRoutes = () => {
         return <RegisterAccount />;
       case "/register-success":
         return <RegisterSuccess />;
+      case "find-account":
+        return <FindAccount />;
       default:
         return <Outlet />;
     }

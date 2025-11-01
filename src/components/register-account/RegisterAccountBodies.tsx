@@ -291,8 +291,14 @@ const initialState = {
 const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
-  const { modalPending, setModalPending, modalLoading } = usePendingStore();
-  const { modalText, setModalText, isOnlyConfirmed } = useModalTextStore();
+  const { modalPending, setModalPending } = usePendingStore();
+  const {
+    modalText,
+    setModalTitle,
+    modalTitle,
+    setModalText,
+    isOnlyConfirmed,
+  } = useModalTextStore();
 
   const emailNestCheck = () => {
     dispatch({ type: "CHANGE_NEST" });
@@ -486,6 +492,7 @@ const RegisterAccountBodies = () => {
                 email: registerState.email.value,
                 code: registerState.validationCode.value,
               });
+              setModalTitle("인증하기");
             }}
             failedMessage={failedErrorMessage}
             isCertifyConfirmed={registerState.email.isConfirmed}
