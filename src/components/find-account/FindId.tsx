@@ -3,7 +3,6 @@ import FindInputField from "../common/find-input-field/FindInputField";
 import styles from "./FindId.module.scss";
 import { useFindId } from "../../hooks/useFindAccount";
 import { usePendingStore } from "../../stores/usePendingStore";
-import { useModalTextStore } from "../../stores/useModalText";
 
 const FindId = () => {
   const [nameData, setNameData] = useState({
