@@ -1,11 +1,15 @@
 import { useState } from "react";
 import styles from "./FindPassword.module.scss";
+import { useNavigate } from "react-router-dom";
+
 import FindInputField from "../common/find-input-field/FindInputField";
 import { useSendValidation } from "../../hooks/useSendValidation";
 
 const FindPassword = () => {
   const { sendValidationMutation, receivedValidationMutation } =
     useSendValidation();
+
+  const navigate = useNavigate();
 
   const [emailData, setEmailData] = useState({
     value: "",
@@ -109,12 +113,27 @@ const FindPassword = () => {
           isError={certifyingNumber.isError}
           touched={certifyingNumber.touched}
           errorMessage={certifyingNumber.errorMessage}
-          secondaryButtonArray={["확인", "확인"]}
+          secondaryButtonArray={["확인"]}
           onTouch={touchCertifyingNumber}
           ifEmailWillCertify
           onSendCertify={sendNumber}
+          finalCertified={emailData.isCertifiedReceived}
         />
       )}
+      <button
+        className={styles["next"]}
+        disabled={
+          !emailData.valid ||
+          emailData.isError ||
+          !emailData.isCertifiedSend ||
+          !emailData.isCertifiedReceived ||
+          !certifyingNumber.valid ||
+          certifyingNumber.isError
+        }
+        onClick={() => navigate("/reset-password")}
+      >
+        다음
+      </button>
     </>
   );
 };

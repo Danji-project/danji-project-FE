@@ -6,12 +6,13 @@ import { usePendingStore } from "../stores/usePendingStore";
 import { useModalTextStore } from "../stores/useModalText";
 import { useCertifyInfo } from "../stores/useCertifyInfo";
 
-export const useSendValidation = (setEmailNestOk?: () => void) => {
+export const useSendValidation = () => {
   const [failedErrorMessage, setFailedErrorMessage] = useState("");
 
   const { setModalPending } = usePendingStore();
   const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
-  const { setSendComplete } = useCertifyInfo();
+  const { setSendComplete, setCertifiedComplete, setOkMessage } =
+    useCertifyInfo();
 
   const sendValidationMutation = useMutation({
     mutationFn: async ({ email, type }: { email: string; type: string }) => {
@@ -24,7 +25,6 @@ export const useSendValidation = (setEmailNestOk?: () => void) => {
     onSuccess: () => {
       setModalPending(false);
       setModalText("");
-      if (setEmailNestOk) setEmailNestOk();
       setSendComplete(true);
       setIsOnlyConfirmed(true);
     },
@@ -40,6 +40,8 @@ export const useSendValidation = (setEmailNestOk?: () => void) => {
     onSuccess: () => {
       setModalText("인증되었습니다.");
       setModalPending(true);
+      setCertifiedComplete(true);
+      setOkMessage("인증되었습니다.");
     },
     onError: (e) => {
       console.error(e);

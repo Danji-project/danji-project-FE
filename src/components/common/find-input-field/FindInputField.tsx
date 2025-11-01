@@ -17,6 +17,7 @@ const FindInputField = ({
   ifEmailWillCertify,
   secondaryButtonArray,
   onSendCertify,
+  finalCertified,
 }: {
   label: string;
   type: string;
@@ -33,8 +34,9 @@ const FindInputField = ({
   ifEmailWillCertify?: boolean;
   secondaryButtonArray?: string[];
   onSendCertify?: () => void;
+  finalCertified?: boolean;
 }) => {
-  const { sendComplete } = useCertifyInfo();
+  const { sendComplete, certifiedComplete, okMessage } = useCertifyInfo();
 
   return (
     <div className={styles["find__input__field__" + className]}>
@@ -51,9 +53,13 @@ const FindInputField = ({
           value={value}
           onChange={onChangeEvent}
           onBlur={onTouch}
+          readOnly={
+            (label === "인증번호" && finalCertified) ||
+            (label === "이메일" && sendComplete)
+          }
           className={touched && !valid && isError ? styles["error"] : ""}
         />
-        {ifEmailWillCertify && (
+        {ifEmailWillCertify && label === "이메일" && (
           <button
             disabled={
               !touched ||
@@ -64,14 +70,29 @@ const FindInputField = ({
             }
             onClick={onSendCertify}
           >
-            {!sendComplete
-              ? secondaryButtonArray![0]
-              : secondaryButtonArray![1]}
+            {sendComplete ? secondaryButtonArray![1] : secondaryButtonArray![0]}
+          </button>
+        )}
+        {ifEmailWillCertify && label === "인증번호" && (
+          <button
+            disabled={
+              !touched ||
+              !valid ||
+              isError ||
+              errorMessage !== "" ||
+              certifiedComplete
+            }
+            onClick={onSendCertify}
+          >
+            {secondaryButtonArray![0]}
           </button>
         )}
       </div>
       {touched && !valid && isError && (
         <p className={styles["error"]}>{errorMessage}</p>
+      )}
+      {okMessage && label === "인증번호" && (
+        <p className={styles["ok"]}>{okMessage}</p>
       )}
     </div>
   );
