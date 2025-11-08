@@ -20,7 +20,13 @@ const CommunityDetailContents = ({
   contentData: FeedDetail | null;
 }) => {
   const feedId = contentData?.data?.feedId;
-  const { profilePending, modalPending } = usePendingStore();
+  const {
+    profilePending,
+    modalPending,
+    setModalPending,
+    profileNick,
+    profileImg,
+  } = usePendingStore();
 
   const { data: commentData } = useCommentStore();
   const { modalText } = useModalTextStore();
@@ -92,12 +98,18 @@ const CommunityDetailContents = ({
       </div>
       {profilePending &&
         ReactDOM.createPortal(
-          <ProfileModal />,
+          <ProfileModal nick={profileNick} img={profileImg} />,
           document.getElementById("root")!
         )}
       {modalPending &&
         ReactDOM.createPortal(
-          <TextModal text={modalText} />,
+          <TextModal
+            text={modalText}
+            usingConfirm
+            onConfirm={() => {
+              setModalPending(false);
+            }}
+          />,
           document.getElementById("root")!
         )}
     </div>
