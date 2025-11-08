@@ -18,12 +18,13 @@ const FindInputField = ({
   secondaryButtonArray,
   onSendCertify,
   finalCertified,
+  fixedEmail,
 }: {
   label: string;
   type: string;
   htmlFor: string;
   className: string;
-  placeholder: string;
+  placeholder?: string;
   value: string;
   onChangeEvent: (e: React.ChangeEvent<HTMLInputElement>) => void;
   valid: boolean;
@@ -35,6 +36,7 @@ const FindInputField = ({
   secondaryButtonArray?: string[];
   onSendCertify?: () => void;
   finalCertified?: boolean;
+  fixedEmail?: boolean;
 }) => {
   const { sendComplete, certifiedComplete, okMessage } = useCertifyInfo();
 
@@ -55,7 +57,8 @@ const FindInputField = ({
           onBlur={onTouch}
           readOnly={
             (label === "인증번호" && finalCertified) ||
-            (label === "이메일" && sendComplete)
+            (label === "이메일" && sendComplete) ||
+            fixedEmail
           }
           className={touched && !valid && isError ? styles["error"] : ""}
         />

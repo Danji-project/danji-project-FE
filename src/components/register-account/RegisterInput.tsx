@@ -1,4 +1,5 @@
 import { useCheckEmail } from "../../hooks/useCheckEmail";
+import { useCertifyInfo } from "../../stores/useCertifyInfo";
 import { useModalTextStore } from "../../stores/useModalText";
 import { usePendingStore } from "../../stores/usePendingStore";
 import styles from "./RegisterInput.module.scss";
@@ -46,11 +47,10 @@ const RegisterInput = ({
   isPasswordButton?: boolean;
   passwordTypeChange?: (exports: string) => void;
 }) => {
-  console.log(type);
-
   const { checkEmailMutation, checkEmailPending } = useCheckEmail();
   const { setModalPending, setModalLoading } = usePendingStore();
   const { setModalTitle } = useModalTextStore();
+  const { isNest } = useCertifyInfo();
 
   return (
     <div className={styles["register__input__" + className]}>
@@ -68,7 +68,7 @@ const RegisterInput = ({
         {isConfirm && (
           <button
             type="button"
-            disabled={!isValid}
+            disabled={!isValid || isNest}
             onClick={() => {
               checkEmailMutation.mutate(value);
               setModalPending(true);

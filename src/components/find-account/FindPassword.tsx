@@ -6,11 +6,6 @@ import FindInputField from "../common/find-input-field/FindInputField";
 import { useSendValidation } from "../../hooks/useSendValidation";
 
 const FindPassword = () => {
-  const { sendValidationMutation, receivedValidationMutation } =
-    useSendValidation();
-
-  const navigate = useNavigate();
-
   const [emailData, setEmailData] = useState({
     value: "",
     valid: false,
@@ -29,6 +24,11 @@ const FindPassword = () => {
     errorMessage: "",
     okMessage: "",
   });
+
+  const { sendValidationMutation, receivedValidationMutation } =
+    useSendValidation(emailData.value);
+
+  const navigate = useNavigate();
 
   const changeEmailData = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailData((prev) => ({
@@ -67,14 +67,12 @@ const FindPassword = () => {
 
     // 인증번호 보내기
     sendValidationMutation.mutate({
-      email: emailData.value,
       type: "FIND_PASSWORD",
     });
   };
 
   const sendNumber = () => {
     receivedValidationMutation.mutate({
-      email: emailData.value,
       code: certifyingNumber.value,
     });
 

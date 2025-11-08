@@ -6,16 +6,20 @@ import { usePendingStore } from "../stores/usePendingStore";
 import { useModalTextStore } from "../stores/useModalText";
 import { useCertifyInfo } from "../stores/useCertifyInfo";
 
-export const useSendValidation = () => {
+export const useSendValidation = (email: string) => {
   const [failedErrorMessage, setFailedErrorMessage] = useState("");
 
   const { setModalPending } = usePendingStore();
   const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
-  const { setSendComplete, setCertifiedComplete, setOkMessage } =
-    useCertifyInfo();
+  const {
+    setSendComplete,
+    setCertifiedComplete,
+    setOkMessage,
+    setSuccessEmail,
+  } = useCertifyInfo();
 
   const sendValidationMutation = useMutation({
-    mutationFn: async ({ email, type }: { email: string; type: string }) => {
+    mutationFn: async ({ type }: { type: string }) => {
       const res = await axios.post("/api/mail/certification-code/send", {
         mail: email,
         type,
@@ -31,7 +35,7 @@ export const useSendValidation = () => {
   });
 
   const receivedValidationMutation = useMutation({
-    mutationFn: async ({ email, code }: { email: string; code: string }) => {
+    mutationFn: async ({ code }: { code: string }) => {
       const res = await axios.get(
         `/api/mail/certification-code/verify?email=${email}&code=${code}`
       );
@@ -42,6 +46,7 @@ export const useSendValidation = () => {
       setModalPending(true);
       setCertifiedComplete(true);
       setOkMessage("인증되었습니다.");
+      setSuccessEmail(email);
     },
     onError: (e) => {
       console.error(e);
