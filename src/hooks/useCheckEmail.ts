@@ -1,8 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useModalTextStore } from "../stores/useModalText";
+import { useCertifyInfo } from "../stores/useCertifyInfo";
 
 export const useCheckEmail = () => {
+  const { setIsNest } = useCertifyInfo();
   const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
 
   const checkEmailMutation = useMutation({
@@ -19,10 +21,10 @@ export const useCheckEmail = () => {
         setModalText(data.message);
       }
       setIsOnlyConfirmed(false);
+      setIsNest(true);
     },
     onError: () => {
       setModalText("중복된 이메일입니다.");
-      setIsOnlyConfirmed(true);
     },
   });
 

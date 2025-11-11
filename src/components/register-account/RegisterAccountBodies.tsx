@@ -284,17 +284,21 @@ const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
   const { modalPending, setModalPending } = usePendingStore();
-  const { modalText, setModalTitle, setModalText, isOnlyConfirmed } =
-    useModalTextStore();
+  const {
+    modalText,
+    setModalTitle,
+    setModalText,
+    isOnlyConfirmed,
+    setIsOnlyConfirmed,
+  } = useModalTextStore();
 
-  const { isNest } = useCertifyInfo();
+  const { isNest, setIsNest } = useCertifyInfo();
 
   const {
     sendValidationMutation,
-    sendValidationPending,
     receivedValidationMutation,
     failedErrorMessage,
-  } = useSendValidation();
+  } = useSendValidation(registerState.email.value);
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "EMAIL_CHANGE", payload: { data: e.target.value } });
@@ -445,10 +449,11 @@ const RegisterAccountBodies = () => {
             onCancel={() => {
               setModalPending(false);
               setModalText("");
+              setIsOnlyConfirmed(true);
+              setIsNest(false);
             }}
             onSend={() => {
               sendValidationMutation.mutate({
-                email: registerState.email.value,
                 type: "SIGN_UP",
               });
             }}
@@ -460,7 +465,7 @@ const RegisterAccountBodies = () => {
             }}
           />
         )}
-        {isNest && !sendValidationPending && (
+        {isNest && (
           <RegisterInput
             label="인증번호 입력"
             placeholder="인증번호를 입력해주세요"
@@ -477,7 +482,6 @@ const RegisterAccountBodies = () => {
             isValidation
             onCertify={() => {
               receivedValidationMutation.mutate({
-                email: registerState.email.value,
                 code: registerState.validationCode.value,
               });
               setModalTitle("인증하기");

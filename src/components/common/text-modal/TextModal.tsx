@@ -2,6 +2,7 @@ import { useRootPosition } from "../../../hooks/useRootPosition";
 import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { useModalTextStore } from "../../../stores/useModalText";
 import { usePendingStore } from "../../../stores/usePendingStore";
+import BoxSkeleton from "../box-skeleton/BoxSkeleton";
 import styles from "./TextModal.module.scss";
 
 const TextModal = ({
@@ -19,7 +20,7 @@ const TextModal = ({
 }) => {
   useRootPosition();
 
-  const { setModalPending, modalLoading } = usePendingStore();
+  const { setModalPending } = usePendingStore();
   const { setModalText, modalTitle } = useModalTextStore();
 
   const { positionBottom, positionLeft } = useRootPositionStore();
@@ -34,10 +35,12 @@ const TextModal = ({
         marginLeft: `calc((var(--device-width) - 300px) / 2)`,
       }}
     >
-      {usingConfirm && <h2>{modalTitle}</h2>}
-      <p className={usingConfirm ? styles["text__modal__confirm__text"] : ""}>
-        {modalLoading ? "로딩 중..." : text}
-      </p>
+      <h2>{modalTitle}</h2>
+      {text ? (
+        <p className={styles["text__modal__confirm__text"]}>{text}</p>
+      ) : (
+        <BoxSkeleton />
+      )}
       {usingConfirm && (
         <button
           onClick={() => {

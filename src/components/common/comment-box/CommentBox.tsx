@@ -28,8 +28,14 @@ const CommentBox = ({
   const [mode, setMode] = useState<"CONTENT" | "EDIT">("CONTENT");
   const [commentContents, setCommentContents] = useState("");
 
-  const { setProfilePending, setModalPending } = usePendingStore();
-  const { setModalText } = useModalTextStore();
+  const {
+    setProfilePending,
+    setModalPending,
+    setProfileNick,
+    setProfileImg,
+    setProfileId,
+  } = usePendingStore();
+  const { setModalText, setModalTitle } = useModalTextStore();
 
   const [commentContent, setCommentContent] = useState("");
 
@@ -71,6 +77,14 @@ const CommentBox = ({
           className={styles["comment__box__userInfo__profile"]}
           onClick={() => {
             setProfilePending(true);
+            setProfileImg(
+              comment.commentMemberResponseDto.fileId
+                ? "https://s3.ap-northeast-2.amazonaws.com/danjitalk/" +
+                    comment.commentMemberResponseDto.fileId
+                : "/profile_imgSrc.jpg"
+            );
+            setProfileNick(comment.commentMemberResponseDto.nickname);
+            setProfileId(comment.commentMemberResponseDto.memberId);
           }}
         >
           <img
@@ -112,6 +126,7 @@ const CommentBox = ({
                 } else {
                   setModalPending(true);
                   setModalText("수정 권한이 없는 사용자입니다.");
+                  setModalTitle("메시지");
                 }
               }}
             >
