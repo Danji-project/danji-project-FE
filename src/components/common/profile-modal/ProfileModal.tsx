@@ -4,13 +4,10 @@ import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { usePendingStore } from "../../../stores/usePendingStore";
 import styles from "./ProfileModal.module.scss";
 import { requestDirectChat } from "../../../hooks/useChat";
-import { useNavigate } from "react-router-dom";
-
 const ProfileModal = ({ nick, img }: { nick: string; img: string }) => {
   const [isFinal, setIsFinal] = useState(false);
   const [requestChat, setRequestChat] = useState("");
-  const { setProfilePending, profileId, profileImg, profileNick } =
-    usePendingStore();
+  const { setProfilePending, profileId } = usePendingStore();
   const { requestFunction } = requestDirectChat({ setIsFinal });
 
   useRootPosition();

@@ -146,6 +146,7 @@ export const requestDirectChat = ({
         receiverId,
         message: messages,
       });
+      return res.data;
     },
     onSuccess: () => {
       navigate("/chat-page");
@@ -205,6 +206,7 @@ export const cancelSend = () => {
   const cancelFunction = useMutation({
     mutationFn: async (requestId: number) => {
       const res = await axios.delete(`/api/chat/request/${requestId}`);
+      return res.data;
     },
     onSuccess: () => {
       sendFunction.mutate();
