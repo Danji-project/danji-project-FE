@@ -223,6 +223,7 @@ export const approveReceived = () => {
   const approvedFunction = useMutation({
     mutationFn: async (requestId: number) => {
       const res = await axios.post(`/api/chat/request/${requestId}/approve`);
+      return res.data;
     },
     onSuccess: () => {
       sendFunction.mutate();
