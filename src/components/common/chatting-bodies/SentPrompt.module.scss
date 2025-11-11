@@ -1,0 +1,12 @@
+.sent__prompt {
+  display: flex;
+  flex-direction: column;
+  &__none {
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    p {
+      color: rgb(118, 118, 118);
+    }
+  }
+}

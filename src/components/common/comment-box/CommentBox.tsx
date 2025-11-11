@@ -28,8 +28,13 @@ const CommentBox = ({
   const [mode, setMode] = useState<"CONTENT" | "EDIT">("CONTENT");
   const [commentContents, setCommentContents] = useState("");
 
-  const { setProfilePending, setModalPending, setProfileNick, setProfileImg } =
-    usePendingStore();
+  const {
+    setProfilePending,
+    setModalPending,
+    setProfileNick,
+    setProfileImg,
+    setProfileId,
+  } = usePendingStore();
   const { setModalText, setModalTitle } = useModalTextStore();
 
   const [commentContent, setCommentContent] = useState("");
@@ -79,6 +84,7 @@ const CommentBox = ({
                 : "/profile_imgSrc.jpg"
             );
             setProfileNick(comment.commentMemberResponseDto.nickname);
+            setProfileId(comment.commentMemberResponseDto.memberId);
           }}
         >
           <img

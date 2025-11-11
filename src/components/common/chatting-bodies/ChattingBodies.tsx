@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styles from "./ChattingBodies.module.scss";
 import DirectChatting from "./DirectChatting";
+import SentPrompt from "./SentPrompt";
+import ReceivedPrompt from "./ReceivedPrompt";
 
 const ChattingBodies = () => {
   const tabs = [
@@ -28,6 +30,8 @@ const ChattingBodies = () => {
       </div>
       <div className={styles["chatting__bodies__main"]}>
         {selectedTabs === "directChatting" && <DirectChatting />}
+        {selectedTabs === "receivedPrompt" && <ReceivedPrompt />}
+        {selectedTabs === "sendPrompt" && <SentPrompt />}
       </div>
     </div>
   );

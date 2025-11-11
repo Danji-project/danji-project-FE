@@ -3,15 +3,23 @@ import { useRootPosition } from "../../../hooks/useRootPosition";
 import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { usePendingStore } from "../../../stores/usePendingStore";
 import styles from "./ProfileModal.module.scss";
+import { requestDirectChat } from "../../../hooks/useChat";
+import { useNavigate } from "react-router-dom";
 
 const ProfileModal = ({ nick, img }: { nick: string; img: string }) => {
   const [isFinal, setIsFinal] = useState(false);
   const [requestChat, setRequestChat] = useState("");
-  const { setProfilePending } = usePendingStore();
+  const { setProfilePending, profileId, profileImg, profileNick } =
+    usePendingStore();
+  const { requestFunction } = requestDirectChat({ setIsFinal });
 
   useRootPosition();
 
   const { positionBottom, positionLeft } = useRootPositionStore();
+
+  const requestDirectMessage = (receiverId: number, messages: string) => {
+    requestFunction.mutate({ receiverId, messages });
+  };
 
   if (!isFinal)
     return (
@@ -73,7 +81,14 @@ const ProfileModal = ({ nick, img }: { nick: string; img: string }) => {
           }
         />
         <div className={styles["profile__modal__final__button"]}>
-          <button disabled={!requestChat}>요청</button>
+          <button
+            disabled={!requestChat}
+            onClick={() => {
+              requestDirectMessage(profileId!, requestChat);
+            }}
+          >
+            요청
+          </button>
           <button
             onClick={() => {
               setIsFinal(false);

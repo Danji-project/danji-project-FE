@@ -1,3 +1,6 @@
+import type { Response } from "../stores/useChatDetail";
+
+// 날짜 표시하기
 export const getRelativeTime = (dateString: string): string => {
   const date = new Date(dateString);
   const now = new Date();
@@ -20,4 +23,15 @@ export const getRelativeTime = (dateString: string): string => {
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const day = date.getDate().toString().padStart(2, "0");
   return `${year}.${month}.${day}`;
+};
+
+// 날짜별로 묶는 함수
+export const groupMessagesByDate = (messages: Response[]) => {
+  return messages.reduce((acc: Record<string, Response[]>, msg: Response) => {
+    const date = msg.createdAt.split("T")[0];
+
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(msg);
+    return acc;
+  }, {} as Record<string, Response[]>);
 };

@@ -14,8 +14,14 @@ import FindAccount from "../pages/find-account/FindAccount";
 import ChattingPage from "../pages/chat-page/ChattingPage";
 import ResetPassword from "../pages/reset-password/ResetPassword";
 import LoginPage from "../pages/login/loginPage";
+import ChattingDetail from "../pages/chat-detail/ChattingDetail";
+import { useChatListStore } from "../stores/useChatList";
 
 const AppRoutes = () => {
+  const { chatData } = useChatListStore();
+
+  console.log(chatData);
+
   return (
     <Suspense fallback={<div>loading...</div>}>
       <Routes>
@@ -45,6 +51,7 @@ const AppRoutes = () => {
 
         {/* 채팅 라우팅 */}
         <Route path="/chat-page" element={<ChattingPage />} />
+        <Route path="/chat-detail/:chatroomId" element={<ChattingDetail />} />
       </Routes>
     </Suspense>
   );

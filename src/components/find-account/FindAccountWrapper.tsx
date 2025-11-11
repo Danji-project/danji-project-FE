@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "./FindAccountWrapper.module.scss";
-import FindId from "./FindId";
 import { usePendingStore } from "../../stores/usePendingStore";
 import TextModal from "../common/text-modal/TextModal";
 import { useModalTextStore } from "../../stores/useModalText";
@@ -27,9 +26,7 @@ const FindAccountWrapper = () => {
           </button>
         ))}
       </div>
-      <div className={styles["find__account__wrapper__main"]}>
-        {selectedTabs === "ID" && <FindId />}
-      </div>
+      <div className={styles["find__account__wrapper__main"]}></div>
       {modalPending && <TextModal text={modalText} usingConfirm={true} />}
     </div>
   );
