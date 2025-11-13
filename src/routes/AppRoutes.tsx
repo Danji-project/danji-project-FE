@@ -16,6 +16,8 @@ import ResetPassword from "../pages/reset-password/ResetPassword";
 import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
 import { useChatListStore } from "../stores/useChatList";
+import MyPage from "../pages/my-pages/MyPage";
+import SearchResult from "../pages/search-result/SearchResult";
 
 const AppRoutes = () => {
   const { chatData } = useChatListStore();
@@ -45,13 +47,16 @@ const AppRoutes = () => {
 
         {/* 마이페이지 라우팅 */}
         <Route element={<MyPageRoutes />}>
-          {/*  <Route path="/my-page" element={<MyPage />} /> */}
           <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
+          <Route path="/my-page" element={<MyPage />} />
         </Route>
 
         {/* 채팅 라우팅 */}
         <Route path="/chat-page" element={<ChattingPage />} />
         <Route path="/chat-detail/:chatroomId" element={<ChattingDetail />} />
+
+        {/* 검색 라우팅 */}
+        <Route path={"/search/result"} element={<SearchResult />} />
       </Routes>
     </Suspense>
   );

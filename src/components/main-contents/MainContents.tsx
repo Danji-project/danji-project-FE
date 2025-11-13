@@ -4,6 +4,7 @@ import styles from "./MainContents.module.scss";
 import SearchBox from "../common/search-box/search-box";
 import ApartLists from "../common/apart-lists/ApartLists";
 import { fetchedApartments } from "../../assets/mock/apartmentMock";
+import { useNavigate } from "react-router-dom";
 
 const MainContents = ({
   searchContent,
@@ -12,6 +13,8 @@ const MainContents = ({
   searchContent: string;
   setSearchContent: Dispatch<SetStateAction<string>>;
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles["main__contents"]}>
       <SearchBox
@@ -20,7 +23,9 @@ const MainContents = ({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setSearchContent(e.target.value);
         }}
-        onSearch={() => {}}
+        onSearch={() => {
+          navigate(`/search/result?keyword=${searchContent}`);
+        }}
       />
       <ApartLists
         title={"신축 아파트 분양정보"}
