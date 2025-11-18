@@ -31,6 +31,9 @@ export const useFindId = () => {
       setModalText("찾을 수 없는 사용자입니다.");
       setModalPending(true);
     },
+    onSuccess: () => {
+      console.log("성공!");
+    },
   });
 
   return { findIdMutation, findIdPending: findIdMutation.isPending };

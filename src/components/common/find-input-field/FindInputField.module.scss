@@ -1,0 +1,31 @@
+.find__input__field {
+  margin-bottom: 1.8rem;
+  &__label {
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+  &__inputs {
+    input {
+      width: 100%;
+      padding: 10px 0;
+      margin-top: 10px;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid rgb(30, 57, 51);
+    }
+  }
+}
+
+.error {
+  font-size: 14px;
+  margin-top: 6px;
+  color: rgb(217, 28, 28);
+}
+
+.correct {
+  font-size: 14px;
+  margin-top: 6px;
+  color: rgb(60, 165, 62);
+}
