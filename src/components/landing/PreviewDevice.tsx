@@ -8,7 +8,7 @@ import { useRootPositionStore } from "../../stores/rootPositionStore";
 import { usePendingStore } from "../../stores/usePendingStore";
 
 const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
-  const { isPending } = useUserInfoMutation();
+  const { userInfoPending } = useUserInfoMutation();
   const {
     apartChatBlack,
     profilePending,
@@ -28,7 +28,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
     <div
       ref={rootRef}
       className={`preview-device ${
-        isPending ||
+        userInfoPending ||
         sidebarOpen ||
         apartChatBlack ||
         profilePending ||
@@ -40,7 +40,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
           : ""
       }`}
     >
-      {(isPending || isLoginPending || findPending) && (
+      {(userInfoPending || isLoginPending || findPending) && (
         <div
           className="div-background-black"
           style={{

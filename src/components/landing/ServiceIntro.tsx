@@ -4,7 +4,7 @@ const ServiceIntro = () => {
   const navigate = useNavigate();
 
   const handleChatClick = () => {
-    navigate("/chat");
+    navigate("/chat-page");
   };
 
   return (
