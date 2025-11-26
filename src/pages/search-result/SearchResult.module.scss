@@ -1,0 +1,34 @@
+.search__result__wrapper {
+  padding-top: 20px;
+}
+.search__result__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  > div {
+    flex: 1;
+    height: 40px;
+  }
+}
+.search__result {
+  padding-top: 1rem;
+  h2 {
+    font-size: 17px;
+    span {
+      color: rgb(151, 187, 255);
+    }
+    padding-bottom: 20px;
+  }
+  &__list {
+    height: 500px;
+    overflow-y: auto;
+  }
+}

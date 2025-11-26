@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from "../../layouts/Header";
 import { useUserInfo } from "../../stores/userStore";
-import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
 import { useNavigate } from "react-router-dom";
 import MainContents from "../../components/main-contents/MainContents";
 import MenuSidebar from "../../components/common/menu-sidebar/MenuSidebar";
@@ -12,15 +11,8 @@ const MainPage = () => {
   const [searchContent, setSearchContent] = useState("");
   const { isOpen, setIsOpen } = useSidebarStore();
 
-  const { executeUserInfoMutation } = useUserInfoMutation();
   const isLogin = useUserInfo((state) => state.isLogin);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLogin) {
-      executeUserInfoMutation();
-    }
-  }, [isLogin]);
 
   return (
     <>
