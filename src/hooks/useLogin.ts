@@ -10,7 +10,7 @@ export const useLogin = (
   setIdError: Dispatch<SetStateAction<string>>
 ) => {
   const navigate = useNavigate();
-  const { executeUserInfoMutation } = useUserInfoMutation();
+  const { getUserInfo } = useUserInfoMutation();
 
   const loginMutation = useMutation({
     mutationFn: async () => {
@@ -30,7 +30,7 @@ export const useLogin = (
     },
     onSuccess: () => {
       navigate("/");
-      executeUserInfoMutation();
+      getUserInfo.mutate();
     },
     onError: (e: Error) => {
       setIdError("이메일 형식이 올바르지 않습니다.|예: example@domain.com");

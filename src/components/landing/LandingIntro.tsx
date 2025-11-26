@@ -7,7 +7,7 @@ import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
 
 const LandingIntro = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const { executeUserInfoMutation } = useUserInfoMutation();
+  const { getUserInfo } = useUserInfoMutation();
 
   useEffect(() => {
     const mobileResize = () => {
@@ -17,10 +17,10 @@ const LandingIntro = () => {
         setIsMobile(false);
       }
     };
-
-    executeUserInfoMutation();
     mobileResize();
     window.addEventListener("resize", mobileResize);
+
+    getUserInfo.mutate();
 
     return () => {
       window.removeEventListener("resize", mobileResize);

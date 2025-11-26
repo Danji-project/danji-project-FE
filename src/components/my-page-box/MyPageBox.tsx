@@ -7,7 +7,7 @@ const MyPageBox = () => {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
 
-  console.log(nickname, email);
+  console.log(nickname, email, profileImage);
 
   return (
     <div className={styles["my__page__box"]}>
