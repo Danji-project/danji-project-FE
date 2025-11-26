@@ -1,0 +1,14 @@
+.search__danji__link {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgb(237, 237, 237);
+  &__thumb {
+    width: 60px;
+    height: 60px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
+}

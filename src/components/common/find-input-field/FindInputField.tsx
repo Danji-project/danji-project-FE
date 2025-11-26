@@ -11,6 +11,7 @@ const FindInputField = ({
   errorMessage,
   touched,
   onTouch,
+  onSendCode,
 }: {
   label: string;
   htmlFor: string;
@@ -22,6 +23,7 @@ const FindInputField = ({
   errorMessage: string;
   touched: boolean;
   onTouch: () => void;
+  onSendCode?: () => void;
 }) => {
   return (
     <div className={styles["find__input__field"]}>
@@ -36,13 +38,16 @@ const FindInputField = ({
           onChange={onChange}
           onBlur={onTouch}
         />
-        {touched && isError && !valid && (
-          <p className={styles["error"]}>{errorMessage}</p>
-        )}
-        {touched && !isError && valid && (
-          <p className={styles["correct"]}>올바른 입력입니다.</p>
+        {label === "이메일" && (
+          <button disabled={!valid || isError || !touched}>인증번호</button>
         )}
       </div>
+      {touched && isError && !valid && (
+        <p className={styles["error"]}>{errorMessage}</p>
+      )}
+      {touched && !isError && valid && (
+        <p className={styles["correct"]}>올바른 입력입니다.</p>
+      )}
     </div>
   );
 };

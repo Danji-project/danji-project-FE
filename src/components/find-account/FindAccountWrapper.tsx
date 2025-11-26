@@ -4,6 +4,7 @@ import { usePendingStore } from "../../stores/usePendingStore";
 import TextModal from "../common/text-modal/TextModal";
 import { useModalTextStore } from "../../stores/useModalText";
 import FindId from "./FindId";
+import FindPassword from "./FindPassword";
 
 const FindAccountWrapper = () => {
   const tabs = ["ID/아이디", "PASS/비밀번호"];
@@ -29,6 +30,7 @@ const FindAccountWrapper = () => {
       </div>
       <div className={styles["find__account__wrapper__main"]}>
         {selectedTabs === "ID" && <FindId />}
+        {selectedTabs === "PASS" && <FindPassword />}
       </div>
       {modalPending && <TextModal text={modalText} usingConfirm={true} />}
     </div>
