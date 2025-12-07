@@ -22,8 +22,21 @@ const TextModal = ({
 
   const { setModalPending } = usePendingStore();
   const { setModalText, modalTitle } = useModalTextStore();
+  const { modalLoading } = usePendingStore();
 
   const { positionBottom, positionLeft } = useRootPositionStore();
+  let content;
+  if (modalLoading) {
+    content = (
+      <div className={styles["text__modal__loading"]}>
+        <BoxSkeleton />
+      </div>
+    );
+  } else if (text) {
+    content = <p className={styles["text__modal__confirm__text"]}>{text}</p>;
+  } else {
+    content = <BoxSkeleton />;
+  }
 
   return (
     <div
@@ -36,11 +49,7 @@ const TextModal = ({
       }}
     >
       <h2>{modalTitle}</h2>
-      {text ? (
-        <p className={styles["text__modal__confirm__text"]}>{text}</p>
-      ) : (
-        <BoxSkeleton />
-      )}
+      {content}
       {usingConfirm && (
         <button
           onClick={() => {

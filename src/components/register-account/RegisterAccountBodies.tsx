@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import styles from "./RegisterAccountBodies.module.scss";
 import RegisterInput from "./RegisterInput";
 import { validators } from "../../utils/validators";
@@ -284,6 +284,7 @@ const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
   const { modalPending, setModalPending } = usePendingStore();
+  const { setModalLoading } = usePendingStore();
   const {
     modalText,
     setModalTitle,
@@ -296,9 +297,21 @@ const RegisterAccountBodies = () => {
 
   const {
     sendValidationMutation,
+    sendValidationPending,
     receivedValidationMutation,
     failedErrorMessage,
   } = useSendValidation(registerState.email.value);
+
+  useEffect(() => {
+    // Show modal loading while sendValidation is in progress
+    // debug: log pending state to help diagnose when loading isn't shown
+    // eslint-disable-next-line no-console
+    console.debug("sendValidationPending:", sendValidationPending);
+    setModalLoading(Boolean(sendValidationPending));
+    return () => {
+      setModalLoading(false);
+    };
+  }, [sendValidationPending, setModalLoading]);
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "EMAIL_CHANGE", payload: { data: e.target.value } });

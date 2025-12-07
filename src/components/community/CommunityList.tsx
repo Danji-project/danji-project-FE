@@ -12,25 +12,35 @@ import { sortContents } from "../../assets/mock/tabsMocks";
 import CommunityCard from "./CommunityCard";
 import { useRootPositionStore } from "../../stores/rootPositionStore";
 import { useNavigate } from "react-router-dom";
+import CommunitySkeleton from "../common/community-skeleton/CommunitySkeleton";
 
 const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
   const [selectedSort, setSelectedSort] = useState("ALL");
   const [isOpen, setIsOpen] = useState(false);
-  const { feedListMutate } = useFeedList(apartData.id, selectedSort);
+  const { feedListMutate, feedListPending } = useFeedList(
+    apartData.id,
+    selectedSort
+  );
   const { data } = useFeedListStore();
   const { positionTop, positionLeft } = useRootPositionStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     feedListMutate();
-  }, []);
+  }, [selectedSort]);
+
+  if (feedListPending) {
+    return <CommunitySkeleton />;
+  }
 
   return (
     <div className={styles["community__list"]}>
       <div className={styles["community__list__title"]}>
         {sortContents.map(
           (s: string) =>
-            s.split("/")[1] === selectedSort && <h1>{s.split("/")[0]}</h1>
+            s.split("/")[1] === selectedSort && (
+              <h1 key={`title-${selectedSort}`}>{s.split("/")[0]}</h1>
+            )
         )}
         <ComboBox
           contents={sortContents}
@@ -43,7 +53,7 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
       </div>
       <div className={styles["community__list__main"]}>
         {data.feedDtoList.map((fdl: FeedList3) => (
-          <CommunityCard cardData={fdl} apartData={apartData} />
+          <CommunityCard key={fdl.id} cardData={fdl} apartData={apartData} />
         ))}
       </div>
       <button

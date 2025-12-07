@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUserInfoMutation } from "./useUserInfoMutation";
+import { usePendingStore } from "../stores/usePendingStore";
 
 export const useLogin = (
   loginId: string,
@@ -11,6 +12,7 @@ export const useLogin = (
 ) => {
   const navigate = useNavigate();
   const { getUserInfo } = useUserInfoMutation();
+  const { setLoginPending } = usePendingStore();
 
   const loginMutation = useMutation({
     mutationFn: async () => {
@@ -29,10 +31,12 @@ export const useLogin = (
       return res.data;
     },
     onSuccess: () => {
+      setLoginPending(false);
       navigate("/");
       getUserInfo.mutate();
     },
     onError: (e: Error) => {
+      setLoginPending(false);
       setIdError("이메일 형식이 올바르지 않습니다.|예: example@domain.com");
       console.error(e);
     },

@@ -16,10 +16,11 @@ import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
 import MyPage from "../pages/my-pages/MyPage";
 import SearchResult from "../pages/search-result/SearchResult";
+import AppSkeleton from "../components/common/app-skeleton/AppSkeleton";
 
 const AppRoutes = () => {
   return (
-    <Suspense fallback={<div>loading...</div>}>
+    <Suspense fallback={<AppSkeleton />}>
       <Routes>
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
