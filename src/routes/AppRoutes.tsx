@@ -16,6 +16,7 @@ import ResetPassword from "../pages/reset-password/ResetPassword";
 import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
 import { useChatListStore } from "../stores/useChatList";
+import AppSkeleton from "../components/common/app-skeleton/AppSkeleton";
 
 const AppRoutes = () => {
   const { chatData } = useChatListStore();
@@ -23,7 +24,7 @@ const AppRoutes = () => {
   console.log(chatData);
 
   return (
-    <Suspense fallback={<div>loading...</div>}>
+    <Suspense fallback={<AppSkeleton />}>
       <Routes>
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />

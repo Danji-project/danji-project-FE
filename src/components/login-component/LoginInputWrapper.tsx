@@ -31,11 +31,7 @@ const LoginInputWrapper = () => {
     }
   };
 
-  const { loginMutation, loginMutationPending } = useLogin(
-    emailData,
-    passwordData,
-    setIdError
-  );
+  const { loginMutation } = useLogin(emailData, passwordData, setIdError);
 
   const { setLoginPending } = usePendingStore();
 
@@ -43,8 +39,8 @@ const LoginInputWrapper = () => {
     <form
       onSubmit={(e: React.FormEvent) => {
         e.preventDefault();
+        setLoginPending(true);
         loginMutation.mutate();
-        setLoginPending(loginMutationPending);
       }}
     >
       <div className={styles["login__input__wrapper__form"]}>

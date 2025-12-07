@@ -56,9 +56,16 @@ export const useSendValidation = (email: string) => {
 
   return {
     sendValidationMutation,
-    sendValidationPending: sendValidationMutation.isPending,
     receivedValidationMutation,
-    receivedValidationPending: sendValidationMutation.isPending,
+    // Provide a robust pending flag compatible with react-query v5 naming
+    sendValidationPending:
+      (sendValidationMutation as any).isPending ??
+      (sendValidationMutation as any).isLoading ??
+      false,
+    receivedValidationPending:
+      (receivedValidationMutation as any).isPending ??
+      (receivedValidationMutation as any).isLoading ??
+      false,
     failedErrorMessage,
   };
 };

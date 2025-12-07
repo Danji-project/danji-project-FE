@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useCheckEmail } from "../../hooks/useCheckEmail";
 import { useCertifyInfo } from "../../stores/useCertifyInfo";
 import { useModalTextStore } from "../../stores/useModalText";
@@ -51,6 +52,11 @@ const RegisterInput = ({
   const { setModalPending, setModalLoading } = usePendingStore();
   const { setModalTitle } = useModalTextStore();
   const { isNest } = useCertifyInfo();
+
+  // Keep modal loading state in sync with mutation pending state
+  useEffect(() => {
+    setModalLoading(checkEmailPending);
+  }, [checkEmailPending, setModalLoading]);
 
   return (
     <div className={styles["register__input__" + className]}>
