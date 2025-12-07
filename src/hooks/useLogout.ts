@@ -3,7 +3,7 @@ import axios from "axios";
 import { useUserInfoMutation } from "./useUserInfoMutation";
 
 export const useLogout = () => {
-  const { executeUserInfoMutation } = useUserInfoMutation();
+  const { getUserInfo } = useUserInfoMutation();
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
@@ -11,7 +11,8 @@ export const useLogout = () => {
       return res.data;
     },
     onSuccess: async () => {
-      executeUserInfoMutation();
+      // refresh user info after logout
+      getUserInfo.mutate();
     },
   });
 

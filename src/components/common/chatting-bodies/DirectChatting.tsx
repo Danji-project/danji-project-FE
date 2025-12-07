@@ -19,9 +19,6 @@ const DirectChatting = () => {
 
   return (
     <div className={styles["direct__chatting"]}>
-      {/* debug pending */}
-      {/* eslint-disable-next-line no-console */}
-      {console.debug("directChatPending:", directChatPending)}
       {directChatPending ? (
         <ChattingSkeleton />
       ) : (

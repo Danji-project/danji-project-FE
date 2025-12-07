@@ -53,7 +53,11 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
       </div>
       <div className={styles["community__list__main"]}>
         {data.feedDtoList.map((fdl: FeedList3) => (
-          <CommunityCard key={fdl.id} cardData={fdl} apartData={apartData} />
+          <CommunityCard
+            key={fdl.feedId}
+            cardData={fdl}
+            apartData={apartData}
+          />
         ))}
       </div>
       <button
