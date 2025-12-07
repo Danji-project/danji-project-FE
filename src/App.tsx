@@ -14,7 +14,7 @@ function App() {
   const [isMounted, setIsMounted] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const { executeUserInfoMutation } = useUserInfoMutation();
+  const { getUserInfo } = useUserInfoMutation();
 
   useEffect(() => {
     // 초기 로그인 상태 확인
@@ -22,7 +22,7 @@ function App() {
       try {
         // 토큰이 있으면 사용자 정보 조회
         await new Promise((resolve) => {
-          executeUserInfoMutation();
+          getUserInfo.mutate();
           resolve(true);
         });
       } catch (error) {
