@@ -466,6 +466,7 @@ const RegisterAccountBodies = () => {
               setIsNest(false);
             }}
             onSend={() => {
+              setModalLoading(true);
               sendValidationMutation.mutate({
                 type: "SIGN_UP",
               });

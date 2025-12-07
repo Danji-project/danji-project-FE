@@ -76,10 +76,10 @@ const RegisterInput = ({
             type="button"
             disabled={!isValid || isNest}
             onClick={() => {
-              checkEmailMutation.mutate(value);
+              setModalLoading(true);
               setModalPending(true);
-              setModalLoading(checkEmailPending);
               setModalTitle("중복확인");
+              checkEmailMutation.mutate(value);
             }}
           >
             중복확인

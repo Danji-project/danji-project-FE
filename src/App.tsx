@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import { BrowserRouter as Router } from "react-router";
 import LandingIntro from "./components/landing/LandingIntro";
-import AppSkeleton from "./components/common/app-skeleton/AppSkeleton";
+import HomeSkeleton from "./components/common/home-skeleton/HomeSkeleton";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useUserInfoMutation } from "./hooks/useUserInfoMutation";
 
@@ -45,14 +45,18 @@ function App() {
   // 초기화 완료 후 마운트 상태 설정
   useEffect(() => {
     if (isInitialized) {
+      // 회원가입 페이지는 스켈레톤 스킵 (빠른 마운트)
+      const isRegisterPage =
+        globalThis.location.pathname === "/register-account";
+      const delay = isRegisterPage ? 0 : 500;
       setTimeout(() => {
         setIsMounted(true);
-      }, 500);
+      }, delay);
     }
   }, [isInitialized]);
 
   if (!isMounted) {
-    return <AppSkeleton />;
+    return <HomeSkeleton />;
   }
 
   if (hasError) {

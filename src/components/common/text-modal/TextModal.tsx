@@ -63,10 +63,10 @@ const TextModal = ({
       )}
       {!usingConfirm && (
         <div className={styles["text__modal__flex__button"]}>
-          <button type="button" onClick={onCancel}>
+          <button type="button" onClick={onCancel} disabled={modalLoading}>
             취소
           </button>
-          <button type="button" onClick={onSend}>
+          <button type="button" onClick={onSend} disabled={modalLoading}>
             인증번호 전송
           </button>
         </div>

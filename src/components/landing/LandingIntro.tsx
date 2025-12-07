@@ -11,7 +11,7 @@ const LandingIntro = () => {
 
   useEffect(() => {
     const mobileResize = () => {
-      if (window.innerWidth < 960) {
+      if (window.innerWidth < 920) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
