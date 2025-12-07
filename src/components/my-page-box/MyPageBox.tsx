@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useUserInfo } from "../../stores/userStore";
 import styles from "./MyPageBox.module.scss";
 
 const MyPageBox = () => {
   const { profileImage, nickname, email } = useUserInfo();
   const fileRef = useRef<HTMLInputElement | null>(null);
-  const [file, setFile] = useState<File | null>(null);
 
   console.log(nickname, email, profileImage);
 
@@ -21,13 +20,7 @@ const MyPageBox = () => {
           }
           alt="edit_profile"
         />
-        <input
-          type="file"
-          ref={fileRef}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFile(e.target.files![0])
-          }
-        />
+        <input type="file" ref={fileRef} />
         <button
           onClick={() => {
             fileRef.current?.click();

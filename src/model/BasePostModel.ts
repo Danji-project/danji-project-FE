@@ -12,5 +12,3 @@ export interface BasePost {
   reactionCount?: number;
   [key: string]: any;
 }
-
-export default BasePost;

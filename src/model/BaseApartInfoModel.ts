@@ -9,5 +9,3 @@ export interface BaseApartInfo {
   moveAbleMonth?: number | null;
   [key: string]: any;
 }
-
-export default BaseApartInfo;

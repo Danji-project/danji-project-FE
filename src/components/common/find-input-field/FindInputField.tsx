@@ -11,7 +11,6 @@ const FindInputField = ({
   errorMessage,
   touched,
   onTouch,
-  onSendCode,
 }: {
   label: string;
   htmlFor: string;
@@ -23,7 +22,6 @@ const FindInputField = ({
   errorMessage: string;
   touched: boolean;
   onTouch: () => void;
-  onSendCode?: () => void;
 }) => {
   return (
     <div className={styles["find__input__field"]}>
