@@ -11,6 +11,13 @@ const FindInputField = ({
   errorMessage,
   touched,
   onTouch,
+  buttonText,
+  onButtonClick,
+  buttonDisabled,
+  showButton,
+  placeholder,
+  showPasswordToggle,
+  onPasswordToggle,
 }: {
   label: string;
   htmlFor: string;
@@ -22,7 +29,23 @@ const FindInputField = ({
   errorMessage: string;
   touched: boolean;
   onTouch: () => void;
+  buttonText?: string;
+  onButtonClick?: () => void;
+  buttonDisabled?: boolean;
+  showButton?: boolean;
+  placeholder?: string;
+  showPasswordToggle?: boolean;
+  onPasswordToggle?: () => void;
 }) => {
+  const shouldShowButton =
+    showButton !== undefined ? showButton : label === "이메일";
+  const defaultButtonText = label === "이메일" ? "인증번호" : "";
+  const displayButtonText = buttonText || defaultButtonText;
+  const isButtonDisabled =
+    buttonDisabled !== undefined
+      ? buttonDisabled
+      : !valid || isError || !touched;
+
   return (
     <div className={styles["find__input__field"]}>
       <div className={styles["find__input__field__label"]}>
@@ -35,9 +58,25 @@ const FindInputField = ({
           value={value}
           onChange={onChange}
           onBlur={onTouch}
+          placeholder={placeholder}
         />
-        {label === "이메일" && (
-          <button disabled={!valid || isError || !touched}>인증번호</button>
+        {shouldShowButton && displayButtonText && (
+          <button disabled={isButtonDisabled} onClick={onButtonClick}>
+            {displayButtonText}
+          </button>
+        )}
+        {showPasswordToggle && (
+          <button
+            type="button"
+            onClick={onPasswordToggle}
+            className={styles["password__toggle__button"]}
+          >
+            {type === "text" ? (
+              <img src="/icons/type_off.png" alt="hide" />
+            ) : (
+              <img src="/icons/type_on.png" alt="show" />
+            )}
+          </button>
         )}
       </div>
       {touched && isError && !valid && (

@@ -11,6 +11,7 @@ import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
 import FindAccount from "../pages/find-account/FindAccount";
+import ResetPassword from "../pages/reset-password/ResetPassword";
 import ChattingPage from "../pages/chat-page/ChattingPage";
 import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
@@ -36,6 +37,7 @@ const AppRoutes = () => {
           <Route path="/register-account" element={<RegisterAccount />} />
           <Route path="/register-success" element={<RegisterSuccess />} />
           <Route path="/find-account" element={<FindAccount />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
         {/* 마이페이지 라우팅 */}

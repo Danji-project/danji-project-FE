@@ -34,5 +34,11 @@ export const useRegister = () => {
     },
   });
 
-  return { registerMutation };
+  return {
+    registerMutation,
+    registerPending:
+      (registerMutation as any).isPending ??
+      (registerMutation as any).isLoading ??
+      false,
+  };
 };

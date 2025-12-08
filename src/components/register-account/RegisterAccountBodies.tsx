@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer } from "react";
 import styles from "./RegisterAccountBodies.module.scss";
 import RegisterInput from "./RegisterInput";
 import { validators } from "../../utils/validators";
@@ -284,7 +284,6 @@ const RegisterAccountBodies = () => {
   const [registerState, dispatch] = useReducer(reducer, initialState);
 
   const { modalPending, setModalPending } = usePendingStore();
-  const { setModalLoading } = usePendingStore();
   const {
     modalText,
     setModalTitle,
@@ -293,25 +292,16 @@ const RegisterAccountBodies = () => {
     setIsOnlyConfirmed,
   } = useModalTextStore();
 
-  const { isNest, setIsNest } = useCertifyInfo();
+  const { isNest, setIsNest, okMessage } = useCertifyInfo();
 
   const {
     sendValidationMutation,
     sendValidationPending,
     receivedValidationMutation,
+    receivedValidationPending,
     failedErrorMessage,
+    clearFailedErrorMessage,
   } = useSendValidation(registerState.email.value);
-
-  useEffect(() => {
-    // Show modal loading while sendValidation is in progress
-    // debug: log pending state to help diagnose when loading isn't shown
-    // eslint-disable-next-line no-console
-    console.debug("sendValidationPending:", sendValidationPending);
-    setModalLoading(Boolean(sendValidationPending));
-    return () => {
-      setModalLoading(false);
-    };
-  }, [sendValidationPending, setModalLoading]);
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "EMAIL_CHANGE", payload: { data: e.target.value } });
@@ -319,6 +309,10 @@ const RegisterAccountBodies = () => {
 
   const changeValidationCode = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "CHANGE_VALIDATION", payload: { data: e.target.value } });
+    // 인증번호 입력이 변경되면 실패 메시지 초기화
+    if (failedErrorMessage) {
+      clearFailedErrorMessage();
+    }
   };
 
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -423,7 +417,7 @@ const RegisterAccountBodies = () => {
     nicknameDisabled ||
     phoneDisabled;
 
-  const { registerMutation } = useRegister();
+  const { registerMutation, registerPending } = useRegister();
 
   const joinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -459,6 +453,7 @@ const RegisterAccountBodies = () => {
           <TextModal
             text={modalText}
             usingConfirm={isOnlyConfirmed}
+            isLoading={sendValidationPending || receivedValidationPending}
             onCancel={() => {
               setModalPending(false);
               setModalText("");
@@ -466,7 +461,6 @@ const RegisterAccountBodies = () => {
               setIsNest(false);
             }}
             onSend={() => {
-              setModalLoading(true);
               sendValidationMutation.mutate({
                 type: "SIGN_UP",
               });
@@ -502,6 +496,7 @@ const RegisterAccountBodies = () => {
             }}
             failedMessage={failedErrorMessage}
             isCertifyConfirmed={registerState.email.isConfirmed}
+            successMessage={okMessage}
           />
         )}
         <RegisterInput
@@ -578,8 +573,8 @@ const RegisterAccountBodies = () => {
           isValid={registerState.phone.valid}
           onTouch={touchPhone}
         />
-        <button type="submit" disabled={allDisabled}>
-          회원가입
+        <button type="submit" disabled={allDisabled || registerPending}>
+          {registerPending ? "처리 중..." : "회원가입"}
         </button>
       </div>
     </form>
