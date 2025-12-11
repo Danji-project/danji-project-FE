@@ -31,7 +31,7 @@ export const useLogin = (
       );
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       // 쿠키 기반 인증이므로 토큰 저장 불필요 (서버에서 쿠키 설정)
       setLoginPending(false);
       navigate("/");
