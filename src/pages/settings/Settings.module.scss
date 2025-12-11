@@ -1,0 +1,76 @@
+.settings {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+
+  &__form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 1.5rem;
+    padding-bottom: 2rem;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &__label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 0.5rem;
+    }
+
+    &__value {
+      font-size: 0.875rem;
+      color: #666;
+      padding: 0.5rem 0;
+    }
+  }
+
+  &__input {
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__submit {
+    margin-top: auto;
+    margin-top: 2rem;
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+    transition: all 0.2s;
+    &__active {
+      background-color: #2773e6;
+      color: #fff;
+      cursor: pointer;
+      &:hover {
+        background-color: #1e5bb8;
+      }
+    }
+  }
+}

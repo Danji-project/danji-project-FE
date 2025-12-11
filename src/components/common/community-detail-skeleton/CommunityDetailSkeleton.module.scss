@@ -1,0 +1,167 @@
+@keyframes pulse {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@mixin skeleton {
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background-size: 200px 100%;
+  animation: pulse 1.2s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.container {
+  padding: 30px 16px;
+}
+
+.title {
+  @include skeleton;
+  height: 20px;
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.author {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.authorLabel {
+  @include skeleton;
+  height: 12px;
+  width: 40px;
+}
+
+.authorName {
+  @include skeleton;
+  height: 12px;
+  width: 50px;
+}
+
+.authorDate {
+  @include skeleton;
+  height: 12px;
+  width: 70px;
+}
+
+.icons {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.icon {
+  @include skeleton;
+  height: 12px;
+  width: 30px;
+}
+
+.contentBox {
+  background-color: rgb(249, 251, 255);
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contentLine {
+  @include skeleton;
+  height: 14px;
+  width: 100%;
+}
+
+.contentLineShort {
+  @include skeleton;
+  height: 14px;
+  width: 60%;
+}
+
+.images {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 20px;
+}
+
+.imageBox {
+  @include skeleton;
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.reactButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.reactButton {
+  @include skeleton;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.commentSection {
+  padding-top: 10px;
+  border-top: 1px solid rgb(237, 237, 237);
+}
+
+.commentTitle {
+  @include skeleton;
+  height: 15px;
+  width: 60px;
+  margin-bottom: 20px;
+}
+
+.commentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.commentHeader {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.commentAuthor {
+  @include skeleton;
+  height: 12px;
+  width: 60px;
+}
+
+.commentDate {
+  @include skeleton;
+  height: 12px;
+  width: 80px;
+}
+
+.commentText {
+  @include skeleton;
+  height: 14px;
+  width: 90%;
+}

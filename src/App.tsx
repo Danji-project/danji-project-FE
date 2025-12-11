@@ -20,14 +20,11 @@ function App() {
     // 초기 로그인 상태 확인
     const checkInitialLoginStatus = async () => {
       try {
-        // 토큰이 있으면 사용자 정보 조회
-        const token = localStorage.getItem("auth_token");
-        if (token) {
-          await new Promise((resolve) => {
-            getUserInfo.mutate();
-            resolve(true);
-          });
-        }
+        // 쿠키 기반 인증이므로 항상 사용자 정보 조회 시도 (쿠키가 있으면 자동으로 전송됨)
+        await new Promise((resolve) => {
+          getUserInfo.mutate();
+          resolve(true);
+        });
       } catch (error) {
         console.error("초기 로그인 상태 확인 실패:", error);
       } finally {

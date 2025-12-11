@@ -23,7 +23,7 @@ const TextModal = ({
   useRootPosition();
 
   const { setModalPending, modalLoading } = usePendingStore();
-  const { setModalText, modalTitle } = useModalTextStore();
+  const { setModalText, modalTitle, modalText } = useModalTextStore();
 
   const { positionBottom, positionLeft } = useRootPositionStore();
 
@@ -46,10 +46,10 @@ const TextModal = ({
       ) : (
         <>
           <h2>{modalTitle}</h2>
-          {text ? (
-            <p className={styles["text__modal__confirm__text"]}>{text}</p>
-          ) : (
-            <div />
+          {(text || modalText) && (
+            <p className={styles["text__modal__confirm__text"]}>
+              {text || modalText}
+            </p>
           )}
           {usingConfirm && (
             <button

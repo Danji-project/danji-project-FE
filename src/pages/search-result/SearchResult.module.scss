@@ -1,10 +1,13 @@
 .search__result__wrapper {
-  padding-top: 20px;
+  padding: 20px 16px;
 }
+
 .search__result__header {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 20px;
+
   button {
     width: 30px;
     height: 30px;
@@ -12,23 +15,116 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
   }
+
   > div {
     flex: 1;
     height: 40px;
   }
 }
+
 .search__result {
-  padding-top: 1rem;
   h2 {
-    font-size: 17px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+
     span {
-      color: rgb(151, 187, 255);
+      color: rgb(100, 150, 230);
+      font-weight: 700;
     }
-    padding-bottom: 20px;
   }
+
   &__list {
-    height: 500px;
-    overflow-y: auto;
+    min-height: 300px;
+  }
+
+  &__empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: rgb(120, 120, 120);
+    font-size: 14px;
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+    padding: 16px 0;
+  }
+}
+
+.pagination__arrow {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(220, 220, 220);
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: rgb(80, 80, 80);
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: rgb(249, 251, 255);
+    border-color: rgb(100, 150, 230);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.pagination__indicators {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.pagination__ellipsis {
+  padding: 0 4px;
+  color: rgb(120, 120, 120);
+  font-size: 14px;
+  user-select: none;
+}
+
+.pagination__indicator {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(220, 220, 220);
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: rgb(80, 80, 80);
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: rgb(249, 251, 255);
+    border-color: rgb(100, 150, 230);
+  }
+
+  &--active {
+    background-color: rgb(70, 120, 200);
+    border-color: rgb(70, 120, 200);
+    color: white;
+    font-weight: 600;
+
+    &:hover {
+      background-color: rgb(60, 110, 190);
+    }
   }
 }

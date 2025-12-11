@@ -152,13 +152,8 @@ const ResetPassword = () => {
         <Header title="아이디/비밀번호 찾기" hasBackButton />
         <div className={styles["reset__password__success"]}>
           <div className={styles["reset__password__success__icon"]}>
-            <div className={styles["reset__password__success__icon__bubble"]}>
-              <div className={styles["reset__password__success__icon__text"]}>
-                단지톡
-              </div>
-              <div className={styles["reset__password__success__icon__house"]}>
-                <img src="/logo.svg" alt="logo" />
-              </div>
+            <div className={styles["reset__password__success__icon__house"]}>
+              <img src="/logo-danji.png" alt="logo" />
             </div>
           </div>
           <div className={styles["reset__password__success__message"]}>

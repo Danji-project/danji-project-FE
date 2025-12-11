@@ -7,13 +7,6 @@ export const useUserInfoMutation = () => {
 
   const getUserInfo = useMutation({
     mutationFn: async () => {
-      // 토큰이 없으면 호출하지 않음
-      const token = localStorage.getItem("auth_token");
-      if (!token) {
-        setIsLogin(false);
-        return { data: null };
-      }
-
       try {
         const res = await axios.get("/api/member", {
           validateStatus: (status) => {
@@ -25,7 +18,6 @@ export const useUserInfoMutation = () => {
         // 401 에러인 경우 조용히 처리
         if (res.status === 401) {
           setIsLogin(false);
-          localStorage.removeItem("auth_token");
           return { data: null };
         }
         return res.data;
@@ -33,7 +25,6 @@ export const useUserInfoMutation = () => {
         // 401 에러는 조용히 처리
         if (error?.response?.status === 401) {
           setIsLogin(false);
-          localStorage.removeItem("auth_token");
           return { data: null };
         }
         throw error;
@@ -50,8 +41,9 @@ export const useUserInfoMutation = () => {
         data.data.email,
         data.data.password,
         data.data.nickname,
-        !data.data.fileId ? "./profile_imgSrc.jpg" : data.data.fileId,
-        data.data.phone
+        !data.data.fileId ? "/profile_imgSrc.jpg" : data.data.fileId,
+        data.data.phone,
+        data.data.name || ""
       );
     },
     onError: (error: any) => {

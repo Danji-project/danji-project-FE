@@ -1,30 +1,53 @@
 import { useRef } from "react";
 import { useUserInfo } from "../../stores/userStore";
+import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
 import styles from "./MyPageBox.module.scss";
 
 const MyPageBox = () => {
   const { profileImage, nickname, email } = useUserInfo();
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const { uploadProfileImage, uploadPending } = useProfileImageUpload();
 
   console.log(nickname, email, profileImage);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 프로필 이미지 업로드 및 전역 스토어 업데이트
+      uploadProfileImage(file);
+    }
+    // 같은 파일을 다시 선택할 수 있도록 input 값 초기화
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
+  };
 
   return (
     <div className={styles["my__page__box"]}>
       <div className={styles["my__page__box__profile"]}>
         <img
           src={
+            !profileImage ||
+            profileImage === null ||
             profileImage === "/profile_imgSrc.jpg"
-              ? profileImage
+              ? "./profile_imgSrc.jpg"
               : "https://s3.ap-northeast-2.amazonaws.com/danjitalk/" +
                 profileImage
           }
           alt="edit_profile"
         />
-        <input type="file" ref={fileRef} />
+        <input
+          type="file"
+          ref={fileRef}
+          accept="image/*"
+          onChange={handleFileChange}
+          disabled={uploadPending}
+        />
         <button
           onClick={() => {
             fileRef.current?.click();
           }}
+          disabled={uploadPending}
         >
           <img src="/write.svg" alt="write" />
         </button>

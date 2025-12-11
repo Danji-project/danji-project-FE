@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
 import * as React from "react";
+import "./api/client"; // axios 기본 설정 적용 (withCredentials 등)
 
 import "./styles/index.scss";
 

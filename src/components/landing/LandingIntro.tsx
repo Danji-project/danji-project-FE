@@ -20,11 +20,8 @@ const LandingIntro = () => {
     mobileResize();
     window.addEventListener("resize", mobileResize);
 
-    // 토큰이 있을 때만 사용자 정보 조회
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      getUserInfo.mutate();
-    }
+    // 쿠키 기반 인증이므로 항상 사용자 정보 조회 시도 (쿠키가 있으면 자동으로 전송됨)
+    getUserInfo.mutate();
 
     return () => {
       window.removeEventListener("resize", mobileResize);

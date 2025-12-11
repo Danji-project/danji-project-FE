@@ -30,10 +30,7 @@ export const IconButton = ({
   const compareId = id || `checkbox-${generateId}`;
 
   return (
-    <div
-      className={`${className} ${styles["icon__button"]}`}
-      style={{ width: "70px" }}
-    >
+    <div className={`${className} ${styles["icon__button"]}`}>
       <button
         style={{
           cursor: "pointer",

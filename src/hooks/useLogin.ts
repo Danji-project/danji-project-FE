@@ -26,11 +26,13 @@ export const useLogin = (
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true, // 쿠키 자동 전송
         }
       );
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // 쿠키 기반 인증이므로 토큰 저장 불필요 (서버에서 쿠키 설정)
       setLoginPending(false);
       navigate("/");
       getUserInfo.mutate();

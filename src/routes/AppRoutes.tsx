@@ -17,6 +17,7 @@ import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
 import MyPage from "../pages/my-pages/MyPage";
 import SearchResult from "../pages/search-result/SearchResult";
+import Settings from "../pages/settings/Settings";
 
 const AppRoutes = () => {
   return (
@@ -44,6 +45,7 @@ const AppRoutes = () => {
         <Route element={<MyPageRoutes />}>
           <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
           <Route path="/my-page" element={<MyPage />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
 
         {/* 채팅 라우팅 */}
