@@ -6,6 +6,9 @@ import axios, {
 } from "axios";
 import { type ApiResponse, type ApiErrorResponse, HttpStatus } from "./types";
 
+// axios 기본 설정 (모든 axios 호출에 적용)
+axios.defaults.withCredentials = true; // 쿠키 자동 전송을 위해 필요
+
 // 기본 Axios 인스턴스 설정
 const baseConfig: AxiosRequestConfig = {
   baseURL: "/api",
@@ -13,6 +16,7 @@ const baseConfig: AxiosRequestConfig = {
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // 쿠키 자동 전송을 위해 필요
 };
 
 // 응답 데이터 변환 함수
@@ -37,11 +41,7 @@ export const createApiClient = (
   // 요청 인터셉터
   axiosInstance.interceptors.request.use(
     (config) => {
-      // 토큰이 필요한 경우 여기서 처리
-      const token = localStorage.getItem("auth_token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+      // 쿠키 기반 인증이므로 Authorization 헤더 불필요 (쿠키가 자동으로 전송됨)
       return config;
     },
     (error) => Promise.reject(error)
@@ -61,7 +61,7 @@ export const createApiClient = (
 
         // 인증 관련 에러 처리
         if (status === HttpStatus.UNAUTHORIZED) {
-          localStorage.removeItem("auth_token");
+          // 쿠키 기반 인증이므로 localStorage 제거 불필요
           if (window.location.pathname !== "/login") {
             window.location.href = "/login";
           }

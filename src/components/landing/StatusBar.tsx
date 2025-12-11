@@ -1,7 +1,28 @@
+import { useEffect, useState } from "react";
+
 const StatusBar = () => {
+  const [currentTime, setCurrentTime] = useState<string>("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const period = now.getHours() < 12 ? "오전" : "오후";
+      const displayHours = now.getHours() % 12 || 12;
+      setCurrentTime(
+        `${period} ${String(displayHours).padStart(2, "0")}:${minutes}`
+      );
+    };
+
+    updateTime(); // Initial call
+    const interval = setInterval(updateTime, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="status-bar">
-      <div className="time">오전 03:39</div>
+      <div className="time">{currentTime || "로딩중..."}</div>
       <div className="icon__wrapper">
         <div className="wifi">
           <span></span>

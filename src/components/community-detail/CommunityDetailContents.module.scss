@@ -69,6 +69,57 @@
       h1 {
         font-size: 15px;
         font-weight: 600;
+        margin-bottom: 16px;
+      }
+      &__input {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 20px;
+        padding: 12px;
+        background-color: rgb(249, 251, 255);
+        border-radius: 8px;
+      }
+      &__textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px;
+        border: 1px solid rgb(220, 220, 220);
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        resize: vertical;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: rgb(151, 187, 255);
+        }
+
+        &::placeholder {
+          color: rgb(160, 160, 160);
+        }
+      }
+      &__submit {
+        align-self: flex-end;
+        padding: 8px 20px;
+        background-color: rgb(40, 90, 170);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover:not(:disabled) {
+          background-color: rgb(30, 70, 150);
+        }
+
+        &:disabled {
+          background-color: rgb(200, 200, 200);
+          cursor: not-allowed;
+        }
       }
       &__wrapper {
         display: flex;

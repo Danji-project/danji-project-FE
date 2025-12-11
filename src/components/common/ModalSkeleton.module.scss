@@ -1,0 +1,53 @@
+@keyframes pulse {
+  0% {
+    background-color: rgba(200, 200, 200, 0.5);
+  }
+  50% {
+    background-color: rgba(200, 200, 200, 0.8);
+  }
+  100% {
+    background-color: rgba(200, 200, 200, 0.5);
+  }
+}
+
+.modal-skeleton {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  width: 300px; /* Adjust as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &__header {
+    height: 20px;
+    background-color: #e0e0e0;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+
+  &__content {
+    margin-bottom: 20px;
+  }
+
+  &__line {
+    height: 15px;
+    background-color: #e0e0e0;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+
+    &:nth-child(2) {
+      width: 90%;
+    }
+    &:nth-child(3) {
+      width: 70%;
+    }
+  }
+
+  &__footer {
+    height: 30px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+}

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export interface FeedDetail {
@@ -30,29 +29,18 @@ interface FeedDetail2 {
 }
 
 export const useFeedDetail = (feedId: string) => {
-  const [feedDetail, setFeedDetail] = useState<FeedDetail | null>(null);
-
-  const feedDetailMutation = useMutation({
-    mutationFn: async () => {
+  const { data: feedDetail, isLoading: feedDetailPending } = useQuery({
+    queryKey: ["feedDetail", feedId],
+    queryFn: async () => {
       const response = await axios.get(`/api/community/feeds/${feedId}`);
-      return response.data;
+      return response.data as FeedDetail;
     },
-    onSuccess: (data) => {
-      console.log(data);
-      setFeedDetail(data);
-    },
-    onError: (err) => {
-      console.error(err);
-    },
+    enabled: !!feedId,
+    staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
   });
 
-  const feedDetailMutate = () => {
-    feedDetailMutation.mutate();
-  };
-
   return {
-    feedDetailMutate,
-    feedDetailPending: feedDetailMutation.isPending,
     feedDetail,
+    feedDetailPending,
   };
 };

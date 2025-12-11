@@ -24,6 +24,7 @@ const RegisterInput = ({
   onCertify,
   failedMessage,
   isCertifyConfirmed,
+  successMessage,
   isPasswordButton,
   passwordTypeChange,
 }: {
@@ -45,6 +46,7 @@ const RegisterInput = ({
   onCertify?: () => void;
   failedMessage?: string;
   isCertifyConfirmed?: boolean;
+  successMessage?: string;
   isPasswordButton?: boolean;
   passwordTypeChange?: (exports: string) => void;
 }) => {
@@ -76,10 +78,10 @@ const RegisterInput = ({
             type="button"
             disabled={!isValid || isNest}
             onClick={() => {
-              checkEmailMutation.mutate(value);
+              setModalLoading(true);
               setModalPending(true);
-              setModalLoading(checkEmailPending);
               setModalTitle("중복확인");
+              checkEmailMutation.mutate(value);
             }}
           >
             중복확인
@@ -109,7 +111,10 @@ const RegisterInput = ({
           <button
             type="button"
             disabled={!isValid || isCertifyConfirmed}
-            onClick={onCertify}
+            onClick={() => {
+              setModalLoading(true);
+              onCertify?.();
+            }}
           >
             {isCertifyConfirmed ? "인증 완료" : "인증 확인"}
           </button>
@@ -141,7 +146,7 @@ const RegisterInput = ({
       ) : (
         ""
       )}
-      {failedMessage && (
+      {failedMessage && !isCertifyConfirmed && (
         <b
           style={{
             color: "rgb(217,28,28)",
@@ -151,6 +156,18 @@ const RegisterInput = ({
           }}
         >
           {failedMessage}
+        </b>
+      )}
+      {successMessage && isCertifyConfirmed && (
+        <b
+          style={{
+            color: "rgb(60,165,62)",
+            fontSize: "14px",
+            fontWeight: "300",
+            display: "block",
+          }}
+        >
+          {successMessage}
         </b>
       )}
     </div>

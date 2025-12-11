@@ -12,29 +12,39 @@ export interface UserInfoInterface {
   profileImage: string | null;
   nickname: string;
   phone: string;
+  name: string;
 }
 
 interface userInfoInterfaceReal extends UserInfoInterface {
   setIsLogin: (isLogin: boolean) => void;
-  updateUserInfo: (email: string, password: string, nickname: string, profile: string, phone: string) => void;
+  updateUserInfo: (
+    email: string,
+    password: string,
+    nickname: string,
+    profile: string,
+    phone: string,
+    name: string
+  ) => void;
 }
 
 export const useUserInfo = create<userInfoInterfaceReal>((set) => ({
   isLogin: false,
-  
-  email: '',
-  password: '',
+
+  email: "",
+  password: "",
   profileImage: null,
-  nickname: '',
-  phone: '',
+  nickname: "",
+  phone: "",
+  name: "",
 
   setIsLogin: (isLogin) => set({ isLogin }),
-  updateUserInfo: (email, password, nickname, profileImage, phone) => set({
-    email,
-    password,
-    profileImage,
-    nickname,
-    phone
-  })
-
-}))
+  updateUserInfo: (email, password, nickname, profileImage, phone, name) =>
+    set({
+      email,
+      password,
+      profileImage,
+      nickname,
+      phone,
+      name,
+    }),
+}));

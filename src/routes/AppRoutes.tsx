@@ -11,16 +11,17 @@ import RegisterAccount from "../pages/register-account/RegisterAccount";
 import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
 import FindAccount from "../pages/find-account/FindAccount";
+import ResetPassword from "../pages/reset-password/ResetPassword";
 import ChattingPage from "../pages/chat-page/ChattingPage";
 import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
 import MyPage from "../pages/my-pages/MyPage";
 import SearchResult from "../pages/search-result/SearchResult";
-import AppSkeleton from "../components/common/app-skeleton/AppSkeleton";
+import Settings from "../pages/settings/Settings";
 
 const AppRoutes = () => {
   return (
-    <Suspense fallback={<AppSkeleton />}>
+    <Suspense>
       <Routes>
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
@@ -37,12 +38,14 @@ const AppRoutes = () => {
           <Route path="/register-account" element={<RegisterAccount />} />
           <Route path="/register-success" element={<RegisterSuccess />} />
           <Route path="/find-account" element={<FindAccount />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
         {/* 마이페이지 라우팅 */}
         <Route element={<MyPageRoutes />}>
           <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
           <Route path="/my-page" element={<MyPage />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
 
         {/* 채팅 라우팅 */}

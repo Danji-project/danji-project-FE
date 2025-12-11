@@ -1,26 +1,27 @@
-import { useEffect } from "react";
 import { useParams } from "react-router";
 import Header from "../../layouts/Header";
 import { useFeedDetail } from "../../hooks/useFeedDetail";
 import CommunityDetailContents from "../../components/community-detail/CommunityDetailContents";
+import CommunityDetailSkeleton from "../../components/common/community-detail-skeleton/CommunityDetailSkeleton";
 
 const CommunityDetail = () => {
   const { feedId } = useParams();
 
-  const { feedDetailMutate, feedDetail, feedDetailPending } = useFeedDetail(
-    feedId!
-  );
+  const { feedDetail, feedDetailPending } = useFeedDetail(feedId!);
 
-  useEffect(() => {
-    feedDetailMutate();
-  }, []);
+  if (feedDetailPending || !feedDetail) {
+    return (
+      <>
+        <Header title="" hasBackButton />
+        <CommunityDetailSkeleton />
+      </>
+    );
+  }
 
   return (
     <>
-      <Header title={feedDetail?.data.title!} hasBackButton />
-      <CommunityDetailContents
-        contentData={!feedDetailPending ? feedDetail : null}
-      />
+      <Header title={feedDetail.data.title} hasBackButton />
+      <CommunityDetailContents contentData={feedDetail} />
     </>
   );
 };
