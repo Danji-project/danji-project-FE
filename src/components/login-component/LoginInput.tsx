@@ -47,8 +47,8 @@ const LoginInput = ({
       </div>
       {!isButton && errorMessage !== "" && (
         <span>
-          {errorMessage?.split("|").map((em: string) => (
-            <b>{em}</b>
+          {errorMessage?.split("|").map((em: string, idx: number) => (
+            <b key={idx}>{em}</b>
           ))}
         </span>
       )}

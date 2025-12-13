@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useCommentStore } from "../stores/useCommentStore";
+import { usePendingStore } from "../stores/usePendingStore";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -36,6 +37,7 @@ export const useComment = (feedId: number) => {
 };
 
 export const useUpdateComment = (feedId: number, commentId: number) => {
+  const { setCommentPending } = usePendingStore();
   const { getCommentMutation } = useComment(feedId);
 
   const updateMutate = useMutation({
@@ -46,8 +48,15 @@ export const useUpdateComment = (feedId: number, commentId: number) => {
       );
       return res.data;
     },
+    onMutate: () => {
+      setCommentPending(true);
+    },
     onSuccess: () => {
       getCommentMutation();
+      setCommentPending(false);
+    },
+    onError: () => {
+      setCommentPending(false);
     },
   });
 
@@ -56,6 +65,7 @@ export const useUpdateComment = (feedId: number, commentId: number) => {
 
 export const useAddComment = (feedId: number) => {
   const { getCommentMutation } = useComment(feedId);
+  const { setCommentPending } = usePendingStore();
 
   const addCommentMutation = useMutation({
     mutationFn: async (payload: {
@@ -68,8 +78,15 @@ export const useAddComment = (feedId: number) => {
       );
       return res.data;
     },
+    onMutate: () => {
+      setCommentPending(true);
+    },
     onSuccess: () => {
       getCommentMutation();
+      setCommentPending(false);
+    },
+    onError: () => {
+      setCommentPending(false);
     },
   });
 
@@ -77,6 +94,7 @@ export const useAddComment = (feedId: number) => {
 };
 
 export const useDeleteComment = (feedId: number, commentId: number) => {
+  const { setCommentPending } = usePendingStore();
   const { getCommentMutation } = useComment(feedId);
 
   const deleteCommentMutation = useMutation({
@@ -86,8 +104,15 @@ export const useDeleteComment = (feedId: number, commentId: number) => {
       );
       return res.data;
     },
+    onMutate: () => {
+      setCommentPending(true);
+    },
     onSuccess: () => {
       getCommentMutation();
+      setCommentPending(false);
+    },
+    onError: () => {
+      setCommentPending(false);
     },
   });
 

@@ -1,5 +1,7 @@
 .community__list {
   display: block;
+  position: relative;
+  min-height: 500px; // 글이 없어도 버튼이 표시되는 최소 높이
   &__main {
     display: block;
   }
@@ -17,9 +19,11 @@
     height: 50px;
     background-color: rgb(151, 187, 255);
     border-radius: 50%;
-    position: fixed;
-    margin-left: calc(var(--device-width) - 50px - 20px);
-    margin-bottom: 20px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
     cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 }

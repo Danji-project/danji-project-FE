@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import type { IconButtonProps } from "../../components/common/Icon-button/IconButton";
+import { fetchedApartments } from "./apartmentMock";
 
 export const IconsMocks = (): IconButtonProps[] => {
   const navigate = useNavigate();
 
-  const random = Math.floor(Math.random() * 2 + 1);
+  const randomApart = Math.floor(Math.random() * fetchedApartments.length);
+  const randomApartId = fetchedApartments[randomApart].id;
 
   return [
     {
       onClick: () => {
-        navigate(`/apart-info/${random}`);
+        navigate(`/apart-info/${randomApartId}`);
       },
       imageUrl: "/icons/apart-info-icon.png",
       text: "단지 정보",
@@ -18,7 +20,7 @@ export const IconsMocks = (): IconButtonProps[] => {
     },
     {
       onClick: () => {
-        navigate("/apart-info/community");
+        navigate(`/apart-info/${randomApartId}/community`);
       },
       imageUrl: "/icons/Gamepad.png",
       text: "커뮤니티",

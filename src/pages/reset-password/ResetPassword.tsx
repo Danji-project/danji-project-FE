@@ -133,7 +133,7 @@ const ResetPassword = () => {
         password: newPassword.value,
       });
       setIsSuccess(true);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("비밀번호 재설정 실패:", error);
       // 에러 모달 표시
       setModalTitle("비밀번호 재설정 실패");

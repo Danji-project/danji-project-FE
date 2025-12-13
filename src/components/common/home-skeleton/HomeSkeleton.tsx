@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from "react";
 import styles from "./HomeSkeleton.module.scss";
 
@@ -16,7 +15,7 @@ const HomeSkeleton = ({ isMobile: propIsMobile }: HomeSkeletonProps = {}) => {
     }
 
     const mobileResize = () => {
-      if (window.innerWidth < 960) {
+      if (window.innerWidth < 920) {
         setIsMobile(true);
       } else {
         setIsMobile(false);

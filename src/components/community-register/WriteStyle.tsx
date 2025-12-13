@@ -79,8 +79,8 @@ const WriteStyle = ({
               </div>
             )}
             <div className={styles["write__style__photo__lists"]}>
-              {files.map((f: File) => (
-                <div>
+              {files.map((f: File, idx: number) => (
+                <div key={idx}>
                   <img src={URL.createObjectURL(f)} alt={f.name} />
                 </div>
               ))}

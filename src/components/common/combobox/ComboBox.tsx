@@ -57,8 +57,9 @@ const ComboBox = ({
       )}
       {isOpen && (
         <div className={styles["combo__box__lists"]}>
-          {contents.map((cc: string) => (
+          {contents.map((cc: string, idx: number) => (
             <button
+              key={idx}
               onClick={() => {
                 setState(cc.split("/")[1]);
                 setIsOpen(false);

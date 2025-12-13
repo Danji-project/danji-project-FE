@@ -17,7 +17,7 @@ const ApartLists = ({
       </div>
       <div className={styles["apart__lists__main"]}>
         {fetchedLists.map((apartment: BaseApartInfo) => (
-          <ApartCard apartment={apartment} />
+          <ApartCard key={apartment.id} apartment={apartment} />
         ))}
       </div>
     </div>
