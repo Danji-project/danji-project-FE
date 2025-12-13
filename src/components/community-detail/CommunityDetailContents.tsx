@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useEffect, useRef,useState } from "react";
+import { useState } from "react";
 import type { FeedDetail } from "../../hooks/useFeedDetail";
 
 import styles from "./CommunityDetailContents.module.scss";
@@ -31,35 +31,28 @@ const CommunityDetailContents = ({
     profileNick,
     profileImg,
   } = usePendingStore();
-  
-  const { FeedBookMarkMutate ,FeedBookMarkDeleteMutate} = useBookMark();
 
-  const clickBookMark= () => {
+  const { FeedBookMarkMutate, FeedBookMarkDeleteMutate } = useBookMark();
+
+  const clickBookMark = () => {
     //console.log("book mark on!");
-    if(feedId && !contentData?.data?.isBookmarked)
-    {
+    if (feedId && !contentData?.data?.isBookmarked) {
       FeedBookMarkMutate(feedId);
-    }
-    else if(feedId && contentData?.data?.isBookmarked)
-    {
+    } else if (feedId && contentData?.data?.isBookmarked) {
       FeedBookMarkDeleteMutate(feedId);
     }
   };
 
-  const { FeedReactMutate ,FeedReactDeleteMutate} = useReactMutate();
+  const { FeedReactMutate, FeedReactDeleteMutate } = useReactMutate();
 
-  const clickReact= () => {
+  const clickReact = () => {
     //console.log("book mark on!");
-    if(feedId && !contentData?.data?.isReacted)
-    {
+    if (feedId && !contentData?.data?.isReacted) {
       FeedReactMutate(feedId);
-    }
-    else if(feedId && contentData?.data?.isReacted)
-    {
+    } else if (feedId && contentData?.data?.isReacted) {
       FeedReactDeleteMutate(feedId);
     }
   };
-
 
   const { data: commentData } = useCommentStore();
   const { modalText } = useModalTextStore();

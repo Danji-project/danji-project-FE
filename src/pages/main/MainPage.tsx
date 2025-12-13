@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Header from "../../layouts/Header";
 import { useUserInfo } from "../../stores/userStore";
@@ -12,17 +12,6 @@ const MainPage = () => {
 
   const isLogin = useUserInfo((state) => state.isLogin);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    sessionStorage.setItem('tabselect','apart-info');
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
 
   return (
     <>

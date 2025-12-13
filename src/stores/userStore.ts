@@ -41,7 +41,7 @@ interface UserInfoInterfaceReal extends UserInfoInterface {
   apartment: ApartmentInfo | null;
   setIsLogin: (isLogin: boolean) => void;
   setApartment: (apartment: ApartmentInfo | null) => void;
-  
+
   updateUserInfo: (
     email: string,
     password: string,
@@ -50,12 +50,12 @@ interface UserInfoInterfaceReal extends UserInfoInterface {
     phone: string,
     name: string
   ) => void;
-  
+
   updateAllUserInfo: (
-    email: string, 
-    password: string, 
-    nickname: string, 
-    profile: string, 
+    email: string,
+    password: string,
+    nickname: string,
+    profile: string,
     phone: string,
     name: string,
     memberApartmentId: string,
@@ -67,7 +67,7 @@ interface UserInfoInterfaceReal extends UserInfoInterface {
     unit: string,
     moveInDate: string,
     numberOfResidents: string,
-    carNumbers: [],
+    carNumbers: []
   ) => void;
   refreshUserInfo: () => Promise<void>;
 }
@@ -108,10 +108,11 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
       name,
     }),
 
-  updateAllUserInfo: (email, password, nickname, profileImage, phone, name, memberApartmentId, apartmentId, apartmentName, region, location, building, unit, moveInDate, numberOfResidents, carNumbers) => set({
+  updateAllUserInfo: (
+    email,
     password,
-    profileImage,
     nickname,
+    profileImage,
     phone,
     name,
     memberApartmentId,
@@ -124,6 +125,22 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
     moveInDate,
     numberOfResidents,
     carNumbers
+  ) =>
+    set({
+      profileImage,
+      nickname,
+      phone,
+      name,
+      memberApartmentId,
+      apartmentId,
+      apartmentName,
+      region,
+      location,
+      building,
+      unit,
+      moveInDate,
+      numberOfResidents,
+      carNumbers,
     }),
 
   refreshUserInfo: async () => {
