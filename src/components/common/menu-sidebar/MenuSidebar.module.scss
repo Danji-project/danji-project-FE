@@ -1,29 +1,74 @@
 .menu__sidebar {
   width: 245px;
   height: var(--device-height);
-  position: fixed;
+  position: absolute;
+  right: 0;
+  top: 0;
   background-color: rgb(60, 75, 102);
   z-index: 10000000;
-  margin-left: calc(var(--device-width) - 245px);
-  padding: 28px;
+  padding: 28px 0;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(100%);
+
+  &__mobile {
+    height: 100vh;
+  }
+  &__open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   > button {
     align-self: end;
     margin-bottom: 40px;
     cursor: pointer;
+    margin-right: 28px;
   }
+
   > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+
     li {
-      a {
-        color: #fff;
-        padding-bottom: 20px;
-      }
       button {
         color: #fff;
-        padding-bottom: 20px;
+        display: block;
+        text-decoration: none;
+        padding: 16px 28px;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        &:hover {
+          background-color: #fff;
+          color: #000;
+        }
+      }
+
+      button {
+        color: #fff;
         font-size: 16px;
         cursor: pointer;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        display: block;
+        padding: 16px 28px;
+        &:hover {
+          background-color: #fff;
+          color: #000;
+        }
       }
     }
   }

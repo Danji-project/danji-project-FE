@@ -13,8 +13,9 @@ const TabList = ({
 }) => {
   return (
     <ul className={styles["tab__list"]}>
-      {contents.map((c: string) => (
+      {contents.map((c: string, idx: number) => (
         <li
+          key={idx}
           className={c.split("/")[1] === tabs ? styles.tab__list__active : ""}
         >
           <button

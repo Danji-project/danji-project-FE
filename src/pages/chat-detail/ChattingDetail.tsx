@@ -35,6 +35,7 @@ const ChattingDetail = () => {
             groupMessagesByDate(chatDatas.chatMessageResponses)
           ).map(([date, msgs]) => (
             <div
+              key={date}
               className={styles["chatting__detail__main__per__date__wrapper"]}
             >
               <div
@@ -48,8 +49,9 @@ const ChattingDetail = () => {
                   styles["chatting__detail__main__per__date__message__wrapper"]
                 }
               >
-                {msgs.map((msg: Response) => (
+                {msgs.map((msg: Response, idx: number) => (
                   <div
+                    key={idx}
                     className={
                       styles["chatting__detail__main__per__date__message"]
                     }

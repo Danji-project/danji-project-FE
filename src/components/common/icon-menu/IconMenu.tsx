@@ -9,6 +9,7 @@ const IconMenu = () => {
     <div className={styles["icon__menu"]}>
       {iconsMocks.map((icon: IconButtonProps) => (
         <IconButton
+          key={icon.id}
           onClick={icon.onClick}
           imageUrl={icon.imageUrl}
           text={icon.text}

@@ -25,7 +25,9 @@ const ReceivedPrompt = () => {
       {receivedPending ? (
         <SentPromptSkeleton />
       ) : sentData.length > 0 ? (
-        sentData.map((sd: SentData2) => <CommonRequest sd={sd} isReceived />)
+        sentData.map((sd: SentData2, idx: number) => (
+          <CommonRequest key={idx} sd={sd} isReceived />
+        ))
       ) : (
         <p>요청된 내역이 없습니다.</p>
       )}

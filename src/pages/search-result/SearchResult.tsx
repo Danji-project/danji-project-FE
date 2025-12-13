@@ -7,6 +7,18 @@ import { useSearch } from "../../hooks/useSearch";
 import SearchDanjiLink from "./SearchDanjiLink";
 import SearchSkeleton from "../../components/common/search-skeleton/SearchSkeleton";
 
+interface ApartmentItem {
+  id: number | null;
+  name: string;
+  region: string;
+  location: string;
+  totalUnit: number | null;
+  buildingCount: number | null;
+  thumbnailFileUrl: string | null;
+  isBookmarked: boolean;
+  kaptCode: string;
+}
+
 const SearchResult = () => {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("keyword");
@@ -59,7 +71,7 @@ const SearchResult = () => {
           </h2>
           <div className={styles["search__result__list"]}>
             {currentApartments.length > 0 ? (
-              currentApartments.map((item: any) => (
+              currentApartments.map((item: ApartmentItem) => (
                 <SearchDanjiLink key={item.kaptCode} item={item} />
               ))
             ) : (

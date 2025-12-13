@@ -1,23 +1,22 @@
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { MyPageRoutes } from "./MyPageRoutes";
+import AuthRoutes from "./AuthRoutes";
+
 import MainPage from "../pages/main/MainPage";
-import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 import ApartInfo from "../pages/apart-info/ApartInfo";
 import CommunityWrite from "../pages/community-register/CommunityWrite";
 import CommunityDetail from "../pages/community-detail/CommunityDetail";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
-import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
 import FindAccount from "../pages/find-account/FindAccount";
 import ResetPassword from "../pages/reset-password/ResetPassword";
 import ChattingPage from "../pages/chat-page/ChattingPage";
 import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
-import MyPage from "../pages/my-pages/MyPage";
 import SearchResult from "../pages/search-result/SearchResult";
 import Settings from "../pages/settings/Settings";
+import MyPage from "../pages/my-pages/MyPage";
 
 const AppRoutes = () => {
   return (
@@ -26,6 +25,7 @@ const AppRoutes = () => {
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
         <Route path="/apart-info/:id" element={<ApartInfo />} />
+        <Route path="/apart-info/:id/community" element={<ApartInfo />} />
         <Route path="/apart-info/:id/write" element={<CommunityWrite />} />
         <Route
           path="/apart-info/:id/community-detail/:feedId"
@@ -42,11 +42,8 @@ const AppRoutes = () => {
         </Route>
 
         {/* 마이페이지 라우팅 */}
-        <Route element={<MyPageRoutes />}>
-          <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
-          <Route path="/my-page" element={<MyPage />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
+        <Route path="/my-page" element={<MyPage />} />
+        <Route path="/settings" element={<Settings />} />
 
         {/* 채팅 라우팅 */}
         <Route path="/chat-page" element={<ChattingPage />} />

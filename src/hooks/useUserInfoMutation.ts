@@ -10,47 +10,42 @@ export const useUserInfoMutation = () => {
       try {
         const res = await axios.get("/api/member", {
           validateStatus: (status) => {
-            // 401 에러는 정상적인 응답으로 처리하여 에러 출력 방지
+            // 401 에러도 정상 응답으로 처리
             return status === 200 || status === 401;
           },
         });
-        console.log(res);
-        // 401 에러인 경우 조용히 처리
+
+        // 401 에러인 경우 정상적으로 반환
         if (res.status === 401) {
-          setIsLogin(false);
-          return { data: null };
+          return { data: null, status: 401 };
         }
+
         return res.data;
-      } catch (error: any) {
-        // 401 에러는 조용히 처리
-        if (error?.response?.status === 401) {
-          setIsLogin(false);
-          return { data: null };
-        }
+      } catch (error: unknown) {
+        // 네트워크 에러 등 예기치 않은 에러만 throw
+        console.error("사용자 정보 조회 중 에러:", error);
         throw error;
       }
     },
     onSuccess: (data) => {
-      // 401 에러인 경우 data가 null이므로 로그인 상태만 업데이트
-      if (!data || !data.data) {
+      // 401 에러인 경우
+      if (!data?.data) {
         setIsLogin(false);
         return;
       }
+
       setIsLogin(true);
       updateUserInfo(
         data.data.email,
         data.data.password,
         data.data.nickname,
-        !data.data.fileId ? "/profile_imgSrc.jpg" : data.data.fileId,
+        data.data.fileId || "/profile_imgSrc.jpg",
         data.data.phone,
         data.data.name || ""
       );
     },
-    onError: (error: any) => {
-      // 401 에러는 이미 mutationFn에서 처리했으므로 여기서는 다른 에러만 처리
-      if (error?.response?.status !== 401) {
-        console.error("사용자 정보 조회 실패:", error);
-      }
+    onError: (error: unknown) => {
+      console.error("사용자 정보 조회 실패:", error);
     },
   });
 

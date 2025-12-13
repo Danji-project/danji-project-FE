@@ -45,10 +45,52 @@ export enum HttpStatus {
 
 // 공통 API 에러 코드
 export enum ApiErrorCode {
-  VALIDATION_ERROR = 'VALIDATION_ERROR',
-  AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR',
-  AUTHORIZATION_ERROR = 'AUTHORIZATION_ERROR',
-  RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND',
-  DUPLICATE_RESOURCE = 'DUPLICATE_RESOURCE',
-  SERVER_ERROR = 'SERVER_ERROR',
+  VALIDATION_ERROR = "VALIDATION_ERROR",
+  AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR",
+  AUTHORIZATION_ERROR = "AUTHORIZATION_ERROR",
+  RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND",
+  DUPLICATE_RESOURCE = "DUPLICATE_RESOURCE",
+  SERVER_ERROR = "SERVER_ERROR",
+}
+
+// 단지 관련 타입
+export interface Apartment {
+  id: number;
+  name: string;
+  region: string;
+  location: string;
+  thumbnailFileUrl?: string;
+  totalUnit?: number;
+  buildingCount?: number;
+  address: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+// 아파트 상세 정보 타입 (BaseApartInfo)
+export interface BaseApartInfo extends Apartment {
+  apartDetailName: string;
+  houseSize: number;
+  totalCount: number;
+  moveAbleMonth: number;
+  isUseBookmark?: boolean;
+  bookmark?: boolean;
+  picture?: string[];
+}
+
+export interface ApartmentSearchResponse {
+  apartments: Apartment[];
+  total: number;
+}
+
+export interface RegisterApartmentRequest {
+  apartmentId: number;
+}
+
+export interface MemberApartment {
+  id: number;
+  memberId: number;
+  apartmentId: number;
+  apartment: Apartment;
+  createdAt: string;
 }

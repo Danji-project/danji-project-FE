@@ -17,8 +17,9 @@ const ChattingBodies = () => {
   return (
     <div className={styles["chatting__bodies"]}>
       <div className={styles["chatting__bodies__tabs"]}>
-        {tabs.map((ta: string) => (
+        {tabs.map((ta: string, idx: number) => (
           <button
+            key={idx}
             className={selectedTabs === ta.split("/")[1] ? styles["on"] : ""}
             onClick={() => {
               setSelectedTabs(ta.split("/")[1]);

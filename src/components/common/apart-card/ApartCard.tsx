@@ -1,6 +1,6 @@
 import styles from "./ApartCard.module.scss";
 import { Link } from "react-router-dom";
-import type { BaseApartInfo } from "../../../model/BaseApartInfoModel";
+import type { BaseApartInfo } from "../../../api/types";
 
 const ApartCard = ({ apartment }: { apartment: BaseApartInfo }) => {
   return (

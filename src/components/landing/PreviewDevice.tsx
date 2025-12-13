@@ -1,11 +1,10 @@
-import React from "react";
+import { useState, useEffect, useRef } from "react";
 import StatusBar from "./StatusBar";
 import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
 import Spinners from "../common/spinners/Spinners";
-import { useRootPosition } from "../../hooks/useRootPosition";
 import { useSidebarStore } from "../../stores/sidebarStore";
-import { useRootPositionStore } from "../../stores/rootPositionStore";
 import { usePendingStore } from "../../stores/usePendingStore";
+import { useRootPositionStore } from "../../stores/rootPositionStore";
 
 const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { userInfoPending } = useUserInfoMutation();
@@ -18,15 +17,42 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
     registerDimmed,
   } = usePendingStore();
 
-  const rootRef = useRootPosition();
-
   const { isOpen: sidebarOpen } = useSidebarStore();
+  const { setPositionTop, setPositionLeft } = useRootPositionStore();
+  const [isMobile, setIsMobile] = useState(false);
+  const previewRef = useRef<HTMLDivElement>(null);
 
-  const { positionTop, positionLeft } = useRootPositionStore();
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 920);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
+  useEffect(() => {
+    const updatePosition = () => {
+      if (previewRef.current) {
+        const rect = previewRef.current.getBoundingClientRect();
+        setPositionTop(rect.top + rect.height / 2);
+        setPositionLeft(rect.left + rect.width / 2);
+      }
+    };
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition);
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition);
+    };
+  }, [setPositionTop, setPositionLeft]);
 
   return (
     <div
-      ref={rootRef}
+      ref={previewRef}
       className={`preview-device ${
         userInfoPending ||
         sidebarOpen ||
@@ -41,13 +67,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
       }`}
     >
       {(userInfoPending || isLoginPending || findPending) && (
-        <div
-          className="div-background-black"
-          style={{
-            top: `${positionTop}px`,
-            left: `${positionLeft}px`,
-          }}
-        >
+        <div className="div-background-black">
           <Spinners />
         </div>
       )}
@@ -57,11 +77,9 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         modalPending ||
         registerDimmed) && (
         <div
-          className="div-background-black-2"
-          style={{
-            top: `${positionTop}px`,
-            left: `${positionLeft}px`,
-          }}
+          className={`div-background-black-2 ${
+            isMobile ? "mobile-background-black-2" : ""
+          }`}
         ></div>
       )}
       <div className="app-container">

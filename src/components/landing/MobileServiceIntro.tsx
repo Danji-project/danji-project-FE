@@ -20,7 +20,7 @@ const MobileServiceIntro = () => {
   };
 
   const toggleDrawer =
-    (_: any, open: boolean) =>
+    (_: unknown, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event &&

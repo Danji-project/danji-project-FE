@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { BaseApartInfo } from "../../model/BaseApartInfoModel";
 import { useFeedList } from "../../hooks/useFeedList";
 import {
   useFeedListStore,
@@ -10,9 +9,9 @@ import styles from "./CommunityList.module.scss";
 import ComboBox from "../common/combobox/ComboBox";
 import { sortContents } from "../../assets/mock/tabsMocks";
 import CommunityCard from "./CommunityCard";
-import { useRootPositionStore } from "../../stores/rootPositionStore";
 import { useNavigate } from "react-router-dom";
 import CommunitySkeleton from "../common/community-skeleton/CommunitySkeleton";
+import type { BaseApartInfo } from "../../api";
 
 const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
   const [selectedSort, setSelectedSort] = useState("ALL");
@@ -22,7 +21,6 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
     selectedSort
   );
   const { data } = useFeedListStore();
-  const { positionTop, positionLeft } = useRootPositionStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,10 +60,6 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
       </div>
       <button
         className={styles["community__list__write"]}
-        style={{
-          bottom: `${positionTop}px`,
-          left: `${positionLeft}px`,
-        }}
         onClick={() => {
           navigate(`/apart-info/${apartData.id}/write`);
         }}

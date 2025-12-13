@@ -21,13 +21,13 @@ function App() {
     const checkInitialLoginStatus = async () => {
       try {
         // 쿠키 기반 인증이므로 항상 사용자 정보 조회 시도 (쿠키가 있으면 자동으로 전송됨)
-        await new Promise((resolve) => {
-          getUserInfo.mutate();
-          resolve(true);
+        getUserInfo.mutate(undefined, {
+          onSettled: () => {
+            setIsInitialized(true);
+          },
         });
       } catch (error) {
         console.error("초기 로그인 상태 확인 실패:", error);
-      } finally {
         setIsInitialized(true);
       }
     };
@@ -45,10 +45,18 @@ function App() {
   // 초기화 완료 후 마운트 상태 설정
   useEffect(() => {
     if (isInitialized) {
-      // 회원가입 페이지는 스켈레톤 스킵 (빠른 마운트)
-      const isRegisterPage =
-        globalThis.location.pathname === "/register-account";
-      const delay = isRegisterPage ? 0 : 500;
+      // 회원가입, 마이페이지, 채팅 등 특정 페이지는 스켈레톤 스킵 (빠른 마운트)
+      const skipSkeletonPaths = [
+        "/register-account",
+        "/my-page",
+        "/settings",
+        "/chat",
+        "/apart-info",
+      ];
+      const isSkipSkeletonPage = skipSkeletonPaths.some((path) =>
+        globalThis.location.pathname.startsWith(path)
+      );
+      const delay = isSkipSkeletonPage ? 0 : 500;
       setTimeout(() => {
         setIsMounted(true);
       }, delay);

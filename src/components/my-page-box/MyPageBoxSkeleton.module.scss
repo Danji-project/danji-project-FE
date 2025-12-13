@@ -1,0 +1,40 @@
+.my__page__box__skeleton {
+  padding-top: 20px;
+  border: 1px solid rgb(237, 237, 237);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skeleton__profile {
+  margin-bottom: 10px;
+}
+
+.skeleton__nickname {
+  margin-bottom: 10px;
+  width: 120px;
+}
+
+.skeleton__email {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgb(237, 237, 237);
+}
+
+.skeleton__danji {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+
+.skeleton__danji__box {
+  margin-bottom: 10px;
+}
+
+.skeleton__danji__button {
+  width: 100%;
+}

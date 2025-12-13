@@ -51,6 +51,7 @@ const ApartDetail = ({ apartData }: { apartData: BaseApartInfo }) => {
           <div className={styles["apart__detail__basic__pictures"]}>
             {apartData.picture!.slice(0, 4).map((ad: string, index: number) => (
               <div
+                key={index}
                 className={`${styles["apart__detail__basic__pictures__card"]} ${
                   index === 3 && apartData.picture!.length > 4
                     ? styles["apart__detail__basic__pictures__card__black"]

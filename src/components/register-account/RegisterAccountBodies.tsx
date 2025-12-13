@@ -44,9 +44,9 @@ const reducer = (state: State, action: Action): State => {
           value: action.payload!.data!,
           valid: validators(action.payload!.data!, "EMAIL_VALID")!,
           isError: !validators(action.payload!.data!, "EMAIL_VALID")!,
-          errorMessage: !validators(action.payload!.data!, "EMAIL_VALID")!
-            ? "이메일을 4 ~ 15자 이내로 입력해주세요."
-            : "",
+          errorMessage: validators(action.payload!.data!, "EMAIL_VALID")!
+            ? ""
+            : "이메일을 4 ~ 15자 이내로 입력해주세요.",
         },
       };
     case "EMAIL_TOUCHED":
@@ -65,12 +65,12 @@ const reducer = (state: State, action: Action): State => {
           value: action.payload!.data!,
           valid: validators(action.payload!.data!, "VALIDATION_CODE_VALID")!,
           isError: !validators(action.payload!.data!, "VALIDATION_CODE_VALID")!,
-          errorMessage: !validators(
+          errorMessage: validators(
             action.payload!.data!,
             "VALIDATION_CODE_VALID"
           )!
-            ? "인증 번호는 6글자로 입력해야 합니다."
-            : "",
+            ? ""
+            : "인증 번호는 6글자로 입력해야 합니다.",
         },
       };
     case "VALIDATION_CODE_TOUCHED":
@@ -83,7 +83,7 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         email: {
           ...state.email,
-          isConfirmed: action.payload?.confirmed!,
+          isConfirmed: action.payload!.confirmed!,
         },
       };
     case "CHANGE_PASSWORD":
@@ -94,9 +94,9 @@ const reducer = (state: State, action: Action): State => {
           value: action.payload!.data!,
           valid: validators(action.payload!.data!, "PASSWORD_VALID")!,
           isError: !validators(action.payload!.data!, "PASSWORD_VALID")!,
-          errorMessage: !validators(action.payload!.data!, "PASSWORD_VALID")
-            ? "8 ~ 16자의 영문, 숫자, 특수문자를 포함시켜 주세요."
-            : "",
+          errorMessage: validators(action.payload!.data!, "PASSWORD_VALID")
+            ? ""
+            : "8 ~ 16자의 영문, 숫자, 특수문자를 포함시켜 주세요.",
         },
       };
     case "TOUCH_PASSWORD":
@@ -112,7 +112,7 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         password: {
           ...state.password,
-          type: action.payload?.export!,
+          type: action.payload!.export!,
         },
       };
     case "CHANGE_PASSWORD_CONFIRM":
@@ -120,24 +120,24 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         passwordConfirm: {
           ...state.passwordConfirm,
-          value: action.payload?.data!,
+          value: action.payload!.data!,
           valid: validators(
-            action.payload?.data!,
+            action.payload!.data!,
             "PASSWORD_CONFIRM_VALID",
             state.password.value
           )!,
           isError: !validators(
-            action.payload?.data!,
+            action.payload!.data!,
             "PASSWORD_CONFIRM_VALID",
             state.password.value
           )!,
-          errorMessage: !validators(
-            action.payload?.data!,
+          errorMessage: validators(
+            action.payload!.data!,
             "PASSWORD_CONFIRM_VALID",
             state.password.value
           )
-            ? "비밀번호와 일치하지 않습니다"
-            : "",
+            ? ""
+            : "비밀번호와 일치하지 않습니다",
         },
       };
     case "TOUCH_PASSWORD_CONFIRM":
@@ -153,7 +153,7 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         passwordConfirm: {
           ...state.passwordConfirm,
-          type: action.payload?.export!,
+          type: action.payload!.export!,
         },
       };
     case "CHANGE_NAME":
@@ -161,12 +161,12 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         name: {
           ...state.name,
-          value: action.payload?.data!,
-          valid: validators(action.payload?.data!, "NAME_VALID")!,
-          isError: !validators(action.payload?.data!, "NAME_VALID")!,
-          errorMessage: !validators(action.payload?.data!, "NAME_VALID")
-            ? "이름을 제대로 입력해주세요"
-            : "",
+          value: action.payload!.data!,
+          valid: validators(action.payload!.data!, "NAME_VALID")!,
+          isError: !validators(action.payload!.data!, "NAME_VALID")!,
+          errorMessage: validators(action.payload!.data!, "NAME_VALID")
+            ? ""
+            : "이름을 제대로 입력해주세요",
         },
       };
     case "TOUCH_NAME":
@@ -203,12 +203,12 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         phone: {
           ...state.phone,
-          value: action.payload?.data!,
-          valid: validators(action.payload?.data!, "PHONE_VALID")!,
-          isError: !validators(action.payload?.data!, "PHONE_VALID"),
-          errorMessage: !validators(action.payload?.data!, "PHONE_VALID")
-            ? "핸드폰 번호를 제대로 입력해주세요"
-            : "",
+          value: action.payload!.data!,
+          valid: validators(action.payload!.data!, "PHONE_VALID")!,
+          isError: !validators(action.payload!.data!, "PHONE_VALID"),
+          errorMessage: validators(action.payload!.data!, "PHONE_VALID")
+            ? ""
+            : "핸드폰 번호를 제대로 입력해주세요",
         },
       };
     case "TOUCH_PHONE":
