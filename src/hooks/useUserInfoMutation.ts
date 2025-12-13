@@ -3,7 +3,7 @@ import { useUserInfo } from "../stores/userStore";
 import { useMutation } from "@tanstack/react-query";
 
 export const useUserInfoMutation = () => {
-  const { updateUserInfo, setIsLogin } = useUserInfo();
+  const { updateUserInfo, updateAllUserInfo, setIsLogin} = useUserInfo();
 
   const getUserInfo = useMutation({
     mutationFn: async () => {
@@ -28,10 +28,19 @@ export const useUserInfoMutation = () => {
       }
     },
     onSuccess: (data) => {
-      // 401 에러인 경우
       if (!data?.data) {
         setIsLogin(false);
-        return;
+      	return;
+      }
+      else 
+        setIsLogin(true);
+      
+      try{
+        updateAllUserInfo(data.data.email, data.data.password, data.data.nickname, !data.data.fileId ? "./profile_imgSrc.jpg" : data.data.fileId, data.data.phone,
+        data.data.memberApartmentId, data.data.apartmentId, data.data.apartmentName, data.data.region, data.data.location, data.data.building, data.data.building, data.data.unit, data.data.moveInDate, data.data.numberOfResidents, data.data.carNumbers);
+      }catch(exception){
+        console.log(exception);
+        updateUserInfo(data.data.email, data.data.password, data.data.nickname, !data.data.fileId ? "./profile_imgSrc.jpg" : data.data.fileId, data.data.phone);
       }
 
       setIsLogin(true);

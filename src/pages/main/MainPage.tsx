@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../layouts/Header";
 import { useUserInfo } from "../../stores/userStore";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    sessionStorage.setItem('tabselect','apart-info');
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
