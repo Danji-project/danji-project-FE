@@ -42,7 +42,7 @@ const SearchResult = () => {
       setCurrentPage(1);
       searchFunction.mutate(keyword);
     }
-  }, [keyword, searchFunction]);
+  }, [keyword]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });

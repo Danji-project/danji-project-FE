@@ -1,6 +1,17 @@
 import { create } from "zustand";
 import axios from "axios";
 
+export interface ApartmentInfo {
+  id?: string;
+  name: string;
+  address: string;
+  detailAddress: string;
+  houseSizeNumber: number;
+  parkingSpaces: number;
+  buildings: string[];
+  images: string[];
+}
+
 export interface UserInfoData {
   code: number;
   data: UserInfoInterface;
@@ -17,7 +28,9 @@ export interface UserInfoInterface {
 }
 
 interface UserInfoInterfaceReal extends UserInfoInterface {
+  apartment: ApartmentInfo | null;
   setIsLogin: (isLogin: boolean) => void;
+  setApartment: (apartment: ApartmentInfo | null) => void;
   updateUserInfo: (
     email: string,
     password: string,
@@ -38,8 +51,12 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
   nickname: "",
   phone: "",
   name: "",
+  apartment: null,
 
   setIsLogin: (isLogin) => set({ isLogin }),
+
+  setApartment: (apartment) => set({ apartment }),
+
   updateUserInfo: (email, password, nickname, profileImage, phone, name) =>
     set({
       email,

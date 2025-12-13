@@ -51,6 +51,7 @@ function App() {
         "/my-page",
         "/settings",
         "/chat",
+        "/apart-info",
       ];
       const isSkipSkeletonPage = skipSkeletonPaths.some((path) =>
         globalThis.location.pathname.startsWith(path)

@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { MyPageRoutes } from "./MyPageRoutes";
 import MainPage from "../pages/main/MainPage";
 import ApartInfo from "../pages/apart-info/ApartInfo";
 import CommunityWrite from "../pages/community-register/CommunityWrite";
@@ -14,9 +13,9 @@ import ResetPassword from "../pages/reset-password/ResetPassword";
 import ChattingPage from "../pages/chat-page/ChattingPage";
 import LoginPage from "../pages/login/loginPage";
 import ChattingDetail from "../pages/chat-detail/ChattingDetail";
-import MyPage from "../pages/my-pages/MyPage";
 import SearchResult from "../pages/search-result/SearchResult";
 import Settings from "../pages/settings/Settings";
+import MyPage from "../pages/my-pages/MyPage";
 
 const AppRoutes = () => {
   return (
@@ -42,10 +41,8 @@ const AppRoutes = () => {
         </Route>
 
         {/* 마이페이지 라우팅 */}
-        <Route element={<MyPageRoutes />}>
-          <Route path="/my-page" element={<MyPage />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
+        <Route path="/my-page" element={<MyPage />} />
+        <Route path="/settings" element={<Settings />} />
 
         {/* 채팅 라우팅 */}
         <Route path="/chat-page" element={<ChattingPage />} />

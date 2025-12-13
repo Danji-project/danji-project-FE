@@ -1,11 +1,12 @@
 import styles from "./MenuSidebar.module.scss";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSidebarStore } from "../../../stores/sidebarStore";
 import { useLogout } from "../../../hooks/useLogout";
 import { useEffect, useState } from "react";
 
 const MenuSidebar = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
   const { isOpen, setIsOpen } = useSidebarStore();
   const { logoutMutation } = useLogout();
 
@@ -34,34 +35,94 @@ const MenuSidebar = () => {
       </button>
       <ul>
         <li>
-          <Link to="/apart-info">단지 정보</Link>
+          <button
+            onClick={() => {
+              navigate("/apart-info");
+            }}
+          >
+            단지 정보
+          </button>
         </li>
         <li>
-          <Link to="/apart-info/community">커뮤니티</Link>
+          <button
+            onClick={() => {
+              navigate("/apart-info/community");
+            }}
+          >
+            커뮤니티
+          </button>
         </li>
         <li>
-          <Link to="/notice">공지사항</Link>
+          <button
+            onClick={() => {
+              navigate("/notice");
+            }}
+          >
+            공지사항
+          </button>
         </li>
         <li>
-          <Link to="/danji/find">단지 즐겨찾기</Link>
+          <button
+            onClick={() => {
+              navigate("/danji/find");
+            }}
+          >
+            단지 즐겨찾기
+          </button>
         </li>
         <li>
-          <Link to="/my-page">마이페이지</Link>
+          <button
+            onClick={() => {
+              navigate("/my-page");
+            }}
+          >
+            마이페이지
+          </button>
         </li>
         <li>
-          <Link to="/building-info">시설 정보</Link>
+          <button
+            onClick={() => {
+              navigate("/building-info");
+            }}
+          >
+            시설 정보
+          </button>
         </li>
         <li>
-          <Link to="/chat">채팅</Link>
+          <button
+            onClick={() => {
+              navigate("/chat-page");
+            }}
+          >
+            채팅
+          </button>
         </li>
         <li>
-          <Link to="/visit-register">방문차량등록</Link>
+          <button
+            onClick={() => {
+              navigate("/visit-register");
+            }}
+          >
+            방문차량등록
+          </button>
         </li>
         <li>
-          <Link to="/reservation/info">내 예약 정보</Link>
+          <button
+            onClick={() => {
+              navigate("/reservation/info");
+            }}
+          >
+            내 예약 정보
+          </button>
         </li>
         <li>
-          <Link to="/apart/register">단지 등록</Link>
+          <button
+            onClick={() => {
+              navigate("/apart/register");
+            }}
+          >
+            단지 등록
+          </button>
         </li>
         <li>
           <button

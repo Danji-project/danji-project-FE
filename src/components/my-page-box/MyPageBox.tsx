@@ -1,15 +1,15 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
 import styles from "./MyPageBox.module.scss";
 import MyPageBoxSkeleton from "./MyPageBoxSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const MyPageBox = () => {
   const { profileImage, nickname, email, isLogin } = useUserInfo();
-  const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const { uploadProfileImage, uploadPending } = useProfileImageUpload();
+  const navigate = useNavigate();
 
   console.log(nickname, email, profileImage);
 
@@ -69,7 +69,7 @@ const MyPageBox = () => {
             <span>등록된 단지가 없습니다.</span>
           </div>
           <div className={styles["my__page__box__danji__none__button"]}>
-            <button onClick={() => navigate("/register-my-apart-info")}>
+            <button onClick={() => navigate("/register-danji")}>
               단지 등록하기
             </button>
           </div>

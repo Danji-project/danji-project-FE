@@ -23,9 +23,9 @@ const ApartInfo = () => {
     }
   }, [location.pathname]);
 
-  const filteredApartment = fetchedApartments.filter(
+  const filteredApartment = fetchedApartments.find(
     (item) => item.id === Number(id)
-  )[0];
+  );
 
   return (
     <div className={styles["apart__info"]}>
