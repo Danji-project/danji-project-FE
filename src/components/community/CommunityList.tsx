@@ -24,9 +24,10 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
     selectedSort
   );
   const { data } = useFeedListStore();
-  const { isLogin } = useUserInfo();
+  const useUserInfoData = useUserInfo();
   const { positionTop, positionBottom } = useRootPositionStore();
   const navigate = useNavigate();
+  const childRef = useRef<HTMLDivElement>(null);
 
   // textarea에 적용할 크기 상태
   const [size, setPosition] = useState<ElementSize>({

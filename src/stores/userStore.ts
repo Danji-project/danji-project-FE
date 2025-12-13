@@ -109,8 +109,8 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
     }),
 
   updateAllUserInfo: (
-    email,
-    password,
+    _email,
+    _password,
     nickname,
     profileImage,
     phone,
