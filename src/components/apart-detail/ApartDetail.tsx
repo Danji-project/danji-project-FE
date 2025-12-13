@@ -27,7 +27,9 @@ const ApartDetail = ({ apartData }: { apartData: BaseApartInfo }) => {
             </dl>
             <dl>
               <dd>총 세대 수</dd>
-              <dt>{apartData.buildingCount.toLocaleString()}세대 (10개동)</dt>
+              <dt>
+                {(apartData.buildingCount ?? 0).toLocaleString()}세대 (10개동)
+              </dt>
             </dl>
             <dl>
               <dd>건물 유형</dd>
