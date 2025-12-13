@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import styles from "./SearchDanjiLink.module.scss";
 
 interface ApartmentItem {
@@ -14,6 +15,16 @@ interface ApartmentItem {
 }
 
 const SearchDanjiLink = ({ item }: { item: ApartmentItem }) => {
+  const [isBookmarked, setIsBookmarked] = useState(item.isBookmarked);
+
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsBookmarked(!isBookmarked);
+    // TODO: 즐겨찾기 API 호출
+    console.log("즐겨찾기 토글:", item.kaptCode, !isBookmarked);
+  };
+
   return (
     <Link
       to={item.id ? `/apart-info/${item.id}` : "#"}
@@ -45,6 +56,28 @@ const SearchDanjiLink = ({ item }: { item: ApartmentItem }) => {
             : "정보 준비중"}
         </p>
       </div>
+      <button
+        className={styles["search__danji__link__bookmark"]}
+        onClick={handleBookmarkClick}
+        aria-label="즐겨찾기"
+      >
+        {isBookmarked ? (
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFB800">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+          </svg>
+        ) : (
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#CCCCCC"
+            strokeWidth="2"
+          >
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+          </svg>
+        )}
+      </button>
     </Link>
   );
 };

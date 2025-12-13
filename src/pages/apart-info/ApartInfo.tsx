@@ -34,11 +34,15 @@ const ApartInfo = () => {
     (item) => item.id === Number(id)
   );
 
+  if (!filteredApartment) {
+    return <div>아파트 정보를 찾을 수 없습니다.</div>;
+  }
+
   return (
     <div className={styles["apart__info"]}>
       <Header
         hasBackButton
-        title={filteredApartment.apartDetailName!}
+        title={filteredApartment.apartDetailName}
         hasIcons={
           isLogin ? <img src="/icons/card_bookmark.png" alt="bookmark" width={16} /> : <></>
         }

@@ -11,7 +11,7 @@ const LoginInputWrapper = () => {
   const [emailData, setEmailData] = useState("");
   const [passwordData, setPasswordData] = useState("");
   const [idError, setIdError] = useState("");
-  const [type, setType] = useState("text");
+  const [type, setType] = useState("password");
   const [isIdSaved, setIsIdSaved] = useState(false);
 
   const handleEmailData = (e: React.ChangeEvent<HTMLInputElement>) => {

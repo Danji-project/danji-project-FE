@@ -4,6 +4,7 @@ export const fetchedApartments: BaseApartInfo[] = [
   {
     id: 1,
     location: "서울 강남구 역삼동",
+    address: "서울시 강남구 역삼동 123-45",
     name: "힐스테이트",
     region: "강남 힐스테이트",
     apartDetailName: "힐스테이트 브리즈 강남",
@@ -25,6 +26,7 @@ export const fetchedApartments: BaseApartInfo[] = [
   {
     id: 2,
     location: "서울 강남구 역삼동",
+    address: "서울시 강남구 역삼동 456-78",
     name: "래미안",
     region: "래미안 루체라 강남",
     apartDetailName: "힐스테이트 브리즈 강남",
