@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import CommunitySkeleton from "../common/community-skeleton/CommunitySkeleton";
 import { useUserInfo } from "../../stores/userStore";
 import type { ElementSize } from "../../model/ElementSizeModel";
-import { useRootPositionStore } from "../../stores/rootPositionStore";
 
 const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
   const [selectedSort, setSelectedSort] = useState("ALL");
@@ -24,8 +23,7 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
     selectedSort
   );
   const { data } = useFeedListStore();
-  const useUserInfoData = useUserInfo();
-  const { positionTop, positionBottom } = useRootPositionStore();
+  const { isLogin } = useUserInfo();
   const navigate = useNavigate();
   const childRef = useRef<HTMLDivElement>(null);
 

@@ -59,7 +59,8 @@ export const useUserInfoMutation = () => {
           data.data.password,
           data.data.nickname,
           !data.data.fileId ? "./profile_imgSrc.jpg" : data.data.fileId,
-          data.data.phone
+          data.data.phone,
+          data.data.name || ""
         );
       }
 
