@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 
 import { MyPageRoutes } from "./MyPageRoutes";
 import MainPage from "../pages/main/MainPage";
-import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 import ApartInfo from "../pages/apart-info/ApartInfo";
 import CommunityWrite from "../pages/community-register/CommunityWrite";
 import CommunityDetail from "../pages/community-detail/CommunityDetail";
@@ -26,6 +25,7 @@ const AppRoutes = () => {
         {/* 메인 페이지 라우팅 */}
         <Route path="/" element={<MainPage />} />
         <Route path="/apart-info/:id" element={<ApartInfo />} />
+        <Route path="/apart-info/:id/community" element={<ApartInfo />} />
         <Route path="/apart-info/:id/write" element={<CommunityWrite />} />
         <Route
           path="/apart-info/:id/community-detail/:feedId"
@@ -43,7 +43,6 @@ const AppRoutes = () => {
 
         {/* 마이페이지 라우팅 */}
         <Route element={<MyPageRoutes />}>
-          <Route path="/register-my-apart-info" element={<RegisterMyApart />} />
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/settings" element={<Settings />} />
         </Route>

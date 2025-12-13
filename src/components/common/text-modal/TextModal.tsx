@@ -1,7 +1,6 @@
-import { useRootPosition } from "../../../hooks/useRootPosition";
-import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { useModalTextStore } from "../../../stores/useModalText";
 import { usePendingStore } from "../../../stores/usePendingStore";
+import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import ModalSkeleton from "../ModalSkeleton";
 import styles from "./TextModal.module.scss";
 
@@ -20,12 +19,9 @@ const TextModal = ({
   onConfirm?: () => void;
   isLoading?: boolean;
 }) => {
-  useRootPosition();
-
   const { setModalPending, modalLoading } = usePendingStore();
   const { setModalText, modalTitle, modalText } = useModalTextStore();
-
-  const { positionBottom, positionLeft } = useRootPositionStore();
+  const { positionTop, positionLeft } = useRootPositionStore();
 
   const shouldShowLoading = isLoading || modalLoading;
 
@@ -33,10 +29,8 @@ const TextModal = ({
     <div
       className={styles["text__modal"]}
       style={{
-        top: `${positionBottom}px`,
+        top: `${positionTop}px`,
         left: `${positionLeft}px`,
-        transform: `translateY(calc(-100% - (var(--device-height) - 100%) / 2))`,
-        marginLeft: `calc((var(--device-width) - 300px) / 2)`,
       }}
     >
       {shouldShowLoading ? (

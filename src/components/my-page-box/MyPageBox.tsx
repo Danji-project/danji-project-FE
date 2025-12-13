@@ -1,14 +1,22 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
 import styles from "./MyPageBox.module.scss";
+import MyPageBoxSkeleton from "./MyPageBoxSkeleton";
 
 const MyPageBox = () => {
-  const { profileImage, nickname, email } = useUserInfo();
+  const { profileImage, nickname, email, isLogin } = useUserInfo();
+  const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const { uploadProfileImage, uploadPending } = useProfileImageUpload();
 
   console.log(nickname, email, profileImage);
+
+  // 로그인하지 않았거나 정보가 아직 로드되지 않은 경우
+  if (!isLogin || !nickname || !email) {
+    return <MyPageBoxSkeleton />;
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -61,7 +69,9 @@ const MyPageBox = () => {
             <span>등록된 단지가 없습니다.</span>
           </div>
           <div className={styles["my__page__box__danji__none__button"]}>
-            <button>단지 등록하기</button>
+            <button onClick={() => navigate("/register-my-apart-info")}>
+              단지 등록하기
+            </button>
           </div>
         </div>
       </div>

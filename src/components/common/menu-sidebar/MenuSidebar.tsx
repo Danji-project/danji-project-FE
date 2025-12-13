@@ -1,20 +1,29 @@
 import styles from "./MenuSidebar.module.scss";
-import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { Link } from "react-router-dom";
 import { useSidebarStore } from "../../../stores/sidebarStore";
 import { useLogout } from "../../../hooks/useLogout";
+import { useEffect, useState } from "react";
 
 const MenuSidebar = () => {
-  const { positionLeft, positionTop } = useRootPositionStore();
-
-  const { setIsOpen } = useSidebarStore();
-
+  const [isMobile, setIsMobile] = useState(false);
+  const { isOpen, setIsOpen } = useSidebarStore();
   const { logoutMutation } = useLogout();
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
 
   return (
     <div
-      className={styles["menu__sidebar"]}
-      style={{ top: `${positionTop}px`, left: `${positionLeft}px` }}
+      className={`${styles["menu__sidebar"]} ${
+        isOpen ? styles["menu__sidebar__open"] : ""
+      } ${isMobile ? styles["menu__sidebar__mobile"] : ""}`}
     >
       <button
         onClick={() => {

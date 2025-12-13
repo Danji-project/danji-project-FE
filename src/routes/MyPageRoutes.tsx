@@ -1,7 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import Header from "../layouts/Header";
-import RegisterMyApart from "../pages/register-my-apart-info/registerMyApartInfo";
 import Settings from "../pages/settings/Settings";
 
 export const MyPageRoutes = () => {
@@ -48,9 +47,6 @@ export const MyPageRoutes = () => {
             <Outlet />
           </>
         );
-
-      case "/register-my-apart-info":
-        return <RegisterMyApart />;
 
       case "/settings":
         return <Settings />;

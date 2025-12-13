@@ -11,6 +11,7 @@ interface Pending {
   registerDimmed: boolean;
   modalLoading: boolean;
   findPending: boolean;
+  commentPending: boolean;
   setApartChatBlack: (apartChatBlack: boolean) => void;
   setProfilePending: (profilePending: boolean) => void;
   setProfileNick: (profileNick: string) => void;
@@ -21,6 +22,7 @@ interface Pending {
   setRegisterDimmed: (registerDimmed: boolean) => void;
   setModalLoading: (modalLoading: boolean) => void;
   setFindPending: (findPending: boolean) => void;
+  setCommentPending: (commentPending: boolean) => void;
 }
 
 export const usePendingStore = create<Pending>((set) => ({
@@ -34,6 +36,7 @@ export const usePendingStore = create<Pending>((set) => ({
   registerDimmed: false,
   modalLoading: false,
   findPending: false,
+  commentPending: false,
   setApartChatBlack: (apartChatBlack) => set({ apartChatBlack }),
   setProfilePending: (profilePending) => set({ profilePending }),
   setProfileNick: (profileNick) => set({ profileNick }),
@@ -44,4 +47,5 @@ export const usePendingStore = create<Pending>((set) => ({
   setRegisterDimmed: (registerDimmed) => set({ registerDimmed }),
   setModalLoading: (modalLoading) => set({ modalLoading }),
   setFindPending: (findPending) => set({ findPending }),
+  setCommentPending: (commentPending) => set({ commentPending }),
 }));

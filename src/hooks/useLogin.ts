@@ -31,11 +31,15 @@ export const useLogin = (
       );
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       // 쿠키 기반 인증이므로 토큰 저장 불필요 (서버에서 쿠키 설정)
       setLoginPending(false);
-      navigate("/");
-      getUserInfo.mutate();
+      // 사용자 정보 조회를 기다린 후 네비게이트
+      getUserInfo.mutate(undefined, {
+        onSettled: () => {
+          navigate("/");
+        },
+      });
     },
     onError: (e: Error) => {
       setLoginPending(false);

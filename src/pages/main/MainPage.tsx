@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../layouts/Header";
 import { useUserInfo } from "../../stores/userStore";
 import { useNavigate } from "react-router-dom";
@@ -9,22 +9,25 @@ import IconMenu from "../../components/common/icon-menu/IconMenu";
 
 const MainPage = () => {
   const [searchContent, setSearchContent] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
   const { isOpen, setIsOpen } = useSidebarStore();
 
   const isLogin = useUserInfo((state) => state.isLogin);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
   return (
     <>
-      {!isLogin ? (
-        <Header
-          title={"DANJITALK"}
-          hasIcons={"Login"}
-          onIconClick={() => {
-            navigate("/login");
-          }}
-        />
-      ) : (
+      {isLogin ? (
         <Header
           title={"DANJITALK"}
           hasIcons={<img src="/icons/lists.svg" alt="list-icon" />}
@@ -32,8 +35,16 @@ const MainPage = () => {
             setIsOpen(true);
           }}
         />
+      ) : (
+        <Header
+          title={"DANJITALK"}
+          hasIcons={"Login"}
+          onIconClick={() => {
+            navigate("/login");
+          }}
+        />
       )}
-      {isOpen && <MenuSidebar />}
+      {isLogin && <MenuSidebar />}
       {isLogin && <IconMenu />}
       <MainContents
         searchContent={searchContent}

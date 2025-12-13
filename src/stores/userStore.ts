@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import axios from "axios";
 
 export interface UserInfoData {
   code: number;
@@ -15,7 +16,7 @@ export interface UserInfoInterface {
   name: string;
 }
 
-interface userInfoInterfaceReal extends UserInfoInterface {
+interface UserInfoInterfaceReal extends UserInfoInterface {
   setIsLogin: (isLogin: boolean) => void;
   updateUserInfo: (
     email: string,
@@ -25,9 +26,10 @@ interface userInfoInterfaceReal extends UserInfoInterface {
     phone: string,
     name: string
   ) => void;
+  refreshUserInfo: () => Promise<void>;
 }
 
-export const useUserInfo = create<userInfoInterfaceReal>((set) => ({
+export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
   isLogin: false,
 
   email: "",
@@ -47,4 +49,20 @@ export const useUserInfo = create<userInfoInterfaceReal>((set) => ({
       phone,
       name,
     }),
+
+  refreshUserInfo: async () => {
+    try {
+      const res = await axios.get("/api/member");
+      const userData = res.data.data;
+      set({
+        email: userData.email || "",
+        nickname: userData.nickname || "",
+        profileImage: userData.profileImage || null,
+        phone: userData.phone || "",
+        name: userData.name || "",
+      });
+    } catch (error) {
+      console.error("Failed to refresh user info:", error);
+    }
+  },
 }));
