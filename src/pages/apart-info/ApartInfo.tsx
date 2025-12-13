@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import styles from "./ApartInfo.module.scss";
 import Header from "../../layouts/Header";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchedApartments } from "../../assets/mock/apartmentMock";
 import TabList from "../../components/common/tabs/TabList";
 import { apartTabs } from "../../assets/mock/tabsMocks";
@@ -14,21 +14,19 @@ import { useUserInfo } from "../../stores/userStore";
 const ApartInfo = () => {
   const { isLogin } = useUserInfo();
   const { id } = useParams();
-  const location = useLocation();
   const [tabContents, setTabContents] = useState("apart-info");
 
   const { ApartBookMarkMutate } = useBookMark();
 
-  const clickBookMark= () => {
-    let apartId = Number(id);
+  const clickBookMark = () => {
+    const apartId = Number(id);
     ApartBookMarkMutate(apartId);
   };
 
   useEffect(() => {
-    let first = sessionStorage.getItem('tabselect');
+    const first = sessionStorage.getItem("tabselect");
 
-    if(first)
-      setTabContents(first);
+    if (first) setTabContents(first);
   }, []);
   const filteredApartment = fetchedApartments.find(
     (item) => item.id === Number(id)
@@ -44,7 +42,11 @@ const ApartInfo = () => {
         hasBackButton
         title={filteredApartment.apartDetailName}
         hasIcons={
-          isLogin ? <img src="/icons/card_bookmark.png" alt="bookmark" width={16} /> : <></>
+          isLogin ? (
+            <img src="/icons/card_bookmark.png" alt="bookmark" width={16} />
+          ) : (
+            <></>
+          )
         }
         onIconClick={clickBookMark}
       />
