@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
+import AuthRoutes from "./AuthRoutes";
+
 import MainPage from "../pages/main/MainPage";
 import ApartInfo from "../pages/apart-info/ApartInfo";
 import CommunityWrite from "../pages/community-register/CommunityWrite";
 import CommunityDetail from "../pages/community-detail/CommunityDetail";
 import RegisterAccount from "../pages/register-account/RegisterAccount";
-import AuthRoutes from "./AuthRoutes";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
 import FindAccount from "../pages/find-account/FindAccount";
 import ResetPassword from "../pages/reset-password/ResetPassword";
