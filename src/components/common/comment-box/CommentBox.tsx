@@ -70,7 +70,6 @@ const CommentBox = ({
       className={`${styles["comment__box"]} ${
         depth > 0 ? styles["comment__box__child"] : ""
       }`}
-      style={{ paddingLeft: `40px` }}
     >
       <div className={styles["comment__box__userInfo"]}>
         <div

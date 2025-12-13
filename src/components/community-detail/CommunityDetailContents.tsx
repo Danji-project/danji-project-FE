@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useState } from "react";
+import { useEffect, useRef,useState } from "react";
 import type { FeedDetail } from "../../hooks/useFeedDetail";
 
 import styles from "./CommunityDetailContents.module.scss";
@@ -14,6 +14,8 @@ import { usePendingStore } from "../../stores/usePendingStore";
 import ProfileModal from "../common/profile-modal/ProfileModal";
 import TextModal from "../common/text-modal/TextModal";
 import { useModalTextStore } from "../../stores/useModalText";
+import { useBookMark } from "../../hooks/useBookMark";
+import { useReactMutate } from "../../hooks/useReactMutate";
 
 const CommunityDetailContents = ({
   contentData,
@@ -29,6 +31,35 @@ const CommunityDetailContents = ({
     profileNick,
     profileImg,
   } = usePendingStore();
+  
+  const { FeedBookMarkMutate ,FeedBookMarkDeleteMutate} = useBookMark();
+
+  const clickBookMark= () => {
+    //console.log("book mark on!");
+    if(feedId && !contentData?.data?.isBookmarked)
+    {
+      FeedBookMarkMutate(feedId);
+    }
+    else if(feedId && contentData?.data?.isBookmarked)
+    {
+      FeedBookMarkDeleteMutate(feedId);
+    }
+  };
+
+  const { FeedReactMutate ,FeedReactDeleteMutate} = useReactMutate();
+
+  const clickReact= () => {
+    //console.log("book mark on!");
+    if(feedId && !contentData?.data?.isReacted)
+    {
+      FeedReactMutate(feedId);
+    }
+    else if(feedId && contentData?.data?.isReacted)
+    {
+      FeedReactDeleteMutate(feedId);
+    }
+  };
+
 
   const { data: commentData } = useCommentStore();
   const { modalText } = useModalTextStore();
@@ -100,10 +131,10 @@ const CommunityDetailContents = ({
         </div>
       )}
       <div className={styles["feed__detail__contents__react"]}>
-        <button>
+        <button onClick={clickReact}>
           <img src={"/icons/react.png"} alt="react" />
         </button>
-        <button>
+        <button onClick={clickBookMark}>
           <img src={"/icons/bookmark_btn.png"} alt="bookmark" />
         </button>
       </div>
@@ -130,6 +161,7 @@ const CommunityDetailContents = ({
           ))}
         </div>
       </div>
+
       {profilePending &&
         ReactDOM.createPortal(
           <ProfileModal nick={profileNick} img={profileImg} />,

@@ -86,8 +86,16 @@
     right: 10px;
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 50%;
-    display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 99999;
   }
+}
+
+.isLogin {
+  display: flex;
+}
+
+.isnotLogin {
+  display: none;
 }

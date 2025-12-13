@@ -1,8 +1,21 @@
 import styles from "./ApartCard.module.scss";
 import { Link } from "react-router-dom";
 import type { BaseApartInfo } from "../../../api/types";
+import { useUserInfo } from "../../../stores/userStore";
+import { useBookMark } from "../../../hooks/useBookMark";
 
 const ApartCard = ({ apartment }: { apartment: BaseApartInfo }) => {
+  const { isLogin } = useUserInfo();
+  const { ApartBookMarkMutate } = useBookMark();
+
+  const clickBookMark= (e: React.MouseEvent<HTMLDivElement>) => {
+    //console.log("book mark on!");
+    ApartBookMarkMutate(apartment.id);
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+
   return (
     <Link className={styles["apart__card"]} to={`/apart-info/${apartment.id}`}>
       <div className={styles["apart__card__image"]}>
@@ -11,7 +24,8 @@ const ApartCard = ({ apartment }: { apartment: BaseApartInfo }) => {
           <img src={"/icons/location_mark.svg"} alt="location__mark" />
           <span>{apartment.location}</span>
         </div>
-        <div className={styles["apart__card__bookmark"]}>
+        <div className={`${styles["apart__card__bookmark"]} ${isLogin? styles["isLogin"] : styles["isnotLogin"]}`} 
+             onClick={clickBookMark} role="button">
           <img src="/icons/card_bookmark.png" alt="bookmark" width={16} />
         </div>
       </div>
