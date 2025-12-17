@@ -1,21 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styles from "./SearchDanjiLink.module.scss";
-
-interface ApartmentItem {
-  id: number | null;
-  name: string;
-  region: string;
-  location: string;
-  totalUnit: number | null;
-  buildingCount: number | null;
-  thumbnailFileUrl: string | null;
-  isBookmarked: boolean;
-  kaptCode: string;
-}
+import type { ApartmentItem } from "../../api/types";
 
 const SearchDanjiLink = ({ item }: { item: ApartmentItem }) => {
   const [isBookmarked, setIsBookmarked] = useState(item.isBookmarked);
+  const navigate = useNavigate();
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -33,6 +23,8 @@ const SearchDanjiLink = ({ item }: { item: ApartmentItem }) => {
         if (!item.id) {
           e.preventDefault();
         }
+        sessionStorage.setItem("selectApart", JSON.stringify(item));
+        navigate(-1);
       }}
     >
       <div className={styles["search__danji__link__thumb"]}>

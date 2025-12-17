@@ -69,7 +69,7 @@ const MyPageBox = () => {
             <span>등록된 단지가 없습니다.</span>
           </div>
           <div className={styles["my__page__box__danji__none__button"]}>
-            <button onClick={() => navigate("/register-danji")}>
+            <button onClick={() => navigate("/apart-setting")}>
               단지 등록하기
             </button>
           </div>

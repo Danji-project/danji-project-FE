@@ -17,6 +17,7 @@ import ChattingDetail from "../pages/chat-detail/ChattingDetail";
 import SearchResult from "../pages/search-result/SearchResult";
 import Settings from "../pages/settings/Settings";
 import MyPage from "../pages/my-pages/MyPage";
+import RegisterMyApart from "../pages/register-userapart/RegisterUserApart";
 
 const AppRoutes = () => {
   return (
@@ -44,6 +45,7 @@ const AppRoutes = () => {
         {/* 마이페이지 라우팅 */}
         <Route path="/my-page" element={<MyPage />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/apart-setting" element={<RegisterMyApart/>}/>
 
         {/* 채팅 라우팅 */}
         <Route path="/chat-page" element={<ChattingPage />} />

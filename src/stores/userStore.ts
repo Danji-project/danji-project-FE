@@ -34,7 +34,7 @@ export interface UserInfoInterface {
   name: string;
   moveInDate: string | null;
   numberOfResidents: string | null;
-  carNumbers: [] | null;
+  carNumbers: string[] | null;
 }
 
 interface UserInfoInterfaceReal extends UserInfoInterface {
@@ -50,6 +50,14 @@ interface UserInfoInterfaceReal extends UserInfoInterface {
     phone: string,
     name: string
   ) => void;
+
+  updateApartInfo: (
+    apartmentId: string, 
+    building: string, 
+    unit: string,
+    moveInDate: string, 
+    numberOfResidents: string, 
+    carNumbers: string[]) => void
 
   updateAllUserInfo: (
     email: string,
@@ -67,7 +75,7 @@ interface UserInfoInterfaceReal extends UserInfoInterface {
     unit: string,
     moveInDate: string,
     numberOfResidents: string,
-    carNumbers: []
+    carNumbers: string[]
   ) => void;
   refreshUserInfo: () => Promise<void>;
 }
@@ -106,6 +114,16 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
       nickname,
       phone,
       name,
+    }),
+
+  updateApartInfo: (apartmentId, building, unit, moveInDate, numberOfResidents, carNumbers) =>
+    set({
+      apartmentId,
+      building,
+      unit,
+      moveInDate,
+      numberOfResidents,
+      carNumbers,
     }),
 
   updateAllUserInfo: (

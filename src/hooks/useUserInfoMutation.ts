@@ -36,10 +36,10 @@ export const useUserInfoMutation = () => {
       try {
         updateAllUserInfo(
           data.data.email,
-          data.data.password,
+          "",
           data.data.nickname,
           !data.data.fileId ? "./profile_imgSrc.jpg" : data.data.fileId,
-          data.data.phone,
+          data.data.phoneNumber,
           data.data.name,
           data.data.memberApartmentId,
           data.data.apartmentId,

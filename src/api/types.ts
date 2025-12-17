@@ -67,6 +67,18 @@ export interface Apartment {
   longitude?: number;
 }
 
+export interface ApartmentItem {
+  id: number | null;
+  name: string;
+  region: string;
+  location: string;
+  totalUnit: number | null;
+  buildingCount: number | null;
+  thumbnailFileUrl: string | null;
+  isBookmarked: boolean;
+  kaptCode: string;
+}
+
 // 아파트 상세 정보 타입 (BaseApartInfo)
 export interface BaseApartInfo extends Apartment {
   apartDetailName: string;
