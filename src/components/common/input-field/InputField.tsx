@@ -62,6 +62,7 @@ const InputField = ({
   showPasswordToggle,
   value,
   onChange,
+  pattern,
   valid,
   error,
   errorMessage,
@@ -74,12 +75,13 @@ const InputField = ({
   label: string;
   placeholder: string;
   className: string;
-  type: "text" | "password";
+  type: "text" | "password" | "date";
   name: string;
   actionButton?: ActionButton;
   showPasswordToggle?: boolean;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  pattern?: string;
   valid?: boolean;
   error?: string;
   errorMessage?: string;
@@ -125,6 +127,35 @@ const InputField = ({
     />
   );
 
+    const inputDateField = () => (
+    <>
+      <input
+        type="text"
+        id={id}
+        name={name}
+        value={value}
+        pattern={pattern}
+        onChange={onChange}
+        onBlur={touches}
+        placeholder={placeholder}
+        className={`${styles['input-field__input']} ${error ? styles['input-field__input--error'] : ''} ${
+          actionButton ? styles['input-field__wrapper--with-button'] : ''
+        }`}
+        aria-invalid={!!error}
+        aria-errormessage={error ? `${id}-error` : undefined}/>
+      <input
+        id={id}
+        type={type}
+        name={name}
+        value={value}
+        className={`${styles['input-field__date_input']} ${error ? styles['input-field__date_input--error'] : ''}`}
+        aria-invalid={!!error}
+        aria-errormessage={error ? `${id}-error` : undefined}
+      />
+    </>
+  );
+
+
   return (
     <div className={`${styles["input__field"]} ${className}`}>
       <label className={`${styles["input__field__label"]}`} htmlFor={id}>
@@ -135,7 +166,7 @@ const InputField = ({
           actionButton ? styles["input__field__flex"] : ""
         }`}
       >
-        {type === "password" ? inputPasswordField() : inputRegularField()}
+        {type === 'password' ? inputPasswordField() : type === 'date' ? inputDateField() : inputRegularField()}
         {type === "password" && showPasswordToggle && (
           <button
             type="button"

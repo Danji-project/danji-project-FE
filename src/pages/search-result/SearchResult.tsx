@@ -59,7 +59,7 @@ const SearchResult = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setChangedKeyword(e.target.value)
           }
-          onSearch={() => navigate(`/search/result?keyword=${changedKeyword}`)}
+          onSearch={() => navigate(`/search/result?keyword=${changedKeyword}`, {replace:true})}
         />
       </div>
       {searchPending ? (
