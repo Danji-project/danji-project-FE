@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FeedDetail } from "../../hooks/useFeedDetail";
 
 import styles from "./CommunityDetailContents.module.scss";
@@ -32,26 +32,33 @@ const CommunityDetailContents = ({
     profileImg,
   } = usePendingStore();
 
+  const [isbookmarkon, setIsbookmarkon] = useState<boolean>(false);
+  const [isReactedon, setIsReacted] = useState<boolean>(false);
+
   const { FeedBookMarkMutate, FeedBookMarkDeleteMutate } = useBookMark();
 
   const clickBookMark = () => {
     //console.log("book mark on!");
-    if (feedId && !contentData?.data?.isBookmarked) {
-      FeedBookMarkMutate(feedId);
-    } else if (feedId && contentData?.data?.isBookmarked) {
-      FeedBookMarkDeleteMutate(feedId);
+    if(feedId)
+    {
+      if (!isbookmarkon) {
+        FeedBookMarkMutate(feedId);
+      } else {
+        FeedBookMarkDeleteMutate(feedId);
+      }
     }
+    setIsbookmarkon(!isbookmarkon);
   };
 
   const { FeedReactMutate, FeedReactDeleteMutate } = useReactMutate();
 
   const clickReact = () => {
-    //console.log("book mark on!");
-    if (feedId && !contentData?.data?.isReacted) {
+    if (feedId && !isReactedon) {
       FeedReactMutate(feedId);
-    } else if (feedId && contentData?.data?.isReacted) {
+    } else if (feedId && isReactedon) {
       FeedReactDeleteMutate(feedId);
     }
+    setIsReacted(!isReactedon);
   };
 
   const { data: commentData } = useCommentStore();
@@ -75,6 +82,21 @@ const CommunityDetailContents = ({
       }
     );
   };
+
+  useEffect(() => {
+    if (feedId) {
+      setIsbookmarkon(contentData?.data?.isBookmarked);
+      setIsReacted(contentData?.data?.isReacted);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("실제 변경된 값:", isbookmarkon);
+  }, [isbookmarkon]); // isbookmarkon이 바뀔 때마다 실행됨
+  
+  useEffect(() => {
+    console.log("실제 변경된 반응 값:", isReactedon);
+  }, [isReactedon]); // isbookmarkon이 바뀔 때마다 실행됨
 
   return (
     <div className={styles["feed__detail__contents"]}>
@@ -125,10 +147,10 @@ const CommunityDetailContents = ({
       )}
       <div className={styles["feed__detail__contents__react"]}>
         <button onClick={clickReact}>
-          <img src={"/icons/react.png"} alt="react" />
+          <img src={isReactedon ? "/icons/react_on.svg" : "/icons/react.png"} alt="react" />
         </button>
         <button onClick={clickBookMark}>
-          <img src={"/icons/bookmark_btn.png"} alt="bookmark" />
+          <img src={isbookmarkon ? "/icons/bookmarkIcon.svg" : "/icons/bookmark_btn.png"} alt="bookmark" />
         </button>
       </div>
       <div className={styles["feed__detail__contents__comment"]}>
