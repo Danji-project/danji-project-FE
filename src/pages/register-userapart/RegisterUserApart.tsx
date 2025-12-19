@@ -121,8 +121,8 @@ const ApartInfoBody = ({Appart, setAppart}:
               <InputField type="text"
                           label="차량등록"
                           name="car"
-                          value={car[0]}
-                          onChange={(e) => { car[0] = e.target.value; console.log(car[0]); }}
+                          value={car[0] || ''}
+                          onChange={(e) => { setcar([e.target.value]); }}
                           placeholder="ex. 12가 1234"
                           className=""
                         />
