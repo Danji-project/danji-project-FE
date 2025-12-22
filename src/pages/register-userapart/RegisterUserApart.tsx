@@ -10,9 +10,9 @@ import LogoIcon from "../../assets/logo.svg";
 import SearchBox from "../../components/common/search-box/search-box";
 import InputField from "../../components/common/input-field/InputField";
 import { useGetApartmentMutation } from "../../stores/useGetApartmentMutation";
-import DeleteIcon from "../../assets/Icon/DeleteIcon.svg";
 import type { ApartmentItem } from "../../api/types";
 import { useUserApartAdd } from "../../stores/useUserApartAdd";
+import { useApartRegistDB } from "../../hooks/useRegisterApartment";
 
 
 const RegisterApartHeader = () => {
@@ -37,11 +37,18 @@ const ApartInfoBody = ({Appart, setAppart}:
   const [car, setcar] = useState<string[]>([]);
   
   const { AddApart } = useUserApartAdd();
+  const { apartRegistDB } = useApartRegistDB(setAppart);
 
   const selectBtnClick = () => {
     if(Appart)
     {
-      user.updateApartInfo(Appart.id ? Appart.id.toString() : Appart.kaptCode, dong, ho, date, person, car);
+      if(!Appart.id)
+      {
+        apartRegistDB(Appart);
+      }
+
+      user.updateApartInfo(Appart.id ? Appart.id.toString() : '0', dong, ho, date, person, car);
+      
       AddApart();
       navigate('/my-page');
     }

@@ -53,6 +53,18 @@ export enum ApiErrorCode {
   SERVER_ERROR = "SERVER_ERROR",
 }
 
+export interface ApartmentItem {
+  id: number | null;
+  name: string;
+  region: string;
+  location: string;
+  totalUnit: number | null;
+  buildingCount: number | null;
+  thumbnailFileUrl: string | null;
+  isBookmarked: boolean;
+  kaptCode: string;
+}
+
 // 단지 관련 타입
 export interface Apartment {
   id: number;
@@ -65,18 +77,6 @@ export interface Apartment {
   address: string;
   latitude?: number;
   longitude?: number;
-}
-
-export interface ApartmentItem {
-  id: number | null;
-  name: string;
-  region: string;
-  location: string;
-  totalUnit: number | null;
-  buildingCount: number | null;
-  thumbnailFileUrl: string | null;
-  isBookmarked: boolean;
-  kaptCode: string;
 }
 
 // 아파트 상세 정보 타입 (BaseApartInfo)
