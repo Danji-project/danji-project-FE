@@ -37,23 +37,35 @@ const ApartInfoBody = ({Appart, setAppart}:
   const [car, setcar] = useState<string[]>([]);
   
   const { AddApart } = useUserApartAdd();
-  const { apartRegistDB } = useApartRegistDB(setAppart);
+  const { apartRegistDB} = useApartRegistDB();
 
-  const selectBtnClick = () => {
-    if(Appart)
-    {
-      if(!Appart.id)
-      {
-        apartRegistDB(Appart);
+    const selectBtnClick = async () => {
+    if (Appart) {
+      let apartmentData = Appart;
+      if (!apartmentData.id) {
+        try {
+          // useApartRegistDB 훅이 mutateAsync를 반환하도록 수정되었다고 가정합니다.
+          const newApartment = await apartRegistDB(apartmentData);
+          setAppart(newApartment);
+          apartmentData = newApartment;
+        } catch (error) {
+          console.error("아파트 등록에 실패했습니다.", error);
+          return; // 오류 발생 시 중단
+        }
       }
 
-      user.updateApartInfo(Appart.id ? Appart.id.toString() : '0', dong, ho, date, person, car);
+      // apartmentData.id가 유효한지 한 번 더 확인
+      if (!apartmentData.id) {
+        console.error("아파트 ID가 없어 등록을 진행할 수 없습니다.");
+        return;
+      }
+
+      user.updateApartInfo(apartmentData.id.toString(), dong, ho, date, person, car);
       
       AddApart();
       navigate('/my-page');
     }
   };
-
   useEffect(() => {
     console.log("body");
     console.log(Appart);

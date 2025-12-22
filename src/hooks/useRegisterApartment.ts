@@ -4,7 +4,7 @@ import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
 import { useUserInfo } from "../stores/userStore";
 import type { ApartmentItem } from "../api";
-import type { Dispatch } from "react";
+import { useState, type Dispatch } from "react";
 
 export const useRegisterApartment = () => {
   const navigate = useNavigate();
@@ -37,60 +37,35 @@ export const useRegisterApartment = () => {
 };
 
 
-export const useApartRegistDB = (setApart : Dispatch<ApartmentItem>) => {
-  const useApartRegistDBMutation = useMutation({
-    mutationFn: async (apart:ApartmentItem) => {
+export const useApartRegistDB = () => {
+  const apartRegistDBMutation = useMutation<ApartmentItem, Error, ApartmentItem>({
+    mutationFn: async (apart: ApartmentItem) => {
       const formData = new FormData();
 
-      // requestDto를 Blob으로 추가 (서버가 요구하는 형식)
-      // password는 변경하지 않으므로 제거
-      const requestDto: {
-        name: string;
-        region: string;
-        location: string;
-        totalUnit: number | null;
-        parkingCapacity: string;
-        buildingRange: string;
-        kaptCode: string;
-      } = {
-        name: apart.kaptCode,
+      const requestDto = {
+        name: "", // name 필드는 빈 문자열로 전송
         region: apart.region,
-        location:apart.location,
-        totalUnit : apart.totalUnit,
-        parkingCapacity: "",
-        buildingRange : '101동 ~ 123동 (23개동)',
-        kaptCode : apart.kaptCode,
+        location: apart.location,
+        totalUnit: apart.totalUnit,
+        parkingCapacity: "", // TODO: 이 값은 동적으로 처리해야 할 수 있습니다.
+        buildingRange: "101동 ~ 123동 (23개동)", // TODO: 이 값은 동적으로 처리해야 할 수 있습니다.
+        kaptCode: apart.kaptCode,
       };
-
-      // name 필드는 서버 응답에서 null이므로 빈 문자열로 전송
-      requestDto.name = "";
 
       formData.append(
         "requestDto",
         new Blob([JSON.stringify(requestDto)], { type: "application/json" })
       );
 
-      // multipart/form-data는 axios가 자동으로 Content-Type과 boundary를 설정
+      // TODO: API_ENDPOINTS에 '/api/apartment' 경로를 추가하고 사용하세요.
       const res = await axios.post("/api/apartment", formData);
 
       return res.data;
     },
-    onSuccess: async (data) => {
-      // 서버 응답 로그 확인
-      console.log("아파트 등록 응답:", data);
-      setApart(data);
-    },
-    onError: (error: any) => {
-      console.error("아파트 등록 실패:", error);
-    },
   });
 
-  const ApartMutate = async (apart: ApartmentItem) => {
-    await useApartRegistDBMutation.mutate(apart);
-  };
-
   return {
-    apartRegistDB: ApartMutate,
-    apartRegistDBPending: useApartRegistDBMutation.isPending,
+    apartRegistDB: apartRegistDBMutation.mutateAsync,
+    apartRegistDBPending: apartRegistDBMutation.isPending,
   };
 };
