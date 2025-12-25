@@ -35,6 +35,7 @@ export interface UserInfoInterface {
   moveInDate: string | null;
   numberOfResidents: string | null;
   carNumbers: string[] | null;
+  fileId : string | null;
 }
 
 interface UserInfoInterfaceReal extends UserInfoInterface {
@@ -75,7 +76,8 @@ interface UserInfoInterfaceReal extends UserInfoInterface {
     unit: string,
     moveInDate: string,
     numberOfResidents: string,
-    carNumbers: string[]
+    carNumbers: string[],
+    fileId : string,
   ) => void;
   refreshUserInfo: () => Promise<void>;
 }
@@ -101,6 +103,7 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
   moveInDate: null,
   numberOfResidents: null,
   carNumbers: null,
+  fileId : null,
 
   setIsLogin: (isLogin) => set({ isLogin }),
 
@@ -142,7 +145,8 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
     unit,
     moveInDate,
     numberOfResidents,
-    carNumbers
+    carNumbers,
+    fileId,
   ) =>
     set({
       profileImage,
@@ -159,6 +163,7 @@ export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
       moveInDate,
       numberOfResidents,
       carNumbers,
+      fileId,
     }),
 
   refreshUserInfo: async () => {

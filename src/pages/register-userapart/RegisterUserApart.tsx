@@ -1,7 +1,6 @@
 import { useEffect, useState, type Dispatch, type SetStateAction  } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
-import { useSearch } from "../../hooks/useSearch";
 
 
 import styles from "./RegisterUserApart.module.scss"
@@ -11,7 +10,7 @@ import SearchBox from "../../components/common/search-box/search-box";
 import InputField from "../../components/common/input-field/InputField";
 import { useGetApartmentMutation } from "../../stores/useGetApartmentMutation";
 import type { ApartmentItem } from "../../api/types";
-import { useUserApartAdd } from "../../stores/useUserApartAdd";
+import { useUserApartAdd } from "../../hooks/useUserApartAdd";
 import { useApartRegistDB } from "../../hooks/useRegisterApartment";
 
 
@@ -30,16 +29,16 @@ const ApartInfoBody = ({Appart, setAppart}:
 }) => {
   const user = useUserInfo();
   const navigate = useNavigate();
-  const [dong, setdong] = useState<string>('');
-  const [ho, setho] = useState<string>('');
-  const [date, setdate] = useState<string>('');
-  const [person, setperson] = useState<string>('');
-  const [car, setcar] = useState<string[]>([]);
+  const [dong, setdong] = useState<string>(user.building ? user.building : '');
+  const [ho, setho] = useState<string>(user.unit ? user.unit : '');
+  const [date, setdate] = useState<string>(user.moveInDate ? user.moveInDate : '');
+  const [person, setperson] = useState<string>(user.numberOfResidents ? user.numberOfResidents : '');
+  const [car, setcar] = useState<string[]>(user.carNumbers ? user.carNumbers : ['']);
   
   const { AddApart } = useUserApartAdd();
   const { apartRegistDB} = useApartRegistDB();
 
-    const selectBtnClick = async () => {
+  const selectBtnClick = async () => {
     if (Appart) {
       let apartmentData = Appart;
       if (!apartmentData.id) {
@@ -50,7 +49,6 @@ const ApartInfoBody = ({Appart, setAppart}:
           apartmentData = newApartment;
         } catch (error) {
           console.error("아파트 등록에 실패했습니다.", error);
-          return; // 오류 발생 시 중단
         }
       }
 
@@ -61,11 +59,10 @@ const ApartInfoBody = ({Appart, setAppart}:
       }
 
       user.updateApartInfo(apartmentData.id.toString(), dong, ho, date, person, car);
-      
-      AddApart();
-      navigate('/my-page');
     }
   };
+
+
   useEffect(() => {
     console.log("body");
     console.log(Appart);
@@ -109,7 +106,7 @@ const ApartInfoBody = ({Appart, setAppart}:
                           label="동"
                           name="dong"
                           value={dong}
-                          onChange={(e) => { setdong(e.target.value); }}
+                          onChange={(e) => { setdong(e.target.value); console.log(e.target.value)}}
                           placeholder="ex. 101동"
                           className=""
                         />
@@ -155,7 +152,7 @@ const ApartInfoBody = ({Appart, setAppart}:
           }
         </div>
       </div>
-      <button className={`${styles['search__btn']}`} onClick={selectBtnClick}>완료</button>
+      <button className={`${styles['search__btn']}`} onClick={() => {selectBtnClick().then(() => {AddApart();navigate('/my-page',{replace:true});})}}>완료</button>
     </div>
   );
 };
@@ -166,7 +163,7 @@ const RegisterMyApart = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isSelectedApparts, setIsSelectedApparts] = useState<boolean>(false);
   const [appart, setAppart] = useState<ApartmentItem | null>();
-  const { getApartmentMutation } = useGetApartmentMutation({ apartmentID: user.apartment?.id, setApartment: setAppart});
+  const { getApartmentMutation, isPending } = useGetApartmentMutation({ apartmentID: user.apartmentId, setApartment: setAppart});
 
 
   const [searchText, setSearchText] = useState<string>('');
@@ -179,7 +176,7 @@ const RegisterMyApart = () => {
     }
 
     // 우선순위 1: 사용자가 이미 등록한 아파트가 있는 경우
-    if (user.apartment?.id) {
+    if (user.apartmentId) {
       getApartmentMutation(); // 이 내부에서 setAppart가 일어난다고 가정
       setIsSelectedApparts(true);
       setIsSearch(false);
@@ -211,22 +208,26 @@ const RegisterMyApart = () => {
   return (
     <>
       <RegisterApartHeader/>
-      <div>
-        <SearchBox  content={searchText!}
-                    placeholder="등록하고자 하는 아파트를 검색하세요"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>setSearchText(e.target.value)}
-                    onSearch={() => navigate(`/search/result?keyword=${searchText}`)}
-                    
-        />
-      </div>
-      <div className={styles["mypage__content"]}>
-        {
-          isSearch ? 
-          <></>
-          :
-          <ApartInfoBody Appart={appart} setAppart={setAppart}/>
-        }
-      </div>
+      {
+        isPending?
+        <>
+          로딩중...
+        </>
+        :
+        <>
+          <div>
+            <SearchBox  content={searchText!}
+                        placeholder="등록하고자 하는 아파트를 검색하세요"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>setSearchText(e.target.value)}
+                        onSearch={() => navigate(`/search/result?keyword=${searchText}`)}
+                        
+            />
+          </div>
+          <div className={styles["mypage__content"]}>
+            <ApartInfoBody Appart={appart} setAppart={setAppart}/>
+          </div>
+        </>
+      }
     </>
   );
 };

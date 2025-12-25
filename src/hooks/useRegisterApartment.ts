@@ -60,7 +60,7 @@ export const useApartRegistDB = () => {
       // TODO: API_ENDPOINTS에 '/api/apartment' 경로를 추가하고 사용하세요.
       const res = await axios.post("/api/apartment", formData);
 
-      return res.data;
+      return res.data.data;
     },
   });
 
