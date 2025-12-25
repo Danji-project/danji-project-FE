@@ -106,7 +106,7 @@ const ApartInfoBody = ({Appart, setAppart}:
                           label="동"
                           name="dong"
                           value={dong}
-                          onChange={(e) => { setdong(e.target.value); console.log(e.target.value)}}
+                          onChange={(e) => { setdong(e.target.value);}}
                           placeholder="ex. 101동"
                           className=""
                         />
@@ -152,7 +152,14 @@ const ApartInfoBody = ({Appart, setAppart}:
           }
         </div>
       </div>
-      <button className={`${styles['search__btn']}`} onClick={() => {selectBtnClick().then(() => {AddApart();navigate('/my-page',{replace:true});})}}>완료</button>
+      <button className={`${styles['search__btn']}`} onClick={() => {selectBtnClick().then(() => {
+        console.log(user); 
+        if(user.apartmentId) 
+          AddApart({apartmentId : user.apartmentId.toString(), building : dong, unit:ho, moveInDate:date,numberOfResidents: person, carNumbers:car});
+        else if(Appart?.id)
+          AddApart({apartmentId : Appart.id.toString(), building : dong, unit:ho, moveInDate:date,numberOfResidents: person, carNumbers:car});
+      }).then(()=>{navigate('/my-page',{replace:true});})}}
+      >완료</button>
     </div>
   );
 };

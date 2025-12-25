@@ -79,15 +79,15 @@ const MyPageBox = () => {
               </div>
               <div style={{display:'flex'}}>
                 <img style={{width:'62px', height:'62px'}} src={fileId ? `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${fileId}` : "/logo.svg"} alt="logo_danji" />
-                <div>
-                  <div>{apartmentName ? apartmentName : `${nickname}님의 아파트`}</div>
-                  <div>{region} {location}</div>
-                  <div>{building}동 {unit}호</div>
+                <div  className={styles["my__page__box__danji__in__fontbox"]}>
+                  <div className={styles["my__page__box__danji__in__nameTag"]}>{apartmentName ? apartmentName : `${nickname}님의 아파트`}</div>
+                  <div className={styles["my__page__box__danji__in__region"]}>{region} {location}</div>
+                  <div className={styles["my__page__box__danji__in__section"]}>{building}동 {unit}호</div>
                 </div>
               </div>
             </div>
             <div className={styles["my__page__box__danji__in__button"]}>
-              <button onClick={() => {DeleteApart(); navigate(0);}} className={styles["my__page__box__danji__in__button__left"]}>
+              <button onClick={() => {DeleteApart();}} className={styles["my__page__box__danji__in__button__left"]}>
                 등록해제
               </button>
               <button className={styles["my__page__box__danji__in__button__right"]}>

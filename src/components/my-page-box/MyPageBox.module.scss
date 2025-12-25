@@ -95,6 +95,28 @@
 
     &__in {
       width: 100%;
+      
+    &__fontbox{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    } 
+
+      &__nameTag{
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      &__region{
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      &__section{
+        font-size: 12px;
+        font-weight: 400;
+        color: #767676;
+      }
 
       &__box {
         width: 100%;
@@ -135,7 +157,7 @@
           margin-right: 6px;
           border: 1px solid rgb(151, 187, 255);
           padding: 10px 0;
-          border-radius: 10px;
+          border-radius: 6px;
           color: rgb(151, 187, 255);
           cursor: pointer;
           font-weight: 700;
@@ -152,7 +174,7 @@
           margin-left: 6px;
           border: 1px solid rgb(151, 187, 255);
           padding: 10px 0;
-          border-radius: 10px;
+          border-radius: 6px;
           background-color: rgb(151, 187, 255);
           color: #fff;
           cursor: pointer;
