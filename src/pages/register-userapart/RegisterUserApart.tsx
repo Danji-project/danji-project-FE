@@ -41,7 +41,7 @@ const ApartInfoBody = ({Appart, setAppart}:
   const selectBtnClick = async () => {
     if (Appart) {
       let apartmentData = Appart;
-      if (!apartmentData.id) {
+      if (apartmentData.id === null) {
         try {
           // useApartRegistDB 훅이 mutateAsync를 반환하도록 수정되었다고 가정합니다.
           const newApartment = await apartRegistDB(apartmentData);
@@ -62,6 +62,15 @@ const ApartInfoBody = ({Appart, setAppart}:
     }
   };
 
+  const addCars = () => {
+    setcar([...car, '']); // 기존 배열에 빈 문자열 하나 추가
+  };
+
+  const handleInputChange = (index: number, value: string) => {
+    const newInputs = [...car];
+    newInputs[index] = value; // 해당 인덱스의 값만 변경
+    setcar(newInputs);
+  };
 
   useEffect(() => {
     console.log("body");
@@ -118,9 +127,10 @@ const ApartInfoBody = ({Appart, setAppart}:
                           placeholder="ex. 1001호"
                           className=""
                         />
-              <InputField type="text"
+              <InputField type="date"
                           label="입주일"
                           name="date"
+                          pattern="\d{4}-\d{2}-\d{2}"
                           value={date}
                           onChange={(e) => { setdate(e.target.value); }}
                           placeholder="ex. 2023-01-01"
@@ -134,14 +144,25 @@ const ApartInfoBody = ({Appart, setAppart}:
                           placeholder="숫자만 입력하세요."
                           className=""
                         />
-              <InputField type="text"
-                          label="차량등록"
-                          name="car"
-                          value={car[0] || ''}
-                          onChange={(e) => { setcar([e.target.value]); }}
-                          placeholder="ex. 12가 1234"
-                          className=""
-                        />
+              <label className={`${styles["input__field__label"]}`}>
+                차량
+              </label>
+              {car.map((value, index) => (
+                <div key={index}>
+                  <InputField
+                    type="text"
+                    label=""
+                    name="car"
+                    value={value}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                      handleInputChange(index, e.target.value)
+                    }
+                    placeholder="ex. 12가 1234"
+                    className=""
+                  />
+                </div>
+              ))}
+              <button  className={`${styles["add__btn"]}`} onClick={addCars}>+차량 추가 등록</button>
             </>
             :
             <div style={{height:'100%',textAlign:'center', alignContent:'center', justifyContent:'center', margin:'0 auto'}}>
@@ -158,7 +179,9 @@ const ApartInfoBody = ({Appart, setAppart}:
           AddApart({apartmentId : user.apartmentId.toString(), building : dong, unit:ho, moveInDate:date,numberOfResidents: person, carNumbers:car});
         else if(Appart?.id)
           AddApart({apartmentId : Appart.id.toString(), building : dong, unit:ho, moveInDate:date,numberOfResidents: person, carNumbers:car});
-      }).then(()=>{navigate('/my-page',{replace:true});})}}
+        else
+          console.log('fail');
+      }).then(()=>{navigate('/my-page', {replace:true});})}}
       >완료</button>
     </div>
   );
@@ -167,8 +190,6 @@ const ApartInfoBody = ({Appart, setAppart}:
 const RegisterMyApart = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
-  const [isSearch, setIsSearch] = useState<boolean>(false);
-  const [isSelectedApparts, setIsSelectedApparts] = useState<boolean>(false);
   const [appart, setAppart] = useState<ApartmentItem | null>();
   const { getApartmentMutation, isPending } = useGetApartmentMutation({ apartmentID: user.apartmentId, setApartment: setAppart});
 
@@ -185,8 +206,6 @@ const RegisterMyApart = () => {
     // 우선순위 1: 사용자가 이미 등록한 아파트가 있는 경우
     if (user.apartmentId) {
       getApartmentMutation(); // 이 내부에서 setAppart가 일어난다고 가정
-      setIsSelectedApparts(true);
-      setIsSearch(false);
     } 
     // 우선순위 2: 세션 스토리지에 저장된 선택된 데이터가 있는 경우
     else {
@@ -194,9 +213,6 @@ const RegisterMyApart = () => {
       if (temp) {
         const parsedData = JSON.parse(temp);
         setAppart(parsedData); // 여기서 업데이트 예약!
-        setIsSearch(false);
-      } else {
-        setIsSearch(true);
       }
     }
   }, [user.isLogin, user.apartment?.id, navigate]);

@@ -8,6 +8,7 @@ import { useUserApartDelete } from "../../hooks/useUserApartDelete";
 
 const MyPageBox = () => {
   const { profileImage, nickname, email, isLogin, fileId, apartmentId, apartmentName, region, location, building, unit } = useUserInfo();
+  const user = useUserInfo();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const { uploadProfileImage, uploadPending } = useProfileImageUpload();
   const navigate = useNavigate();
@@ -87,10 +88,10 @@ const MyPageBox = () => {
               </div>
             </div>
             <div className={styles["my__page__box__danji__in__button"]}>
-              <button onClick={() => {DeleteApart();}} className={styles["my__page__box__danji__in__button__left"]}>
+              <button onClick={() => {DeleteApart(); user.updateApartInfo('', '', '', '', '', ['']);}} className={styles["my__page__box__danji__in__button__left"]}>
                 등록해제
               </button>
-              <button className={styles["my__page__box__danji__in__button__right"]}>
+              <button className={styles["my__page__box__danji__in__button__right"]} onClick={()=>{navigate(`/apart-info/${user.apartmentId}`)}}>
                 바로가기
               </button>
             </div>

@@ -76,3 +76,21 @@
     }
   }
 }
+
+.input-field
+{
+  &__date_input
+  {
+    width: 100%;
+    padding: 1rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-bottom: 1px solid rgba(30, 37, 51, 1);
+    outline: none;
+    &.input__field__error {
+      border-bottom: 1px solid rgb(217, 28, 28);
+      color: rgb(217, 28, 28);
+    }
+  }
+}
