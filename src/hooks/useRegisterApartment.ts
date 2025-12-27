@@ -43,7 +43,7 @@ export const useApartRegistDB = () => {
       const formData = new FormData();
 
       const requestDto = {
-        name: "", // name 필드는 빈 문자열로 전송
+        name: apart.name,
         region: apart.region,
         location: apart.location,
         totalUnit: apart.totalUnit,
