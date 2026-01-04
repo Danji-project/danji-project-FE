@@ -6,6 +6,27 @@
   position: relative;
 }
 
+.add__btn {
+    height: 40px;
+    width: 100%;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #FFFFFF;
+    color: #999999;
+    border: 1px solid #C0C0C0;
+
+    &:hover {
+      background: #c0c0c0bb;
+      border-color: #C0C0C0;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(151, 187, 255, 0.3);
+      color: white;
+    }
+}
+
 .search__btn {
     height: 52px;
     width: 100%;
@@ -98,4 +119,11 @@
   background: none;
   border: none;
   padding: 0;
+}
+
+.input__field__label {
+  padding-top: 20px;
+  padding-bottom: 0.3rem;
+  display: block;
+  font-weight: 700;
 }

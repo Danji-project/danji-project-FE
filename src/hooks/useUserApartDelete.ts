@@ -8,7 +8,7 @@ interface AddApartResponse {
   token: string;
 }
 
-export const useUserApartAdd = () => {
+export const useUserApartDelete = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
 
@@ -17,24 +17,24 @@ export const useUserApartAdd = () => {
       try {
         console.log("user");
         console.log(user);
-
-        const response = await axios.post(
-        `/api${API_ENDPOINTS.USER.ADD_APART}`,
+        if(user.memberApartmentId)
         {
-            apartmentId: user.apartmentId,
-            building: user.building,
-            unit: user.unit,
-            moveInDate: user.moveInDate,
-            numberOfResidents: user.numberOfResidents,
-            carNumbers: user.carNumbers,
-        },
+          const response = await axios.delete(
+          `/api${API_ENDPOINTS.USER.ADD_APART}/${user.memberApartmentId}`,
           {
             withCredentials: true,
             headers: {
               "Content-Type": "application/json",
             },
           });
-        return response.data;
+
+          return response.data;
+        }
+        else
+        {
+          return null;
+        }
+
       } catch (error) {
         throw error;
       }
@@ -46,12 +46,12 @@ export const useUserApartAdd = () => {
     },
   });
 
-  const AddApart: Function = () => {
+  const DeleteApart: Function = () => {
     mutation.mutate();
   };
 
   return {
-    AddApart,
+    DeleteApart,
     isPending: mutation.isPending,
   };
 };

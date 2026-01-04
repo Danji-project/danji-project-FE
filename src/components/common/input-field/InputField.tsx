@@ -2,6 +2,7 @@ import * as React from "react";
 import { useId, useState } from "react";
 
 import styles from "./InputField.module.scss";
+import { flex } from "@mui/system";
 
 interface ActionButton {
   label: string;
@@ -130,23 +131,12 @@ const InputField = ({
     const inputDateField = () => (
     <>
       <input
-        type="text"
-        id={id}
-        name={name}
-        value={value}
-        pattern={pattern}
-        onChange={onChange}
-        onBlur={touches}
-        placeholder={placeholder}
-        className={`${styles['input-field__input']} ${error ? styles['input-field__input--error'] : ''} ${
-          actionButton ? styles['input-field__wrapper--with-button'] : ''
-        }`}
-        aria-invalid={!!error}
-        aria-errormessage={error ? `${id}-error` : undefined}/>
-      <input
         id={id}
         type={type}
         name={name}
+        onChange={onChange}
+        onBlur={touches}
+        placeholder={placeholder}
         value={value}
         className={`${styles['input-field__date_input']} ${error ? styles['input-field__date_input--error'] : ''}`}
         aria-invalid={!!error}
@@ -158,9 +148,14 @@ const InputField = ({
 
   return (
     <div className={`${styles["input__field"]} ${className}`}>
-      <label className={`${styles["input__field__label"]}`} htmlFor={id}>
-        {label}
-      </label>
+      {
+        label?
+        <label className={`${styles["input__field__label"]}`} htmlFor={id}>
+          {label}
+        </label>
+        :
+        <></>
+      }
       <div
         className={`${styles["input__field__wrapper"]} ${
           actionButton ? styles["input__field__flex"] : ""

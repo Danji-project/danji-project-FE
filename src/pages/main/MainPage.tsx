@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Header from "../../layouts/Header";
 import { useUserInfo } from "../../stores/userStore";
@@ -12,6 +12,10 @@ const MainPage = () => {
 
   const isLogin = useUserInfo((state) => state.isLogin);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    sessionStorage.removeItem("tabselect");
+  });
 
   return (
     <>

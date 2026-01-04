@@ -24,7 +24,7 @@ export const API_ENDPOINTS = {
     MEMBER: "/member",
     UPDATE_MEMBER: "/member",
     ADD_APART: "/member-apartments",
-    GETAPARTMENT: '/apartment/',
+    GETAPARTMENT: '/apartment',
     GETCOMMUNITYFEED: '/community/feeds',
   },
 

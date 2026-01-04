@@ -4,12 +4,15 @@ import { useProfileImageUpload } from "../../hooks/useProfileImageUpload";
 import styles from "./MyPageBox.module.scss";
 import MyPageBoxSkeleton from "./MyPageBoxSkeleton";
 import { useNavigate } from "react-router-dom";
+import { useUserApartDelete } from "../../hooks/useUserApartDelete";
 
 const MyPageBox = () => {
-  const { profileImage, nickname, email, isLogin } = useUserInfo();
+  const { profileImage, nickname, email, isLogin, fileId, apartmentId, apartmentName, region, location, building, unit } = useUserInfo();
+  const user = useUserInfo();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const { uploadProfileImage, uploadPending } = useProfileImageUpload();
   const navigate = useNavigate();
+  const {DeleteApart} = useUserApartDelete();
 
   console.log(nickname, email, profileImage);
 
@@ -62,19 +65,54 @@ const MyPageBox = () => {
       </div>
       <div className={styles["my__page__box__nickname"]}>{nickname}</div>
       <div className={styles["my__page__box__email"]}>{email}</div>
-      <div className={styles["my__page__box__danji"]}>
-        <div className={styles["my__page__box__danji__none"]}>
-          <div className={styles["my__page__box__danji__none__box"]}>
-            <img src={"/logo.svg"} alt="logo_danji" />
-            <span>등록된 단지가 없습니다.</span>
-          </div>
-          <div className={styles["my__page__box__danji__none__button"]}>
-            <button onClick={() => navigate("/apart-setting")}>
-              단지 등록하기
-            </button>
+
+      {
+        apartmentId ?
+        <>
+        <div className={styles["my__page__box__danji"]}>
+          <div className={styles["my__page__box__danji__none"]}>
+            <div className={styles["my__page__box__danji__in__box"]}>
+              <div className={styles["my__page__box__danji__in__box__nametag"]}>
+                <span>{nickname}님의 아파트</span>
+                <button onClick={() => navigate("/apart-setting")}>
+                  수정
+                </button>
+              </div>
+              <div style={{display:'flex'}}>
+                <img style={{width:'62px', height:'62px'}} src={fileId ? `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${fileId}` : "/logo.svg"} alt="logo_danji" />
+                <div  className={styles["my__page__box__danji__in__fontbox"]}>
+                  <div className={styles["my__page__box__danji__in__nameTag"]}>{apartmentName ? apartmentName : `${nickname}님의 아파트`}</div>
+                  <div className={styles["my__page__box__danji__in__region"]}>{region} {location}</div>
+                  <div className={styles["my__page__box__danji__in__section"]}>{building}동 {unit}호</div>
+                </div>
+              </div>
+            </div>
+            <div className={styles["my__page__box__danji__in__button"]}>
+              <button onClick={() => {DeleteApart(); user.updateApartInfo('', '', '', '', '', ['']);}} className={styles["my__page__box__danji__in__button__left"]}>
+                등록해제
+              </button>
+              <button className={styles["my__page__box__danji__in__button__right"]} onClick={()=>{navigate(`/apart-info/${user.apartmentId}`)}}>
+                바로가기
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+        </>
+        :
+        <div className={styles["my__page__box__danji"]}>
+          <div className={styles["my__page__box__danji__none"]}>
+            <div className={styles["my__page__box__danji__none__box"]}>
+              <img src={"/logo.svg"} alt="logo_danji" />
+              <span>등록된 단지가 없습니다.</span>
+            </div>
+            <div className={styles["my__page__box__danji__none__button"]}>
+              <button onClick={() => navigate("/apart-setting")}>
+                단지 등록하기
+              </button>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };

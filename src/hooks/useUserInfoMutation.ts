@@ -50,7 +50,8 @@ export const useUserInfoMutation = () => {
           data.data.unit,
           data.data.moveInDate,
           data.data.numberOfResidents,
-          data.data.carNumbers
+          data.data.carNumbers,
+          data.data.fileId
         );
       } catch (exception) {
         console.log(exception);

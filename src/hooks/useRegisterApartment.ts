@@ -43,7 +43,7 @@ export const useApartRegistDB = () => {
       const formData = new FormData();
 
       const requestDto = {
-        name: "", // name 필드는 빈 문자열로 전송
+        name: apart.name,
         region: apart.region,
         location: apart.location,
         totalUnit: apart.totalUnit,
@@ -60,7 +60,7 @@ export const useApartRegistDB = () => {
       // TODO: API_ENDPOINTS에 '/api/apartment' 경로를 추가하고 사용하세요.
       const res = await axios.post("/api/apartment", formData);
 
-      return res.data;
+      return res.data.data;
     },
   });
 
