@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import AuthRoutes from "./AuthRoutes";
+import ProtectedRoute from "./ProtectedRoute";
 
 import MainPage from "../pages/main/MainPage";
 import ApartInfo from "../pages/apart-info/ApartInfo";
@@ -23,17 +24,12 @@ const AppRoutes = () => {
   return (
     <Suspense>
       <Routes>
-        {/* 메인 페이지 라우팅 */}
+        {/* 메인 페이지 라우팅 - 로그인 필수 아님 */}
         <Route path="/" element={<MainPage />} />
         <Route path="/apart-info/:id" element={<ApartInfo />} />
         <Route path="/apart-info/:id/community" element={<ApartInfo />} />
-        <Route path="/apart-info/:id/write" element={<CommunityWrite />} />
-        <Route
-          path="/apart-info/:id/community-detail/:feedId"
-          element={<CommunityDetail />}
-        />
 
-        {/* 인증 관련 라우팅 */}
+        {/* 인증 관련 라우팅 - 로그인 필수 아님 */}
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register-account" element={<RegisterAccount />} />
@@ -42,17 +38,39 @@ const AppRoutes = () => {
           <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
-        {/* 마이페이지 라우팅 */}
-        <Route path="/my-page" element={<MyPage />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/apart-setting" element={<RegisterMyApart/>}/>
-
-        {/* 채팅 라우팅 */}
-        <Route path="/chat-page" element={<ChattingPage />} />
-        <Route path="/chat-detail/:chatroomId" element={<ChattingDetail />} />
-
-        {/* 검색 라우팅 */}
-        <Route path={"/search/result"} element={<SearchResult />} />
+        {/* 로그인 필수 라우팅 */}
+        <Route
+          path="/apart-info/:id/write"
+          element={<ProtectedRoute element={<CommunityWrite />} />}
+        />
+        <Route
+          path="/apart-info/:id/community-detail/:feedId"
+          element={<ProtectedRoute element={<CommunityDetail />} />}
+        />
+        <Route
+          path="/my-page"
+          element={<ProtectedRoute element={<MyPage />} />}
+        />
+        <Route
+          path="/settings"
+          element={<ProtectedRoute element={<Settings />} />}
+        />
+        <Route
+          path="/apart-setting"
+          element={<ProtectedRoute element={<RegisterMyApart />} />}
+        />
+        <Route
+          path="/chat-page"
+          element={<ProtectedRoute element={<ChattingPage />} />}
+        />
+        <Route
+          path="/chat-detail/:chatroomId"
+          element={<ProtectedRoute element={<ChattingDetail />} />}
+        />
+        <Route
+          path={"/search/result"}
+          element={<ProtectedRoute element={<SearchResult />} />}
+        />
       </Routes>
     </Suspense>
   );

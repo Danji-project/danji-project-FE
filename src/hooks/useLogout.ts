@@ -1,9 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useUserInfoMutation } from "./useUserInfoMutation";
 
 export const useLogout = () => {
   const { getUserInfo } = useUserInfoMutation();
+  const navigate = useNavigate();
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
@@ -15,6 +17,8 @@ export const useLogout = () => {
       localStorage.removeItem("isLoggedIn");
       // refresh user info after logout
       getUserInfo.mutate();
+      // 메인 페이지로 리다이렉트
+      navigate("/", { replace: true });
     },
   });
 
