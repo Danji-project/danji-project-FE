@@ -7,16 +7,10 @@ import { useParams } from "react-router-dom";
 import { groupMessagesByDate } from "../../utils/date";
 import { useUserInfo } from "../../stores/userStore";
 import { useGroupChat } from "../../hooks/useGroupChat";
+import type { Response } from "../../stores/useChatDetail";
 
-interface Message {
-  roomId: string;
-  message: string;
-  sender: {
-    id: string;
-    nickname: string;
-  };
-  createdAt: string;
-}
+// ChatMessage 타입은 roomId를 추가하지만 groupMessagesByDate는 Response를 기대함
+type ChatMessage = Response & { roomId: string };
 
 const ChattingDetail = () => {
   const { chatroomId } = useParams();
@@ -73,30 +67,28 @@ const ChattingDetail = () => {
               아직 메시지가 없습니다.
             </div>
           ) : (
-            Object.entries(groupMessagesByDate(roomMessages)).map(
-              ([date, msgs]) => (
+            Object.entries(
+              groupMessagesByDate(roomMessages as unknown as Response[])
+            ).map(([date, msgs]) => (
+              <div
+                key={date}
+                className={styles["chatting__detail__main__per__date__wrapper"]}
+              >
                 <div
-                  key={date}
+                  className={styles["chatting__detail__main__per__date__dater"]}
+                >
+                  {date.split("-")[0]}년&nbsp;{date.split("-")[1]}월&nbsp;
+                  {date.split("-")[2]}일
+                </div>
+                <div
                   className={
-                    styles["chatting__detail__main__per__date__wrapper"]
+                    styles[
+                      "chatting__detail__main__per__date__message__wrapper"
+                    ]
                   }
                 >
-                  <div
-                    className={
-                      styles["chatting__detail__main__per__date__dater"]
-                    }
-                  >
-                    {date.split("-")[0]}년&nbsp;{date.split("-")[1]}월&nbsp;
-                    {date.split("-")[2]}일
-                  </div>
-                  <div
-                    className={
-                      styles[
-                        "chatting__detail__main__per__date__message__wrapper"
-                      ]
-                    }
-                  >
-                    {(msgs as Message[]).map((msg: Message, idx: number) => (
+                  {(msgs as unknown as ChatMessage[]).map(
+                    (msg: ChatMessage, idx: number) => (
                       <div
                         key={idx}
                         className={
@@ -164,11 +156,11 @@ const ChattingDetail = () => {
                           </div>
                         )}
                       </div>
-                    ))}
-                  </div>
+                    )
+                  )}
                 </div>
-              )
-            )
+              </div>
+            ))
           )}
           <div ref={messageEndRef} />
         </div>

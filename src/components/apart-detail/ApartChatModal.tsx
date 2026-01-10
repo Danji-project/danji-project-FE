@@ -14,17 +14,13 @@ const ApartChatModal = ({ apartData }: { apartData: BaseApartInfo }) => {
   const handleJoinChat = async () => {
     try {
       // 아파트의 채팅방 ID 확인 또는 생성
-      const response = await axios.get(
+      await axios.get(
         `/api${API_ENDPOINTS.CHAT.GROUP_ROOMS}?apartmentId=${apartData.id}`
       );
 
-      if (response.data && response.data.data) {
-        const chatroomId =
-          response.data.data.chatroomId || response.data.data.id;
-        // 채팅 페이지로 이동
-        navigate(`/chat-page`);
-        setApartChatBlack(false);
-      }
+      // 채팅 페이지로 이동
+      navigate(`/chat-page`);
+      setApartChatBlack(false);
     } catch (error) {
       console.error("채팅방 참여 실패:", error);
       // 에러 처리: 모달 닫기

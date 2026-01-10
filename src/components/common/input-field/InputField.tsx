@@ -1,8 +1,6 @@
 import * as React from "react";
 import { useId, useState } from "react";
-
 import styles from "./InputField.module.scss";
-import { flex } from "@mui/system";
 
 interface ActionButton {
   label: string;
@@ -63,7 +61,6 @@ const InputField = ({
   showPasswordToggle,
   value,
   onChange,
-  pattern,
   valid,
   error,
   errorMessage,
@@ -82,7 +79,6 @@ const InputField = ({
   showPasswordToggle?: boolean;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  pattern?: string;
   valid?: boolean;
   error?: string;
   errorMessage?: string;
@@ -128,7 +124,7 @@ const InputField = ({
     />
   );
 
-    const inputDateField = () => (
+  const inputDateField = () => (
     <>
       <input
         id={id}
@@ -138,30 +134,34 @@ const InputField = ({
         onBlur={touches}
         placeholder={placeholder}
         value={value}
-        className={`${styles['input-field__date_input']} ${error ? styles['input-field__date_input--error'] : ''}`}
+        className={`${styles["input-field__date_input"]} ${
+          error ? styles["input-field__date_input--error"] : ""
+        }`}
         aria-invalid={!!error}
         aria-errormessage={error ? `${id}-error` : undefined}
       />
     </>
   );
 
-
   return (
     <div className={`${styles["input__field"]} ${className}`}>
-      {
-        label?
+      {label ? (
         <label className={`${styles["input__field__label"]}`} htmlFor={id}>
           {label}
         </label>
-        :
+      ) : (
         <></>
-      }
+      )}
       <div
         className={`${styles["input__field__wrapper"]} ${
           actionButton ? styles["input__field__flex"] : ""
         }`}
       >
-        {type === 'password' ? inputPasswordField() : type === 'date' ? inputDateField() : inputRegularField()}
+        {type === "password"
+          ? inputPasswordField()
+          : type === "date"
+          ? inputDateField()
+          : inputRegularField()}
         {type === "password" && showPasswordToggle && (
           <button
             type="button"

@@ -17,32 +17,30 @@ export const useUserApartDelete = () => {
       try {
         console.log("user");
         console.log(user);
-        if(user.memberApartmentId)
-        {
+        if (user.memberApartmentId) {
           const response = await axios.delete(
-          `/api${API_ENDPOINTS.USER.ADD_APART}/${user.memberApartmentId}`,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+            `/api${API_ENDPOINTS.USER.ADD_APART}/${user.memberApartmentId}`,
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           return response.data;
-        }
-        else
-        {
+        } else {
           return null;
         }
-
       } catch (error) {
         throw error;
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate("/my-page", { replace: true });
     },
-    onError: (err: Error) => {
+    onError: () => {
+      // Handle error if needed
     },
   });
 

@@ -9,66 +9,100 @@ export const useUserApartAdd = () => {
   const user = useUserInfo();
 
   const mutation = useMutation({
-    mutationFn: async ({ apartmentId, building, unit, moveInDate, numberOfResidents, carNumbers }: { apartmentId: string, building: string, unit: string, moveInDate: string, numberOfResidents: string, carNumbers : string[] }) => {
+    mutationFn: async ({
+      apartmentId,
+      building,
+      unit,
+      moveInDate,
+      numberOfResidents,
+      carNumbers,
+    }: {
+      apartmentId: string;
+      building: string;
+      unit: string;
+      moveInDate: string;
+      numberOfResidents: string;
+      carNumbers: string[];
+    }) => {
       try {
         console.log("user");
         console.log(user);
-        if(user.memberApartmentId)
-        {
+        if (user.memberApartmentId) {
           console.log("put user");
           const response = await axios.put(
-          `/api${API_ENDPOINTS.USER.ADD_APART}/${user.memberApartmentId}`,
-          {
+            `/api${API_ENDPOINTS.USER.ADD_APART}/${user.memberApartmentId}`,
+            {
               apartmentId: apartmentId,
               building: building,
               unit: unit,
               moveInDate: moveInDate,
               numberOfResidents: numberOfResidents,
               carNumbers: carNumbers,
-          },
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
             },
-          });
-          return response.data;
-        }
-        else
-        {
-          console.log("post user");
-          const response = await axios.post(
-          `/api${API_ENDPOINTS.USER.ADD_APART}`,
-          {
-              apartmentId: apartmentId,
-              building: building,
-              unit: unit,
-              moveInDate: moveInDate,
-              numberOfResidents: numberOfResidents,
-              carNumbers: carNumbers,
-          },
             {
               withCredentials: true,
               headers: {
                 "Content-Type": "application/json",
               },
-            });
+            }
+          );
+          return response.data;
+        } else {
+          console.log("post user");
+          const response = await axios.post(
+            `/api${API_ENDPOINTS.USER.ADD_APART}`,
+            {
+              apartmentId: apartmentId,
+              building: building,
+              unit: unit,
+              moveInDate: moveInDate,
+              numberOfResidents: numberOfResidents,
+              carNumbers: carNumbers,
+            },
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
           return response.data;
         }
-
       } catch (error) {
         throw error;
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate("/my-page", { replace: true });
     },
-    onError: (err: Error) => {
+    onError: () => {
+      // Handle error if needed
     },
   });
 
-  const AddApart: Function = ({ apartmentId, building, unit, moveInDate, numberOfResidents, carNumbers }: { apartmentId: string, building: string, unit: string, moveInDate: string, numberOfResidents: string, carNumbers : string[] }) => {
-    mutation.mutate({ apartmentId, building, unit, moveInDate, numberOfResidents, carNumbers });
+  const AddApart: Function = ({
+    apartmentId,
+    building,
+    unit,
+    moveInDate,
+    numberOfResidents,
+    carNumbers,
+  }: {
+    apartmentId: string;
+    building: string;
+    unit: string;
+    moveInDate: string;
+    numberOfResidents: string;
+    carNumbers: string[];
+  }) => {
+    mutation.mutate({
+      apartmentId,
+      building,
+      unit,
+      moveInDate,
+      numberOfResidents,
+      carNumbers,
+    });
   };
 
   return {

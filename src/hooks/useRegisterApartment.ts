@@ -2,9 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_ENDPOINTS } from "../api/endpoints";
-import { useUserInfo } from "../stores/userStore";
+import { useUserInfo } from "../stores/userStore"; // Used in refreshUserInfo()
 import type { ApartmentItem } from "../api";
-import { useState, type Dispatch } from "react";
 
 export const useRegisterApartment = () => {
   const navigate = useNavigate();
@@ -36,9 +35,12 @@ export const useRegisterApartment = () => {
   };
 };
 
-
 export const useApartRegistDB = () => {
-  const apartRegistDBMutation = useMutation<ApartmentItem, Error, ApartmentItem>({
+  const apartRegistDBMutation = useMutation<
+    ApartmentItem,
+    Error,
+    ApartmentItem
+  >({
     mutationFn: async (apart: ApartmentItem) => {
       const formData = new FormData();
 

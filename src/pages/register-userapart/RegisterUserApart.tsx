@@ -1,9 +1,8 @@
-import { useEffect, useState, type Dispatch, type SetStateAction  } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../stores/userStore";
 
-
-import styles from "./RegisterUserApart.module.scss"
+import styles from "./RegisterUserApart.module.scss";
 import Header from "../../layouts/Header";
 import LogoIcon from "../../assets/logo.svg";
 import SearchBox from "../../components/common/search-box/search-box";
@@ -13,30 +12,37 @@ import type { ApartmentItem } from "../../api/types";
 import { useUserApartAdd } from "../../hooks/useUserApartAdd";
 import { useApartRegistDB } from "../../hooks/useRegisterApartment";
 
-
 const RegisterApartHeader = () => {
   return (
     <div>
-      <Header title="단지 수정" hasBackButton={true}/>
+      <Header title="단지 수정" hasBackButton={true} />
     </div>
   );
 };
 
-const ApartInfoBody = ({Appart, setAppart}:
-{
-  Appart:ApartmentItem | null | undefined;
+const ApartInfoBody = ({
+  Appart,
+  setAppart,
+}: {
+  Appart: ApartmentItem | null | undefined;
   setAppart: Dispatch<SetStateAction<ApartmentItem | null | undefined>>;
 }) => {
   const user = useUserInfo();
   const navigate = useNavigate();
-  const [dong, setdong] = useState<string>(user.building ? user.building : '');
-  const [ho, setho] = useState<string>(user.unit ? user.unit : '');
-  const [date, setdate] = useState<string>(user.moveInDate ? user.moveInDate : '');
-  const [person, setperson] = useState<string>(user.numberOfResidents ? user.numberOfResidents : '');
-  const [car, setcar] = useState<string[]>(user.carNumbers ? user.carNumbers : ['']);
-  
+  const [dong, setdong] = useState<string>(user.building ? user.building : "");
+  const [ho, setho] = useState<string>(user.unit ? user.unit : "");
+  const [date, setdate] = useState<string>(
+    user.moveInDate ? user.moveInDate : ""
+  );
+  const [person, setperson] = useState<string>(
+    user.numberOfResidents ? user.numberOfResidents : ""
+  );
+  const [car, setcar] = useState<string[]>(
+    user.carNumbers ? user.carNumbers : [""]
+  );
+
   const { AddApart } = useUserApartAdd();
-  const { apartRegistDB} = useApartRegistDB();
+  const { apartRegistDB } = useApartRegistDB();
 
   const selectBtnClick = async () => {
     if (Appart) {
@@ -58,12 +64,19 @@ const ApartInfoBody = ({Appart, setAppart}:
         return;
       }
 
-      user.updateApartInfo(apartmentData.id.toString(), dong, ho, date, person, car);
+      user.updateApartInfo(
+        apartmentData.id.toString(),
+        dong,
+        ho,
+        date,
+        person,
+        car
+      );
     }
   };
 
   const addCars = () => {
-    setcar([...car, '']); // 기존 배열에 빈 문자열 하나 추가
+    setcar([...car, ""]); // 기존 배열에 빈 문자열 하나 추가
   };
 
   const handleInputChange = (index: number, value: string) => {
@@ -78,17 +91,33 @@ const ApartInfoBody = ({Appart, setAppart}:
   }, [Appart]);
 
   return (
-    <div style={{display:'flex', flexDirection:'column', height:'calc(var(--device-height) - 200px)'}}>
-      <div style={{position:'relative', display:'flex', marginTop:'20px', marginBottom:'20px', overflow:'auto', flex:'1'}}>
-        <div style={{flex:'1 0 auto', overflowY:'auto'}}>
-          {
-            Appart ?
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "calc(var(--device-height) - 200px)",
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          marginTop: "20px",
+          marginBottom: "20px",
+          overflow: "auto",
+          flex: "1",
+        }}
+      >
+        <div style={{ flex: "1 0 auto", overflowY: "auto" }}>
+          {Appart ? (
             <>
               <p>단지 정보</p>
               <div className={styles["search__danji__link"]}>
                 <div className={styles["search__danji__link__thumb"]}>
                   <img
-                    src={Appart.thumbnailFileUrl || "/pictures/gangnam_hill_2.jpg"}
+                    src={
+                      Appart.thumbnailFileUrl || "/pictures/gangnam_hill_2.jpg"
+                    }
                     alt={Appart.name}
                   />
                 </div>
@@ -101,52 +130,79 @@ const ApartInfoBody = ({Appart, setAppart}:
                   </p>
                   <p className={styles["search__danji__link__info__detail"]}>
                     {Appart.totalUnit && Appart.buildingCount
-                      ? `아파트 ${Appart.totalUnit.toLocaleString()}세대 | 총 ${Appart.buildingCount}동`
+                      ? `아파트 ${Appart.totalUnit.toLocaleString()}세대 | 총 ${
+                          Appart.buildingCount
+                        }동`
                       : "정보 준비중"}
                   </p>
                 </div>
-                <button className={styles["delete-button"]} onClick={(e) => {setAppart(null); sessionStorage.removeItem("selectApart");}}>
-                  <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13 1L1 13M1 1L13 13" stroke="#767676"stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <button
+                  className={styles["delete-button"]}
+                  onClick={(): void => {
+                    setAppart(null);
+                    sessionStorage.removeItem("selectApart");
+                  }}
+                >
+                  <svg
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13 1L1 13M1 1L13 13"
+                      stroke="#767676"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
                 </button>
               </div>
-              <InputField type="text"
-                          label="동"
-                          name="dong"
-                          value={dong}
-                          onChange={(e) => { setdong(e.target.value);}}
-                          placeholder="ex. 101동"
-                          className=""
-                        />
-              <InputField type="text"
-                          label="호"
-                          name="ho"
-                          value={ho}
-                          onChange={(e) => { setho(e.target.value); }}
-                          placeholder="ex. 1001호"
-                          className=""
-                        />
-              <InputField type="date"
-                          label="입주일"
-                          name="date"
-                          pattern="\d{4}-\d{2}-\d{2}"
-                          value={date}
-                          onChange={(e) => { setdate(e.target.value); }}
-                          placeholder="ex. 2023-01-01"
-                          className=""
-                        />
-              <InputField type="text"
-                          label="거주인원"
-                          name="person"
-                          value={person}
-                          onChange={(e) => { setperson(e.target.value); }}
-                          placeholder="숫자만 입력하세요."
-                          className=""
-                        />
-              <label className={`${styles["input__field__label"]}`}>
-                차량
-              </label>
+              <InputField
+                type="text"
+                label="동"
+                name="dong"
+                value={dong}
+                onChange={(e) => {
+                  setdong(e.target.value);
+                }}
+                placeholder="ex. 101동"
+                className=""
+              />
+              <InputField
+                type="text"
+                label="호"
+                name="ho"
+                value={ho}
+                onChange={(e) => {
+                  setho(e.target.value);
+                }}
+                placeholder="ex. 1001호"
+                className=""
+              />
+              <InputField
+                type="date"
+                label="입주일"
+                name="date"
+                value={date}
+                onChange={(e) => {
+                  setdate(e.target.value);
+                }}
+                placeholder="ex. 2023-01-01"
+                className=""
+              />
+              <InputField
+                type="text"
+                label="거주인원"
+                name="person"
+                value={person}
+                onChange={(e) => {
+                  setperson(e.target.value);
+                }}
+                placeholder="숫자만 입력하세요."
+                className=""
+              />
+              <label className={`${styles["input__field__label"]}`}>차량</label>
               {car.map((value, index) => (
                 <div key={index}>
                   <InputField
@@ -154,7 +210,7 @@ const ApartInfoBody = ({Appart, setAppart}:
                     label=""
                     name="car"
                     value={value}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(index, e.target.value)
                     }
                     placeholder="ex. 12가 1234"
@@ -162,27 +218,60 @@ const ApartInfoBody = ({Appart, setAppart}:
                   />
                 </div>
               ))}
-              <button  className={`${styles["add__btn"]}`} onClick={addCars}>+차량 추가 등록</button>
+              <button className={`${styles["add__btn"]}`} onClick={addCars}>
+                +차량 추가 등록
+              </button>
             </>
-            :
-            <div style={{height:'100%',textAlign:'center', alignContent:'center', justifyContent:'center', margin:'0 auto'}}>
-              <img src={LogoIcon} style={{width:'110px', opacity:'0.7'}}/>
+          ) : (
+            <div
+              style={{
+                height: "100%",
+                textAlign: "center",
+                alignContent: "center",
+                justifyContent: "center",
+                margin: "0 auto",
+              }}
+            >
+              <img src={LogoIcon} style={{ width: "110px", opacity: "0.7" }} />
               <p>등록할 단지가 없습니다.</p>
               <p>단지를 검색해보세요!</p>
             </div>
-          }
+          )}
         </div>
       </div>
-      <button className={`${styles['search__btn']}`} onClick={() => {selectBtnClick().then(() => {
-        console.log(user); 
-        if(user.apartmentId) 
-          AddApart({apartmentId : user.apartmentId.toString(), building : dong, unit:ho, moveInDate:date,numberOfResidents: person, carNumbers:car});
-        else if(Appart?.id)
-          AddApart({apartmentId : Appart.id.toString(), building : dong, unit:ho, moveInDate:date,numberOfResidents: person, carNumbers:car});
-        else
-          console.log('fail');
-      }).then(()=>{navigate('/my-page', {replace:true});})}}
-      >완료</button>
+      <button
+        className={`${styles["search__btn"]}`}
+        onClick={() => {
+          selectBtnClick()
+            .then(() => {
+              console.log(user);
+              if (user.apartmentId)
+                AddApart({
+                  apartmentId: user.apartmentId.toString(),
+                  building: dong,
+                  unit: ho,
+                  moveInDate: date,
+                  numberOfResidents: person,
+                  carNumbers: car,
+                });
+              else if (Appart?.id)
+                AddApart({
+                  apartmentId: Appart.id.toString(),
+                  building: dong,
+                  unit: ho,
+                  moveInDate: date,
+                  numberOfResidents: person,
+                  carNumbers: car,
+                });
+              else console.log("fail");
+            })
+            .then(() => {
+              navigate("/my-page", { replace: true });
+            });
+        }}
+      >
+        완료
+      </button>
     </div>
   );
 };
@@ -191,10 +280,12 @@ const RegisterMyApart = () => {
   const navigate = useNavigate();
   const user = useUserInfo();
   const [appart, setAppart] = useState<ApartmentItem | null>();
-  const { getApartmentMutation, isPending } = useGetApartmentMutation({ apartmentID: user.apartmentId, setApartment: setAppart});
+  const { getApartmentMutation, isPending } = useGetApartmentMutation({
+    apartmentID: user.apartmentId,
+    setApartment: setAppart,
+  });
 
-
-  const [searchText, setSearchText] = useState<string>('');
+  const [searchText, setSearchText] = useState<string>("");
 
   // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
   useEffect(() => {
@@ -206,7 +297,7 @@ const RegisterMyApart = () => {
     // 우선순위 1: 사용자가 이미 등록한 아파트가 있는 경우
     if (user.apartmentId) {
       getApartmentMutation(); // 이 내부에서 setAppart가 일어난다고 가정
-    } 
+    }
     // 우선순위 2: 세션 스토리지에 저장된 선택된 데이터가 있는 경우
     else {
       const temp = sessionStorage.getItem("selectApart");
@@ -230,27 +321,26 @@ const RegisterMyApart = () => {
 
   return (
     <>
-      <RegisterApartHeader/>
-      {
-        isPending?
-        <>
-          로딩중...
-        </>
-        :
+      <RegisterApartHeader />
+      {isPending ? (
+        <>로딩중...</>
+      ) : (
         <>
           <div>
-            <SearchBox  content={searchText!}
-                        placeholder="등록하고자 하는 아파트를 검색하세요"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>setSearchText(e.target.value)}
-                        onSearch={() => navigate(`/search/result?keyword=${searchText}`)}
-                        
+            <SearchBox
+              content={searchText!}
+              placeholder="등록하고자 하는 아파트를 검색하세요"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchText(e.target.value)
+              }
+              onSearch={() => navigate(`/search/result?keyword=${searchText}`)}
             />
           </div>
           <div className={styles["mypage__content"]}>
-            <ApartInfoBody Appart={appart} setAppart={setAppart}/>
+            <ApartInfoBody Appart={appart} setAppart={setAppart} />
           </div>
         </>
-      }
+      )}
     </>
   );
 };
