@@ -19,8 +19,17 @@ function App() {
   useEffect(() => {
     // 초기 로그인 상태 확인
     const checkInitialLoginStatus = async () => {
+      // localStorage에 로그인 플래그가 있을 때만 API 호출
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+      if (!isLoggedIn) {
+        // 로그인하지 않은 경우 API 호출 없이 바로 초기화 완료
+        setIsInitialized(true);
+        return;
+      }
+
       try {
-        // 쿠키 기반 인증이므로 항상 사용자 정보 조회 시도 (쿠키가 있으면 자동으로 전송됨)
+        // 쿠키 기반 인증이므로 사용자 정보 조회 시도 (쿠키가 있으면 자동으로 전송됨)
         getUserInfo.mutate(undefined, {
           onSettled: () => {
             setIsInitialized(true);

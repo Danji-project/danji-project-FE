@@ -13,20 +13,22 @@ const TabList = ({
 }) => {
   return (
     <ul className={styles["tab__list"]}>
-      {contents.map((c: string, idx: number) => (
-        <li
-          key={idx}
-          className={c.split("/")[1] === tabs ? styles.tab__list__active : ""}
-        >
-          <button
-            onClick={() => {
-              setTabs(c.split("/")[1]);
-            }}
-          >
-            {c.split("/")[0]}
-          </button>
-        </li>
-      ))}
+      {contents.map((c: string, idx: number) => {
+        const [tabLabel, tabValue] = c.split("/");
+        const isActive = tabValue === tabs;
+
+        return (
+          <li key={idx} className={isActive ? styles.tab__list__active : ""}>
+            <button
+              onClick={() => {
+                setTabs(tabValue);
+              }}
+            >
+              {tabLabel}
+            </button>
+          </li>
+        );
+      })}
     </ul>
   );
 };

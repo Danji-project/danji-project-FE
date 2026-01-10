@@ -7,14 +7,26 @@ import { useNavigate } from "react-router-dom";
 import { useUserApartDelete } from "../../hooks/useUserApartDelete";
 
 const MyPageBox = () => {
-  const { profileImage, nickname, email, isLogin, fileId, apartmentId, apartmentName, region, location, building, unit } = useUserInfo();
+  const {
+    profileImage,
+    nickname,
+    email,
+    isLogin,
+    fileId,
+    apartmentId,
+    apartmentName,
+    region,
+    location,
+    building,
+    unit,
+  } = useUserInfo();
   const user = useUserInfo();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const { uploadProfileImage, uploadPending } = useProfileImageUpload();
   const navigate = useNavigate();
-  const {DeleteApart} = useUserApartDelete();
+  const { DeleteApart } = useUserApartDelete();
 
-  console.log(nickname, email, profileImage);
+  console.log(nickname);
 
   // 로그인하지 않았거나 정보가 아직 로드되지 않은 경우
   if (!isLogin || !nickname || !email) {
@@ -66,39 +78,70 @@ const MyPageBox = () => {
       <div className={styles["my__page__box__nickname"]}>{nickname}</div>
       <div className={styles["my__page__box__email"]}>{email}</div>
 
-      {
-        apartmentId ?
+      {apartmentId ? (
         <>
-        <div className={styles["my__page__box__danji"]}>
-          <div className={styles["my__page__box__danji__none"]}>
-            <div className={styles["my__page__box__danji__in__box"]}>
-              <div className={styles["my__page__box__danji__in__box__nametag"]}>
-                <span>{nickname}님의 아파트</span>
-                <button onClick={() => navigate("/apart-setting")}>
-                  수정
-                </button>
-              </div>
-              <div style={{display:'flex'}}>
-                <img style={{width:'62px', height:'62px'}} src={fileId ? `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${fileId}` : "/logo.svg"} alt="logo_danji" />
-                <div  className={styles["my__page__box__danji__in__fontbox"]}>
-                  <div className={styles["my__page__box__danji__in__nameTag"]}>{apartmentName ? apartmentName : `${nickname}님의 아파트`}</div>
-                  <div className={styles["my__page__box__danji__in__region"]}>{region} {location}</div>
-                  <div className={styles["my__page__box__danji__in__section"]}>{building}동 {unit}호</div>
+          <div className={styles["my__page__box__danji"]}>
+            <div className={styles["my__page__box__danji__none"]}>
+              <div className={styles["my__page__box__danji__in__box"]}>
+                <div
+                  className={styles["my__page__box__danji__in__box__nametag"]}
+                >
+                  <span>{nickname}님의 아파트</span>
+                  <button onClick={() => navigate("/apart-setting")}>
+                    수정
+                  </button>
+                </div>
+                <div style={{ display: "flex" }}>
+                  <img
+                    style={{ width: "62px", height: "62px" }}
+                    src={
+                      fileId
+                        ? `https://s3.ap-northeast-2.amazonaws.com/danjitalk/${fileId}`
+                        : "/logo.svg"
+                    }
+                    alt="logo_danji"
+                  />
+                  <div className={styles["my__page__box__danji__in__fontbox"]}>
+                    <div
+                      className={styles["my__page__box__danji__in__nameTag"]}
+                    >
+                      {apartmentName ? apartmentName : `${nickname}님의 아파트`}
+                    </div>
+                    <div className={styles["my__page__box__danji__in__region"]}>
+                      {region} {location}
+                    </div>
+                    <div
+                      className={styles["my__page__box__danji__in__section"]}
+                    >
+                      {building}동 {unit}호
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={styles["my__page__box__danji__in__button"]}>
-              <button onClick={() => {DeleteApart(); user.updateApartInfo('', '', '', '', '', ['']);}} className={styles["my__page__box__danji__in__button__left"]}>
-                등록해제
-              </button>
-              <button className={styles["my__page__box__danji__in__button__right"]} onClick={()=>{navigate(`/apart-info/${user.apartmentId}`)}}>
-                바로가기
-              </button>
+              <div className={styles["my__page__box__danji__in__button"]}>
+                <button
+                  onClick={() => {
+                    DeleteApart();
+                    user.updateApartInfo("", "", "", "", "", [""]);
+                  }}
+                  className={styles["my__page__box__danji__in__button__left"]}
+                >
+                  등록해제
+                </button>
+                <button
+                  className={styles["my__page__box__danji__in__button__right"]}
+                  onClick={() => {
+                    sessionStorage.setItem("tabselect", "community");
+                    navigate(`/apart-info/${user.apartmentId}`);
+                  }}
+                >
+                  바로가기
+                </button>
+              </div>
             </div>
           </div>
-        </div>
         </>
-        :
+      ) : (
         <div className={styles["my__page__box__danji"]}>
           <div className={styles["my__page__box__danji__none"]}>
             <div className={styles["my__page__box__danji__none__box"]}>
@@ -112,7 +155,7 @@ const MyPageBox = () => {
             </div>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 };

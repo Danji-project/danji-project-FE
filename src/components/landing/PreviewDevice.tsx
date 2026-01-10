@@ -5,6 +5,7 @@ import Spinners from "../common/spinners/Spinners";
 import { useSidebarStore } from "../../stores/sidebarStore";
 import { usePendingStore } from "../../stores/usePendingStore";
 import { useRootPositionStore } from "../../stores/rootPositionStore";
+import TextModal from "../common/text-modal/TextModal";
 
 const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   const { userInfoPending } = useUserInfoMutation();
@@ -82,6 +83,7 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
           }`}
         ></div>
       )}
+      {modalPending && <TextModal text="" usingConfirm={true} />}
       <div className="app-container">
         <StatusBar />
         {children}

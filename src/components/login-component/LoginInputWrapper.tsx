@@ -4,6 +4,8 @@ import styles from "./LoginInputWrapper.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import { usePendingStore } from "../../stores/usePendingStore";
+import { useModalTextStore } from "../../stores/useModalText";
+import TextModal from "../common/text-modal/TextModal";
 
 const LoginInputWrapper = () => {
   const navigate = useNavigate();
@@ -33,17 +35,33 @@ const LoginInputWrapper = () => {
 
   const { loginMutation } = useLogin(emailData, passwordData, setIdError);
 
-  const { setLoginPending } = usePendingStore();
+  const { isLoginPending, setLoginPending, modalPending, setModalPending } =
+    usePendingStore();
+  const { modalText, setModalText, isOnlyConfirmed } = useModalTextStore();
 
   return (
-    <form
-      onSubmit={(e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginPending(true);
-        loginMutation.mutate();
-      }}
-    >
-      <div className={styles["login__input__wrapper__form"]}>
+    <div className={styles["login__input__wrapper"]}>
+      {isLoginPending && (
+        <div className={styles["login__input__wrapper__loading__overlay"]} />
+      )}
+      {modalPending && (
+        <TextModal
+          text={modalText}
+          usingConfirm={isOnlyConfirmed}
+          onConfirm={() => {
+            setModalPending(false);
+            setModalText("");
+          }}
+        />
+      )}
+      <form
+        onSubmit={(e: React.FormEvent) => {
+          e.preventDefault();
+          setLoginPending(true);
+          loginMutation.mutate();
+        }}
+      >
+        <div className={styles["login__input__wrapper__form"]}>
         <img src="/logo.svg" alt="logo" />
         <LoginInput
           label={"이메일"}
@@ -113,8 +131,9 @@ const LoginInputWrapper = () => {
             </li>
           </ul>
         </div>
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   );
 };
 

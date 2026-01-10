@@ -1,17 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import type { IconButtonProps } from "../../components/common/Icon-button/IconButton";
 import { useUserInfo } from "../../stores/userStore";
+import { usePendingStore } from "../../stores/usePendingStore";
+import { useModalTextStore } from "../../stores/useModalText";
 
 export const IconsMocks = (): IconButtonProps[] => {
   const navigate = useNavigate();
   const { apartmentId } = useUserInfo();
+  const { setModalPending } = usePendingStore();
+  const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
+
+  const showApartmentRequiredModal = () => {
+    setModalText("단지를 등록후 진행할 수 있습니다.");
+    setIsOnlyConfirmed(true);
+    setModalPending(true);
+  };
 
   return [
     {
       onClick: () => {
         sessionStorage.setItem("tabselect", "apart-info");
         if (apartmentId) navigate(`/apart-info/${apartmentId}`);
-        else alert("단지를 등록후 진행할 수 있습니다.");
+        else showApartmentRequiredModal();
       },
       imageUrl: "/icons/apart-info-icon.png",
       text: "단지 정보",
@@ -22,7 +32,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       onClick: () => {
         sessionStorage.setItem("tabselect", "community");
         if (apartmentId) navigate(`/apart-info/${apartmentId}`);
-        else alert("단지를 등록후 진행할 수 있습니다.");
+        else showApartmentRequiredModal();
       },
       imageUrl: "/icons/Gamepad.png",
       text: "커뮤니티",
@@ -33,7 +43,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       onClick: () => {
         sessionStorage.setItem("tabselect", "notice");
         if (apartmentId) navigate(`/apart-info/${apartmentId}`);
-        else alert("단지를 등록후 진행할 수 있습니다.");
+        else showApartmentRequiredModal();
       },
       imageUrl: "/icons/notice.png",
       text: "공지사항",
@@ -44,7 +54,7 @@ export const IconsMocks = (): IconButtonProps[] => {
       onClick: () => {
         sessionStorage.setItem("tabselect", "building-info");
         if (apartmentId) navigate(`/apart-info/${apartmentId}`);
-        else alert("단지를 등록후 진행할 수 있습니다.");
+        else showApartmentRequiredModal();
       },
       imageUrl: "/icons/Graph.svg",
       text: "시설정보",

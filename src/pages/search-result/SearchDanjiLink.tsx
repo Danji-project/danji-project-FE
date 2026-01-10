@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styles from "./SearchDanjiLink.module.scss";
 import type { ApartmentItem } from "../../api/types";
@@ -15,17 +15,25 @@ const SearchDanjiLink = ({ item }: { item: ApartmentItem }) => {
     console.log("즐겨찾기 토글:", item.kaptCode, !isBookmarked);
   };
 
+  const handleCardClick = () => {
+    if (item.id) {
+      sessionStorage.setItem("selectApart", JSON.stringify(item));
+      navigate(`/apart-info/${item.id}`);
+    }
+  };
+
   return (
-    <Link
-      to={item.id ? `/apart-info/${item.id}` : "#"}
+    <div
       className={styles["search__danji__link"]}
-      onClick={(e) => {
-        if (!item.id) {
-          e.preventDefault();
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleCardClick();
         }
-        sessionStorage.setItem("selectApart", JSON.stringify(item));
-        navigate(-1);
       }}
+      style={{ cursor: item.id ? "pointer" : "default" }}
     >
       <div className={styles["search__danji__link__thumb"]}>
         <img
@@ -70,7 +78,7 @@ const SearchDanjiLink = ({ item }: { item: ApartmentItem }) => {
           </svg>
         )}
       </button>
-    </Link>
+    </div>
   );
 };
 

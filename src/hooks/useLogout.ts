@@ -11,6 +11,8 @@ export const useLogout = () => {
       return res.data;
     },
     onSuccess: async () => {
+      // 로그인 상태 플래그 제거
+      localStorage.removeItem("isLoggedIn");
       // refresh user info after logout
       getUserInfo.mutate();
     },

@@ -30,6 +30,8 @@ export const useUserInfoMutation = () => {
     onSuccess: (data) => {
       if (!data?.data) {
         setIsLogin(false);
+        // 세션 만료 등으로 인증 실패 시 localStorage 플래그 제거
+        localStorage.removeItem("isLoggedIn");
         return;
       } else setIsLogin(true);
 

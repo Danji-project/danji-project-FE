@@ -2,10 +2,20 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useUserInfoMutation } from "./useUserInfoMutation";
 import { useUserInfo } from "../stores/userStore";
+import { usePendingStore } from "../stores/usePendingStore";
+import { useModalTextStore } from "../stores/useModalText";
 
 export const useProfileImageUpload = () => {
   const { getUserInfo } = useUserInfoMutation();
   const userInfo = useUserInfo();
+  const { setModalPending } = usePendingStore();
+  const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
+
+  const showErrorModal = (message: string) => {
+    setModalText(message);
+    setIsOnlyConfirmed(true);
+    setModalPending(true);
+  };
 
   const uploadProfileImageMutation = useMutation({
     mutationFn: async (file: File) => {
@@ -83,7 +93,7 @@ export const useProfileImageUpload = () => {
         console.error("상태 코드:", error.response.status);
         console.error("응답 헤더:", error.response.headers);
         // 사용자에게 에러 메시지 표시
-        alert(
+        showErrorModal(
           `프로필 이미지 업로드 실패: ${
             error.response.data?.message ||
             error.response.statusText ||
@@ -92,10 +102,10 @@ export const useProfileImageUpload = () => {
         );
       } else if (error.request) {
         console.error("요청 전송 실패:", error.request);
-        alert("서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.");
+        showErrorModal("서버에 연결할 수 없습니다. 네트워크 연결을 확인해주세요.");
       } else {
         console.error("에러 설정 실패:", error.message);
-        alert(`프로필 이미지 업로드 실패: ${error.message}`);
+        showErrorModal(`프로필 이미지 업로드 실패: ${error.message}`);
       }
     },
   });

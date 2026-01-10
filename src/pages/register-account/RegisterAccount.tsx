@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { usePendingStore } from "../../stores/usePendingStore";
+import { useCertifyInfo } from "../../stores/useCertifyInfo";
 
 import styles from "./RegisterAccount.module.scss";
 import Header from "../../layouts/Header";
@@ -7,12 +8,15 @@ import RegisterAccountBodies from "../../components/register-account/RegisterAcc
 
 const RegisterAccount = () => {
   const { setRegisterDimmed, registerDimmed } = usePendingStore();
+  const { resetCertifyInfo } = useCertifyInfo();
 
   useEffect(() => {
     setRegisterDimmed(true);
 
     return () => {
       setRegisterDimmed(false);
+      // 회원가입 페이지를 벗어날 때 인증 정보 초기화
+      resetCertifyInfo();
     };
   }, []);
 

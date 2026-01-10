@@ -11,6 +11,7 @@ interface CertifyInfo {
   setIsNest: (isNest: boolean) => void;
   setCertifiedComplete: (certifiedComplete: boolean) => void;
   setSuccessEmail: (successEmail: string) => void;
+  resetCertifyInfo: () => void;
 }
 
 export const useCertifyInfo = create<CertifyInfo>((set) => ({
@@ -24,4 +25,12 @@ export const useCertifyInfo = create<CertifyInfo>((set) => ({
   setIsNest: (isNest) => set({ isNest }),
   setCertifiedComplete: (certifiedComplete) => set({ certifiedComplete }),
   setSuccessEmail: (successEmail) => set({ successEmail }),
+  resetCertifyInfo: () =>
+    set({
+      okMessage: "",
+      sendComplete: false,
+      isNest: false,
+      certifiedComplete: false,
+      successEmail: "",
+    }),
 }));
