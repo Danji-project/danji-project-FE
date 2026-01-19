@@ -2,7 +2,6 @@ import { useState } from "react";
 import Header from "../../layouts/Header";
 import WriteStyle from "../../components/community-register/WriteStyle";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchedApartments } from "../../assets/mock/apartmentMock";
 import { useFeedRegister } from "../../hooks/useFeedRegister";
 
 const CommunityWrite = () => {
@@ -12,10 +11,6 @@ const CommunityWrite = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-
-  const filteredApartData = fetchedApartments.filter(
-    (item) => item.id === Number(id)
-  )[0];
 
   const { feedRegister, feedRegisterPending } = useFeedRegister(
     title,

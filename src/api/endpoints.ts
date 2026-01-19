@@ -10,11 +10,11 @@ export const API_ENDPOINTS = {
     CERTIFICATION: "/mail/certification-code/send",
   },
 
-  FIND:{
-    EMAIL: '/member/find-id',
-    RESET_PW: '/member/reset-password',
+  FIND: {
+    EMAIL: "/member/find-id",
+    RESET_PW: "/member/reset-password",
   },
-  
+
   // 사용자 관련 엔드포인트
   USER: {
     PROFILE: "/users/profile",
@@ -24,8 +24,8 @@ export const API_ENDPOINTS = {
     MEMBER: "/member",
     UPDATE_MEMBER: "/member",
     ADD_APART: "/member-apartments",
-    GETAPARTMENT: '/apartment',
-    GETCOMMUNITYFEED: '/community/feeds',
+    GETAPARTMENT: "/apartment",
+    GETCOMMUNITYFEED: "/community/feeds",
   },
 
   // 파일 업로드 관련 엔드포인트
@@ -79,7 +79,11 @@ export const API_ENDPOINTS = {
     SENT_REQUESTS: "/chat/request/sent",
     DIRECT_ROOMS: "/chat/direct",
     GROUP_ROOMS: "/chat/group",
+    CREATE_GROUP_ROOM: "/chat/group",
+    JOIN_GROUP_ROOM: (roomId: string) => `/chat/group/${roomId}/join`,
+    LEAVE_GROUP_ROOM: (roomId: string) => `/chat/group/${roomId}/leave`,
     ROOM_DETAIL: "/chat/room",
+    ROOM_MESSAGES: (roomId: string) => `/chat/room/${roomId}/messages`,
     SEARCH_USERS: "/users/search",
     WS_TOKEN: "/ws/token",
   },

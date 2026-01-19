@@ -1,184 +1,104 @@
 import { create } from "zustand";
-import axios from "axios";
 
-export interface ApartmentInfo {
-  id?: string;
-  name: string;
-  address: string;
-  detailAddress: string;
-  houseSizeNumber: number;
-  parkingSpaces: number;
-  buildings: string[];
-  images: string[];
-}
-
-export interface UserInfoData {
+interface ResponseApartData {
   code: number;
-  data: UserInfoInterface;
+  data: {
+    id: number;
+    name: string;
+    location: string;
+    totalUnit: number;
+    parkingCapacity: number;
+    buildingCount: number;
+    fileUrl: string;
+  };
 }
 
-export interface UserInfoInterface {
+interface UserInfoReal extends UserInfoAll {
+  setIsLogin: (isLogin: boolean) => void;
+  updateProfileImage: (profileImage: string) => void;
+  updateApartData: (apartData: ResponseApartData) => void;
+  updateUserModify: ({
+    name,
+    nickname,
+    phoneNumber,
+  }: {
+    name: string;
+    nickname: string;
+    phoneNumber: string;
+  }) => void;
+  refreshUserInfo: () => void;
+}
+
+export interface UserInfoAll {
+  code: number;
   isLogin: boolean;
-  email: string;
-  password: string;
-  profileImage: string | null;
+  data: UserInfo | null;
+}
+
+interface UserInfo {
+  fileId: string | null;
+  name: string;
   nickname: string;
-  phone: string;
-  memberApartmentId: string | null;
-  apartmentId: string | null;
+  email: string;
+  phoneNumber: string;
+  memberApartmentId: number | null;
+  apartmentId: number | null;
   apartmentName: string | null;
   region: string | null;
   location: string | null;
   building: string | null;
-  unit: string | null;
-  name: string;
+  unit: number | null;
   moveInDate: string | null;
-  numberOfResidents: string | null;
-  carNumbers: string[] | null;
-  fileId : string | null;
+  numberOfResidents: number | null;
+  carNumbers: string | null;
 }
 
-interface UserInfoInterfaceReal extends UserInfoInterface {
-  apartment: ApartmentInfo | null;
-  setIsLogin: (isLogin: boolean) => void;
-  setApartment: (apartment: ApartmentInfo | null) => void;
-
-  updateUserInfo: (
-    email: string,
-    password: string,
-    nickname: string,
-    profile: string,
-    phone: string,
-    name: string
-  ) => void;
-
-  updateApartInfo: (
-    apartmentId: string, 
-    building: string, 
-    unit: string,
-    moveInDate: string, 
-    numberOfResidents: string, 
-    carNumbers: string[]) => void
-
-  updateAllUserInfo: (
-    email: string,
-    password: string,
-    nickname: string,
-    profile: string,
-    phone: string,
-    name: string,
-    memberApartmentId: string,
-    apartmentId: string,
-    apartmentName: string,
-    region: string,
-    location: string,
-    building: string,
-    unit: string,
-    moveInDate: string,
-    numberOfResidents: string,
-    carNumbers: string[],
-    fileId : string,
-  ) => void;
-  refreshUserInfo: () => Promise<void>;
-}
-
-export const useUserInfo = create<UserInfoInterfaceReal>((set) => ({
+export const useUserInfoStore = create<UserInfoReal>((set) => ({
+  code: 200,
+  data: null,
   isLogin: false,
+  setIsLogin: (isLogin: boolean) => set({ isLogin }),
+  updateProfileImage: (profileImage: string) => {
+    set((state) => ({
+      data: state.data ? { ...state.data, fileId: profileImage } : null,
+    }));
+  },
+  updateApartData: (apartData: ResponseApartData) => {
+    set((state) => ({
+      code: 200,
+      data: state.data
+        ? {
+            ...state.data,
+            apartmentId: apartData?.data.id,
+            apartmentName: apartData?.data.name,
+            location: apartData?.data.location,
+          }
+        : null,
+    }));
+  },
+  refreshUserInfo: () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const userDataStr = localStorage.getItem("userData");
 
-  email: "",
-  password: "",
-  profileImage: null,
-  nickname: "",
-  phone: "",
-  name: "",
-  apartment: null,
+    if (!userDataStr) return;
 
-  memberApartmentId: null,
-  apartmentId: null,
-  apartmentName: null,
-  region: null,
-  location: null,
-  building: null,
-  unit: null,
-  moveInDate: null,
-  numberOfResidents: null,
-  carNumbers: null,
-  fileId : null,
-
-  setIsLogin: (isLogin) => set({ isLogin }),
-
-  setApartment: (apartment) => set({ apartment }),
-
-  updateUserInfo: (email, password, nickname, profileImage, phone, name) =>
+    const userData: UserInfo = JSON.parse(userDataStr);
     set({
-      email,
-      password,
-      profileImage,
-      nickname,
-      phone,
-      name,
-    }),
-
-  updateApartInfo: (apartmentId, building, unit, moveInDate, numberOfResidents, carNumbers) =>
-    set({
-      apartmentId,
-      building,
-      unit,
-      moveInDate,
-      numberOfResidents,
-      carNumbers,
-    }),
-
-  updateAllUserInfo: (
-    _email,
-    _password,
-    nickname,
-    profileImage,
-    phone,
+      isLogin: Boolean(isLoggedIn),
+      data: userData,
+    });
+  },
+  updateUserModify: ({
     name,
-    memberApartmentId,
-    apartmentId,
-    apartmentName,
-    region,
-    location,
-    building,
-    unit,
-    moveInDate,
-    numberOfResidents,
-    carNumbers,
-    fileId,
-  ) =>
-    set({
-      profileImage,
-      nickname,
-      phone,
-      name,
-      memberApartmentId,
-      apartmentId,
-      apartmentName,
-      region,
-      location,
-      building,
-      unit,
-      moveInDate,
-      numberOfResidents,
-      carNumbers,
-      fileId,
-    }),
-
-  refreshUserInfo: async () => {
-    try {
-      const res = await axios.get("/api/member");
-      const userData = res.data.data;
-      set({
-        email: userData.email || "",
-        nickname: userData.nickname || "",
-        profileImage: userData.profileImage || null,
-        phone: userData.phone || "",
-        name: userData.name || "",
-      });
-    } catch (error) {
-      console.error("Failed to refresh user info:", error);
-    }
+    nickname,
+    phoneNumber,
+  }: {
+    name: string;
+    nickname: string;
+    phoneNumber: string;
+  }) => {
+    set((state) => ({
+      data: state.data ? { ...state.data, name, nickname, phoneNumber } : null,
+    }));
   },
 }));

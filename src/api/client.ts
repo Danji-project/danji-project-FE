@@ -41,7 +41,16 @@ export const createApiClient = (
   // 요청 인터셉터
   axiosInstance.interceptors.request.use(
     (config) => {
-      // 쿠키 기반 인증이므로 Authorization 헤더 불필요 (쿠키가 자동으로 전송됨)
+      // 쿠키 기반 인증 - 요청에 withCredentials 설정
+      config.withCredentials = true;
+
+      // 개발 환경에서 쿠키 전달 로깅
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `[API Request] ${config.method?.toUpperCase()} ${config.url}`
+        );
+      }
+
       return config;
     },
     (error) => Promise.reject(error)

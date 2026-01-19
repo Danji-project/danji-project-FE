@@ -1,10 +1,10 @@
-import type { Dispatch, SetStateAction } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useUserInfoMutation } from "./useUserInfoMutation";
-import { usePendingStore } from "../stores/usePendingStore";
+import { useUserInfoStore } from "../stores/userStore";
 import { useModalTextStore } from "../stores/useModalText";
+import { usePendingStore } from "../stores/usePendingStore";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 
 export const useLogin = (
   loginId: string,
@@ -12,9 +12,9 @@ export const useLogin = (
   setIdError: Dispatch<SetStateAction<string>>
 ) => {
   const navigate = useNavigate();
-  const { getUserInfo } = useUserInfoMutation();
+  const { setIsLogin } = useUserInfoStore();
+  const { setModalTitle, setModalText } = useModalTextStore();
   const { setLoginPending, setModalPending } = usePendingStore();
-  const { setModalText, setIsOnlyConfirmed } = useModalTextStore();
 
   const loginMutation = useMutation({
     mutationFn: async () => {
@@ -31,39 +31,25 @@ export const useLogin = (
           withCredentials: true, // 쿠키 자동 전송
         }
       );
+      // 로그인 로딩중인 여부 변수
+      const isLoginPending = loginMutation.isPending;
+      setLoginPending(isLoginPending);
+
       return res.data;
     },
     onSuccess: () => {
-      // 쿠키 기반 인증이므로 토큰 저장 불필요 (서버에서 쿠키 설정)
-      // 로그인 상태 플래그 저장 (앱 시작 시 API 호출 여부 판단용)
+      // 로그인 상태 플래그 저장하기
       localStorage.setItem("isLoggedIn", "true");
-      setLoginPending(false);
-      // 사용자 정보 조회를 기다린 후 네비게이트
-      getUserInfo.mutate(undefined, {
-        onSettled: () => {
-          navigate("/");
-        },
-      });
+      // store에도 저장
+      setIsLogin(true);
+      // 홈으로 리다이렉트
+      navigate("/");
     },
-    onError: (error: unknown) => {
-      setLoginPending(false);
-      setIdError("");
-
-      let errorMessage = "로그인 중 오류가 발생했습니다.";
-
-      if (axios.isAxiosError(error)) {
-        const responseData = error.response?.data;
-        if (responseData?.message) {
-          errorMessage = responseData.message;
-        } else if (error.response?.statusText) {
-          errorMessage = error.response.statusText;
-        }
-      }
-
-      // 모달로 에러 메시지 표시
-      setModalText(errorMessage);
-      setIsOnlyConfirmed(true);
+    onError: () => {
       setModalPending(true);
+      setModalTitle("오류 발생");
+      setModalText("아이디 혹은 비밀번호가 올바르지 않습니다.");
+      setIdError("아이디 혹은 비밀번호가 올바르지 않습니다.");
     },
   });
 

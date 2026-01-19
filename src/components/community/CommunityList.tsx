@@ -8,32 +8,35 @@ import {
 
 import styles from "./CommunityList.module.scss";
 import ComboBox from "../common/combobox/ComboBox";
-import { sortContents } from "../../assets/mock/tabsMocks";
 import CommunityCard from "./CommunityCard";
 import { useNavigate } from "react-router-dom";
 import CommunitySkeleton from "../common/community-skeleton/CommunitySkeleton";
-import { useUserInfo } from "../../stores/userStore";
-import type { ElementSize } from "../../model/ElementSizeModel";
+import { useUserInfoStore } from "../../stores/userStore";
+
+const sortContents = [
+  "전체 게시글/ALL",
+  "인기 게시글/POPULAR",
+  "최신 게시글/LATEST",
+];
 
 const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
   const [selectedSort, setSelectedSort] = useState("ALL");
   const [isOpen, setIsOpen] = useState(false);
+  const [size, setPosition] = useState({
+    left: 0,
+    right: 0,
+    width: 0,
+    height: 0,
+  });
+
   const { feedListMutate, feedListPending } = useFeedList(
     apartData.id,
     selectedSort
   );
   const { data } = useFeedListStore();
-  const { isLogin } = useUserInfo();
+  const { isLogin } = useUserInfoStore();
   const navigate = useNavigate();
   const childRef = useRef<HTMLDivElement>(null);
-
-  // textarea에 적용할 크기 상태
-  const [size, setPosition] = useState<ElementSize>({
-    width: 0,
-    height: 0,
-    left: 0,
-    right: 0,
-  });
 
   useEffect(() => {
     feedListMutate();
@@ -85,13 +88,19 @@ const CommunityList = ({ apartData }: { apartData: BaseApartInfo }) => {
         />
       </div>
       <div className={styles["community__list__main"]}>
-        {data.feedDtoList.map((fdl: FeedList3) => (
-          <CommunityCard
-            key={fdl.feedId}
-            cardData={fdl}
-            apartData={apartData}
-          />
-        ))}
+        {data.feedDtoList.length > 0 ? (
+          data.feedDtoList.map((fdl: FeedList3) => (
+            <CommunityCard
+              key={fdl.feedId}
+              cardData={fdl}
+              apartData={apartData}
+            />
+          ))
+        ) : (
+          <div className={styles["community__list__empty"]}>
+            게시글이 없습니다.
+          </div>
+        )}
       </div>
       {isLogin ? (
         <button

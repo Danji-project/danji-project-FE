@@ -19,11 +19,24 @@ export default defineConfig({
       overlay: true,
     },
     proxy: {
-      "/api": {
-        target: "https://danjitalk.duckdns.org/",
+      "/api/ws/token": {
+        target: "https://danjitalk.duckdns.org",
         changeOrigin: true,
         secure: true,
+        cookieDomainRewrite: "localhost",
+      },
+      "/api/ws": {
+        target: "wss://danjitalk.duckdns.org",
+        changeOrigin: true,
         ws: true,
+        secure: false,
+      },
+      "/api": {
+        target: "https://danjitalk.duckdns.org",
+        changeOrigin: true,
+        secure: true,
+        // 쿠키 전달 설정
+        cookieDomainRewrite: "localhost",
       },
     },
   },

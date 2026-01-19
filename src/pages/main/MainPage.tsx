@@ -1,21 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Header from "../../layouts/Header";
-import { useUserInfo } from "../../stores/userStore";
+import { useUserInfoStore } from "../../stores/userStore";
 import { useNavigate } from "react-router-dom";
 import MainContents from "../../components/main-contents/MainContents";
 import MenuSidebar from "../../components/common/menu-sidebar/MenuSidebar";
 import IconMenu from "../../components/common/icon-menu/IconMenu";
+import { useSidebarStore } from "../../stores/sidebarStore";
 
 const MainPage = () => {
   const [searchContent, setSearchContent] = useState("");
-
-  const isLogin = useUserInfo((state) => state.isLogin);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    sessionStorage.removeItem("tabselect");
-  });
+  const { isLogin } = useUserInfoStore();
+  const { setIsOpen } = useSidebarStore();
 
   return (
     <>
@@ -23,7 +21,9 @@ const MainPage = () => {
         <Header
           title={"DANJITALK"}
           hasIcons={<img src="/icons/lists.svg" alt="list-icon" />}
-          onIconClick={() => {}}
+          onIconClick={() => {
+            setIsOpen(true);
+          }}
         />
       ) : (
         <Header

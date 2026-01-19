@@ -1,4 +1,4 @@
-import SerchIcon from "../../../assets/button/searchBtn.svg";
+import SearchIcon from "../../../assets/button/Search.svg";
 
 import styles from "./search-box.module.scss";
 
@@ -14,28 +14,26 @@ const SearchBox = ({
   onSearch: () => void;
 }) => {
   return (
-    <>
-      <div className={`${styles["search-box-outline"]}`}>
-        <input
-          className={`${styles["search-box-input"]}`}
-          value={content}
-          onChange={onChange}
-          placeholder={placeholder}
-          onKeyDown={(e) => {
-            if (e.key == "Enter") onSearch();
-          }}
-        />
-        <button
-          className={`${styles["search-box-button"]}`}
-          onClick={() => {
-            onSearch();
-          }}
-          disabled={!content}
-        >
-          <img src={SerchIcon} />
-        </button>
-      </div>
-    </>
+    <div className={`${styles["search-box-outline"]}`}>
+      <input
+        className={`${styles["search-box-input"]}`}
+        value={content}
+        onChange={onChange}
+        placeholder={placeholder}
+        onKeyDown={(e) => {
+          if (e.key == "Enter") onSearch();
+        }}
+      />
+      <button
+        className={`${styles["search-box-button"]}`}
+        onClick={() => {
+          onSearch();
+        }}
+        disabled={!content}
+      >
+        <img src={SearchIcon} alt="search_icon" />
+      </button>
+    </div>
   );
 };
 

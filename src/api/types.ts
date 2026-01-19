@@ -63,6 +63,7 @@ export interface ApartmentItem {
   thumbnailFileUrl: string | null;
   isBookmarked: boolean;
   kaptCode: string;
+  roomId?: number | string; // 단체 채팅방 roomId
 }
 
 // 단지 관련 타입

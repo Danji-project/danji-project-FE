@@ -35,15 +35,11 @@ const LoginInputWrapper = () => {
 
   const { loginMutation } = useLogin(emailData, passwordData, setIdError);
 
-  const { isLoginPending, setLoginPending, modalPending, setModalPending } =
-    usePendingStore();
+  const { modalPending, setModalPending } = usePendingStore();
   const { modalText, setModalText, isOnlyConfirmed } = useModalTextStore();
 
   return (
     <div className={styles["login__input__wrapper"]}>
-      {isLoginPending && (
-        <div className={styles["login__input__wrapper__loading__overlay"]} />
-      )}
       {modalPending && (
         <TextModal
           text={modalText}
@@ -57,80 +53,79 @@ const LoginInputWrapper = () => {
       <form
         onSubmit={(e: React.FormEvent) => {
           e.preventDefault();
-          setLoginPending(true);
           loginMutation.mutate();
         }}
       >
         <div className={styles["login__input__wrapper__form"]}>
-        <img src="/logo.svg" alt="logo" />
-        <LoginInput
-          label={"이메일"}
-          placeholder={"이메일을 입력해주세요"}
-          className={"email"}
-          htmlForId={"forEmail"}
-          type={"text"}
-          value={emailData}
-          onChange={handleEmailData}
-          errorMessage={idError}
-        />
-        <LoginInput
-          label={"비밀번호"}
-          placeholder={"비밀번호를 입력해주세요"}
-          className={"password"}
-          htmlForId={"forPassword"}
-          type={type}
-          value={passwordData}
-          onChange={handlePasswordData}
-          onTypeChange={handleTypeChange}
-          isButton
-        />
-        <div className={styles["login__input__wrapper__form__bottom__menu"]}>
-          <label htmlFor="idSave">
-            <input
-              type="checkbox"
-              checked={isIdSaved}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setIsIdSaved(e.target.checked)
-              }
-            />
-            <span>아이디 저장</span>
-          </label>
-          <button type="button" onClick={() => navigate("/find-account")}>
-            <span>아이디/비밀번호 찾기</span>
-            <img src="/icons/find_icon.png" alt="find" />
-          </button>
-        </div>
-        <div className={styles["login__input__wrapper__form__buttons"]}>
-          <button type="submit" disabled={!emailData || !passwordData}>
-            로그인
-          </button>
-          <p>
-            아직 회원이 아니신가요?
-            <Link to="/register-account">회원가입</Link>
-          </p>
-        </div>
-        <div className={styles["login__input__wrapper__form__social__line"]}>
-          <span>
-            <b>Or</b>
-          </span>
-          <ul>
-            <li>
-              <a href="https://danjitalk.duckdns.org/oauth2/authorization/kakao">
-                <img src="/icons/kakao.png" alt="kakao" />
-              </a>
-            </li>
-            <li>
-              <a href="https://danjitalk.duckdns.org/oauth2/authorization/google">
-                <img src="/icons/google.png" alt="google" />
-              </a>
-            </li>
-            <li>
-              <a href="https://danjitalk.duckdns.org/oauth2/authorization/naver">
-                <img src="/icons/naver.png" alt="naver" />
-              </a>
-            </li>
-          </ul>
-        </div>
+          <img src="/logo.svg" alt="logo" />
+          <LoginInput
+            label={"이메일"}
+            placeholder={"이메일을 입력해주세요"}
+            className={"email"}
+            htmlForId={"forEmail"}
+            type={"text"}
+            value={emailData}
+            onChange={handleEmailData}
+            errorMessage={idError}
+          />
+          <LoginInput
+            label={"비밀번호"}
+            placeholder={"비밀번호를 입력해주세요"}
+            className={"password"}
+            htmlForId={"forPassword"}
+            type={type}
+            value={passwordData}
+            onChange={handlePasswordData}
+            onTypeChange={handleTypeChange}
+            isButton
+          />
+          <div className={styles["login__input__wrapper__form__bottom__menu"]}>
+            <label htmlFor="idSave">
+              <input
+                type="checkbox"
+                checked={isIdSaved}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setIsIdSaved(e.target.checked)
+                }
+              />
+              <span>아이디 저장</span>
+            </label>
+            <button type="button" onClick={() => navigate("/find-account")}>
+              <span>아이디/비밀번호 찾기</span>
+              <img src="/icons/find_icon.png" alt="find" />
+            </button>
+          </div>
+          <div className={styles["login__input__wrapper__form__buttons"]}>
+            <button type="submit" disabled={!emailData || !passwordData}>
+              로그인
+            </button>
+            <p>
+              아직 회원이 아니신가요?
+              <Link to="/register-account">회원가입</Link>
+            </p>
+          </div>
+          <div className={styles["login__input__wrapper__form__social__line"]}>
+            <span>
+              <b>Or</b>
+            </span>
+            <ul>
+              <li>
+                <a href="https://danjitalk.duckdns.org/oauth2/authorization/kakao">
+                  <img src="/icons/kakao.png" alt="kakao" />
+                </a>
+              </li>
+              <li>
+                <a href="https://danjitalk.duckdns.org/oauth2/authorization/google">
+                  <img src="/icons/google.png" alt="google" />
+                </a>
+              </li>
+              <li>
+                <a href="https://danjitalk.duckdns.org/oauth2/authorization/naver">
+                  <img src="/icons/naver.png" alt="naver" />
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </form>
     </div>

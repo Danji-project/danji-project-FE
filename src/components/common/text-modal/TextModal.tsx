@@ -1,6 +1,6 @@
 import { useModalTextStore } from "../../../stores/useModalText";
 import { usePendingStore } from "../../../stores/usePendingStore";
-import { useRootPositionStore } from "../../../stores/rootPositionStore";
+import { usePositionStore } from "../../../stores/usePositionStore";
 import ModalSkeleton from "../ModalSkeleton";
 import styles from "./TextModal.module.scss";
 
@@ -11,6 +11,7 @@ const TextModal = ({
   onSend,
   onConfirm,
   isLoading,
+  actionText,
 }: {
   text: string;
   usingConfirm?: boolean;
@@ -18,19 +19,24 @@ const TextModal = ({
   onSend?: () => void;
   onConfirm?: () => void;
   isLoading?: boolean;
+  actionText?: string;
 }) => {
   const { setModalPending, modalLoading } = usePendingStore();
   const { setModalText, modalTitle, modalText } = useModalTextStore();
-  const { positionTop, positionLeft } = useRootPositionStore();
 
   const shouldShowLoading = isLoading || modalLoading;
+
+  const { positionXStart, positionXEnd, positionYStart, positionYEnd } =
+    usePositionStore();
 
   return (
     <div
       className={styles["text__modal"]}
       style={{
-        top: `${positionTop}px`,
-        left: `${positionLeft}px`,
+        position: "fixed",
+        left: `${(positionXStart! + positionXEnd!) / 2}px`,
+        top: `${(positionYStart! + positionYEnd!) / 2}px`,
+        transform: "translate(-50%, -50%)",
       }}
     >
       {shouldShowLoading ? (
@@ -62,7 +68,7 @@ const TextModal = ({
                 취소
               </button>
               <button type="button" onClick={onSend}>
-                인증번호 전송
+                {actionText || "인증번호 전송"}
               </button>
             </div>
           )}

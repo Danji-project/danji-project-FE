@@ -1,10 +1,10 @@
-import React, { type Dispatch, type SetStateAction } from "react";
+import React, { useEffect, type Dispatch, type SetStateAction } from "react";
 
 import styles from "./MainContents.module.scss";
 import SearchBox from "../common/search-box/search-box";
-import ApartLists from "../common/apart-lists/ApartLists";
-import { fetchedApartments } from "../../assets/mock/apartmentMock";
 import { useNavigate } from "react-router-dom";
+import { useNewApartList } from "../../hooks/useApartmentList";
+import ApartLists from "../common/apart-lists/ApartLists";
 
 const MainContents = ({
   searchContent,
@@ -14,6 +14,13 @@ const MainContents = ({
   setSearchContent: Dispatch<SetStateAction<string>>;
 }) => {
   const navigate = useNavigate();
+
+  const { termResultData, getGangnam } = useNewApartList();
+
+  // 신축아파트 분양정보 리스트
+  useEffect(() => {
+    getGangnam.mutate();
+  }, []);
 
   return (
     <div className={styles["main__contents"]}>
@@ -28,10 +35,9 @@ const MainContents = ({
         }}
       />
       <ApartLists
-        title={"신축 아파트 분양정보"}
-        fetchedLists={fetchedApartments}
+        title={"신축아파트 분양정보"}
+        fetchedLists={termResultData.apartments}
       />
-      <ApartLists title={"요즘 뜨는 아파트"} fetchedLists={fetchedApartments} />
     </div>
   );
 };

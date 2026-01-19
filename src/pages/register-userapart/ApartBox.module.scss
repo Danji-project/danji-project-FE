@@ -1,0 +1,21 @@
+.apart__box__wrapper {
+  width: 100%;
+  margin-top: 30px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgb(151, 187, 255);
+  height: 300px;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.apart__box__none {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    opacity: 0.45;
+  }
+}

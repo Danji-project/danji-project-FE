@@ -3,9 +3,21 @@ import AppRoutes from "../../routes/AppRoutes";
 import PreviewDevice from "./PreviewDevice";
 import ServiceIntro from "./ServiceIntro";
 import MobileServiceIntro from "./MobileServiceIntro";
+import { useUserInfoStore } from "../../stores/userStore";
+import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
 
 const LandingIntro = () => {
   const [isMobile, setIsMobile] = useState(false);
+
+  const { refreshUserInfo, isLogin } = useUserInfoStore();
+
+  // userInfo 동기화 처리
+  useEffect(() => {
+    refreshUserInfo();
+  }, []);
+
+  // 로그인이 되어있을때만 /api/member 출력하기
+  useUserInfoMutation(isLogin);
 
   useEffect(() => {
     const mobileResize = () => {

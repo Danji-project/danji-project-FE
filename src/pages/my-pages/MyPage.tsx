@@ -1,19 +1,16 @@
-import { useEffect } from "react";
 import MyPageBox from "../../components/my-page-box/MyPageBox";
 import Header from "../../layouts/Header";
 import styles from "./MyPage.module.scss";
 import { IoMdSettings } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
+import { useUserInfoStore } from "../../stores/userStore";
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const { getUserInfo } = useUserInfoMutation();
+  const { isLogin } = useUserInfoStore();
 
-  useEffect(() => {
-    sessionStorage.removeItem("selectApart");
-    getUserInfo.mutate();
-  }, []);
+  useUserInfoMutation(isLogin);
 
   return (
     <div className={styles["mypage__wrapper"]}>

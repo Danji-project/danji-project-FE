@@ -1,0 +1,80 @@
+.my__apart__card {
+  width: 80%;
+  margin: 0 auto;
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    button {
+      color: rgb(118, 118, 118);
+      font-weight: 300;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  &__box {
+    display: flex;
+    align-items: center;
+    &__image {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-right: 12px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    &__info {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 6px;
+      span {
+        font-size: 14px;
+        &:nth-child(1) {
+          font-weight: 700;
+        }
+        &:nth-child(3) {
+          font-weight: 200;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  &__buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    button {
+      flex: 1;
+      padding: 10px 0;
+      cursor: pointer;
+      &:first-child {
+        border: 1px solid rgb(151, 187, 255);
+        border-radius: 6px;
+        color: rgb(151, 187, 255);
+        transition: all 0.5s;
+        &:hover {
+          background-color: rgb(151, 187, 255);
+          color: #fff;
+        }
+      }
+      &:last-child {
+        background-color: rgb(151, 187, 255);
+        color: #fff;
+        border-radius: 4px;
+      }
+    }
+  }
+}

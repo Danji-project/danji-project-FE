@@ -1,0 +1,40 @@
+.apart__selector {
+  position: relative;
+  > button {
+    margin-top: 16px;
+    padding-bottom: 16px;
+    font-size: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+  }
+}
+
+.apart__real__selector {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background-color: black;
+  left: 0;
+  right: 0;
+  top: calc(100% + 5px);
+  button {
+    font-size: 16px;
+    padding-bottom: 13px;
+    color: #fff;
+    cursor: pointer;
+    &:disabled {
+      opacity: 0.45;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+}

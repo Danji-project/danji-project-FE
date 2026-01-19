@@ -1,14 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import StatusBar from "./StatusBar";
 import { useUserInfoMutation } from "../../hooks/useUserInfoMutation";
-import Spinners from "../common/spinners/Spinners";
 import { useSidebarStore } from "../../stores/sidebarStore";
 import { usePendingStore } from "../../stores/usePendingStore";
-import { useRootPositionStore } from "../../stores/rootPositionStore";
-import TextModal from "../common/text-modal/TextModal";
+import { useUserInfoStore } from "../../stores/userStore";
+import SyncLoader from "react-spinners/SyncLoader";
+import { useRefPositioning } from "../../hooks/useRefPositioning";
 
 const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
-  const { userInfoPending } = useUserInfoMutation();
+  const { isLogin } = useUserInfoStore();
+  const { isLoading } = useUserInfoMutation(isLogin);
   const {
     apartChatBlack,
     profilePending,
@@ -19,9 +20,10 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   } = usePendingStore();
 
   const { isOpen: sidebarOpen } = useSidebarStore();
-  const { setPositionTop, setPositionLeft } = useRootPositionStore();
   const [isMobile, setIsMobile] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
+
+  useRefPositioning(previewRef);
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -33,29 +35,10 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
-  useEffect(() => {
-    const updatePosition = () => {
-      if (previewRef.current) {
-        const rect = previewRef.current.getBoundingClientRect();
-        setPositionTop(rect.top + rect.height / 2);
-        setPositionLeft(rect.left + rect.width / 2);
-      }
-    };
-
-    updatePosition();
-    window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition);
-    return () => {
-      window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition);
-    };
-  }, [setPositionTop, setPositionLeft]);
-
   return (
     <div
       ref={previewRef}
-      className={`preview-device ${
-        userInfoPending ||
+      className={`preview-device ${isLoading ||
         sidebarOpen ||
         apartChatBlack ||
         profilePending ||
@@ -63,13 +46,13 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         isLoginPending ||
         registerDimmed ||
         findPending
-          ? "of-hidden"
-          : ""
-      }`}
+        ? "of-hidden"
+        : ""
+        }`}
     >
-      {(userInfoPending || isLoginPending || findPending) && (
+      {(isLoading || isLoginPending || findPending) && (
         <div className="div-background-black">
-          <Spinners />
+          <SyncLoader color="#fff" />
         </div>
       )}
       {(sidebarOpen ||
@@ -77,13 +60,11 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         profilePending ||
         modalPending ||
         registerDimmed) && (
-        <div
-          className={`div-background-black-2 ${
-            isMobile ? "mobile-background-black-2" : ""
-          }`}
-        ></div>
-      )}
-      {modalPending && <TextModal text="" usingConfirm={true} />}
+          <div
+            className={`div-background-black-2 ${isMobile ? "mobile-background-black-2" : ""
+              }`}
+          ></div>
+        )}
       <div className="app-container">
         <StatusBar />
         {children}

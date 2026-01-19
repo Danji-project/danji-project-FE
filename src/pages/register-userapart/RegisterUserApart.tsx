@@ -1,348 +1,39 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUserInfo } from "../../stores/userStore";
-
-import styles from "./RegisterUserApart.module.scss";
-import Header from "../../layouts/Header";
-import LogoIcon from "../../assets/logo.svg";
+import { useState } from "react";
 import SearchBox from "../../components/common/search-box/search-box";
-import InputField from "../../components/common/input-field/InputField";
-import { useGetApartmentMutation } from "../../stores/useGetApartmentMutation";
-import type { ApartmentItem } from "../../api/types";
-import { useUserApartAdd } from "../../hooks/useUserApartAdd";
-import { useApartRegistDB } from "../../hooks/useRegisterApartment";
+import Header from "../../layouts/Header";
+import { useSearch } from "../../hooks/useSearch";
+import ApartBox from "./ApartBox";
+import { useSearchTermStore } from "../../stores/useSearchTermStore";
+import ApartSearchSkeleton from "./ApartSearchSkeleton";
 
-const RegisterApartHeader = () => {
-  return (
-    <div>
-      <Header title="단지 수정" hasBackButton={true} />
-    </div>
-  );
-};
-
-const ApartInfoBody = ({
-  Appart,
-  setAppart,
-}: {
-  Appart: ApartmentItem | null | undefined;
-  setAppart: Dispatch<SetStateAction<ApartmentItem | null | undefined>>;
-}) => {
-  const user = useUserInfo();
-  const navigate = useNavigate();
-  const [dong, setdong] = useState<string>(user.building ? user.building : "");
-  const [ho, setho] = useState<string>(user.unit ? user.unit : "");
-  const [date, setdate] = useState<string>(
-    user.moveInDate ? user.moveInDate : ""
-  );
-  const [person, setperson] = useState<string>(
-    user.numberOfResidents ? user.numberOfResidents : ""
-  );
-  const [car, setcar] = useState<string[]>(
-    user.carNumbers ? user.carNumbers : [""]
-  );
-
-  const { AddApart } = useUserApartAdd();
-  const { apartRegistDB } = useApartRegistDB();
-
-  const selectBtnClick = async () => {
-    if (Appart) {
-      let apartmentData = Appart;
-      if (apartmentData.id === null) {
-        try {
-          // useApartRegistDB 훅이 mutateAsync를 반환하도록 수정되었다고 가정합니다.
-          const newApartment = await apartRegistDB(apartmentData);
-          setAppart(newApartment);
-          apartmentData = newApartment;
-        } catch (error) {
-          console.error("아파트 등록에 실패했습니다.", error);
-        }
-      }
-
-      // apartmentData.id가 유효한지 한 번 더 확인
-      if (!apartmentData.id) {
-        console.error("아파트 ID가 없어 등록을 진행할 수 없습니다.");
-        return;
-      }
-
-      user.updateApartInfo(
-        apartmentData.id.toString(),
-        dong,
-        ho,
-        date,
-        person,
-        car
-      );
-    }
-  };
-
-  const addCars = () => {
-    setcar([...car, ""]); // 기존 배열에 빈 문자열 하나 추가
-  };
-
-  const handleInputChange = (index: number, value: string) => {
-    const newInputs = [...car];
-    newInputs[index] = value; // 해당 인덱스의 값만 변경
-    setcar(newInputs);
-  };
-
-  useEffect(() => {
-    console.log("body");
-    console.log(Appart);
-  }, [Appart]);
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "calc(var(--device-height) - 200px)",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          marginTop: "20px",
-          marginBottom: "20px",
-          overflow: "auto",
-          flex: "1",
-        }}
-      >
-        <div style={{ flex: "1 0 auto", overflowY: "auto" }}>
-          {Appart ? (
-            <>
-              <p>단지 정보</p>
-              <div className={styles["search__danji__link"]}>
-                <div className={styles["search__danji__link__thumb"]}>
-                  <img
-                    src={
-                      Appart.thumbnailFileUrl || "/pictures/gangnam_hill_2.jpg"
-                    }
-                    alt={Appart.name}
-                  />
-                </div>
-                <div className={styles["search__danji__link__info"]}>
-                  <h3 className={styles["search__danji__link__info__title"]}>
-                    {Appart.name}
-                  </h3>
-                  <p className={styles["search__danji__link__info__location"]}>
-                    {Appart.region} {Appart.location}
-                  </p>
-                  <p className={styles["search__danji__link__info__detail"]}>
-                    {Appart.totalUnit && Appart.buildingCount
-                      ? `아파트 ${Appart.totalUnit.toLocaleString()}세대 | 총 ${
-                          Appart.buildingCount
-                        }동`
-                      : "정보 준비중"}
-                  </p>
-                </div>
-                <button
-                  className={styles["delete-button"]}
-                  onClick={(): void => {
-                    setAppart(null);
-                    sessionStorage.removeItem("selectApart");
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M13 1L1 13M1 1L13 13"
-                      stroke="#767676"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <InputField
-                type="text"
-                label="동"
-                name="dong"
-                value={dong}
-                onChange={(e) => {
-                  setdong(e.target.value);
-                }}
-                placeholder="ex. 101동"
-                className=""
-              />
-              <InputField
-                type="text"
-                label="호"
-                name="ho"
-                value={ho}
-                onChange={(e) => {
-                  setho(e.target.value);
-                }}
-                placeholder="ex. 1001호"
-                className=""
-              />
-              <InputField
-                type="date"
-                label="입주일"
-                name="date"
-                value={date}
-                onChange={(e) => {
-                  setdate(e.target.value);
-                }}
-                placeholder="ex. 2023-01-01"
-                className=""
-              />
-              <InputField
-                type="text"
-                label="거주인원"
-                name="person"
-                value={person}
-                onChange={(e) => {
-                  setperson(e.target.value);
-                }}
-                placeholder="숫자만 입력하세요."
-                className=""
-              />
-              <label className={`${styles["input__field__label"]}`}>차량</label>
-              {car.map((value, index) => (
-                <div key={index}>
-                  <InputField
-                    type="text"
-                    label=""
-                    name="car"
-                    value={value}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleInputChange(index, e.target.value)
-                    }
-                    placeholder="ex. 12가 1234"
-                    className=""
-                  />
-                </div>
-              ))}
-              <button className={`${styles["add__btn"]}`} onClick={addCars}>
-                +차량 추가 등록
-              </button>
-            </>
-          ) : (
-            <div
-              style={{
-                height: "100%",
-                textAlign: "center",
-                alignContent: "center",
-                justifyContent: "center",
-                margin: "0 auto",
-              }}
-            >
-              <img src={LogoIcon} style={{ width: "110px", opacity: "0.7" }} />
-              <p>등록할 단지가 없습니다.</p>
-              <p>단지를 검색해보세요!</p>
-            </div>
-          )}
-        </div>
-      </div>
-      <button
-        className={`${styles["search__btn"]}`}
-        onClick={() => {
-          selectBtnClick()
-            .then(() => {
-              console.log(user);
-              if (user.apartmentId)
-                AddApart({
-                  apartmentId: user.apartmentId.toString(),
-                  building: dong,
-                  unit: ho,
-                  moveInDate: date,
-                  numberOfResidents: person,
-                  carNumbers: car,
-                });
-              else if (Appart?.id)
-                AddApart({
-                  apartmentId: Appart.id.toString(),
-                  building: dong,
-                  unit: ho,
-                  moveInDate: date,
-                  numberOfResidents: person,
-                  carNumbers: car,
-                });
-              else console.log("fail");
-            })
-            .then(() => {
-              navigate("/my-page", { replace: true });
-            });
-        }}
-      >
-        완료
-      </button>
-    </div>
-  );
-};
-
-const RegisterMyApart = () => {
-  const navigate = useNavigate();
-  const user = useUserInfo();
-  const [appart, setAppart] = useState<ApartmentItem | null>();
-  const { getApartmentMutation, isPending } = useGetApartmentMutation({
-    apartmentID: user.apartmentId,
-    setApartment: setAppart,
-  });
-
-  const [searchText, setSearchText] = useState<string>("");
-
-  // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트
-  useEffect(() => {
-    if (!user.isLogin) {
-      navigate("/login", { replace: true });
-      return;
-    }
-
-    // 우선순위 1: 사용자가 이미 등록한 아파트가 있는 경우
-    if (user.apartmentId) {
-      getApartmentMutation(); // 이 내부에서 setAppart가 일어난다고 가정
-    }
-    // 우선순위 2: 세션 스토리지에 저장된 선택된 데이터가 있는 경우
-    else {
-      const temp = sessionStorage.getItem("selectApart");
-      if (temp) {
-        const parsedData = JSON.parse(temp);
-        setAppart(parsedData); // 여기서 업데이트 예약!
-      }
-    }
-  }, [user.isLogin, user.apartment?.id, navigate]);
-
-  useEffect(() => {
-    if (appart) {
-      console.log("appart 정보:", appart);
-    }
-  }, [appart]); // appart가 실제로 바뀔 때만 실행됨
-
-  // 로그인하지 않은 사용자인 경우 아무것도 렌더링하지 않음
-  if (!user.isLogin) {
-    return null;
-  }
+const RegisterUserApart = () => {
+  const [searchWord, setSearchWord] = useState<string>("");
+  const [isBoxOpen, setIsBoxOpen] = useState<boolean>(false);
+  const { searchFunction, searchPending } = useSearch();
+  const { data: searchData } = useSearchTermStore();
 
   return (
     <>
-      <RegisterApartHeader />
-      {isPending ? (
-        <>로딩중...</>
-      ) : (
-        <>
-          <div>
-            <SearchBox
-              content={searchText!}
-              placeholder="등록하고자 하는 아파트를 검색하세요"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchText(e.target.value)
-              }
-              onSearch={() => navigate(`/search/result?keyword=${searchText}`)}
-            />
-          </div>
-          <div className={styles["mypage__content"]}>
-            <ApartInfoBody Appart={appart} setAppart={setAppart} />
-          </div>
-        </>
-      )}
+      <Header title="단지 등록" hasBackButton />
+      <SearchBox
+        content={searchWord}
+        placeholder={"검색어를 입력해 선택해주세요."}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setSearchWord(e.target.value)
+        }
+        onSearch={() => {
+          setIsBoxOpen(true);
+          searchFunction.mutate({
+            keyword: searchWord,
+            lastIndex: 10,
+            limit: 20,
+          });
+        }}
+      />
+      {searchPending && <ApartSearchSkeleton />}
+      {isBoxOpen && !searchPending && <ApartBox searchData={searchData} />}
     </>
   );
 };
 
-export default RegisterMyApart;
+export default RegisterUserApart;

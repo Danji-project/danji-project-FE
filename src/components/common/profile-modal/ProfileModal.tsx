@@ -1,34 +1,13 @@
 import { useState } from "react";
-import { useRootPosition } from "../../../hooks/useRootPosition";
-import { useRootPositionStore } from "../../../stores/rootPositionStore";
 import { usePendingStore } from "../../../stores/usePendingStore";
 import styles from "./ProfileModal.module.scss";
-import { requestDirectChat } from "../../../hooks/useChat";
 const ProfileModal = ({ nick, img }: { nick: string; img: string }) => {
   const [isFinal, setIsFinal] = useState(false);
-  const [requestChat, setRequestChat] = useState("");
-  const { setProfilePending, profileId } = usePendingStore();
-  const { requestFunction } = requestDirectChat({ setIsFinal });
-
-  useRootPosition();
-
-  const { positionBottom, positionLeft } = useRootPositionStore();
-
-  const requestDirectMessage = (receiverId: number, messages: string) => {
-    requestFunction.mutate({ receiverId, messages });
-  };
+  const { setProfilePending } = usePendingStore();
 
   if (!isFinal)
     return (
-      <div
-        className={styles["profile__modal"]}
-        style={{
-          top: `${positionBottom}px`,
-          left: `${positionLeft}px`,
-          transform: `translateY(calc(-100% - (var(--device-height) - 100%) / 2))`,
-          marginLeft: `calc((var(--device-width) - 300px) / 2)`,
-        }}
-      >
+      <div className={styles["profile__modal"]}>
         <div className={styles["profile__modal__profile"]}>
           <img src={img} alt="profile_img" />
         </div>
@@ -53,15 +32,7 @@ const ProfileModal = ({ nick, img }: { nick: string; img: string }) => {
     );
   if (isFinal)
     return (
-      <div
-        className={styles["profile__modal__final"]}
-        style={{
-          top: `${positionBottom}px`,
-          left: `${positionLeft}px`,
-          transform: `translateY(calc(-100% - (var(--device-height) - 100%) / 2))`,
-          marginLeft: `calc((var(--device-width) - 300px) / 2)`,
-        }}
-      >
+      <div className={styles["profile__modal__final"]}>
         <div className={styles["profile__modal__final__title"]}>
           {nick}에게 대화 신청
         </div>
@@ -70,22 +41,9 @@ const ProfileModal = ({ nick, img }: { nick: string; img: string }) => {
           불편한 대화가 이어질 경우 대화가 종료될 수 있으니 <br />
           함께 편안한 대화를 나눌 수 있도록 배려해주세요.
         </p>
-        <textarea
-          placeholder="내용을 입력해주세요"
-          value={requestChat}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setRequestChat(e.target.value)
-          }
-        />
+        <textarea placeholder="내용을 입력해주세요" />
         <div className={styles["profile__modal__final__button"]}>
-          <button
-            disabled={!requestChat}
-            onClick={() => {
-              requestDirectMessage(profileId!, requestChat);
-            }}
-          >
-            요청
-          </button>
+          <button>요청</button>
           <button
             onClick={() => {
               setIsFinal(false);

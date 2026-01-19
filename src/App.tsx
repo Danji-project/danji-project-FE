@@ -1,76 +1,30 @@
-// export default App
 import { useState, useEffect } from "react";
 
 import { BrowserRouter as Router } from "react-router";
 import LandingIntro from "./components/landing/LandingIntro";
 import HomeSkeleton from "./components/common/home-skeleton/HomeSkeleton";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useUserInfoMutation } from "./hooks/useUserInfoMutation";
 
 const queryClient = new QueryClient();
 
-function App() {
-  const [hasError, setHasError] = useState(false);
+// QueryClientProvider 내부에서 사용하는 컴포넌트
+function AppContent() {
   const [isMounted, setIsMounted] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  const { getUserInfo } = useUserInfoMutation();
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // 초기 로그인 상태 확인
-    const checkInitialLoginStatus = async () => {
-      // localStorage에 로그인 플래그가 있을 때만 API 호출
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsMounted(true);
 
-      if (!isLoggedIn) {
-        // 로그인하지 않은 경우 API 호출 없이 바로 초기화 완료
-        setIsInitialized(true);
-        return;
-      }
-
-      try {
-        // 쿠키 기반 인증이므로 사용자 정보 조회 시도 (쿠키가 있으면 자동으로 전송됨)
-        getUserInfo.mutate(undefined, {
-          onSettled: () => {
-            setIsInitialized(true);
-          },
-        });
-      } catch (error) {
-        console.error("초기 로그인 상태 확인 실패:", error);
-        setIsInitialized(true);
-      }
-    };
-
-    checkInitialLoginStatus();
-
-    const handleError = () => {
+    globalThis.addEventListener("error", () => {
       setHasError(true);
+    });
+    return () => {
+      setIsMounted(false);
+      globalThis.removeEventListener("error", () => {
+        setHasError(false);
+      });
     };
-
-    globalThis.addEventListener("error", handleError);
-    return () => globalThis.removeEventListener("error", handleError);
   }, []);
-
-  // 초기화 완료 후 마운트 상태 설정
-  useEffect(() => {
-    if (isInitialized) {
-      // 회원가입, 마이페이지, 채팅 등 특정 페이지는 스켈레톤 스킵 (빠른 마운트)
-      const skipSkeletonPaths = [
-        "/register-account",
-        "/my-page",
-        "/settings",
-        "/chat",
-        "/apart-info",
-      ];
-      const isSkipSkeletonPage = skipSkeletonPaths.some((path) =>
-        globalThis.location.pathname.startsWith(path)
-      );
-      const delay = isSkipSkeletonPage ? 0 : 500;
-      setTimeout(() => {
-        setIsMounted(true);
-      }, delay);
-    }
-  }, [isInitialized]);
 
   if (!isMounted) {
     return <HomeSkeleton />;
@@ -87,12 +41,18 @@ function App() {
   }
 
   return (
+    <Router>
+      <div id="main__app">
+        <LandingIntro />
+      </div>
+    </Router>
+  );
+}
+
+function App() {
+  return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <div id="main__app">
-          <LandingIntro />
-        </div>
-      </Router>
+      <AppContent />
     </QueryClientProvider>
   );
 }

@@ -1,13 +1,13 @@
 import styles from "./ApartLists.module.scss";
 import ApartCard from "../apart-card/ApartCard";
-import type { BaseApartInfo } from "../../../model/BaseApartInfoModel";
+import type { Apartments } from "../../../stores/useSearchTermStore";
 
 const ApartLists = ({
   title,
   fetchedLists,
 }: {
   title: string;
-  fetchedLists: BaseApartInfo[];
+  fetchedLists: Apartments[];
 }) => {
   return (
     <div className={styles["apart__lists"]}>
@@ -16,7 +16,7 @@ const ApartLists = ({
         <button>더보기</button>
       </div>
       <div className={styles["apart__lists__main"]}>
-        {fetchedLists.map((apartment: BaseApartInfo) => (
+        {fetchedLists.slice(0, 2).map((apartment: Apartments) => (
           <ApartCard key={apartment.id} apartment={apartment} />
         ))}
       </div>

@@ -4,11 +4,29 @@ import { useSidebarStore } from "../../../stores/sidebarStore";
 import { useLogout } from "../../../hooks/useLogout";
 import { useEffect, useState } from "react";
 
+import { useUserInfoStore } from "../../../stores/userStore";
+
 const MenuSidebar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const { isOpen, setIsOpen } = useSidebarStore();
   const { logoutMutation } = useLogout();
+  const { data: userInfo } = useUserInfoStore();
+  const apartmentId = userInfo?.apartmentId;
+
+  const navigateToApart = (path: string = "") => {
+    setIsOpen(false);
+    if (apartmentId) {
+      navigate(`/apart-info/${apartmentId}${path}`);
+    } else {
+      navigate("/apart-setting");
+    }
+  };
+
+  const handleNavigate = (path: string) => {
+    setIsOpen(false);
+    navigate(path);
+  };
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -22,9 +40,8 @@ const MenuSidebar = () => {
 
   return (
     <div
-      className={`${styles["menu__sidebar"]} ${
-        isOpen ? styles["menu__sidebar__open"] : ""
-      } ${isMobile ? styles["menu__sidebar__mobile"] : ""}`}
+      className={`${styles["menu__sidebar"]} ${isOpen ? styles["menu__sidebar__open"] : ""
+        } ${isMobile ? styles["menu__sidebar__mobile"] : ""}`}
     >
       <button
         onClick={() => {
@@ -35,92 +52,46 @@ const MenuSidebar = () => {
       </button>
       <ul>
         <li>
-          <button
-            onClick={() => {
-              navigate("/apart-info");
-            }}
-          >
-            단지 정보
-          </button>
+          <button onClick={() => navigateToApart()}>단지 정보</button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/apart-info/community");
-            }}
-          >
+          <button onClick={() => navigateToApart("/community")}>
             커뮤니티
           </button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/notice");
-            }}
-          >
-            공지사항
-          </button>
+          <button onClick={() => handleNavigate("/notice")}>공지사항</button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/danji/find");
-            }}
-          >
+          <button onClick={() => handleNavigate("/danji/find")}>
             단지 즐겨찾기
           </button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/my-page");
-            }}
-          >
+          <button onClick={() => handleNavigate("/my-page")}>
             마이페이지
           </button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/building-info");
-            }}
-          >
+          <button onClick={() => navigateToApart("/building-info")}>
             시설 정보
           </button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/chat-page");
-            }}
-          >
-            채팅
-          </button>
+          <button onClick={() => handleNavigate("/chat-page")}>채팅</button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/visit-register");
-            }}
-          >
+          <button onClick={() => handleNavigate("/visit-register")}>
             방문차량등록
           </button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/reservation/info");
-            }}
-          >
+          <button onClick={() => handleNavigate("/reservation/info")}>
             내 예약 정보
           </button>
         </li>
         <li>
-          <button
-            onClick={() => {
-              navigate("/apart/register");
-            }}
-          >
+          <button onClick={() => handleNavigate("/apart-setting")}>
             단지 등록
           </button>
         </li>

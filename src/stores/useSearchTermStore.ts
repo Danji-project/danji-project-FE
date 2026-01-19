@@ -1,10 +1,10 @@
 import { create } from "zustand";
 
-interface TermReal extends Term {
+export interface TermReal extends Term {
   setTerm: (response: Term) => void;
 }
 
-interface Term {
+export interface Term {
   code: number;
   data: {
     apartments: Apartments[];
@@ -13,7 +13,7 @@ interface Term {
   };
 }
 
-interface Apartments {
+export interface Apartments {
   id: number | null;
   name: string;
   region: string;

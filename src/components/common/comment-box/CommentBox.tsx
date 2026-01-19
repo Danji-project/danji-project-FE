@@ -10,7 +10,7 @@ import {
   useUpdateComment,
 } from "../../../hooks/useComment";
 import { usePendingStore } from "../../../stores/usePendingStore";
-import { useUserInfo } from "../../../stores/userStore";
+import { useUserInfoStore } from "../../../stores/userStore";
 import { useModalTextStore } from "../../../stores/useModalText";
 
 const CommentBox = ({
@@ -23,7 +23,7 @@ const CommentBox = ({
   const { isOn, isReply, targetId, setReplyOn, resetReply } =
     useCommentReplyStore();
 
-  const { isLogin, nickname } = useUserInfo();
+  const { isLogin, data } = useUserInfoStore();
 
   const [mode, setMode] = useState<"CONTENT" | "EDIT">("CONTENT");
   const [commentContents, setCommentContents] = useState("");
@@ -118,7 +118,7 @@ const CommentBox = ({
                 resetReply();
                 if (
                   isLogin &&
-                  nickname === comment.commentMemberResponseDto.nickname
+                  data!.nickname === comment.commentMemberResponseDto.nickname
                 ) {
                   setMode("EDIT");
                   setCommentContents(comment.contents);
@@ -136,7 +136,7 @@ const CommentBox = ({
                 resetReply();
                 if (
                   !isLogin ||
-                  comment.commentMemberResponseDto.nickname !== nickname
+                  comment.commentMemberResponseDto.nickname !== data!.nickname
                 ) {
                   setModalPending(true);
                   setModalText("삭제 권한이 없는 사용자입니다.");

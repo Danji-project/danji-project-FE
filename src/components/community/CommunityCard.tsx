@@ -2,7 +2,7 @@ import type { FeedList3 } from "../../stores/useFeedListStore";
 
 import styles from "./CommunityCard.module.scss";
 import SmallIcon from "../common/small-icon/SmallIcon";
-import type { BaseApartInfo } from "../../model/BaseApartInfoModel";
+import type { BaseApartInfo } from "../../api";
 import { Link } from "react-router-dom";
 import { useFeedViewIncrease } from "../../hooks/useFeedViewIncrease";
 

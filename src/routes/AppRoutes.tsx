@@ -12,13 +12,12 @@ import RegisterAccount from "../pages/register-account/RegisterAccount";
 import RegisterSuccess from "../pages/register-success/RegisterSuccess";
 import FindAccount from "../pages/find-account/FindAccount";
 import ResetPassword from "../pages/reset-password/ResetPassword";
-import ChattingPage from "../pages/chat-page/ChattingPage";
 import LoginPage from "../pages/login/loginPage";
-import ChattingDetail from "../pages/chat-detail/ChattingDetail";
 import SearchResult from "../pages/search-result/SearchResult";
 import Settings from "../pages/settings/Settings";
 import MyPage from "../pages/my-pages/MyPage";
 import RegisterMyApart from "../pages/register-userapart/RegisterUserApart";
+import RegisterApart from "../pages/register-userapart/RegisterApart";
 
 const AppRoutes = () => {
   return (
@@ -60,12 +59,8 @@ const AppRoutes = () => {
           element={<ProtectedRoute element={<RegisterMyApart />} />}
         />
         <Route
-          path="/chat-page"
-          element={<ProtectedRoute element={<ChattingPage />} />}
-        />
-        <Route
-          path="/chat-detail/:chatroomId"
-          element={<ProtectedRoute element={<ChattingDetail />} />}
+          path="/apart-register"
+          element={<ProtectedRoute element={<RegisterApart />} />}
         />
         <Route
           path={"/search/result"}
