@@ -14,7 +14,7 @@ const TabList = ({
   return (
     <ul className={styles["tab__list"]}>
       {contents.map((c: string, idx: number) => {
-        const [tabLabel, tabValue] = c.split("/");
+        const tabValue = c.split("/")[1];
         const isActive = tabValue === tabs;
 
         return (
@@ -24,7 +24,7 @@ const TabList = ({
                 setTabs(tabValue);
               }}
             >
-              {tabLabel}
+              {tabValue}
             </button>
           </li>
         );

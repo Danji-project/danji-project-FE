@@ -29,7 +29,6 @@ const SearchBox = ({
         onClick={() => {
           onSearch();
         }}
-        disabled={!content}
       >
         <img src={SearchIcon} alt="search_icon" />
       </button>

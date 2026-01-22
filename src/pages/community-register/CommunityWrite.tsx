@@ -1,46 +1,65 @@
-import { useState } from "react";
+import { useParams } from "react-router";
 import Header from "../../layouts/Header";
-import WriteStyle from "../../components/community-register/WriteStyle";
-import { useNavigate, useParams } from "react-router-dom";
+import { useFeedRegisterStore } from "../../stores/useFeedRegisterStore";
+import CommunityWriteContents from "./CommunityWriteContents";
+import type { FormEvent } from "react";
 import { useFeedRegister } from "../../hooks/useFeedRegister";
 
-const CommunityWrite = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
-  const navigate = useNavigate();
+export default function CommunityWrite() {
+  const { id } = useParams<{ id: string }>();
+  const { title, content, file, mode, feedId } = useFeedRegisterStore();
+  const {
+    postFeedRegister,
+    postFeedUpdate,
+    postFeedUpdatePending,
+    postFeedPending,
+  } = useFeedRegister(Number(id));
 
-  const { id } = useParams();
+  const onFeedSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const { feedRegister, feedRegisterPending } = useFeedRegister(
-    title,
-    content,
-    filteredApartData.id
-  );
+    const requestDto = {
+      title,
+      contents: content,
+      feedType: "FEED",
+      apartmentId: Number(id),
+    };
+
+    const formData = new FormData();
+    formData.append(
+      "requestDto",
+      new Blob([JSON.stringify(requestDto)], { type: "application/json" }),
+    );
+
+    if (file) {
+      Array.from(file).forEach((f) => {
+        formData.append("multipartList", f);
+      });
+    }
+
+    if (mode === "REGISTER") {
+      postFeedRegister.mutate({ formData });
+    }
+    if (mode === "EDIT") {
+      postFeedUpdate.mutate({ formData, feedId: feedId! });
+    }
+  };
 
   return (
-    <>
+    <form onSubmit={onFeedSubmit}>
       <Header
-        title="글쓰기"
+        title={mode === "REGISTER" ? "글쓰기" : "수정하기"}
         hasBackButton
-        buttonText="등록"
-        buttonDisabled={!title || !content || files.length === 0}
-        onClick={() => {
-          feedRegister();
-          if (!feedRegisterPending)
-            navigate(`/apart-info/${filteredApartData.id}`);
-        }}
+        buttonText={
+          postFeedPending || postFeedUpdatePending
+            ? "등록 중"
+            : mode === "REGISTER"
+              ? "등록"
+              : "수정"
+        }
+        buttonDisabled={!title || !content || postFeedPending}
       />
-      <WriteStyle
-        title={title}
-        setTitle={setTitle}
-        content={content}
-        setContent={setContent}
-        files={files}
-        setFiles={setFiles}
-      />
-    </>
+      <CommunityWriteContents />
+    </form>
   );
-};
-
-export default CommunityWrite;
+}

@@ -1,110 +1,22 @@
-.comment__box {
-  display: block;
-  position: relative;
-  &__child {
-    padding-left: 40px;
-    &::after {
-      content: "";
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background: url("../../../assets/Icon/cm_child.svg") no-repeat center;
-      left: 0;
-      top: 0;
-    }
-    &__setting {
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-    &__textbox {
-      margin-bottom: 10px;
-      textarea {
-        resize: none;
-        width: 100%;
-        height: 80px;
-        outline: none;
-        padding: 10px;
-        font-size: 12px;
-        border: 1px solid rgb(151, 187, 255);
-        border-radius: 6px;
-        margin-bottom: 10px;
-      }
-      button {
-        width: 100px;
-        padding: 10px 0;
-        background-color: rgb(151, 187, 255);
-        border-radius: 6px;
-        color: #fff;
-        cursor: pointer;
-        &:disabled {
-          opacity: 0.45;
-        }
-      }
-    }
+.comment__button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  > button {
+    cursor: pointer;
   }
-  &__userInfo {
+}
+
+.comment__box {
+  position: relative;
+  &__profile {
+    margin-bottom: 16px;
     display: flex;
-    gap: 0.3rem;
-    margin-bottom: 10px;
-    &__dot__button {
-      position: absolute;
-      top: 0;
-      right: 0;
-      > button {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        gap: 3px;
-        span {
-          display: block;
-          width: 4px;
-          height: 4px;
-          background-color: rgb(153, 153, 153);
-          border-radius: 50%;
-        }
-      }
-      &__menu {
-        position: absolute;
-        top: -2px;
-        right: 0;
-        width: 90px;
-        padding: 10px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #fff;
-        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.08);
-        button {
-          padding: 10px 0;
-          position: relative;
-          cursor: pointer;
-          &::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 1px;
-            background-color: rgb(237, 237, 237);
-          }
-          &:last-child {
-            &::after {
-              content: none;
-            }
-          }
-        }
-      }
-    }
-    &__profile {
-      width: 40px;
-      height: 40px;
+    &__wrapper {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       overflow: hidden;
-      cursor: pointer;
       img {
         width: 100%;
         height: 100%;
@@ -112,44 +24,84 @@
       }
     }
     &__info {
+      margin-left: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       span {
         font-size: 12px;
-      }
-      div {
-        font-size: 11px;
-        font-weight: 300;
+        &:last-child {
+          font-weight: 300;
+        }
       }
     }
   }
   &__content {
+    font-size: 14px;
     margin-bottom: 10px;
-    p {
-      font-size: 14px;
-    }
-    textarea {
-      width: 100%;
-      padding: 10px;
-      resize: none;
-      outline: none;
-    }
-    &__btn {
-      display: flex;
-      gap: 10px;
-      button {
-        cursor: pointer;
-      }
+  }
+  > button {
+    font-size: 12px;
+    font-weight: 200;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
     }
   }
-  &__child__button {
-    margin-bottom: 1rem;
-    display: flex;
-    gap: 10px;
-    button {
-      font-size: 12px;
-      cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.children__comment__wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  margin-left: 20px;
+  padding-left: 16px;
+  border-left: 2px solid #e5e5e5;
+
+  // 중첩된 대댓글의 wrapper는 더 안쪽으로
+  .children__comment__wrapper {
+    margin-left: 10px;
+  }
+}
+
+.children__comment__inner {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 0;
+
+  > img {
+    width: 16px;
+    height: 16px;
+    margin-top: 10px;
+    flex-shrink: 0;
+  }
+
+  .comment__box {
+    flex: 1;
+    margin-bottom: 0;
+
+    &__profile {
+      margin-bottom: 8px;
+
+      &__wrapper {
+        width: 28px;
+        height: 28px;
+      }
+
+      &__info span {
+        font-size: 11px;
+      }
+    }
+
+    &__content {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    > button {
+      font-size: 11px;
     }
   }
 }

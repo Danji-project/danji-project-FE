@@ -1,23 +1,19 @@
 import { create } from "zustand";
 
-interface FeedData {
+interface RealFeedList extends FeedList {
+  setFeedData: (data: FeedList) => void;
+}
+
+export interface FeedList {
   code: number;
-  data: FeedList2;
-  setFetch: (fetchData: FeedList) => void;
+  data: {
+    feedDtoList: FeedDTO[];
+    cursorDate: string;
+    listSize: number;
+  };
 }
 
-interface FeedList {
-  code: number;
-  data: FeedList2;
-}
-
-interface FeedList2 {
-  feedDtoList: FeedList3[];
-  cursorDate: string;
-  listSize: number;
-}
-
-export interface FeedList3 {
+export interface FeedDTO {
   feedId: number;
   memberId: number;
   nickName: string;
@@ -25,21 +21,23 @@ export interface FeedList3 {
   contents: string;
   localDateTime: string;
   viewCount: number;
+  reactionCount: number;
   commentCount: number;
   bookmarkCount: number;
-  thumbnailFileUrl: string | null;
+  thumbnailFileUrl: string;
   isReacted: boolean;
-  reactionCount: number;
 }
 
-export const useFeedListStore = create<FeedData>((set) => ({
-  code: 0,
+export const useFeedListStore = create<RealFeedList>((set) => ({
+  code: 200,
   data: {
     feedDtoList: [],
-    cursorDate: new Date().toISOString(),
+    cursorDate: "",
     listSize: 0,
   },
-
-  setFetch: (fetchData: FeedList) =>
-    set({ code: fetchData.code, data: fetchData.data }),
+  setFeedData: (data: FeedList) => {
+    set({
+      data: data.data,
+    });
+  },
 }));

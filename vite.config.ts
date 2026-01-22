@@ -26,10 +26,19 @@ export default defineConfig({
         cookieDomainRewrite: "localhost",
       },
       "/api/ws": {
-        target: "wss://danjitalk.duckdns.org",
+        target: "https://danjitalk.duckdns.org",
         changeOrigin: true,
         ws: true,
-        secure: false,
+        secure: true,
+        rewrite: (path) => path, // 경로를 그대로 유지
+        configure: (proxy) => {
+          proxy.on('error', (err) => {
+            console.log('❌ [Vite Proxy] WebSocket proxy error:', err);
+          });
+          proxy.on('proxyReqWs', (_proxyReq, req) => {
+            console.log('🔌 [Vite Proxy] WebSocket proxy request:', req.url);
+          });
+        },
       },
       "/api": {
         target: "https://danjitalk.duckdns.org",

@@ -1,207 +1,143 @@
-import React, { useState } from "react";
-import type { CommentStore3 } from "../../../stores/useCommentStore";
-
-import styles from "./CommentBox.module.scss";
-import { getRelativeTime } from "../../../utils/date";
-import { useCommentReplyStore } from "../../../stores/useCommentReplyStore";
+import { useEffect, useState } from "react";
 import {
-  useAddComment,
-  useDeleteComment,
-  useUpdateComment,
-} from "../../../hooks/useComment";
-import { usePendingStore } from "../../../stores/usePendingStore";
-import { useUserInfoStore } from "../../../stores/userStore";
+  useCommentStore,
+  type CommentItem,
+} from "../../../stores/useCommentStore";
 import { useModalTextStore } from "../../../stores/useModalText";
+import { usePendingStore } from "../../../stores/usePendingStore";
+import { timeAgo } from "../../../utils/timeAgo";
+import styles from "./CommentBox.module.scss";
+import WriteBox from "../write-box/WriteBox";
+import { TfiAlignJustify } from "react-icons/tfi";
+import ButtonList from "../combobox/ButtonList";
+import { useParams } from "react-router";
+import { useComment } from "../../../hooks/useComment";
 
 const CommentBox = ({
-  comment,
+  content,
+  isParent = true,
   depth = 0,
 }: {
-  comment: CommentStore3;
+  content: CommentItem;
+  isParent?: boolean;
   depth?: number;
 }) => {
-  const { isOn, isReply, targetId, setReplyOn, resetReply } =
-    useCommentReplyStore();
-
-  const { isLogin, data } = useUserInfoStore();
-
-  const [mode, setMode] = useState<"CONTENT" | "EDIT">("CONTENT");
-  const [commentContents, setCommentContents] = useState("");
-
+  const { setModalPending } = usePendingStore();
+  const { setProfileImage, setProfileNickname, setReceiverId } =
+    useModalTextStore();
   const {
-    setProfilePending,
-    setModalPending,
-    setProfileNick,
-    setProfileImg,
-    setProfileId,
-  } = usePendingStore();
-  const { setModalText, setModalTitle } = useModalTextStore();
+    setButtonMode,
+    buttonMode,
+    editingCommentId,
+    setEditingCommentId,
+    setDeletingCommentId,
+  } = useCommentStore();
+  const [writed, setWrited] = useState<boolean>(false);
+  const [isButtonOpen, setIsButtonOpen] = useState<boolean>(false);
+  const [buttonState, setButtonState] = useState<string>("");
 
-  const [commentContent, setCommentContent] = useState("");
+  const isEditing =
+    buttonMode === "EDIT" && editingCommentId === content.commentId;
 
-  const { updateMutate } = useUpdateComment(comment.feedId, comment.commentId);
-
-  const { deleteCommentMutation } = useDeleteComment(
-    comment.feedId,
-    comment.commentId
-  );
-
-  const { addCommentMutation } = useAddComment(comment.feedId);
-
-  const handleReplyClick = () => {
-    if (isOn && targetId === comment.commentId) resetReply();
-    else setReplyOn(comment.commentId, depth, true);
-  };
-
-  const handleCommentContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCommentContent(e.target.value);
-  };
-
-  const sendComment = async () => {
-    addCommentMutation.mutate({
-      contents: commentContent,
-      parentId: comment.commentId,
-    });
-    resetReply();
-  };
+  useEffect(() => {
+    if (buttonState === "수정" && editingCommentId === null) {
+      setButtonMode("EDIT");
+      setEditingCommentId(content.commentId);
+    } else if (buttonState === "수정" && editingCommentId !== null) {
+      setButtonState("");
+    } else if (buttonState === "삭제") {
+      setModalPending(true);
+      setDeletingCommentId(content.commentId);
+      setButtonMode("");
+    }
+  }, [buttonState]);
 
   return (
-    <div
-      className={`${styles["comment__box"]} ${
-        depth > 0 ? styles["comment__box__child"] : ""
-      }`}
-    >
-      <div className={styles["comment__box__userInfo"]}>
-        <div
-          className={styles["comment__box__userInfo__profile"]}
+    <div className={styles["comment__box"]}>
+      {content.isAuthor && (
+        <div className={styles["comment__button"]}>
+          <button onClick={() => setIsButtonOpen(true)}>
+            <TfiAlignJustify />
+          </button>
+          {isButtonOpen && (
+            <ButtonList
+              list={["수정", "삭제"]}
+              setIsOpen={setIsButtonOpen}
+              setState={setButtonState}
+            />
+          )}
+        </div>
+      )}
+      <div className={styles["comment__box__profile"]}>
+        <button
+          className={styles["comment__box__profile__wrapper"]}
           onClick={() => {
-            setProfilePending(true);
-            setProfileImg(
-              comment.commentMemberResponseDto.fileId
+            if (content.isAuthor) {
+              return;
+            }
+            setModalPending(true);
+            setProfileImage(
+              content.commentMemberResponseDto.fileId
                 ? "https://s3.ap-northeast-2.amazonaws.com/danjitalk/" +
-                    comment.commentMemberResponseDto.fileId
-                : "/profile_imgSrc.jpg"
+                    content.commentMemberResponseDto.fileId
+                : "/profile_imgSrc.jpg",
             );
-            setProfileNick(comment.commentMemberResponseDto.nickname);
-            setProfileId(comment.commentMemberResponseDto.memberId);
+            setProfileNickname(content.commentMemberResponseDto.nickname);
+            setReceiverId(content.commentMemberResponseDto.memberId);
           }}
         >
           <img
             src={
-              comment.commentMemberResponseDto.fileId
+              content.commentMemberResponseDto.fileId
                 ? "https://s3.ap-northeast-2.amazonaws.com/danjitalk/" +
-                  comment.commentMemberResponseDto.fileId
+                  content.commentMemberResponseDto.fileId
                 : "/profile_imgSrc.jpg"
             }
-            alt="profile"
+            alt="comment-profile"
           />
-        </div>
-        <div className={styles["comment__box__userInfo__info"]}>
-          <span>{comment.commentMemberResponseDto.nickname}</span>
-          <div>{getRelativeTime(comment.createdAt)}</div>
-        </div>
-      </div>
-      <div className={styles["comment__box__userInfo__dot__button"]}>
-        <button
-          onClick={() => {
-            setReplyOn(comment.commentId, depth, false);
-          }}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
         </button>
-        {isOn && targetId === comment.commentId && !isReply && (
-          <div className={styles["comment__box__userInfo__dot__button__menu"]}>
-            <button
-              onClick={() => {
-                resetReply();
-                if (
-                  isLogin &&
-                  data!.nickname === comment.commentMemberResponseDto.nickname
-                ) {
-                  setMode("EDIT");
-                  setCommentContents(comment.contents);
-                } else {
-                  setModalPending(true);
-                  setModalText("수정 권한이 없는 사용자입니다.");
-                  setModalTitle("메시지");
-                }
-              }}
-            >
-              수정
-            </button>
-            <button
-              onClick={() => {
-                resetReply();
-                if (
-                  !isLogin ||
-                  comment.commentMemberResponseDto.nickname !== data!.nickname
-                ) {
-                  setModalPending(true);
-                  setModalText("삭제 권한이 없는 사용자입니다.");
-                } else {
-                  deleteCommentMutation.mutate();
-                }
-              }}
-            >
-              삭제
-            </button>
-          </div>
-        )}
+        <div className={styles["comment__box__profile__info"]}>
+          <span>{content.commentMemberResponseDto.nickname}</span>
+          <span>{timeAgo(content.createdAt)}</span>
+        </div>
       </div>
-      <div className={styles["comment__box__content"]}>
-        {mode === "CONTENT" && <p>{comment.contents}</p>}
-        {mode === "EDIT" && (
-          <>
-            <textarea
-              value={commentContents}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                setCommentContents(e.target.value);
-              }}
-            />
-            <div className={styles["comment__box__content__btn"]}>
-              <button
-                onClick={() => {
-                  updateMutate.mutate(commentContents);
-                  setMode("CONTENT");
-                  setCommentContents("");
-                }}
-              >
-                수정하기
-              </button>
-              <button
-                onClick={() => {
-                  setMode("CONTENT");
-                  setCommentContents("");
-                }}
-              >
-                수정취소
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-      <div className={styles["comment__box__child__button"]}>
-        <button onClick={handleReplyClick}>댓글 쓰기</button>
-      </div>
-      {/* 댓글 창 */}
-      {isOn && targetId === comment.commentId && isReply && (
-        <div className={styles["comment__box__child__textbox"]}>
-          <div className={styles["comment__box__child__setting"]}>
-            {comment.commentMemberResponseDto.nickname}에게 대댓글 쓰는 중...
-          </div>
-          <textarea onChange={handleCommentContent} />
-          <button disabled={!commentContent} onClick={sendComment}>
-            보내기
-          </button>
+      {isEditing ? (
+        <WriteBox
+          parentId={null}
+          setWrited={setWrited}
+          isEdit={true}
+          commentId={content.commentId}
+          defaultValue={content.contents}
+          setButtonState={setButtonState}
+        />
+      ) : (
+        <div className={styles["comment__box__content"]}>
+          {content.contents}
         </div>
       )}
-
-      {/* 재귀 랜더링 */}
-      {comment.childrenCommentDto?.map((child: CommentStore3) => (
-        <CommentBox key={child.commentId} comment={child} depth={depth + 1} />
-      ))}
+      <button onClick={() => setWrited((prev) => !prev)}>댓글 쓰기</button>
+      {writed && (
+        <WriteBox parentId={content.commentId} setWrited={setWrited} />
+      )}
+      {content.childrenCommentDto.length > 0 && (
+        <div className={styles["children__comment__wrapper"]}>
+          {content.childrenCommentDto.map((commentDto: CommentItem) => (
+            <div
+              className={styles["children__comment__inner"]}
+              key={commentDto.commentId}
+              style={{ paddingLeft: `${depth! * 5}px` }}
+            >
+              <img src={"/icons/cm_child.svg"} alt="comment-child" />
+              <CommentBox
+                key={commentDto.commentId}
+                content={commentDto}
+                isParent={content.childrenCommentDto.length > 0}
+                depth={depth! + 1}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

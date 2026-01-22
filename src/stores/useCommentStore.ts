@@ -1,56 +1,57 @@
 import { create } from "zustand";
 
-interface Comment extends CommentStore {
-  setFetch: (fetchData: CommentStore) => void;
+interface RealCommentStore extends CommentStore {
+  setCommentData: (data: CommentStore) => void;
+  setWritedCommentContent: (content: string) => void;
+  setButtonMode: (buttonMode: string) => void;
+  setEditingCommentId: (commentId: number | null) => void;
+  setDeletingCommentId: (commentId: number | null) => void;
 }
 
-interface CommentStore {
+export interface CommentStore {
+  buttonMode: string;
+  editingCommentId: number | null;
+  deletingCommentId: number | null;
   code: number;
-  data: CommentStore2;
+  writedCommentContent: string;
+  data: {
+    content: CommentItem[];
+    page: number;
+    size: number;
+  };
 }
 
-interface CommentStore2 {
-  content: CommentStore3[];
-  page: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-}
-
-export interface CommentStore3 {
+export interface CommentItem {
   commentId: number;
   feedId: number;
   contents: string;
   createdAt: string;
-  commentMemberResponseDto: CommentStore4;
-  childrenCommentDto: CommentStore3[];
+  commentMemberResponseDto: {
+    memberId: number;
+    nickname: string;
+    fileId: string | null;
+  };
+  childrenCommentDto: CommentItem[];
+  isAuthor: boolean;
 }
 
-interface CommentStore4 {
-  memberId: number;
-  nickname: string;
-  fileId: string | null;
-}
-
-export const useCommentStore = create<Comment>((set) => ({
-  code: 0,
+export const useCommentStore = create<RealCommentStore>((set) => ({
+  buttonMode: "",
+  editingCommentId: null,
+  deletingCommentId: null,
+  code: 200,
   data: {
     content: [],
     page: 0,
-    size: 0,
-    totalElements: 0,
-    totalPages: 0,
+    size: 10,
   },
-
-  setFetch: (fetchData: CommentStore) =>
-    set({
-      code: fetchData.code,
-      data: {
-        content: fetchData.data.content,
-        page: fetchData.data.page,
-        size: fetchData.data.size,
-        totalElements: fetchData.data.totalElements,
-        totalPages: fetchData.data.totalPages,
-      },
-    }),
+  writedCommentContent: "",
+  setCommentData: (data: CommentStore) => set({ data: data.data }),
+  setButtonMode: (buttonMode: string) => set({ buttonMode }),
+  setEditingCommentId: (commentId: number | null) =>
+    set({ editingCommentId: commentId }),
+  setDeletingCommentId: (commentId: number | null) =>
+    set({ deletingCommentId: commentId }),
+  setWritedCommentContent: (content: string) =>
+    set({ writedCommentContent: content }),
 }));

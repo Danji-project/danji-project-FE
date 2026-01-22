@@ -1,0 +1,33 @@
+.button__list {
+  position: absolute;
+  top: calc(100% + 5px);
+  z-index: 100;
+  background-color: #fff;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.08);
+  border: 1px solid black;
+  border-radius: 6px;
+  width: 100px;
+  right: 0;
+  button {
+    width: 100%;
+    color: #000;
+    padding: 6px 0;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 20px;
+      right: 20px;
+      height: 1px;
+      background-color: rgb(237, 237, 237);
+    }
+    &:last-child::after {
+      content: none;
+    }
+  }
+}

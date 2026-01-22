@@ -89,7 +89,8 @@ button {
     z-index: 1000;
     overflow-x: hidden;
     overflow-y: auto;
-    box-shadow: 0 20px 20px rgba(151, 187, 255, 0.15),
+    box-shadow:
+      0 20px 20px rgba(151, 187, 255, 0.15),
       0 1px 1px rgb(151, 187, 255);
     &.of-hidden {
       overflow: hidden;
@@ -164,7 +165,8 @@ button {
     flex-direction: column;
     align-items: center;
     background-color: #fff;
-    box-shadow: 0 20px 20px rgba(151, 187, 255, 0.15),
+    box-shadow:
+      0 20px 20px rgba(151, 187, 255, 0.15),
       0 1px 1px rgb(151, 187, 255);
     .logo-wrapper {
       margin-bottom: 1.1rem;
@@ -226,7 +228,8 @@ button {
         padding: 0.5rem 0;
         border: 1px solid rgba(151, 187, 255, 0.1);
         border-radius: 20px;
-        box-shadow: 0 2px 4px rgba(151, 187, 255, 0.05),
+        box-shadow:
+          0 2px 4px rgba(151, 187, 255, 0.05),
           0 4px 8px rgba(151, 187, 255, 0.05);
         button {
           padding: 0.9rem 1rem;
@@ -387,8 +390,8 @@ button {
 
 .div-background-black-2 {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: -10000px;
+  bottom: -10000px;
   left: 0;
   right: 0;
   z-index: 500;

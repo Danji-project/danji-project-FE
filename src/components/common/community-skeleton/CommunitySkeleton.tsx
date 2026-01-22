@@ -1,42 +1,42 @@
-/* eslint-disable react/no-array-index-key */
+import { Skeleton } from "@mui/material";
 import styles from "./CommunitySkeleton.module.scss";
 
-const CommunitySkeleton = () => {
+export default function CommunitySkeleton() {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.title} />
-        <div className={styles.comboBox} />
+    <div className={styles["community__skeleton__wrapper"]}>
+      <Skeleton
+        variant="rectangular"
+        width={100}
+        sx={{ fontSize: "14px" }}
+        style={{
+          borderRadius: "4px",
+          position: "absolute",
+          top: "0",
+          left: "0",
+        }}
+      />
+      <div className={styles["community__skeleton__content"]}>
+        <Skeleton
+          variant="rectangular"
+          style={{ flex: "1", height: "44px", borderRadius: "4px" }}
+        />
+        <Skeleton
+          variant="rectangular"
+          style={{ width: "44px", height: "44px", borderRadius: "4px" }}
+        />
       </div>
-
-      <div className={styles.main}>
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className={styles.card}>
-            <div className={styles.cardTop}>
-              <div className={styles.textContent}>
-                <div className={styles.cardTitle} />
-                <div className={styles.cardText} />
-              </div>
-              <div className={styles.cardImage} />
-            </div>
-            <div className={styles.cardBottom}>
-              <div className={styles.cardInfo}>
-                <div className={styles.infoBadge} />
-                <div className={styles.infoText} />
-                <div className={styles.infoText} />
-              </div>
-              <div className={styles.cardIcons}>
-                <div className={styles.icon} />
-                <div className={styles.icon} />
-                <div className={styles.icon} />
-                <div className={styles.icon} />
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className={styles["community__skeleton__info"]}>
+        <Skeleton
+          variant="rectangular"
+          sx={{ fontSize: "12px" }}
+          style={{ width: "100px", borderRadius: "4px" }}
+        />
+        <Skeleton
+          variant="rectangular"
+          sx={{ fontSize: "12px" }}
+          style={{ width: "100px", borderRadius: "4px" }}
+        />
       </div>
     </div>
   );
-};
-
-export default CommunitySkeleton;
+}

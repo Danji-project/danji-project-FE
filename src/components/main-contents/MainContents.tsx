@@ -5,6 +5,7 @@ import SearchBox from "../common/search-box/search-box";
 import { useNavigate } from "react-router-dom";
 import { useNewApartList } from "../../hooks/useApartmentList";
 import ApartLists from "../common/apart-lists/ApartLists";
+import ApartListSkeleton from "../common/apart-lists/ApartListSkeleton";
 
 const MainContents = ({
   searchContent,
@@ -15,7 +16,7 @@ const MainContents = ({
 }) => {
   const navigate = useNavigate();
 
-  const { termResultData, getGangnam } = useNewApartList();
+  const { termResultData, getGangnam, newApartListPending } = useNewApartList();
 
   // 신축아파트 분양정보 리스트
   useEffect(() => {
@@ -31,13 +32,29 @@ const MainContents = ({
           setSearchContent(e.target.value);
         }}
         onSearch={() => {
-          navigate(`/search/result?keyword=${searchContent}`);
+          if (searchContent === "") {
+            navigate(`/search/search-init`);
+          } else {
+            navigate(`/search/result?keyword=${searchContent}`);
+          }
         }}
       />
-      <ApartLists
-        title={"신축아파트 분양정보"}
-        fetchedLists={termResultData.apartments}
-      />
+      {!newApartListPending && (
+        <ApartLists
+          title={"신축아파트 분양정보"}
+          fetchedLists={termResultData.apartments}
+        />
+      )}
+      {newApartListPending && (
+        <div className={styles["apart__skeleton__wrap"]}>
+          <h2>신축아파트 분양정보</h2>
+          <div className={styles["apart__skeleton__wrapper"]}>
+            {Array.from({ length: 2 }, (_, i) => (
+              <ApartListSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

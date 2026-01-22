@@ -1,44 +1,68 @@
-.apart__chat__modal {
-  width: var(--device-width);
-  height: 300px;
-  background-color: #fff;
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1000000000;
-  border-radius: 16px 16px 0 0;
+}
+
+.apart__chat__modal {
+  width: 90%;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
   h1 {
     font-size: 16px;
     font-weight: 600;
   }
+
   p {
     font-size: 14px;
     text-align: center;
     line-height: 1.4;
     color: rgb(118, 118, 118);
   }
+
   &__buttons {
     display: flex;
     gap: 1rem;
+    width: 100%;
+
     button {
-      width: 150px;
+      flex: 1;
       padding: 10px 0;
       cursor: pointer;
+
       &:nth-child(1) {
         border: 1px solid rgb(151, 187, 255);
         color: rgb(151, 187, 255);
         border-radius: 8px;
+        background-color: transparent;
+
         &:hover {
           background-color: rgb(151, 187, 255);
           color: #fff;
           transition: all 0.4s;
         }
       }
+
       &:nth-child(2) {
         background-color: rgb(151, 187, 255);
         color: #fff;
+        border: none;
         border-radius: 8px;
       }
     }

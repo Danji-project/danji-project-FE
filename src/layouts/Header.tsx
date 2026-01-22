@@ -19,6 +19,7 @@ interface HeaderProps {
   onChangeText?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClickHeader?: () => void;
   buttonDisabled?: boolean;
+  onBackClick?: () => void;
 }
 
 const SearchHeader: React.FC<HeaderProps> = ({ hasBackButton }) => {
@@ -57,10 +58,15 @@ const TitleHeader: React.FC<HeaderProps> = ({
   onIconClick,
   onClick,
   onClickHeader, // 일반 버튼과 함께 사용할 경우, 버튼 이벤트에 event.stopPropagation(); 를 함께 사용해주어야 한다.
+  onBackClick,
 }) => {
   const navigate = useNavigate();
   const navigateBack = (e: React.MouseEvent<HTMLButtonElement>) => {
-    navigate(-1);
+    if (onBackClick) {
+      onBackClick();
+    } else {
+      navigate(-1);
+    }
     e.stopPropagation();
   };
   return (

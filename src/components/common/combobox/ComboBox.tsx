@@ -1,78 +1,38 @@
-import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
-
+import { useState } from "react";
 import styles from "./ComboBox.module.scss";
-import { useFeedList } from "../../../hooks/useFeedList";
+import { IoChevronDown } from "react-icons/io5";
+import ButtonList from "./ButtonList";
 
-const ComboBox = ({
-  contents,
+export default function ComboBox({
   state,
   setState,
-  isOpen,
-  setIsOpen,
-  apartmentId,
-}: {
-  contents: string[];
+  list,
+}: Readonly<{
   state: string;
-  setState: Dispatch<SetStateAction<string>>;
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  apartmentId: number;
-}) => {
-  const entCombo = useRef<HTMLDivElement | null>(null);
-
-  const { feedListMutate } = useFeedList(apartmentId, state);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        entCombo.current &&
-        !entCombo.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  setState: (element: string) => void;
+  list: string[];
+}>) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <div className={styles["combo__box"]} ref={entCombo}>
-      {contents.map(
-        (c: string) =>
-          c.split("/")[1] === state && (
-            <button
-              className={styles["combo__box__button"]}
-              onClick={() => {
-                setIsOpen(true);
-              }}
-            >
-              <span>{c.split("/")[0]}</span>
-              <img src="/icons/chevron.png" alt="chevron" />
-            </button>
-          )
-      )}
+    <div
+      className={styles["combo__box"]}
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(true);
+        }}
+      >
+        <span>{state}</span>
+        <IoChevronDown />
+      </button>
       {isOpen && (
-        <div className={styles["combo__box__lists"]}>
-          {contents.map((cc: string, idx: number) => (
-            <button
-              key={idx}
-              onClick={() => {
-                setState(cc.split("/")[1]);
-                setIsOpen(false);
-                feedListMutate();
-              }}
-            >
-              {cc.split("/")[0]}
-            </button>
-          ))}
-        </div>
+        <ButtonList list={list} setIsOpen={setIsOpen} setState={setState} />
       )}
     </div>
   );
-};
-
-export default ComboBox;
+}

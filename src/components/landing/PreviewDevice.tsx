@@ -38,7 +38,8 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       ref={previewRef}
-      className={`preview-device ${isLoading ||
+      className={`preview-device ${
+        isLoading ||
         sidebarOpen ||
         apartChatBlack ||
         profilePending ||
@@ -46,25 +47,23 @@ const PreviewDevice = ({ children }: { children: React.ReactNode }) => {
         isLoginPending ||
         registerDimmed ||
         findPending
-        ? "of-hidden"
-        : ""
-        }`}
+          ? "of-hidden"
+          : ""
+      }`}
     >
       {(isLoading || isLoginPending || findPending) && (
         <div className="div-background-black">
           <SyncLoader color="#fff" />
         </div>
       )}
-      {(sidebarOpen ||
-        apartChatBlack ||
-        profilePending ||
-        modalPending ||
-        registerDimmed) && (
-          <div
-            className={`div-background-black-2 ${isMobile ? "mobile-background-black-2" : ""
-              }`}
-          ></div>
-        )}
+      {(sidebarOpen || profilePending || modalPending || registerDimmed) && (
+        <div
+          className={`div-background-black-2 ${
+            isMobile ? "mobile-background-black-2" : ""
+          }`}
+        ></div>
+      )}
+      {/* apartChatBlack은 ApartChatModal의 modal__overlay에서 처리하므로 여기서는 제외 */}
       <div className="app-container">
         <StatusBar />
         {children}

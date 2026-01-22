@@ -15,7 +15,6 @@ const MyApartCard = ({
   apartmentDong,
   apartmentHo,
   memberApartmentId,
-  apartmentId,
 }: {
   nickname: string;
   fileId: string;
@@ -24,12 +23,11 @@ const MyApartCard = ({
   apartmentDong: string;
   apartmentHo: number;
   memberApartmentId: number;
-  apartmentId: number;
 }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { setModalPending, modalPending } = usePendingStore();
+  const { setModalPending } = usePendingStore();
 
   const deleteMyApart = async () => {
     try {
@@ -73,13 +71,16 @@ const MyApartCard = ({
         </div>
       </div>
       <div className={styles["my__apart__card__buttons"]}>
-        <button type="button" onClick={() => { setIsModalOpen(true); setModalPending(true); }}>
-          등록해제
-        </button>
         <button
           type="button"
-          onClick={() => navigate(`/apart-info/${apartmentId}`)}
+          onClick={() => {
+            setIsModalOpen(true);
+            setModalPending(true);
+          }}
         >
+          등록해제
+        </button>
+        <button type="button" onClick={() => navigate(`/apart-info/my-apart`)}>
           바로가기
         </button>
       </div>
@@ -99,7 +100,7 @@ const MyApartCard = ({
             }}
             actionText="삭제"
           />,
-          document.getElementById("root")!
+          document.getElementById("root")!,
         )}
     </div>
   );

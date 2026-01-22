@@ -59,11 +59,11 @@ const MyPageBox = () => {
           <img
             src={
               !userInfo?.fileId ||
-                userInfo?.fileId === null ||
-                userInfo?.fileId === "/profile_imgSrc.jpg"
+              userInfo?.fileId === null ||
+              userInfo?.fileId === "/profile_imgSrc.jpg"
                 ? "./profile_imgSrc.jpg"
                 : "https://s3.ap-northeast-2.amazonaws.com/danjitalk/" +
-                userInfo?.fileId
+                  userInfo?.fileId
             }
             alt="edit_profile"
           />
@@ -90,7 +90,6 @@ const MyPageBox = () => {
             apartmentDong={userInfo.building ?? ""}
             apartmentHo={userInfo.unit ?? 0}
             memberApartmentId={userInfo.memberApartmentId ?? 0}
-            apartmentId={userInfo.apartmentId ?? 0}
           />
         ) : (
           <div className={styles["my__page__box__danji"]}>

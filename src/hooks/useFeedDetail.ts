@@ -1,46 +1,48 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useCallback } from "react";
+import {
+  type FeedDetailStore,
+  useFeedDetailStore,
+} from "../stores/useFeedDetailStore";
 import axios from "axios";
 
-export interface FeedDetail {
-  code: number;
-  data: FeedDetail2;
-}
+export const useFeedDetail = (feedId: number) => {
+  const { setFeedDetailData } = useFeedDetailStore();
 
-interface FeedDetail2 {
-  bookmarkCount: number;
-  commentCount: number;
-  contents: string;
-  createdAt: string;
-  feedId: number;
-  feedMemberResponseDto: {
-    memberId: number;
-    nickname: string;
-  };
-  isAuthor: boolean;
-  isBookmarked: boolean;
-  isReacted: boolean;
-  reactionCount: number;
-  s3ObjectResponseDtoList: {
-    fullUrl: string;
-    url: string;
-  }[];
-  title: string;
-  viewCount: number;
-}
-
-export const useFeedDetail = (feedId: string) => {
-  const { data: feedDetail, isLoading: feedDetailPending } = useQuery({
-    queryKey: ["feedDetail", feedId],
-    queryFn: async () => {
+  const getFeedDetail = useMutation<FeedDetailStore, Error>({
+    mutationFn: async () => {
       const response = await axios.get(`/api/community/feeds/${feedId}`);
-      return response.data as FeedDetail;
+      return response.data;
     },
-    enabled: !!feedId,
-    staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
+    onSuccess: (data: FeedDetailStore) => {
+      console.log(data);
+      setFeedDetailData(data);
+    },
   });
 
+  const viewUpMutation = useMutation<void, Error>({
+    mutationFn: async () => {
+      await axios.post(`/api/community/feeds/${feedId}/view`);
+    },
+    onSuccess: () => {
+      getFeedDetail.mutate();
+    },
+  });
+
+  const fetchFeedDetail = useCallback(() => {
+    getFeedDetail.mutate();
+  }, [feedId]);
+
+  const fetchViewUp = useCallback(() => {
+    viewUpMutation.mutate();
+  }, [feedId]);
+
   return {
-    feedDetail,
-    feedDetailPending,
+    getFeedDetail,
+    fetchFeedDetail,
+    feedDetailPending: getFeedDetail.isPending,
+    viewUpMutation,
+    fetchViewUp,
+    viewUpPending: viewUpMutation.isPending,
   };
 };
