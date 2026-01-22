@@ -18,7 +18,7 @@ const CommonPagination = ({
   setPagination: Dispatch<SetStateAction<number>>;
   perNumber: number;
 }) => {
-  const paginationAllLength = Math.floor(totalResultCount / perNumber);
+  const paginationAllLength = Math.ceil(totalResultCount / perNumber);
   const paginationArray = Array.from(
     { length: paginationAllLength },
     (_, i) => i

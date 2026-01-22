@@ -1,8 +1,8 @@
-.search__init__wrapper {
-  padding-top: 20px;
+.search__result__wrapper {
+  margin-top: 20px;
 }
 
-.search__init__header {
+.search__result__header {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -14,4 +14,8 @@
   > div {
     flex: 1;
   }
+}
+
+.search__result__skeleton {
+  padding: 0 20px;
 }

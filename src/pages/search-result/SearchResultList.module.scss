@@ -1,0 +1,13 @@
+.search__result__list {
+  height: 520px;
+  position: relative;
+  padding-top: 20px;
+  margin-bottom: 30px;
+  > span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.45;
+  }
+}

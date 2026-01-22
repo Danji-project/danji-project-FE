@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { useSearch } from "../../hooks/useSearch";
 import InitList from "./InitList";
 import InitListSkeleton from "./InitListSkeleton";
+import { IoIosArrowBack } from "react-icons/io";
 
 const SearchInit = () => {
   const [searchContent, setSearchContent] = useState<string>("");
@@ -17,19 +18,24 @@ const SearchInit = () => {
 
   return (
     <div className={styles["search__init__wrapper"]}>
-      <SearchBox
-        content={searchContent}
-        placeholder={""}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setSearchContent(e.target.value)
-        }
-        onSearch={() => {
-          if (!searchContent) {
-            return;
+      <div className={styles["search__init__header"]}>
+        <button onClick={() => navigate(-1)}>
+          <IoIosArrowBack />
+        </button>
+        <SearchBox
+          content={searchContent}
+          placeholder={""}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchContent(e.target.value)
           }
-          navigate(`/search/result?keyword=${searchContent}`);
-        }}
-      />
+          onSearch={() => {
+            if (!searchContent) {
+              return;
+            }
+            navigate(`/search/result?keyword=${searchContent}`);
+          }}
+        />
+      </div>
       {!popularPending && <InitList title={"인기 검색어"} data={popular} />}
       {popularPending && <InitListSkeleton />}
     </div>

@@ -19,6 +19,7 @@ import RegisterMyApart from "../pages/register-userapart/RegisterUserApart";
 import RegisterApart from "../pages/register-userapart/RegisterApart";
 import Chatting from "../pages/chatting/Chatting";
 import SearchInit from "../pages/search-init/SearchInit";
+import SearchResult from "../pages/search-result/SearchResult";
 
 const AppRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const AppRoutes = () => {
           element={<ProtectedRoute element={<ApartInfo />} />}
         />
         <Route path="/search/search-init" element={<SearchInit />} />
+        <Route path="/search/result" element={<SearchResult />} />
 
         {/* 인증 관련 라우팅 - 로그인 필수 아님 */}
         <Route element={<AuthRoutes />}>

@@ -1,0 +1,52 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.skeleton__card {
+  padding: 20px 0;
+  border-bottom: 1px solid rgb(237, 237, 237);
+  display: flex;
+  align-items: center;
+
+  &__profile {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-left: 20px;
+  }
+}
+
+.skeleton__line {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+
+  &:first-child {
+    width: 120px;
+  }
+
+  &:nth-child(2) {
+    width: 180px;
+  }
+
+  &:last-child {
+    width: 100px;
+    height: 12px;
+  }
+}
