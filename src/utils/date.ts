@@ -1,4 +1,6 @@
-import type { Response } from "../stores/useChatDetail";
+interface MessageWithDate {
+  createdAt: string;
+}
 
 // 날짜 표시하기
 export const getRelativeTime = (dateString: string): string => {
@@ -26,12 +28,14 @@ export const getRelativeTime = (dateString: string): string => {
 };
 
 // 날짜별로 묶는 함수
-export const groupMessagesByDate = (messages: Response[]) => {
-  return messages.reduce((acc: Record<string, Response[]>, msg: Response) => {
+export const groupMessagesByDate = <T extends MessageWithDate>(
+  messages: T[],
+) => {
+  return messages.reduce((acc: Record<string, T[]>, msg: T) => {
     const date = msg.createdAt.split("T")[0];
 
     if (!acc[date]) acc[date] = [];
     acc[date].push(msg);
     return acc;
-  }, {} as Record<string, Response[]>);
+  }, {} as Record<string, T[]>);
 };

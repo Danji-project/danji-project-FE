@@ -1,5 +1,17 @@
-import type { BasePost } from "../../model/BasePostModel";
 import styles from "./PostSummary.module.scss";
+
+interface BasePost {
+  feedId: number;
+  title: string;
+  contents: string;
+  thumbnailFileUrl: string | null;
+  nickName: string | null;
+  localDateTime: string;
+  viewCount: number;
+  reactionCount: number;
+  bookmarkCount: number;
+  commentCount: number;
+}
 
 import EyesIcon from "../../assets/Icon/eyesIcon.svg";
 import HeartIcon from "../../assets/Icon/heartIcon.svg";

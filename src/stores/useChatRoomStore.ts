@@ -3,7 +3,6 @@ import { create } from "zustand";
 interface RealChatRoomStore extends ChatRoomStore {
   setChatRoom: (data: ChatRoomStore) => void;
   clearChatRoom: () => void;
-  addMessage: (message: ChatMessage) => void;
 }
 
 export interface ChatRoomStore {

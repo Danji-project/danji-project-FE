@@ -32,7 +32,7 @@ const CommunityWriteContents = () => {
       return;
     }
 
-    setFile(files);
+    setFile(Array.from(files));
 
     const urls = Array.from(files).map((file) => URL.createObjectURL(file));
     setPreviewUrls(urls);

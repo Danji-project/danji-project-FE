@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserInfoStore } from "../stores/userStore";
 import { useModalTextStore } from "../stores/useModalText";
 import { usePendingStore } from "../stores/usePendingStore";
-import { useEffect, type Dispatch, type SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 export const useLogin = (
   loginId: string,

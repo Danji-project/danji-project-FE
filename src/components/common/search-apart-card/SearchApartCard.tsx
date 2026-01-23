@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { Apartments } from "../../../stores/useSearchTermStore";
 import styles from "./SearchApartCard.module.scss";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
 import { useModifyDB } from "../../../hooks/useModifyDB";
 
 const SearchApartCard = ({ data }: { data: Apartments }) => {

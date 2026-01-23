@@ -10,16 +10,12 @@ import styles from "./CommentBox.module.scss";
 import WriteBox from "../write-box/WriteBox";
 import { TfiAlignJustify } from "react-icons/tfi";
 import ButtonList from "../combobox/ButtonList";
-import { useParams } from "react-router";
-import { useComment } from "../../../hooks/useComment";
 
 const CommentBox = ({
   content,
-  isParent = true,
   depth = 0,
 }: {
   content: CommentItem;
-  isParent?: boolean;
   depth?: number;
 }) => {
   const { setModalPending } = usePendingStore();
@@ -131,7 +127,6 @@ const CommentBox = ({
               <CommentBox
                 key={commentDto.commentId}
                 content={commentDto}
-                isParent={content.childrenCommentDto.length > 0}
                 depth={depth! + 1}
               />
             </div>
