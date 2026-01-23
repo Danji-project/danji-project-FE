@@ -1,20 +1,29 @@
-import { useState } from "react";
 import styles from "./ApartChatModal.module.scss";
 import { usePendingStore } from "../../stores/usePendingStore";
-import type { BaseApartInfo } from "../../api";
+import { useNavigate } from "react-router";
+import { useWebSocket } from "../../hooks/WebSocketContext";
 
-const ApartChatModal = ({ apartData }: { apartData: BaseApartInfo }) => {
-  const { setApartChatBlack } = usePendingStore();
-
-  const handleJoinChat = () => {
-    // 채팅방 참여 기능 제거됨
-    // 모달만 닫기
-    setApartChatBlack(false);
+interface ApartChatModalProps {
+  apartData: {
+    apartDetailName: string;
+    chatroomId?: number | null;
   };
+}
+
+const ApartChatModal = ({ apartData }: ApartChatModalProps) => {
+  const { setApartChatBlack } = usePendingStore();
+  const navigate = useNavigate();
+  const { subscribeRooms } = useWebSocket();
 
   return (
-    <div className={styles["modal__overlay"]} onClick={() => setApartChatBlack(false)}>
-      <div className={styles["apart__chat__modal"]} onClick={(e) => e.stopPropagation()}>
+    <div
+      className={styles["modal__overlay"]}
+      onClick={() => setApartChatBlack(false)}
+    >
+      <div
+        className={styles["apart__chat__modal"]}
+        onClick={(e) => e.stopPropagation()}
+      >
         <h1>{apartData.apartDetailName}</h1>
         <p>
           단지 채팅방에 참여하여 <br />더 많은 소식을 실시간으로 받아보세요!
@@ -28,7 +37,14 @@ const ApartChatModal = ({ apartData }: { apartData: BaseApartInfo }) => {
           >
             뒤로 가기
           </button>
-          <button onClick={handleJoinChat}>
+          <button
+            onClick={() => {
+              if (!apartData.chatroomId) return;
+              setApartChatBlack(false);
+              subscribeRooms([apartData.chatroomId]);
+              navigate(`/chatting`);
+            }}
+          >
             참여하기
           </button>
         </div>

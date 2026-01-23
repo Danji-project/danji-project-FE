@@ -1,0 +1,56 @@
+.direct__chatting__card {
+  display: flex;
+  padding: 16px 0;
+  border-bottom: 1px solid rgb(237, 237, 237);
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    background-color: rgb(250, 250, 250);
+  }
+
+  &__profile {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    margin-left: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  &__nickname {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  &__time {
+    font-size: 12px;
+    color: rgb(150, 150, 150);
+  }
+
+  &__message {
+    font-size: 13px;
+    color: rgb(100, 100, 100);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

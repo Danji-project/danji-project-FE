@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import type { ApartmentDetail } from "../../hooks/useApartmentList";
 import { usePendingStore } from "../../stores/usePendingStore";
 import ApartChatModal from "./ApartChatModal";
@@ -7,7 +6,6 @@ import styles from "./ApartDetail.module.scss";
 
 const ApartDetail = ({ apartData }: { apartData: ApartmentDetail }) => {
   const { setApartChatBlack, apartChatBlack } = usePendingStore();
-  const { id } = useParams<{ id: string }>();
 
   const handleApartChat = () => {
     setApartChatBlack(true);
@@ -53,12 +51,11 @@ const ApartDetail = ({ apartData }: { apartData: ApartmentDetail }) => {
           <button onClick={handleApartChat}>단지 채팅 참여하기</button>
         </div>
         {apartChatBlack && (
-          <ApartChatModal 
+          <ApartChatModal
             apartData={{
               ...apartData,
-              id: id ? Number(id) : undefined,
               apartDetailName: apartData.name,
-            } as any}
+            }}
           />
         )}
       </div>

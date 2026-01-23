@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router";
 import LandingIntro from "./components/landing/LandingIntro";
 import HomeSkeleton from "./components/common/home-skeleton/HomeSkeleton";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WebSocketProvider } from "./hooks/WebSocketContext";
 
 const queryClient = new QueryClient();
 
@@ -52,7 +53,9 @@ function AppContent() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContent />
+      <WebSocketProvider>
+        <AppContent />
+      </WebSocketProvider>
     </QueryClientProvider>
   );
 }

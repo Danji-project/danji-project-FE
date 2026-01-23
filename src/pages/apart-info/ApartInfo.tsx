@@ -3,7 +3,6 @@ import styles from "./ApartInfo.module.scss";
 import Header from "../../layouts/Header";
 import ApartDetail from "../../components/apart-detail/ApartDetail";
 import CommunityList from "../../components/community/CommunityList";
-import { useUserInfoStore } from "../../stores/userStore";
 import { useParams } from "react-router";
 
 import { useApartmentDetail } from "../../hooks/useApartmentList";
@@ -11,10 +10,8 @@ import useApartDetail from "../../stores/useApartDetail";
 import TabList from "../../components/common/tabs/TabList";
 
 const ApartInfo = () => {
-  const { isLogin } = useUserInfoStore();
-
   const { id } = useParams<{ id: string }>();
-  const { getApartmentMutation, apartmentPending } = useApartmentDetail();
+  const { getApartmentMutation } = useApartmentDetail();
   const { data: apartDetailData, apartmentId: storeApartmentId } =
     useApartDetail();
 
